@@ -160,54 +160,41 @@ def test_get_latest_block(requests_mock):
 def test_get_account(requests_mock):
     requests_mock.register_uri(
         "GET",
-        "{}/auth/accounts/band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte".format(TEST_RPC),
+        "{}/cosmos/auth/v1beta1/accounts/band1p40yh3zkmhcv0ecqp3mcazy83sa57rgjp07dun".format(TEST_RPC),
         json={
-            "height": "650788",
-            "result": {
-                "type": "cosmos-sdk/Account",
-                "value": {
-                    "address": "band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte",
-                    "coins": [{"denom": "uband", "amount": "104082359107"}],
-                    "public_key": {
-                        "type": "tendermint/PubKeySecp256k1",
-                        "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
-                    },
-                    "account_number": "36",
-                    "sequence": "927",
+            "account": {
+                "@type": "/cosmos.auth.v1beta1.BaseAccount",
+                "address": "band1p40yh3zkmhcv0ecqp3mcazy83sa57rgjp07dun",
+                "pub_key": {
+                    "@type": "/cosmos.crypto.secp256k1.PubKey",
+                    "key": "AiS3jI4M4wP0Aqn+4RhteonBF82QvzdR6OGFF2rlFKMk",
                 },
-            },
+                "account_number": "0",
+                "sequence": "4",
+            }
         },
         status_code=200,
     )
 
-    assert client.get_account(Address.from_acc_bech32("band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte")) == Account(
-        address=Address.from_acc_bech32("band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte"),
-        coins=[Coin(amount=104082359107, denom="uband")],
-        public_key={
-            "type": "tendermint/PubKeySecp256k1",
-            "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
+    assert client.get_account(Address.from_acc_bech32("band1p40yh3zkmhcv0ecqp3mcazy83sa57rgjp07dun")) == Account(
+        address=Address.from_acc_bech32("band1p40yh3zkmhcv0ecqp3mcazy83sa57rgjp07dun"),
+        pub_key={
+            "@type": "/cosmos.crypto.secp256k1.PubKey",
+            "key": "AiS3jI4M4wP0Aqn+4RhteonBF82QvzdR6OGFF2rlFKMk",
         },
-        account_number=36,
-        sequence=927,
+        account_number=0,
+        sequence=4,
     )
 
 
 def test_get_account_not_found(requests_mock):
     requests_mock.register_uri(
         "GET",
-        "{}/auth/accounts/band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte".format(TEST_RPC),
+        "{}/cosmos/auth/v1beta1/accounts/band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte".format(TEST_RPC),
         json={
-            "height": "650788",
-            "result": {
-                "type": "cosmos-sdk/Account",
-                "value": {
-                    "address": "",
-                    "coins": [],
-                    "public_key": None,
-                    "account_number": "0",
-                    "sequence": "0",
-                },
-            },
+            "code": 5,
+            "message": "rpc error: code = NotFound desc = account band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte not found: key not found",
+            "details": [],
         },
         status_code=200,
     )

@@ -8,7 +8,7 @@ from pyband.wallet import Address, PrivateKey
 from pyband.client import Client
 from pyband.exceptions import EmptyMsgError, UndefinedError, ValueTooLargeError
 
-TEST_RPC = "https://api-mock.bandprotocol.com/rest/"
+TEST_RPC = "https://api-mock.bandprotocol.com/rest"
 
 client = Client(TEST_RPC)
 
@@ -67,22 +67,18 @@ def test_get_sign_data_with_auto_success(requests_mock):
 
     requests_mock.register_uri(
         "GET",
-        "{}/auth/accounts/band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c".format(TEST_RPC),
+        "{}/cosmos/auth/v1beta1/accounts/band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c".format(TEST_RPC),
         json={
-            "height": "650788",
-            "result": {
-                "type": "cosmos-sdk/Account",
-                "value": {
-                    "address": "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-                    "coins": [{"denom": "uband", "amount": "104082359107"}],
-                    "public_key": {
-                        "type": "tendermint/PubKeySecp256k1",
-                        "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
-                    },
-                    "account_number": "36",
-                    "sequence": "927",
+            "account": {
+                "@type": "/cosmos.auth.v1beta1.BaseAccount",
+                "address": "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
+                "pub_key": {
+                    "@type": "/cosmos.crypto.secp256k1.PubKey",
+                    "key": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
                 },
-            },
+                "account_number": "36",
+                "sequence": "927",
+            }
         },
         status_code=200,
     )
@@ -115,22 +111,18 @@ def test_create_transaction_with_auto_fail(requests_mock):
 
     requests_mock.register_uri(
         "GET",
-        "{}/auth/accounts/band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c".format(TEST_RPC),
+        "{}/cosmos/auth/v1beta1/accounts/band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c".format(TEST_RPC),
         json={
-            "height": "650788",
-            "result": {
-                "type": "cosmos-sdk/Account",
-                "value": {
-                    "address": "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-                    "coins": [{"denom": "uband", "amount": "104082359107"}],
-                    "public_key": {
-                        "type": "tendermint/PubKeySecp256k1",
-                        "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
-                    },
-                    "account_number": "36",
-                    "sequence": "927",
+            "account": {
+                "@type": "/cosmos.auth.v1beta1.BaseAccount",
+                "address": "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
+                "pub_key": {
+                    "@type": "/cosmos.crypto.secp256k1.PubKey",
+                    "key": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
                 },
-            },
+                "account_number": "36",
+                "sequence": "927",
+            }
         },
         status_code=200,
     )

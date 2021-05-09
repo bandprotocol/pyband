@@ -118,8 +118,7 @@ class RequestInfo(object):
 @dataclass
 class Account(object):
     address: Address
-    coins: List[Coin]
-    public_key: Optional[dict]
+    pub_key: Optional[dict]
     account_number: int
     sequence: int
 
