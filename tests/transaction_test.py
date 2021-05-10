@@ -3,6 +3,7 @@ from pyband.client import Client
 import pytest
 
 from pyband import Transaction
+from pyband.data import Coin
 from pyband.message import MsgRequest
 from pyband.wallet import Address, PrivateKey
 from pyband.client import Client
@@ -23,6 +24,9 @@ def test_get_sign_data_success():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -33,7 +37,7 @@ def test_get_sign_data_success():
 
     assert (
         t.get_sign_data()
-        == b'{"account_number":"100","chain_id":"bandchain","fee":{"amount":[{"amount":"0","denom":"uband"}],"gas":"200000"},"memo":"","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","min_count":"3","oracle_script_id":"1","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"30"}'
+        == b'{"account_number":"100","chain_id":"bandchain","fee":{"amount":[{"amount":"0","denom":"uband"}],"gas":"200000"},"memo":"","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","execute_gas":"50000","fee_limit":[{"amount":"100","denom":"uband"}],"min_count":"3","oracle_script_id":"1","prepare_gas":"30000","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"30"}'
     )
 
 
@@ -47,6 +51,9 @@ def test_get_sign_data_with_gas_success():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -59,7 +66,7 @@ def test_get_sign_data_with_gas_success():
 
     assert (
         t.get_sign_data()
-        == b'{"account_number":"100","chain_id":"bandchain","fee":{"amount":[{"amount":"10","denom":"uband"}],"gas":"500000"},"memo":"","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","min_count":"3","oracle_script_id":"1","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"30"}'
+        == b'{"account_number":"100","chain_id":"bandchain","fee":{"amount":[{"amount":"10","denom":"uband"}],"gas":"500000"},"memo":"","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","execute_gas":"50000","fee_limit":[{"amount":"100","denom":"uband"}],"min_count":"3","oracle_script_id":"1","prepare_gas":"30000","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"30"}'
     )
 
 
@@ -92,6 +99,9 @@ def test_get_sign_data_with_auto_success(requests_mock):
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -103,7 +113,7 @@ def test_get_sign_data_with_auto_success(requests_mock):
 
     assert (
         t.get_sign_data()
-        == b'{"account_number":"36","chain_id":"bandchain","fee":{"amount":[{"amount":"10","denom":"uband"}],"gas":"500000"},"memo":"","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","min_count":"3","oracle_script_id":"1","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"927"}'
+        == b'{"account_number":"36","chain_id":"bandchain","fee":{"amount":[{"amount":"10","denom":"uband"}],"gas":"500000"},"memo":"","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","execute_gas":"50000","fee_limit":[{"amount":"100","denom":"uband"}],"min_count":"3","oracle_script_id":"1","prepare_gas":"30000","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"927"}'
     )
 
 
@@ -141,6 +151,9 @@ def test_get_sign_data_with_memo_success():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -152,7 +165,7 @@ def test_get_sign_data_with_memo_success():
 
     assert (
         t.get_sign_data()
-        == b'{"account_number":"100","chain_id":"bandchain","fee":{"amount":[{"amount":"0","denom":"uband"}],"gas":"200000"},"memo":"from_pyband_test","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","min_count":"3","oracle_script_id":"1","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"30"}'
+        == b'{"account_number":"100","chain_id":"bandchain","fee":{"amount":[{"amount":"0","denom":"uband"}],"gas":"200000"},"memo":"from_pyband_test","msgs":[{"type":"oracle/Request","value":{"ask_count":"4","calldata":"AAAAA0JUQwAAAAAAAAAB","client_id":"from_pyband","execute_gas":"50000","fee_limit":[{"amount":"100","denom":"uband"}],"min_count":"3","oracle_script_id":"1","prepare_gas":"30000","sender":"band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"}}],"sequence":"30"}'
     )
 
 
@@ -173,6 +186,9 @@ def test_get_sign_data_account_num_fail():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -194,6 +210,9 @@ def test_get_sign_data_sequence_fail():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -215,6 +234,9 @@ def test_get_sign_data_chain_id_fail():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -236,6 +258,9 @@ def test_get_sign_data_memo_fail():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
             )
         )
@@ -264,6 +289,9 @@ def test_get_tx_data_success():
                 ask_count=4,
                 min_count=3,
                 client_id="from_pyband",
+                fee_limit=[Coin(amount=100, denom="uband")],
+                prepare_gas=30000,
+                execute_gas=50000,
                 sender=addr,
             )
         )
@@ -275,6 +303,7 @@ def test_get_tx_data_success():
     raw_data = t.get_sign_data()
     signature = priv.sign(raw_data)
     raw_tx = t.get_tx_data(signature, pubkey)
+    print(raw_tx)
 
     assert raw_tx == {
         "msg": [
@@ -286,6 +315,9 @@ def test_get_tx_data_success():
                     "ask_count": "4",
                     "min_count": "3",
                     "client_id": "from_pyband",
+                    "fee_limit": [{"amount": "100", "denom": "uband"}],
+                    "prepare_gas": "30000",
+                    "execute_gas": "50000",
                     "sender": "band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte",
                 },
             }
@@ -294,7 +326,7 @@ def test_get_tx_data_success():
         "memo": "",
         "signatures": [
             {
-                "signature": "aFvTgkY9F14dHfp2mtq8V2eCTKUtY1T9WKs99jmR8To3JB16cawbmpa1TRUdzfnqLXBh+o6XUuF4bHWR6xbCCw==",
+                "signature": "kaxClH5yq40a2V79zDhyEvMMSRJJNZ8wsDSN0hhr0bdXvwN1auU2Wvm9Z8276mLUnzkO5twSPLsw6TmxQxS4XA==",
                 "pub_key": {
                     "type": "tendermint/PubKeySecp256k1",
                     "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
