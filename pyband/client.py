@@ -91,14 +91,15 @@ class Client(object):
         )
 
     def get_account(self, address: Address) -> Optional[Account]:
-        data = self._get_result("/auth/accounts/{}".format(address.to_acc_bech32()))["value"]
-        if data["address"] == "":
+        try:
+            data = self._get("/cosmos/auth/v1beta1/accounts/{}".format(address.to_acc_bech32()))["account"]
+            return from_dict(
+                data_class=Account,
+                data=data,
+                config=DACITE_CONFIG,
+            )
+        except:
             return None
-        return from_dict(
-            data_class=Account,
-            data=data,
-            config=DACITE_CONFIG,
-        )
 
     def get_data_source(self, id: int) -> DataSource:
         return from_dict(

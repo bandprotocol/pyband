@@ -1,6 +1,7 @@
 /venv/
 /dist/
 /build/
+/.vscode/
 /MANIFEST
 __pycache__/
 .pytest_cache/
