@@ -303,7 +303,6 @@ def test_get_tx_data_success():
     raw_data = t.get_sign_data()
     signature = priv.sign(raw_data)
     raw_tx = t.get_tx_data(signature, pubkey)
-    print(raw_tx)
 
     assert raw_tx == {
         "msg": [

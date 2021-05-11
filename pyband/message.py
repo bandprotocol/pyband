@@ -52,7 +52,7 @@ class MsgRequest(Msg):
 
     def validate(self) -> bool:
         if self.oracle_script_id <= 0:
-            raise NegativeIntegerError("oracle script id cannot less than zero")
+            raise NegativeIntegerError("oracle script id cannot less than or equal zero")
         if len(self.calldata) > MAX_DATA_SIZE:
             raise ValueTooLargeError("too large calldata")
         if self.min_count <= 0:
@@ -68,10 +68,10 @@ class MsgRequest(Msg):
             coin.validate()
 
         if self.prepare_gas <= 0:
-            raise NegativeIntegerError("prepare gas cannot less than zero")
+            raise NegativeIntegerError("prepare gas cannot less than or equal zero")
 
         if self.execute_gas <= 0:
-            raise NegativeIntegerError("execute gas cannot less than zero")
+            raise NegativeIntegerError("execute gas cannot less than or equal zero")
 
         return True
 

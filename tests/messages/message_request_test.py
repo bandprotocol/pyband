@@ -94,7 +94,7 @@ def test_msg_request_creation_oracle_script_id_fail():
         execute_gas=50000,
         sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
     )
-    with pytest.raises(NegativeIntegerError, match="oracle script id cannot less than zero"):
+    with pytest.raises(NegativeIntegerError, match="oracle script id cannot less than or equal zero"):
         msg_request.validate()
 
 
@@ -192,7 +192,7 @@ def test_msg_request_creation_prepare_gas_fail():
         execute_gas=50000,
         sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
     )
-    with pytest.raises(NegativeIntegerError, match="prepare gas cannot less than zero"):
+    with pytest.raises(NegativeIntegerError, match="prepare gas cannot less than or equal zero"):
         msg_request.validate()
 
 
@@ -208,5 +208,5 @@ def test_msg_request_creation_execute_gas_fail():
         execute_gas=0,
         sender=Address.from_acc_bech32("band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"),
     )
-    with pytest.raises(NegativeIntegerError, match="execute gas cannot less than zero"):
+    with pytest.raises(NegativeIntegerError, match="execute gas cannot less than or equal zero"):
         msg_request.validate()
