@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from types import prepare_class
 from pyband.data import Coin
 from pyband.wallet import Address
@@ -8,6 +10,7 @@ from pyband.message import MsgRequest, MsgSend
 
 def main():
     # TODO
+    load_dotenv()
     c = Client("http://35.187.228.10:1317")
     # req_info = c.get_latest_request(6, bytes.fromhex("000000045041584700000003555344000000003b9aca00"), 4, 4)
     # oracle_script = c.get_oracle_script(6)
@@ -15,9 +18,7 @@ def main():
     # print(obi.decode_output(req_info.result.response_packet_data.result))
 
     # _, priv = PrivateKey.generate()
-    priv = PrivateKey.from_mnemonic(
-        "lock nasty suffer dirt dream fine fall deal curtain plate husband sound tower mom crew crawl guard rack snake before fragile course bacon range"
-    )
+    priv = PrivateKey.from_mnemonic(os.getenv("TEST_MNEMONIC"))
     addr = priv.to_pubkey().to_address()
     # print(addr.to_acc_bech32())
 
@@ -58,7 +59,6 @@ def main():
     signature = priv.sign(raw_data)
     raw_tx = t.get_tx_data(signature, pubkey)
 
-    # print(raw_tx)
     print(c.send_tx_block_mode(raw_tx))
 
     # print(priv.to_pubkey().to_acc_bech32(), priv.to_pubkey().to_address().to_acc_bech32())
