@@ -65,6 +65,9 @@ class Request(object):
     min_count: int
     request_height: int
     raw_requests: List[RawRequest]
+    fee_limit: List[Coin]
+    prepare_gas: int
+    execute_gas: int
     client_id: str = ""
     calldata: bytes = b""
 

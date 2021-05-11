@@ -26,6 +26,9 @@ class MsgRequest(Msg):
     ask_count: int
     min_count: int
     client_id: str
+    fee_limit: List[Coin]
+    prepare_gas: int
+    execute_gas: int
     sender: Address
 
     def as_json(self) -> dict:
@@ -37,6 +40,9 @@ class MsgRequest(Msg):
                 "ask_count": str(self.ask_count),
                 "min_count": str(self.min_count),
                 "client_id": self.client_id,
+                "fee_limit": [coin.as_json() for coin in self.fee_limit],
+                "prepare_gas": str(self.prepare_gas),
+                "execute_gas": str(self.execute_gas),
                 "sender": self.sender.to_acc_bech32(),
             },
         }
@@ -46,7 +52,7 @@ class MsgRequest(Msg):
 
     def validate(self) -> bool:
         if self.oracle_script_id <= 0:
-            raise NegativeIntegerError("oracle script id cannot less than zero")
+            raise NegativeIntegerError("oracle script id cannot less than or equal zero")
         if len(self.calldata) > MAX_DATA_SIZE:
             raise ValueTooLargeError("too large calldata")
         if self.min_count <= 0:
@@ -57,6 +63,15 @@ class MsgRequest(Msg):
             )
         if len(self.client_id) > MAX_CLIENT_ID_LENGTH:
             raise ValueTooLargeError("too long client id")
+
+        for coin in self.fee_limit:
+            coin.validate()
+
+        if self.prepare_gas <= 0:
+            raise NegativeIntegerError("prepare gas cannot less than or equal zero")
+
+        if self.execute_gas <= 0:
+            raise NegativeIntegerError("execute gas cannot less than or equal zero")
 
         return True
 
