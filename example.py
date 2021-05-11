@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from types import prepare_class
 from pyband.data import Coin
 from pyband.wallet import Address
 from pyband import Client, PyObi, PrivateKey
