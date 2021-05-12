@@ -103,7 +103,7 @@ class Result(object):
 class RequestInfo(object):
     request: Optional[Request]
     reports: Optional[List[Report]]
-    result: Result
+    result: Optional[Result]
 
 
 @dataclass
