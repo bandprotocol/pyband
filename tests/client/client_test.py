@@ -9,6 +9,7 @@ from pyband.data import (
     BlockHeaderInfo,
     BlockID,
     DataSource,
+    IBCChannel,
     OracleScript,
     RequestInfo,
     Request,
@@ -275,7 +276,10 @@ def test_get_request_by_id(requests_mock):
                     {"external_id": "2", "data_source_id": "2", "calldata": "QlRD"},
                     {"external_id": "3", "data_source_id": "3", "calldata": "QlRD"},
                 ],
-                "ibc_channel": None,
+                "ibc_channel": {
+                    "port_id": "oracle",
+                    "channel_id": "channel-2",
+                },
                 "execute_gas": "300000",
             },
             "reports": [
@@ -320,6 +324,7 @@ def test_get_request_by_id(requests_mock):
             execute_gas=300000,
             client_id="from_pyband",
             calldata=b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x03\xe8",
+            ibc_channel=IBCChannel(port_id="oracle", channel_id="channel-2"),
         ),
         reports=[
             Report(

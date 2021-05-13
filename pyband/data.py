@@ -57,6 +57,10 @@ class RawRequest(object):
     external_id: int = 0
     calldata: bytes = b""
 
+@dataclass
+class IBCChannel(object):
+    port_id: str
+    channel_id: str
 
 @dataclass
 class Request(object):
@@ -66,6 +70,7 @@ class Request(object):
     request_height: int
     raw_requests: List[RawRequest]
     execute_gas: int
+    ibc_channel: Optional[IBCChannel]
     client_id: str = ""
     calldata: bytes = b""
 
