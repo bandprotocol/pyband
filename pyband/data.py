@@ -57,6 +57,10 @@ class RawRequest(object):
     external_id: int = 0
     calldata: bytes = b""
 
+@dataclass
+class IBCChannel(object):
+    port_id: str
+    channel_id: str
 
 @dataclass
 class Request(object):
@@ -65,15 +69,15 @@ class Request(object):
     min_count: int
     request_height: int
     raw_requests: List[RawRequest]
-    fee_limit: List[Coin]
-    prepare_gas: int
     execute_gas: int
+    ibc_channel: Optional[IBCChannel]
     client_id: str = ""
     calldata: bytes = b""
 
 
 @dataclass
 class RawReport(object):
+    exit_code: int
     external_id: int = 0
     data: bytes = b""
 
@@ -86,34 +90,23 @@ class Report(object):
 
 
 @dataclass
-class RequestPacketData:
+class Result(object):
     oracle_script_id: int
     ask_count: int
     min_count: int
-    client_id: str = ""
-    calldata: bytes = b""
-
-
-@dataclass
-class ResponsePacketData(object):
-    request_id: int
     request_time: int
     resolve_time: int
-    resolve_status: int
-    ans_count: int = 0
+    resolve_status: str
+    request_id: int
+    ans_count: int
     client_id: str = ""
+    calldata: bytes = b""
     result: bytes = b""
 
 
 @dataclass
-class Result(object):
-    request_packet_data: RequestPacketData
-    response_packet_data: ResponsePacketData
-
-
-@dataclass
 class RequestInfo(object):
-    request: Request
+    request: Optional[Request]
     reports: Optional[List[Report]]
     result: Optional[Result]
 

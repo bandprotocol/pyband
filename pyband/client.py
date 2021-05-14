@@ -118,7 +118,7 @@ class Client(object):
     def get_request_by_id(self, id: int) -> RequestInfo:
         return from_dict(
             data_class=RequestInfo,
-            data=self._get_result("/oracle/requests/{}".format(id)),
+            data=self._get("/oracle/v1/requests/{}".format(id)),
             config=DACITE_CONFIG,
         )
 

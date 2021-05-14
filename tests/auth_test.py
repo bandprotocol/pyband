@@ -16,8 +16,6 @@ from pyband.data import (
     RequestInfo,
     Report,
     Result,
-    RequestPacketData,
-    ResponsePacketData,
 )
 
 VALIDATOR_TEST = "bandvaloper1p40yh3zkmhcv0ecqp3mcazy83sa57rgjde6wec"
@@ -140,8 +138,6 @@ REQUEST_TEST = RequestInfo(
         3,
         136629,
         [],
-        [],
-        30000,
         40000,
         "test",
         base64.b64decode("AAAABFVTRFQAAAADQ05ZAAAAAAAPQkA="),
@@ -151,16 +147,17 @@ REQUEST_TEST = RequestInfo(
         Report("bandvaloper1yyv5jkqaukq0ajqn7vhkyhpff7h6e99j3gv0tr", [], True),
     ],
     Result(
-        RequestPacketData(
             1,
             5,
             3,
+            1596950963,
+            1596950966,
+            "RESOLVE_STATUS_SUCCESS",
+            1, 
+            1,
             "test",
             base64.b64decode("AAAABFVTRFQAAAADQ05ZAAAAAAAPQkA="),
-        ),
-        ResponsePacketData(
-            3000, 1596950963, 1596950966, 1, 3, "test", base64.b64decode("AAAAAABqbB0=")
-        ),
+            base64.b64decode("AAAAAABqbB0=")
     ),
 )
 

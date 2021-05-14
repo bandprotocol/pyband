@@ -9,6 +9,7 @@ from pyband.data import (
     BlockHeaderInfo,
     BlockID,
     DataSource,
+    IBCChannel,
     OracleScript,
     RequestInfo,
     Request,
@@ -16,8 +17,6 @@ from pyband.data import (
     RawReport,
     Result,
     Report,
-    RequestPacketData,
-    ResponsePacketData,
     HexBytes,
     EpochTime,
     EVMProof,
@@ -255,109 +254,150 @@ def test_get_oracle_script(requests_mock):
         source_code_url="https://ipfs.io/ipfs/QmQqxHLszpbCy8Hk2ame3pPAxUUAyStBrVdGdDgrfAngAv",
     )
 
+
+def test_get_request_by_id(requests_mock):
+
+    requests_mock.register_uri(
+        "GET",
+        "{}/oracle/v1/requests/6".format(TEST_RPC),
+        json={
+            "request": {
+                "oracle_script_id": "1",
+                "calldata": "AAAAA0JUQwAAAAAAAAPo",
+                "requested_validators": [
+                    "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
+                ],
+                "min_count": "1",
+                "request_height": "26525",
+                "request_time": "1620798812",
+                "client_id": "from_pyband",
+                "raw_requests": [
+                    {"external_id": "1", "data_source_id": "1", "calldata": "QlRD"},
+                    {"external_id": "2", "data_source_id": "2", "calldata": "QlRD"},
+                    {"external_id": "3", "data_source_id": "3", "calldata": "QlRD"},
+                ],
+                "ibc_channel": {
+                    "port_id": "oracle",
+                    "channel_id": "channel-2",
+                },
+                "execute_gas": "300000",
+            },
+            "reports": [
+                {
+                    "validator": "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
+                    "in_before_resolve": True,
+                    "raw_reports": [
+                        {"external_id": "1", "exit_code": 0, "data": "NTczMjcK"},
+                        {"external_id": "2", "exit_code": 0, "data": "NTczMjcK"},
+                        {"external_id": "3", "exit_code": 0, "data": "NTcyODYuMDE1Cg=="},
+                    ],
+                },
+            ],
+            "result": {
+                "client_id": "from_pyband",
+                "oracle_script_id": "1",
+                "calldata": "AAAAA0JUQwAAAAAAAAPo",
+                "ask_count": "2",
+                "min_count": "1",
+                "request_id": "6",
+                "ans_count": "2",
+                "request_time": "1620798812",
+                "resolve_time": "1620798814",
+                "resolve_status": "RESOLVE_STATUS_SUCCESS",
+                "result": "AAAAAANqiDo=",
+            },
+        },
+        status_code=200,
+    )
+
+    assert client.get_request_by_id(6) == RequestInfo(
+        request=Request(
+            oracle_script_id=1,
+            requested_validators=["bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst"],
+            min_count=1,
+            request_height=26525,
+            raw_requests=[
+                RawRequest(data_source_id=1, external_id=1, calldata=b"BTC"),
+                RawRequest(data_source_id=2, external_id=2, calldata=b"BTC"),
+                RawRequest(data_source_id=3, external_id=3, calldata=b"BTC"),
+            ],
+            execute_gas=300000,
+            client_id="from_pyband",
+            calldata=b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x03\xe8",
+            ibc_channel=IBCChannel(port_id="oracle", channel_id="channel-2"),
+        ),
+        reports=[
+            Report(
+                validator="bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
+                raw_reports=[
+                    RawReport(exit_code=0, external_id=1, data=b"57327\n"),
+                    RawReport(exit_code=0, external_id=2, data=b"57327\n"),
+                    RawReport(exit_code=0, external_id=3, data=b"57286.015\n"),
+                ],
+                in_before_resolve=True,
+            )
+        ],
+        result=Result(
+            oracle_script_id=1,
+            ask_count=2,
+            min_count=1,
+            request_time=1620798812,
+            resolve_time=1620798814,
+            resolve_status="RESOLVE_STATUS_SUCCESS",
+            request_id=6,
+            ans_count=2,
+            client_id="from_pyband",
+            calldata=b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x03\xe8",
+            result=b"\x00\x00\x00\x00\x03j\x88:",
+        ),
+    )
+
+
+def test_get_request_by_id_remove_state(requests_mock):
+
+    requests_mock.register_uri(
+        "GET",
+        "{}/oracle/v1/requests/6".format(TEST_RPC),
+        json={
+            "request": None,
+            "reports": [],
+            "result": {
+                "client_id": "from_pyband",
+                "oracle_script_id": "1",
+                "calldata": "AAAAA0JUQwAAAAAAAAPo",
+                "ask_count": "2",
+                "min_count": "1",
+                "request_id": "6",
+                "ans_count": "2",
+                "request_time": "1620798812",
+                "resolve_time": "1620798814",
+                "resolve_status": "RESOLVE_STATUS_SUCCESS",
+                "result": "AAAAAANqiDo=",
+            },
+        },
+        status_code=200,
+    )
+
+    assert client.get_request_by_id(6) == RequestInfo(
+        request=None,
+        reports=[],
+        result=Result(
+            oracle_script_id=1,
+            ask_count=2,
+            min_count=1,
+            request_time=1620798812,
+            resolve_time=1620798814,
+            resolve_status="RESOLVE_STATUS_SUCCESS",
+            request_id=6,
+            ans_count=2,
+            client_id="from_pyband",
+            calldata=b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x03\xe8",
+            result=b"\x00\x00\x00\x00\x03j\x88:",
+        ),
+    )
+
+
 # TODO
-# def test_get_request_by_id(requests_mock):
-
-#     requests_mock.register_uri(
-#         "GET",
-#         "{}/oracle/requests/1".format(TEST_RPC),
-#         json={
-#             "height": "651397",
-#             "result": {
-#                 "request": {
-#                     "oracle_script_id": "1",
-#                     "calldata": "AAAAA0JUQwAAAAAAAABk",
-#                     "requested_validators": ["bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst"],
-#                     "min_count": "1",
-#                     "request_height": "118",
-#                     "request_time": "2020-10-14T09:47:23.818758882Z",
-#                     "client_id": "from_scan",
-#                     "raw_requests": [
-#                         {"external_id": "1", "data_source_id": "1", "calldata": "QlRD"},
-#                         {"external_id": "2", "data_source_id": "2", "calldata": "QlRD"},
-#                         {"external_id": "3", "data_source_id": "3", "calldata": "QlRD"},
-#                     ],
-#                 },
-#                 "reports": [
-#                     {
-#                         "validator": "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
-#                         "in_before_resolve": True,
-#                         "raw_reports": [
-#                             {"external_id": "3", "data": "MTE0MTQuNTQ1Cg=="},
-#                             {"external_id": "1", "data": "MTE0MjAuNjEK"},
-#                             {"external_id": "2", "data": "MTE0MjQuMTgK"},
-#                         ],
-#                     }
-#                 ],
-#                 "result": {
-#                     "request_packet_data": {
-#                         "client_id": "from_scan",
-#                         "oracle_script_id": "1",
-#                         "calldata": "AAAAA0JUQwAAAAAAAABk",
-#                         "ask_count": "1",
-#                         "min_count": "1",
-#                     },
-#                     "response_packet_data": {
-#                         "client_id": "from_scan",
-#                         "request_id": "1",
-#                         "ans_count": "1",
-#                         "request_time": "1602668843",
-#                         "resolve_time": "1602668845",
-#                         "resolve_status": 1,
-#                         "result": "AAAAAAARbNk=",
-#                     },
-#                 },
-#             },
-#         },
-#         status_code=200,
-#     )
-
-#     assert client.get_request_by_id(1) == RequestInfo(
-#         request=Request(
-#             oracle_script_id=1,
-#             requested_validators=["bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst"],
-#             min_count=1,
-#             request_height=118,
-#             raw_requests=[
-#                 RawRequest(data_source_id=1, external_id=1, calldata=b"BTC"),
-#                 RawRequest(data_source_id=2, external_id=2, calldata=b"BTC"),
-#                 RawRequest(data_source_id=3, external_id=3, calldata=b"BTC"),
-#             ],
-#             client_id="from_scan",
-#             calldata=b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00d",
-#         ),
-#         reports=[
-#             Report(
-#                 validator="bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
-#                 raw_reports=[
-#                     RawReport(external_id=3, data=b"11414.545\n"),
-#                     RawReport(external_id=1, data=b"11420.61\n"),
-#                     RawReport(external_id=2, data=b"11424.18\n"),
-#                 ],
-#                 in_before_resolve=True,
-#             )
-#         ],
-#         result=Result(
-#             request_packet_data=RequestPacketData(
-#                 oracle_script_id=1,
-#                 ask_count=1,
-#                 min_count=1,
-#                 client_id="from_scan",
-#                 calldata=b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00d",
-#             ),
-#             response_packet_data=ResponsePacketData(
-#                 request_id=1,
-#                 request_time=1602668843,
-#                 resolve_time=1602668845,
-#                 resolve_status=1,
-#                 ans_count=1,
-#                 client_id="from_scan",
-#                 result=b"\x00\x00\x00\x00\x00\x11l\xd9",
-#             ),
-#         ),
-#     )
-
-
 # def test_get_latest_request(requests_mock):
 
 #     requests_mock.register_uri(

@@ -32,6 +32,7 @@ Pygments==2.6.1
 pyparsing==2.4.7
 pytest==6.0.1
 pytest-cov==2.10.1
+python-dotenv==0.17.1
 readme-renderer==26.0
 regex==2020.10.28
 requests==2.24.0
