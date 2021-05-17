@@ -80,8 +80,8 @@ class Request(object):
 @dataclass
 class RawReport(object):
     exit_code: int
+    data: Optional[bytes]
     external_id: int = 0
-    data: Optional[bytes] = b""
 
 
 @dataclass
@@ -101,9 +101,9 @@ class Result(object):
     resolve_status: str
     request_id: int
     ans_count: int
+    result: Optional[bytes]
     client_id: str = ""
     calldata: bytes = b""
-    result: bytes = b""
 
 
 @dataclass
