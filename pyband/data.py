@@ -57,10 +57,12 @@ class RawRequest(object):
     external_id: int = 0
     calldata: bytes = b""
 
+
 @dataclass
 class IBCChannel(object):
     port_id: str
     channel_id: str
+
 
 @dataclass
 class Request(object):
@@ -79,7 +81,7 @@ class Request(object):
 class RawReport(object):
     exit_code: int
     external_id: int = 0
-    data: bytes = b""
+    data: Optional[bytes] = b""
 
 
 @dataclass
