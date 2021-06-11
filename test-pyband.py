@@ -1,5 +1,7 @@
 import grpc
 from pyband.client2 import Cli
+from pyband.transaction2 import Trans
+
 from pyband.data import HexBytes
 from pyband.wallet import PrivateKey
 from pyband.message import MsgRequest
@@ -8,16 +10,52 @@ from pyband.transaction import Transaction
 
 from pyband.cosmos.crypto.ed25519 import keys_pb2
 from pyband.oracle.v1 import tx_pb2_grpc as tx_grpc
+from pyband.oracle.v1 import tx_pb2 as tx_oracle
+
+
 def main():
-    c = Cli("rpc-laozi-testnet1.bandchain.org:9090")
     # Running LocalHost
     # c = Cli('localhost:9090')
-    
-    # txn = create_transaction(c)
-    # t_send_tx_sync_mode(c, txn)
-    # t_get_request_by_id(c)
+    c = Cli("rpc-laozi-testnet1.bandchain.org:9090")
+    CHAIN_ID = "band-laozi-testnet1"  # Should use get_chain_id
+    MNEMONIC = "foo"
+    private_key = PrivateKey.from_mnemonic(MNEMONIC)
+    public_key = private_key.to_pubkey()
+    sender_addr = public_key.to_address()
+    sender = sender_addr.to_acc_bech32()
+    obi = PyObi("{symbols:[string],multiplier:u64}/{rates:[u64]}")
+    calldata = obi.encode(
+    {"symbols": ["ETH", "BTC", "BAND", "MIR", "UNI"], "multiplier": 100})
 
-    c.create_transaction()
+    msg = tx_oracle.MsgRequestData(
+        oracle_script_id=37,
+        calldata=calldata,
+        ask_count=16,
+        min_count=10,
+        client_id="Blue",
+        fee_limit=[],
+        prepare_gas=200000,
+        execute_gas=2000000,
+        sender=sender,
+    )
+    account = c.get_account(sender)
+    account_num = account.account_number
+    sequence = account.sequence
+
+    txn = (
+        Trans()
+        .with_messages(msg)
+        .with_account_num(account_num)
+        .with_sequence(sequence)
+        .with_chain_id(CHAIN_ID)
+        .with_gas(20000)
+        .with_fee(100000)
+        .with_memo('')
+    )
+
+    tx_raw_bytes = txn.get_tx_data(private_key, 20000000)
+    t_send_tx_block_mode(c, tx_raw_bytes)
+   
 
 
 def t_get_data_source(c, id):
@@ -54,7 +92,6 @@ def t_get_account(c, addr = "band1ee656yzw6y9swqayu9v0kgu5pua2kgjq3hd6g3"):
     print(c.get_account(addr))
 
 def t_send_tx_sync_mode(c, tx_byte):
-    print(type(c.send_tx_sync_mode(tx_byte)))
     print(c.send_tx_sync_mode(tx_byte))
 
 def t_send_tx_async_mode(c, tx_byte):
@@ -79,51 +116,5 @@ def t_get_price_symbol(c):
 
     
 
-
-
-
-# Just for testing
-def create_transaction(c):
-    CHAIN_ID = "band-laozi-testnet1"
-    MNEMONIC = "foo"
-    PK = PrivateKey.from_mnemonic(MNEMONIC)
-    sender = PK.to_pubkey().to_address()
-    obi = PyObi("{symbols:[string],multiplier:u64}/{rates:[u64]}")
-    calldata = obi.encode({"symbols": ["ETH","BTC","BAND","MIR","UNI"], "multiplier": 100})
-    
-    stubTx = tx_grpc.MsgStub(c)
-
-    # msg = MsgRequest(  
-    #     37,          # Band Standard Dataset (Crypto)
-    #     calldata,    # calldata
-    #     16,          # ask_count
-    #     10,          # min_count
-    #     "Bubu",      # client_id
-    #     [],          # fee_limit
-    #     20000,       # prepare_gas
-    #     20000,       # execute_gas
-    #     sender,
-    # )
-    # account_str = sender.to_acc_bech32()     # Convert to string
-    # account = c.get_account(account_str)
-    # account_num = account.account_number
-    # sequence = account.sequence
-    # gas = 200000
-    # fee = 0
-
-    # txn = (
-    #      Transaction()
-    #     .with_messages(msg)
-    #     .with_account_num(account_num)
-    #     .with_sequence(sequence)
-    #     .with_chain_id(CHAIN_ID)
-    #     .with_gas(gas)
-    #     .with_fee(fee)
-    # )
-
-    # raw_data = txn.get_sign_data()
-    # signature = PK.sign(raw_data)
-    # raw_txn = txn.get_tx_data(signature, PK.to_pubkey())
-    # return raw_txn
 if __name__ == "__main__":
     main()
