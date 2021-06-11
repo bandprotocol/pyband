@@ -1,33 +1,26 @@
 import grpc
-from pyband.oracle.v1 import query_pb2_grpc as oracle_query_grpc
-from pyband.oracle.v1 import query_pb2 as oracle_query
-from pyband.oracle.v1 import oracle_pb2 as oracle_type
 
-from pyband.cosmos.base.tendermint.v1beta1 import query_pb2_grpc as tendermint_query_grpc
-from pyband.cosmos.base.tendermint.v1beta1 import query_pb2 as tendermint_query
-
-from pyband.cosmos.auth.v1beta1 import query_pb2_grpc as auth_query_grpc
-from pyband.cosmos.auth.v1beta1 import query_pb2 as auth_query
-from pyband.cosmos.auth.v1beta1 import auth_pb2 as auth_type
+from pyband.proto.oracle.v1 import (
+    query_pb2_grpc as oracle_query_grpc,
+    query_pb2 as oracle_query,
+    oracle_pb2 as oracle_type,
+    tx_pb2_grpc as tx_oracle_grpc,
+)
 
 
-from pyband.cosmos.base.reflection.v2alpha1 import reflection_pb2_grpc as base_reflection_grpc
-from pyband.cosmos.base.reflection.v2alpha1 import reflection_pb2 as base_reflection
+from pyband.proto.cosmos.base.tendermint.v1beta1 import query_pb2_grpc as tendermint_query_grpc
+from pyband.proto.cosmos.base.tendermint.v1beta1 import query_pb2 as tendermint_query
 
-from pyband.cosmos.tx.v1beta1 import service_pb2_grpc as tx_service_grpc
-from pyband.cosmos.tx.v1beta1 import service_pb2 as tx_service
-from pyband.cosmos.tx.v1beta1 import tx_pb2 as tx_type
+from pyband.proto.cosmos.auth.v1beta1 import query_pb2_grpc as auth_query_grpc
+from pyband.proto.cosmos.auth.v1beta1 import query_pb2 as auth_query
+from pyband.proto.cosmos.auth.v1beta1 import auth_pb2 as auth_type
 
-from pyband.oracle.v1 import tx_pb2_grpc as tx_oracle_grpc
-from pyband.oracle.v1 import tx_pb2 as tx_oracle
 
-from pyband.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
+from pyband.proto.cosmos.base.reflection.v1beta1 import reflection_pb2_grpc as base_reflection_grpc
 
-from typing import List, Optional
-from pyband.wallet import PrivateKey
-from pyband.obi import PyObi
-
-from google.protobuf import any_pb2
+from pyband.proto.cosmos.tx.v1beta1 import service_pb2_grpc as tx_service_grpc
+from pyband.proto.cosmos.tx.v1beta1 import service_pb2 as tx_service
+from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as tx_type
 
 
 class Cli:
@@ -36,8 +29,7 @@ class Cli:
         self.stubOracle = oracle_query_grpc.QueryStub(channel)
         self.stubCosmosTendermint = tendermint_query_grpc.ServiceStub(channel)
         self.stubAuth = auth_query_grpc.QueryStub(channel)
-        self.stubCosmosBase = base_reflection_grpc.ReflectionServiceStub(
-            channel)
+        self.stubCosmosBase = base_reflection_grpc.ReflectionServiceStub(channel)
         self.stubTx = tx_service_grpc.ServiceStub(channel)
         self.stubOracleTx = tx_oracle_grpc.MsgStub(channel)
 
@@ -82,11 +74,11 @@ class Cli:
 
     #     signer_info = tx_type.SignerInfo(
     #         mode_info=mode_info, sequence=sequence)
-        
+
     #     # # Calculate estimated gas
     #     # tx = tx_type.Tx(body=body, auth_info=)
     #     # self.stubTx.Simulate(tx_service.SimulateRequest(tx))
-        
+
     #     fee = tx_type.Fee(amount=[], gas_limit=200000)
     #     auth_info = tx_type.AuthInfo(signer_infos=[signer_info], fee=fee)
 
@@ -118,26 +110,30 @@ class Cli:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
     def get_account(self, address: str) -> any:
-        account_any = self.stubAuth.Account(
-            auth_query.QueryAccountRequest(address=address)).account
+        account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
         account = auth_type.BaseAccount()
         if account_any.Is(account.DESCRIPTOR):
             account_any.Unpack(account)
             return account
 
     def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
-        tx = self.stubTx.GetTx(tx_service.GetTxRequest(
-            hash=tx_hash)).tx_response.logs[0]
+        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
         return tx.events[2].attributes[0].value
 
     def send_tx_sync_mode(self, tx_byte: bytes) -> tx_type.TxRaw:
-        return self.stubTx.BroadcastTx(tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)).tx_response
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
+        ).tx_response
 
     def send_tx_async_mode(self, tx_byte: bytes) -> tx_type.TxRaw:
-        return self.stubTx.BroadcastTx(tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC))
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
+        )
 
     def send_tx_block_mode(self, tx_byte: bytes) -> tx_type.TxRaw:
-        return self.stubTx.BroadcastTx(tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK))
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
+        )
 
     # ! ANCHOR Not working - Path is not working yet
     # def get_chain_id(self) -> str:
