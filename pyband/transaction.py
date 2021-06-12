@@ -1,67 +1,55 @@
-import base64
-import json
-from .client import Client
-from typing import List, Optional
-from .wallet import PublicKey
-from .constant import MAX_MEMO_CHARACTERS
-from .message import Msg
+from .wallet import PrivateKey
 from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
+from google.protobuf import any_pb2
+from pyband.proto.oracle.v1 import tx_pb2 as tx_oracle_type
+from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as tx_type
+from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
 
 
 class Transaction:
     def __init__(self):
-        self.msgs: List[Msg] = []
-        self.account_num: Optional[int] = None
-        self.sequence: Optional[int] = None
-        self.chain_id: Optional[str] = None
-        self.fee: int = 0
-        self.gas: int = 200000
-        self.memo: str = ""
+        self.msgs: List[any_pb2.Any] = [] 
+        self.account_num: Optional[int] = None  
+        self.sequence: Optional[int] = None  
+        self.chain_id: Optional[str] = None  
+        self.fee: int = 0  
+        self.gas: int = 200000  
 
-    def with_messages(self, *msgs: Msg) -> "Transaction":
-        self.msgs.extend(msgs)
+
+    def with_messages(self, *msgs: [tx_oracle_type.MsgRequestData]) -> "Transaction":
+        msg_any = any_pb2.Any()
+        for msg in msgs:
+            msg_any.Pack(msg, type_url_prefix="")
+            self.msgs.append(msg_any)
         return self
 
-    def with_auto(self, client: Client) -> "Transaction":
-        if len(self.msgs) == 0:
-            raise EmptyMsgError("messsage is empty, please use with_messages at least 1 message")
-
-        addr = self.msgs[0].get_sender()
-        account = client.get_account(addr)
-        if account is None:
-            raise NotFoundError("Account doesn't exist.")
-        self.account_num = account.account_number
-        self.sequence = account.sequence
-        return self
 
     def with_account_num(self, account_num: int) -> "Transaction":
         self.account_num = account_num
         return self
 
+
     def with_sequence(self, sequence: int) -> "Transaction":
         self.sequence = sequence
         return self
+
 
     def with_chain_id(self, chain_id: str) -> "Transaction":
         self.chain_id = chain_id
         return self
 
+
     def with_fee(self, fee: int) -> "Transaction":
         self.fee = fee
         return self
+
 
     def with_gas(self, gas: int) -> "Transaction":
         self.gas = gas
         return self
 
-    def with_memo(self, memo: str) -> "Transaction":
-        if len(memo) > MAX_MEMO_CHARACTERS:
-            raise ValueTooLargeError("memo is too large")
 
-        self.memo = memo
-        return self
-
-    def get_sign_data(self) -> bytes:
+    def get_tx_data(self, privateKey: PrivateKey, gas_limit: int) -> bytes:
         if len(self.msgs) == 0:
             raise EmptyMsgError("message is empty")
 
@@ -74,41 +62,28 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        for msg in self.msgs:
-            msg.validate()
+        body = tx_type.TxBody(
+            messages=self.msgs,
+        )
+        body_bytes = body.SerializeToString()
 
-        message_json = {
-            "chain_id": self.chain_id,
-            "account_number": str(self.account_num),
-            "fee": {
-                "gas": str(self.gas),
-                "amount": [{"amount": str(self.fee), "denom": "uband"}],
-            },
-            "memo": self.memo,
-            "sequence": str(self.sequence),
-            "msgs": [x.as_json() for x in self.msgs],
-        }
+        mode_info = tx_type.ModeInfo(single=tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
 
-        message_str = json.dumps(message_json, separators=(",", ":"), sort_keys=True)
-        return message_str.encode("utf-8")
+        signer_info = tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
+        fee = tx_type.Fee(amount=[], gas_limit=gas_limit)
 
-    def get_tx_data(self, signature: bytes, pubkey: PublicKey) -> dict:
-        return {
-            "msg": [x.as_json() for x in self.msgs],
-            "fee": {
-                "gas": str(self.gas),
-                "amount": [{"denom": "uband", "amount": str(self.fee)}],
-            },
-            "memo": self.memo,
-            "signatures": [
-                {
-                    "signature": base64.b64encode(signature).decode("utf-8"),
-                    "pub_key": {
-                        "type": "tendermint/PubKeySecp256k1",
-                        "value": base64.b64encode(bytes.fromhex(pubkey.to_hex())).decode("utf-8"),
-                    },
-                    "account_number": str(self.account_num),
-                    "sequence": str(self.sequence),
-                }
-            ],
-        }
+        auth_info = tx_type.AuthInfo(signer_infos=[signer_info], fee=fee)
+        auth_info_bytes = auth_info.SerializeToString()
+
+        # Sign data
+        sign_doc = tx_type.SignDoc(
+            body_bytes=body_bytes,
+            auth_info_bytes=auth_info_bytes,
+            chain_id=self.chain_id,
+            account_number=self.account_num,
+        )
+
+        signature = privateKey.sign(sign_doc.SerializeToString())
+        tx_raw = tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
+        tx_raw_bytes = tx_raw.SerializeToString()
+        return tx_raw_bytes
