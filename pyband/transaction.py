@@ -3,7 +3,7 @@ from .constant import MAX_MEMO_CHARACTERS
 from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
 from google.protobuf import any_pb2
 from pyband.proto.oracle.v1 import tx_pb2 as tx_oracle_type
-from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as tx_type
+from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
 
 
@@ -13,7 +13,7 @@ class Transaction:
         self.account_num: Optional[int] = None
         self.sequence: Optional[int] = None
         self.chain_id: Optional[str] = None
-        self.fee: int = 0
+        self.fee: cosmos_tx_type.Fee = None
         self.gas: int = 200000
         self.memo: str = ""
 
@@ -36,7 +36,7 @@ class Transaction:
         self.chain_id = chain_id
         return self
 
-    def with_fee(self, fee: int) -> "Transaction":
+    def with_fee(self, fee: cosmos_tx_type.Fee) -> "Transaction":
         self.fee = fee
         return self
 
@@ -50,7 +50,7 @@ class Transaction:
         self.memo = memo
         return self
 
-    def get_tx_data(self, privateKey: PrivateKey, gas_limit: int) -> bytes:
+    def get_tx_data(self, privateKey: PrivateKey) -> bytes:
         if len(self.msgs) == 0:
             raise EmptyMsgError("message is empty")
 
@@ -63,23 +63,22 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body = tx_type.TxBody(
+        body = cosmos_tx_type.TxBody(
             messages=self.msgs,
             memo=self.memo,
         )
 
         body_bytes = body.SerializeToString()
 
-        mode_info = tx_type.ModeInfo(single=tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
+        mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
 
-        signer_info = tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
-        fee = tx_type.Fee(amount=[], gas_limit=gas_limit)
+        signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
 
-        auth_info = tx_type.AuthInfo(signer_infos=[signer_info], fee=self.fee)
+        auth_info = cosmos_tx_type.AuthInfo(signer_infos=[signer_info], fee=self.fee)
         auth_info_bytes = auth_info.SerializeToString()
 
         # Sign data
-        sign_doc = tx_type.SignDoc(
+        sign_doc = cosmos_tx_type.SignDoc(
             body_bytes=body_bytes,
             auth_info_bytes=auth_info_bytes,
             chain_id=self.chain_id,
@@ -87,6 +86,6 @@ class Transaction:
         )
 
         signature = privateKey.sign(sign_doc.SerializeToString())
-        tx_raw = tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
+        tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
         tx_raw_bytes = tx_raw.SerializeToString()
         return tx_raw_bytes

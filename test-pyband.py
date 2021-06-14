@@ -7,7 +7,8 @@ from pyband.wallet import PrivateKey
 from pyband.obi import PyObi
 
 from pyband.proto.oracle.v1 import tx_pb2 as tx_oracle
-
+from pyband.proto.cosmos.base.v1beta1 import coin_pb2 as coin_type
+from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 
 def main():
     # Running LocalHost
@@ -36,6 +37,7 @@ def main():
     account = c.get_account(sender)
     account_num = account.account_number
     sequence = account.sequence
+    fee = cosmos_tx_type.Fee(amount=[coin_type.Coin(amount="1000000", denom="uband")], gas_limit=2000000)
 
     txn = (
         Transaction()
@@ -44,11 +46,11 @@ def main():
         .with_sequence(sequence)
         .with_chain_id(CHAIN_ID)
         .with_gas(20000)
-        .with_fee(100000)
+        .with_fee(fee)
     )
 
-    tx_raw_bytes = txn.get_tx_data(private_key, 20000000)
-
+    tx_raw_bytes = txn.get_tx_data(private_key)
+    t_send_tx_sync_mode(c, tx_raw_bytes)
 
 def t_get_data_source(c, id=1):
     print("------------- get_data_source----------------")
