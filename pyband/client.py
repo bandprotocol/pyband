@@ -27,6 +27,7 @@ from pyband.proto.cosmos.tx.v1beta1 import (
     tx_pb2 as tx_type,
 )
 
+
 class Client:
     def __init__(self, grc_endpoint: str):
         channel = grpc.insecure_channel(grc_endpoint)
@@ -54,12 +55,15 @@ class Client:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
     def get_account(self, address: str) -> any_pb2.Any:
-        account_any = self.stubAuth.Account(
-            auth_query.QueryAccountRequest(address=address)).account
-        account = auth_type.BaseAccount()
-        if account_any.Is(account.DESCRIPTOR):
-            account_any.Unpack(account)
-            return account
+        try:
+            account_any = self.stubAuth.Account(
+                auth_query.QueryAccountRequest(address=address)).account
+            account = auth_type.BaseAccount()
+            if account_any.Is(account.DESCRIPTOR):
+                account_any.Unpack(account)
+                return account
+        except:
+            return None
 
     def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
         tx = self.stubTx.GetTx(tx_service.GetTxRequest(
