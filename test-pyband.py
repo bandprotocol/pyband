@@ -70,7 +70,7 @@ def t_get_latest_block(c):
     print(c.get_latest_block())
 
 
-def t_get_reporters(c, validator="bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc"): 
+def t_get_reporters(c, validator="bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc"):
     print("------------- get_reporters----------------")
     print(c.get_reporters(validator))
 
