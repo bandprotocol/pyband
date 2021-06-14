@@ -13,7 +13,7 @@ def main():
     # Running LocalHost
     # c = Cli('localhost:9090')
     c = Client("rpc-laozi-testnet1.bandchain.org:9090")
-    CHAIN_ID = "band-laozi-testnet1"  # Should use get_chain_id
+    CHAIN_ID = c.get_chain_id()
     MNEMONIC = "foo"
     private_key = PrivateKey.from_mnemonic(MNEMONIC)
     public_key = private_key.to_pubkey()

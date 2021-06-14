@@ -19,8 +19,6 @@ from pyband.proto.cosmos.auth.v1beta1 import (
     auth_pb2 as auth_type,
 )
 
-from pyband.proto.cosmos.base.reflection.v1beta1 import reflection_pb2_grpc as base_reflection_grpc
-
 from pyband.proto.cosmos.tx.v1beta1 import (
     service_pb2_grpc as tx_service_grpc,
     service_pb2 as tx_service,
@@ -34,8 +32,6 @@ class Client:
         self.stubOracle = oracle_query_grpc.QueryStub(channel)
         self.stubCosmosTendermint = tendermint_query_grpc.ServiceStub(channel)
         self.stubAuth = auth_query_grpc.QueryStub(channel)
-        self.stubCosmosBase = base_reflection_grpc.ReflectionServiceStub(
-            channel)
         self.stubTx = tx_service_grpc.ServiceStub(channel)
         self.stubOracleTx = tx_oracle_grpc.MsgStub(channel)
 
@@ -88,11 +84,12 @@ class Client:
                 tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
         )
 
-    # ! Haven't implemented yet
-    # def get_chain_id(self) -> str:
-    #     print(self.stubCosmosBase.GetChainDescriptor(
-    #         base_reflection.GetChainDescriptorRequest()))
+    def get_chain_id(self) -> str:
+        latest_block = self.get_latest_block()
+        chain_id = latest_block.block.header.chain_id
+        return chain_id
 
+    # ! Haven't implemented yet
     # def get_reference_data(self, pairs: List[str], min_count: int, ask_count: int) -> List[ReferencePrice]:
     #     return self.stubOracle.RequestPrice(oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count))
 
