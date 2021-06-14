@@ -25,10 +25,14 @@ from pyband.proto.cosmos.tx.v1beta1 import (
     tx_pb2 as tx_type,
 )
 
+from pyband.proto.cosmos.base.abci.v1beta1 import (
+    abci_pb2 as abci_type
+)
+
 
 class Client:
-    def __init__(self, grc_endpoint: str):
-        channel = grpc.insecure_channel(grc_endpoint)
+    def __init__(self, grpc_endpoint: str):
+        channel = grpc.insecure_channel(grpc_endpoint)
         self.stubOracle = oracle_query_grpc.QueryStub(channel)
         self.stubCosmosTendermint = tendermint_query_grpc.ServiceStub(channel)
         self.stubAuth = auth_query_grpc.QueryStub(channel)
@@ -50,7 +54,7 @@ class Client:
     def get_latest_block(self) -> tendermint_query.GetLatestBlockResponse:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
-    def get_account(self, address: str) -> any_pb2.Any:
+    def get_account(self, address: str) -> auth_type.BaseAccount:
         try:
             account_any = self.stubAuth.Account(
                 auth_query.QueryAccountRequest(address=address)).account
@@ -66,28 +70,27 @@ class Client:
             hash=tx_hash)).tx_response.logs[0]
         return tx.events[2].attributes[0].value
 
-    def send_tx_sync_mode(self, tx_byte: bytes) -> tx_type.TxRaw:
+    def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
             tx_service.BroadcastTxRequest(
                 tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
-        )
+        ).tx_response
 
-    def send_tx_async_mode(self, tx_byte: bytes) -> tx_type.TxRaw:
+    def send_tx_async_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
             tx_service.BroadcastTxRequest(
                 tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
-        )
+        ).tx_response
 
-    def send_tx_block_mode(self, tx_byte: bytes) -> tx_type.TxRaw:
+    def send_tx_block_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
             tx_service.BroadcastTxRequest(
                 tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
-        )
+        ).tx_response
 
     def get_chain_id(self) -> str:
         latest_block = self.get_latest_block()
-        chain_id = latest_block.block.header.chain_id
-        return chain_id
+        return latest_block.block.header.chain_id
 
     # ! Haven't implemented yet
     # def get_reference_data(self, pairs: List[str], min_count: int, ask_count: int) -> List[ReferencePrice]:
@@ -100,3 +103,4 @@ class Client:
     #     return self.stubOracle.RequestSearch(oracle_query.QueryRequestSearchRequest(oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count))
 
     # def get_request_evm_proof_by_request_id(self, request_id: int) -> EVMProof:
+
