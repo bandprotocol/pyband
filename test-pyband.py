@@ -47,6 +47,7 @@ def main():
         .with_chain_id(CHAIN_ID)
         .with_gas(20000)
         .with_fee(fee)
+        .with_memo("")
     )
 
     tx_raw_bytes = txn.get_tx_data(private_key)
