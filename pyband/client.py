@@ -25,9 +25,7 @@ from pyband.proto.cosmos.tx.v1beta1 import (
     tx_pb2 as tx_type,
 )
 
-from pyband.proto.cosmos.base.abci.v1beta1 import (
-    abci_pb2 as abci_type
-)
+from pyband.proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
 
 
 class Client:
@@ -56,8 +54,7 @@ class Client:
 
     def get_account(self, address: str) -> auth_type.BaseAccount:
         try:
-            account_any = self.stubAuth.Account(
-                auth_query.QueryAccountRequest(address=address)).account
+            account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
             account = auth_type.BaseAccount()
             if account_any.Is(account.DESCRIPTOR):
                 account_any.Unpack(account)
@@ -66,26 +63,22 @@ class Client:
             return None
 
     def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
-        tx = self.stubTx.GetTx(tx_service.GetTxRequest(
-            hash=tx_hash)).tx_response.logs[0]
+        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
         return tx.events[2].attributes[0].value
 
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
-            tx_service.BroadcastTxRequest(
-                tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
         ).tx_response
 
     def send_tx_async_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
-            tx_service.BroadcastTxRequest(
-                tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
         ).tx_response
 
     def send_tx_block_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
-            tx_service.BroadcastTxRequest(
-                tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
         ).tx_response
 
     def get_chain_id(self) -> str:
@@ -103,4 +96,3 @@ class Client:
     #     return self.stubOracle.RequestSearch(oracle_query.QueryRequestSearchRequest(oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count))
 
     # def get_request_evm_proof_by_request_id(self, request_id: int) -> EVMProof:
-
