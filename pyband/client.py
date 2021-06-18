@@ -43,7 +43,7 @@ class Client:
     def get_oracle_script(self, id: int) -> oracle_type.OracleScript:
         return self.stubOracle.OracleScript(oracle_query.QueryOracleScriptRequest(oracle_script_id=id)).oracle_script
 
-    def get_request_by_id(self, id: int) -> oracle_type.Result:
+    def get_request_by_id(self, id: int) -> oracle_query.QueryRequestResponse:
         return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
 
     def get_reporters(self, validator: str) -> oracle_type.ReportersPerValidator.reporters:
