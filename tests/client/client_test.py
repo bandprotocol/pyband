@@ -219,6 +219,10 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
 
 class AuthServicer(AuthServicerBase):
     def Account(self, request, context) -> QueryAccountResponse:
+        # Account does not exsit
+        if request.address == "noAccount":
+            return None
+        # Account exist
         acc = BaseAccount(account_number=1)
         any = Any()
         any.Pack(acc)
@@ -316,7 +320,7 @@ def pyband_client(_grpc_server, grpc_addr):
     _grpc_server.stop(grace=None)
 
 
-def test_get_data_source(pyband_client):
+def test_get_data_source_success(pyband_client):
     data_source = pyband_client.get_data_source(1)
     mock_result = DataSource(
         owner="band1jfdmjkxs3hvddsf4ef2wmsmte3s5llqhxqgcfe",
@@ -328,7 +332,17 @@ def test_get_data_source(pyband_client):
     assert data_source == mock_result
 
 
-def test_get_oracle_script(pyband_client):
+def test_get_data_source_invalid(pyband_client):
+    data_source = pyband_client.get_data_source(-1)
+    assert data_source == None
+
+
+def test_get_data_source_invalid_input(pyband_client):
+    data_source = pyband_client.get_data_source("hi")
+    assert data_source == None
+
+
+def test_get_oracle_script_success(pyband_client):
     oracle_script = pyband_client.get_oracle_script(1)
     mock_result = OracleScript(
         owner="band1m5lq9u533qaya4q3nfyl6ulzqkpkhge9q8tpzs",
@@ -341,7 +355,17 @@ def test_get_oracle_script(pyband_client):
     assert oracle_script == mock_result
 
 
-def test_get_request_by_id(pyband_client):
+def test_get_oracle_script_invalid(pyband_client):
+    oracle_script = pyband_client.get_oracle_script(-1)
+    assert oracle_script == None
+
+
+def test_get_oracle_script_invalid_input(pyband_client):
+    oracle_script = pyband_client.get_oracle_script("hi")
+    assert oracle_script == None
+
+
+def test_get_request_by_id_success(pyband_client):
     response = pyband_client.get_request_by_id(1)
     mock_result = QueryRequestResponse(
         request=Request(
@@ -393,7 +417,22 @@ def test_get_request_by_id(pyband_client):
     assert response == mock_result
 
 
-def test_get_reporters(pyband_client):
+def test_get_request_by_id_invalid_input(pyband_client):
+    response = pyband_client.get_request_by_id("hi")
+    assert response == None
+
+
+def test_get_request_by_id_not_found(pyband_client):
+    response = pyband_client.get_request_by_id(1234556)
+    assert response == None
+
+
+def test_get_request_by_id_invalid(pyband_client):
+    response = pyband_client.get_request_by_id(-1)
+    assert response == None
+
+
+def test_get_reporters_success(pyband_client):
     reporters = pyband_client.get_reporters("validator")
     mock_result = [
         "band1yyv5jkqaukq0ajqn7vhkyhpff7h6e99ja7gvwg",
@@ -404,6 +443,11 @@ def test_get_reporters(pyband_client):
         "band1cehe3sxk7f4rmvwdf6lxh3zexen7fn02zyltwy",
     ]
     assert reporters == mock_result
+
+
+def test_get_reporters_invalid_input(pyband_client):
+    reporters = pyband_client.get_reporters(1)
+    assert reporters == None
 
 
 def test_get_latest_block(pyband_client):
@@ -475,14 +519,29 @@ def test_get_latest_block(pyband_client):
     assert latest_block == mock_result
 
 
-def test_get_account(pyband_client):
+def test_get_account_success(pyband_client):
     account = pyband_client.get_account("xxx")
     assert account.account_number == 1
 
 
-def test_get_req_id_by_tx_hash(pyband_client):
+def test_get_account_not_exist(pyband_client):
+    account = pyband_client.get_account("noAccount")
+    assert account == None
+
+
+def test_get_account_invalid_input(pyband_client):
+    account = pyband_client.get_account(2)
+    assert account == None
+
+
+def test_get_req_id_by_tx_hash_success(pyband_client):
     reqId = pyband_client.get_request_id_by_tx_hash(b"txhash")
     assert reqId == "154966"
+
+
+def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
+    reqId = pyband_client.get_request_id_by_tx_hash(3)
+    assert reqId == None
 
 
 def test_get_chain_id(pyband_client):

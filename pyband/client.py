@@ -38,16 +38,34 @@ class Client:
         self.stubOracleTx = tx_oracle_grpc.MsgStub(channel)
 
     def get_data_source(self, id: int) -> oracle_type.DataSource:
-        return self.stubOracle.DataSource(oracle_query.QueryDataSourceRequest(data_source_id=id)).data_source
+        try:
+            return self.stubOracle.DataSource(oracle_query.QueryDataSourceRequest(data_source_id=id)).data_source
+        except Exception as e:
+            print(e)
+            return None
 
     def get_oracle_script(self, id: int) -> oracle_type.OracleScript:
-        return self.stubOracle.OracleScript(oracle_query.QueryOracleScriptRequest(oracle_script_id=id)).oracle_script
+        try:
+            return self.stubOracle.OracleScript(
+                oracle_query.QueryOracleScriptRequest(oracle_script_id=id)
+            ).oracle_script
+        except Exception as e:
+            print(e)
+            return None
 
     def get_request_by_id(self, id: int) -> oracle_query.QueryRequestResponse:
-        return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
+        try:
+            return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
+        except Exception as e:
+            print(e)
+            return None
 
     def get_reporters(self, validator: str) -> oracle_type.ReportersPerValidator.reporters:
-        return self.stubOracle.Reporters(oracle_query.QueryReportersRequest(validator_address=validator)).reporter
+        try:
+            return self.stubOracle.Reporters(oracle_query.QueryReportersRequest(validator_address=validator)).reporter
+        except Exception as e:
+            print(e)
+            return None
 
     def get_latest_block(self) -> tendermint_query.GetLatestBlockResponse:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
@@ -59,12 +77,17 @@ class Client:
             if account_any.Is(account.DESCRIPTOR):
                 account_any.Unpack(account)
                 return account
-        except:
+        except Exception as e:
+            print(e)
             return None
 
     def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
-        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
-        return tx.events[2].attributes[0].value
+        try:
+            tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
+            return tx.events[2].attributes[0].value
+        except Exception as e:
+            print(e)
+            return None
 
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(

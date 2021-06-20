@@ -10,6 +10,7 @@ from pyband.proto.oracle.v1 import tx_pb2 as tx_oracle
 from pyband.proto.cosmos.base.v1beta1 import coin_pb2 as coin_type
 from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 
+
 def main():
     # Running LocalHost
     # c = Cli('localhost:9090')
@@ -51,16 +52,16 @@ def main():
     )
 
     tx_raw_bytes = txn.get_tx_data(private_key)
-    t_send_tx_sync_mode(c, tx_raw_bytes)
+
 
 def t_get_data_source(c, id=1):
     print("------------- get_data_source----------------")
-    print(c.get_data_source(id=1))
+    print(c.get_data_source(id=id))
 
 
 def t_get_oracle_script(c, id=1):
     print("------------- get_oracle_script----------------")
-    print(c.get_oracle_script(id=1))
+    print(c.get_oracle_script(id=id))
 
 
 def t_get_request_by_id(c, id=1):
