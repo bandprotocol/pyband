@@ -90,19 +90,31 @@ class Client:
             return None
 
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
-        return self.stubTx.BroadcastTx(
-            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
-        ).tx_response
+        try:
+            return self.stubTx.BroadcastTx(
+                tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
+            ).tx_response
+        except Exception as e:
+            print(e)
+            return None
 
     def send_tx_async_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
-        return self.stubTx.BroadcastTx(
-            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
-        ).tx_response
+        try:
+            return self.stubTx.BroadcastTx(
+                tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
+            ).tx_response
+        except Exception as e:
+            print(e)
+            return None
 
     def send_tx_block_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
-        return self.stubTx.BroadcastTx(
-            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
-        ).tx_response
+        try:
+            return self.stubTx.BroadcastTx(
+                tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
+            ).tx_response
+        except Exception as e:
+            print(e)
+            return None
 
     def get_chain_id(self) -> str:
         latest_block = self.get_latest_block()
