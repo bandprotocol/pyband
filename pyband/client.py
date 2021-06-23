@@ -38,83 +38,45 @@ class Client:
         self.stubOracleTx = tx_oracle_grpc.MsgStub(channel)
 
     def get_data_source(self, id: int) -> oracle_type.DataSource:
-        try:
-            return self.stubOracle.DataSource(oracle_query.QueryDataSourceRequest(data_source_id=id)).data_source
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubOracle.DataSource(oracle_query.QueryDataSourceRequest(data_source_id=id)).data_source
 
     def get_oracle_script(self, id: int) -> oracle_type.OracleScript:
-        try:
-            return self.stubOracle.OracleScript(
-                oracle_query.QueryOracleScriptRequest(oracle_script_id=id)
-            ).oracle_script
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubOracle.OracleScript(oracle_query.QueryOracleScriptRequest(oracle_script_id=id)).oracle_script
 
     def get_request_by_id(self, id: int) -> oracle_query.QueryRequestResponse:
-        try:
-            return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
 
     def get_reporters(self, validator: str) -> oracle_type.ReportersPerValidator.reporters:
-        try:
-            return self.stubOracle.Reporters(oracle_query.QueryReportersRequest(validator_address=validator)).reporter
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubOracle.Reporters(oracle_query.QueryReportersRequest(validator_address=validator)).reporter
 
     def get_latest_block(self) -> tendermint_query.GetLatestBlockResponse:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
     def get_account(self, address: str) -> auth_type.BaseAccount:
-        try:
-            account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
-            account = auth_type.BaseAccount()
-            if account_any.Is(account.DESCRIPTOR):
-                account_any.Unpack(account)
-                return account
-        except Exception as e:
-            print(e)
-            return None
+        account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
+        account = auth_type.BaseAccount()
+        if account_any.Is(account.DESCRIPTOR):
+            account_any.Unpack(account)
+            return account
 
     def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
-        try:
-            tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
-            return tx.events[2].attributes[0].value
-        except Exception as e:
-            print(e)
-            return None
+        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
+        return tx.events[2].attributes[0].value
 
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
-        try:
-            return self.stubTx.BroadcastTx(
-                tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
-            ).tx_response
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
+        ).tx_response
 
     def send_tx_async_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
-        try:
-            return self.stubTx.BroadcastTx(
-                tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
-            ).tx_response
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
+        ).tx_response
 
     def send_tx_block_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
-        try:
-            return self.stubTx.BroadcastTx(
-                tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
-            ).tx_response
-        except Exception as e:
-            print(e)
-            return None
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
+        ).tx_response
 
     def get_chain_id(self) -> str:
         latest_block = self.get_latest_block()

@@ -1,4 +1,5 @@
 import pytest
+import grpc
 
 # Servicers
 from pyband.proto.oracle.v1.query_pb2_grpc import QueryServicer as OracleServicerBase
@@ -333,13 +334,13 @@ def test_get_data_source_success(pyband_client):
 
 
 def test_get_data_source_invalid(pyband_client):
-    data_source = pyband_client.get_data_source(-1)
-    assert data_source == None
+    with pytest.raises(grpc.RpcError):
+        pyband_client.get_data_source(-1)
 
 
 def test_get_data_source_invalid_input(pyband_client):
-    data_source = pyband_client.get_data_source("hi")
-    assert data_source == None
+    with pytest.raises(TypeError):
+        pyband_client.get_data_source("hi")
 
 
 def test_get_oracle_script_success(pyband_client):
@@ -356,13 +357,13 @@ def test_get_oracle_script_success(pyband_client):
 
 
 def test_get_oracle_script_invalid(pyband_client):
-    oracle_script = pyband_client.get_oracle_script(-1)
-    assert oracle_script == None
+    with pytest.raises(grpc.RpcError):
+        pyband_client.get_oracle_script(-1)
 
 
 def test_get_oracle_script_invalid_input(pyband_client):
-    oracle_script = pyband_client.get_oracle_script("hi")
-    assert oracle_script == None
+    with pytest.raises(TypeError):
+        pyband_client.get_oracle_script("hi")
 
 
 def test_get_request_by_id_success(pyband_client):
@@ -418,18 +419,18 @@ def test_get_request_by_id_success(pyband_client):
 
 
 def test_get_request_by_id_invalid_input(pyband_client):
-    response = pyband_client.get_request_by_id("hi")
-    assert response == None
+    with pytest.raises(TypeError):
+        pyband_client.get_request_by_id("hi")
 
 
 def test_get_request_by_id_not_found(pyband_client):
-    response = pyband_client.get_request_by_id(1234556)
-    assert response == None
+    with pytest.raises(grpc.RpcError):
+        pyband_client.get_request_by_id(1234556)
 
 
 def test_get_request_by_id_invalid(pyband_client):
-    response = pyband_client.get_request_by_id(-1)
-    assert response == None
+    with pytest.raises(grpc.RpcError):
+        pyband_client.get_request_by_id(-1)
 
 
 def test_get_reporters_success(pyband_client):
@@ -446,8 +447,8 @@ def test_get_reporters_success(pyband_client):
 
 
 def test_get_reporters_invalid_input(pyband_client):
-    reporters = pyband_client.get_reporters(1)
-    assert reporters == None
+    with pytest.raises(TypeError):
+        pyband_client.get_reporters(1)
 
 
 def test_get_latest_block(pyband_client):
@@ -525,13 +526,13 @@ def test_get_account_success(pyband_client):
 
 
 def test_get_account_not_exist(pyband_client):
-    account = pyband_client.get_account("noAccount")
-    assert account == None
+    with pytest.raises(grpc.RpcError):
+        pyband_client.get_account("noAccount")
 
 
 def test_get_account_invalid_input(pyband_client):
-    account = pyband_client.get_account(2)
-    assert account == None
+    with pytest.raises(TypeError):
+        pyband_client.get_account(2)
 
 
 def test_get_req_id_by_tx_hash_success(pyband_client):
@@ -540,8 +541,8 @@ def test_get_req_id_by_tx_hash_success(pyband_client):
 
 
 def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
-    reqId = pyband_client.get_request_id_by_tx_hash(3)
-    assert reqId == None
+    with pytest.raises(TypeError):
+        pyband_client.get_request_id_by_tx_hash(3)
 
 
 def test_get_chain_id(pyband_client):

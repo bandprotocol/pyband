@@ -46,7 +46,7 @@ class Transaction:
 
     def with_memo(self, memo: str) -> "Transaction":
         if len(memo) > MAX_MEMO_CHARACTERS:
-            raise ValueError("memo is too large")
+            raise ValueTooLargeError("memo is too large")
         self.memo = memo
         return self
 
