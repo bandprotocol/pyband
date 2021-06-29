@@ -17,11 +17,8 @@ class Transaction:
         self.gas: int = 200000
         self.memo: str = ""
 
-    def with_messages(self, *msgs: [tx_oracle_type.MsgRequestData]) -> "Transaction":
-        msg_any = any_pb2.Any()
-        for msg in msgs:
-            msg_any.Pack(msg, type_url_prefix="")
-            self.msgs.append(msg_any)
+    def with_messages(self, *msgs: [any_pb2.Any]) -> "Transaction":    
+        self.msgs = msgs
         return self
 
     def with_account_num(self, account_num: int) -> "Transaction":
