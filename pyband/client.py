@@ -27,6 +27,8 @@ from pyband.proto.cosmos.tx.v1beta1 import (
 
 from pyband.proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
 
+from pyband.exceptions import UnknownType, NotFoundError, FailToExecute
+
 
 class Client:
     def __init__(self, grpc_endpoint: str):
@@ -58,10 +60,20 @@ class Client:
         if account_any.Is(account.DESCRIPTOR):
             account_any.Unpack(account)
             return account
+        else:
+            raise UnknownType("Unknown account")
 
     def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
-        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash)).tx_response.logs[0]
-        return tx.events[2].attributes[0].value
+        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash))
+        if tx.tx_response.logs:
+            tx = tx.tx_response.logs[0]
+            for x in tx.events:
+                if x.type == "report":
+                    for y in x.attributes:
+                        if y.key == "id":
+                            return y.value
+            raise NotFoundError("Request Id is not found")
+        raise FailToExecute("Fail to execute")
 
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
@@ -82,14 +94,21 @@ class Client:
         latest_block = self.get_latest_block()
         return latest_block.block.header.chain_id
 
+    def get_reference_data(self, pairs: [str], min_count: int, ask_count: int):
+        return self.stubOracle.RequestPrice(
+            oracle_query.QueryRequestPriceRequest(symbols=pairs, min_count=min_count, ask_count=ask_count)
+        )
+
+    def get_latest_request(self, oid: int, calldata: bytes, min_count: int, ask_count: int):
+        return self.stubOracle.RequestSearch(
+            oracle_query.QueryRequestSearchRequest(
+                oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count
+            )
+        )
+
     # ! Haven't implemented yet
-    # def get_reference_data(self, pairs: List[str], min_count: int, ask_count: int) -> List[ReferencePrice]:
-    #     return self.stubOracle.RequestPrice(oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count))
 
     # def get_price_symbols(self, symbols: List[str], min_count: int, ask_count: int) -> oracle_type.PriceResult:
     #     return self.stubOracle.RequestPrice(oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count))
-
-    # def get_latest_request(self, oid: int, calldata: bytes, min_count: int, ask_count: int) -> oracle_type.Result:
-    #     return self.stubOracle.RequestSearch(oracle_query.QueryRequestSearchRequest(oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count))
 
     # def get_request_evm_proof_by_request_id(self, request_id: int) -> EVMProof:

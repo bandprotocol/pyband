@@ -52,3 +52,15 @@ class CreateError(PybandError):
 
 class SchemaError(PybandError):
     pass
+
+
+class UnknownType(PybandError):
+    pass
+
+
+class IncompleteMsg(PybandError):
+    pass
+
+
+class FailToExecute(PybandError):
+    pass
