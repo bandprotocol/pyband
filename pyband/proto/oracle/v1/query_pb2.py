@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z,github.com/bandprotocol/chain/x/oracle/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x15oracle/v1/query.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x16oracle/v1/oracle.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\x14\n\x12QueryCountsRequest\"d\n\x13QueryCountsResponse\x12\x19\n\x11\x64\x61ta_source_count\x18\x01 \x01(\x03\x12\x1b\n\x13oracle_script_count\x18\x02 \x01(\x03\x12\x15\n\rrequest_count\x18\x03 \x01(\x03\"%\n\x10QueryDataRequest\x12\x11\n\tdata_hash\x18\x01 \x01(\t\"!\n\x11QueryDataResponse\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\"0\n\x16QueryDataSourceRequest\x12\x16\n\x0e\x64\x61ta_source_id\x18\x01 \x01(\x03\"E\n\x17QueryDataSourceResponse\x12*\n\x0b\x64\x61ta_source\x18\x01 \x01(\x0b\x32\x15.oracle.v1.DataSource\"4\n\x18QueryOracleScriptRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x03\"K\n\x19QueryOracleScriptResponse\x12.\n\roracle_script\x18\x01 \x01(\x0b\x32\x17.oracle.v1.OracleScript\")\n\x13QueryRequestRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\x03\"\x88\x01\n\x14QueryRequestResponse\x12#\n\x07request\x18\x01 \x01(\x0b\x32\x12.oracle.v1.Request\x12(\n\x07reports\x18\x02 \x03(\x0b\x32\x11.oracle.v1.ReportB\x04\xc8\xde\x1f\x00\x12!\n\x06result\x18\x03 \x01(\x0b\x32\x11.oracle.v1.Result\"8\n\x1bQueryPendingRequestsRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"C\n\x1cQueryPendingRequestsResponse\x12#\n\x0brequest_ids\x18\x01 \x03(\x03\x42\x0e\xe2\xde\x1f\nRequestIDs\"\x14\n\x12QueryParamsRequest\">\n\x13QueryParamsResponse\x12\'\n\x06params\x18\x01 \x01(\x0b\x32\x11.oracle.v1.ParamsB\x04\xc8\xde\x1f\x00\"2\n\x15QueryValidatorRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"D\n\x16QueryValidatorResponse\x12*\n\x06status\x18\x01 \x01(\x0b\x32\x1a.oracle.v1.ValidatorStatus\"2\n\x15QueryReportersRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"*\n\x16QueryReportersResponse\x12\x10\n\x08reporter\x18\x01 \x03(\t\"\x1e\n\x1cQueryActiveValidatorsRequest\"O\n\x1dQueryActiveValidatorsResponse\x12.\n\nvalidators\x18\x01 \x03(\x0b\x32\x1a.oracle.v1.ActiveValidator\"m\n\x19QueryRequestSearchRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x03\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\x0c\x12\x11\n\task_count\x18\x03 \x01(\x03\x12\x11\n\tmin_count\x18\x04 \x01(\x03\"\x1c\n\x1aQueryRequestSearchResponse\"Q\n\x18QueryRequestPriceRequest\x12\x0f\n\x07symbols\x18\x01 \x03(\t\x12\x11\n\task_count\x18\x02 \x01(\x03\x12\x11\n\tmin_count\x18\x03 \x01(\x03\"J\n\x19QueryRequestPriceResponse\x12-\n\rprice_results\x18\x01 \x03(\x0b\x32\x16.oracle.v1.PriceResult\"\x94\x01\n\x1fQueryRequestVerificationRequest\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x03\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x12\x10\n\x08reporter\x18\x05 \x01(\t\x12\x11\n\tsignature\x18\x06 \x01(\x0c\"\x88\x01\n QueryRequestVerificationResponse\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x03\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x12\x16\n\x0e\x64\x61ta_source_id\x18\x05 \x01(\x03\"S\n\x17QueryRequestPoolRequest\x12\x13\n\x0brequest_key\x18\x01 \x01(\t\x12\x0f\n\x07port_id\x18\x02 \x01(\t\x12\x12\n\nchannel_id\x18\x03 \x01(\t\"\x96\x01\n\x18QueryRequestPoolResponse\x12\x1c\n\x14request_pool_address\x18\x01 \x01(\t\x12\\\n\x07\x62\x61lance\x18\x02 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins2\xb0\x0e\n\x05Query\x12\x62\n\x06\x43ounts\x12\x1d.oracle.v1.QueryCountsRequest\x1a\x1e.oracle.v1.QueryCountsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/counts\x12\x66\n\x04\x44\x61ta\x12\x1b.oracle.v1.QueryDataRequest\x1a\x1c.oracle.v1.QueryDataResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/oracle/v1/data/{data_hash}\x12\x85\x01\n\nDataSource\x12!.oracle.v1.QueryDataSourceRequest\x1a\".oracle.v1.QueryDataSourceResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/data_sources/{data_source_id}\x12\x8f\x01\n\x0cOracleScript\x12#.oracle.v1.QueryOracleScriptRequest\x1a$.oracle.v1.QueryOracleScriptResponse\"4\x82\xd3\xe4\x93\x02.\x12,/oracle/v1/oracle_scripts/{oracle_script_id}\x12t\n\x07Request\x12\x1e.oracle.v1.QueryRequestRequest\x1a\x1f.oracle.v1.QueryRequestResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /oracle/v1/requests/{request_id}\x12\x9b\x01\n\x0fPendingRequests\x12&.oracle.v1.QueryPendingRequestsRequest\x1a\'.oracle.v1.QueryPendingRequestsResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//oracle/v1/pending_requests/{validator_address}\x12\x83\x01\n\tValidator\x12 .oracle.v1.QueryValidatorRequest\x1a!.oracle.v1.QueryValidatorResponse\"1\x82\xd3\xe4\x93\x02+\x12)/oracle/v1/validators/{validator_address}\x12\x82\x01\n\tReporters\x12 .oracle.v1.QueryReportersRequest\x1a!.oracle.v1.QueryReportersResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/reporters/{validator_address}\x12\x8b\x01\n\x10\x41\x63tiveValidators\x12\'.oracle.v1.QueryActiveValidatorsRequest\x1a(.oracle.v1.QueryActiveValidatorsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/oracle/v1/active_validators\x12\x62\n\x06Params\x12\x1d.oracle.v1.QueryParamsRequest\x1a\x1e.oracle.v1.QueryParamsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/params\x12\x7f\n\rRequestSearch\x12$.oracle.v1.QueryRequestSearchRequest\x1a%.oracle.v1.QueryRequestSearchResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_search\x12|\n\x0cRequestPrice\x12#.oracle.v1.QueryRequestPriceRequest\x1a$.oracle.v1.QueryRequestPriceResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_prices\x12\x91\x01\n\x13RequestVerification\x12*.oracle.v1.QueryRequestVerificationRequest\x1a+.oracle.v1.QueryRequestVerificationResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/verify_request\x12\x9c\x01\n\x0bRequestPool\x12\".oracle.v1.QueryRequestPoolRequest\x1a#.oracle.v1.QueryRequestPoolResponse\"D\x82\xd3\xe4\x93\x02>\x12</oracle/v1/request_pool/{request_key}/{port_id}/{channel_id}B.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
+  serialized_pb=b'\n\x15oracle/v1/query.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x16oracle/v1/oracle.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\x14\n\x12QueryCountsRequest\"d\n\x13QueryCountsResponse\x12\x19\n\x11\x64\x61ta_source_count\x18\x01 \x01(\x03\x12\x1b\n\x13oracle_script_count\x18\x02 \x01(\x03\x12\x15\n\rrequest_count\x18\x03 \x01(\x03\"%\n\x10QueryDataRequest\x12\x11\n\tdata_hash\x18\x01 \x01(\t\"!\n\x11QueryDataResponse\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\"0\n\x16QueryDataSourceRequest\x12\x16\n\x0e\x64\x61ta_source_id\x18\x01 \x01(\x03\"E\n\x17QueryDataSourceResponse\x12*\n\x0b\x64\x61ta_source\x18\x01 \x01(\x0b\x32\x15.oracle.v1.DataSource\"4\n\x18QueryOracleScriptRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x03\"K\n\x19QueryOracleScriptResponse\x12.\n\roracle_script\x18\x01 \x01(\x0b\x32\x17.oracle.v1.OracleScript\")\n\x13QueryRequestRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\x03\"\x88\x01\n\x14QueryRequestResponse\x12#\n\x07request\x18\x01 \x01(\x0b\x32\x12.oracle.v1.Request\x12(\n\x07reports\x18\x02 \x03(\x0b\x32\x11.oracle.v1.ReportB\x04\xc8\xde\x1f\x00\x12!\n\x06result\x18\x03 \x01(\x0b\x32\x11.oracle.v1.Result\"8\n\x1bQueryPendingRequestsRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"C\n\x1cQueryPendingRequestsResponse\x12#\n\x0brequest_ids\x18\x01 \x03(\x03\x42\x0e\xe2\xde\x1f\nRequestIDs\"\x14\n\x12QueryParamsRequest\">\n\x13QueryParamsResponse\x12\'\n\x06params\x18\x01 \x01(\x0b\x32\x11.oracle.v1.ParamsB\x04\xc8\xde\x1f\x00\"2\n\x15QueryValidatorRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"D\n\x16QueryValidatorResponse\x12*\n\x06status\x18\x01 \x01(\x0b\x32\x1a.oracle.v1.ValidatorStatus\"2\n\x15QueryReportersRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"*\n\x16QueryReportersResponse\x12\x10\n\x08reporter\x18\x01 \x03(\t\"\x1e\n\x1cQueryActiveValidatorsRequest\"O\n\x1dQueryActiveValidatorsResponse\x12.\n\nvalidators\x18\x01 \x03(\x0b\x32\x1a.oracle.v1.ActiveValidator\"m\n\x19QueryRequestSearchRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x03\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\t\x12\x11\n\task_count\x18\x03 \x01(\x04\x12\x11\n\tmin_count\x18\x04 \x01(\x04\"N\n\x1aQueryRequestSearchResponse\x12\x30\n\x07request\x18\x01 \x01(\x0b\x32\x1f.oracle.v1.QueryRequestResponse\"Q\n\x18QueryRequestPriceRequest\x12\x0f\n\x07symbols\x18\x01 \x03(\t\x12\x11\n\task_count\x18\x02 \x01(\x03\x12\x11\n\tmin_count\x18\x03 \x01(\x03\"J\n\x19QueryRequestPriceResponse\x12-\n\rprice_results\x18\x01 \x03(\x0b\x32\x16.oracle.v1.PriceResult\"\x94\x01\n\x1fQueryRequestVerificationRequest\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x03\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x12\x10\n\x08reporter\x18\x05 \x01(\t\x12\x11\n\tsignature\x18\x06 \x01(\x0c\"\x88\x01\n QueryRequestVerificationResponse\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x03\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x12\x16\n\x0e\x64\x61ta_source_id\x18\x05 \x01(\x03\"S\n\x17QueryRequestPoolRequest\x12\x13\n\x0brequest_key\x18\x01 \x01(\t\x12\x0f\n\x07port_id\x18\x02 \x01(\t\x12\x12\n\nchannel_id\x18\x03 \x01(\t\"\x96\x01\n\x18QueryRequestPoolResponse\x12\x1c\n\x14request_pool_address\x18\x01 \x01(\t\x12\\\n\x07\x62\x61lance\x18\x02 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins2\xb0\x0e\n\x05Query\x12\x62\n\x06\x43ounts\x12\x1d.oracle.v1.QueryCountsRequest\x1a\x1e.oracle.v1.QueryCountsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/counts\x12\x66\n\x04\x44\x61ta\x12\x1b.oracle.v1.QueryDataRequest\x1a\x1c.oracle.v1.QueryDataResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/oracle/v1/data/{data_hash}\x12\x85\x01\n\nDataSource\x12!.oracle.v1.QueryDataSourceRequest\x1a\".oracle.v1.QueryDataSourceResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/data_sources/{data_source_id}\x12\x8f\x01\n\x0cOracleScript\x12#.oracle.v1.QueryOracleScriptRequest\x1a$.oracle.v1.QueryOracleScriptResponse\"4\x82\xd3\xe4\x93\x02.\x12,/oracle/v1/oracle_scripts/{oracle_script_id}\x12t\n\x07Request\x12\x1e.oracle.v1.QueryRequestRequest\x1a\x1f.oracle.v1.QueryRequestResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /oracle/v1/requests/{request_id}\x12\x9b\x01\n\x0fPendingRequests\x12&.oracle.v1.QueryPendingRequestsRequest\x1a\'.oracle.v1.QueryPendingRequestsResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//oracle/v1/pending_requests/{validator_address}\x12\x83\x01\n\tValidator\x12 .oracle.v1.QueryValidatorRequest\x1a!.oracle.v1.QueryValidatorResponse\"1\x82\xd3\xe4\x93\x02+\x12)/oracle/v1/validators/{validator_address}\x12\x82\x01\n\tReporters\x12 .oracle.v1.QueryReportersRequest\x1a!.oracle.v1.QueryReportersResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/reporters/{validator_address}\x12\x8b\x01\n\x10\x41\x63tiveValidators\x12\'.oracle.v1.QueryActiveValidatorsRequest\x1a(.oracle.v1.QueryActiveValidatorsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/oracle/v1/active_validators\x12\x62\n\x06Params\x12\x1d.oracle.v1.QueryParamsRequest\x1a\x1e.oracle.v1.QueryParamsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/params\x12\x7f\n\rRequestSearch\x12$.oracle.v1.QueryRequestSearchRequest\x1a%.oracle.v1.QueryRequestSearchResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_search\x12|\n\x0cRequestPrice\x12#.oracle.v1.QueryRequestPriceRequest\x1a$.oracle.v1.QueryRequestPriceResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_prices\x12\x91\x01\n\x13RequestVerification\x12*.oracle.v1.QueryRequestVerificationRequest\x1a+.oracle.v1.QueryRequestVerificationResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/verify_request\x12\x9c\x01\n\x0bRequestPool\x12\".oracle.v1.QueryRequestPoolRequest\x1a#.oracle.v1.QueryRequestPoolResponse\"D\x82\xd3\xe4\x93\x02>\x12</oracle/v1/request_pool/{request_key}/{port_id}/{channel_id}B.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,oracle_dot_v1_dot_oracle__pb2.DESCRIPTOR,cosmos_dot_base_dot_v1beta1_dot_coin__pb2.DESCRIPTOR,])
 
@@ -694,21 +694,21 @@ _QUERYREQUESTSEARCHREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='calldata', full_name='oracle.v1.QueryRequestSearchRequest.calldata', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"",
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='ask_count', full_name='oracle.v1.QueryRequestSearchRequest.ask_count', index=2,
-      number=3, type=3, cpp_type=2, label=1,
+      number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='min_count', full_name='oracle.v1.QueryRequestSearchRequest.min_count', index=3,
-      number=4, type=3, cpp_type=2, label=1,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -738,6 +738,13 @@ _QUERYREQUESTSEARCHRESPONSE = _descriptor.Descriptor(
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='request', full_name='oracle.v1.QueryRequestSearchResponse.request', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -751,7 +758,7 @@ _QUERYREQUESTSEARCHRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1431,
-  serialized_end=1459,
+  serialized_end=1509,
 )
 
 
@@ -796,8 +803,8 @@ _QUERYREQUESTPRICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1461,
-  serialized_end=1542,
+  serialized_start=1511,
+  serialized_end=1592,
 )
 
 
@@ -828,8 +835,8 @@ _QUERYREQUESTPRICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1544,
-  serialized_end=1618,
+  serialized_start=1594,
+  serialized_end=1668,
 )
 
 
@@ -895,8 +902,8 @@ _QUERYREQUESTVERIFICATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1621,
-  serialized_end=1769,
+  serialized_start=1671,
+  serialized_end=1819,
 )
 
 
@@ -955,8 +962,8 @@ _QUERYREQUESTVERIFICATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1772,
-  serialized_end=1908,
+  serialized_start=1822,
+  serialized_end=1958,
 )
 
 
@@ -1001,8 +1008,8 @@ _QUERYREQUESTPOOLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1910,
-  serialized_end=1993,
+  serialized_start=1960,
+  serialized_end=2043,
 )
 
 
@@ -1040,8 +1047,8 @@ _QUERYREQUESTPOOLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1996,
-  serialized_end=2146,
+  serialized_start=2046,
+  serialized_end=2196,
 )
 
 _QUERYDATASOURCERESPONSE.fields_by_name['data_source'].message_type = oracle_dot_v1_dot_oracle__pb2._DATASOURCE
@@ -1052,6 +1059,7 @@ _QUERYREQUESTRESPONSE.fields_by_name['result'].message_type = oracle_dot_v1_dot_
 _QUERYPARAMSRESPONSE.fields_by_name['params'].message_type = oracle_dot_v1_dot_oracle__pb2._PARAMS
 _QUERYVALIDATORRESPONSE.fields_by_name['status'].message_type = oracle_dot_v1_dot_oracle__pb2._VALIDATORSTATUS
 _QUERYACTIVEVALIDATORSRESPONSE.fields_by_name['validators'].message_type = oracle_dot_v1_dot_oracle__pb2._ACTIVEVALIDATOR
+_QUERYREQUESTSEARCHRESPONSE.fields_by_name['request'].message_type = _QUERYREQUESTRESPONSE
 _QUERYREQUESTPRICERESPONSE.fields_by_name['price_results'].message_type = oracle_dot_v1_dot_oracle__pb2._PRICERESULT
 _QUERYREQUESTPOOLRESPONSE.fields_by_name['balance'].message_type = cosmos_dot_base_dot_v1beta1_dot_coin__pb2._COIN
 DESCRIPTOR.message_types_by_name['QueryCountsRequest'] = _QUERYCOUNTSREQUEST
@@ -1294,8 +1302,8 @@ _QUERY = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=2149,
-  serialized_end=3989,
+  serialized_start=2199,
+  serialized_end=4039,
   methods=[
   _descriptor.MethodDescriptor(
     name='Counts',
