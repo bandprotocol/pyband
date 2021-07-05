@@ -1,5 +1,6 @@
 import grpc
 from google.protobuf import any_pb2
+from typing import List
 
 from pyband.proto.oracle.v1 import (
     query_pb2_grpc as oracle_query_grpc,
@@ -27,7 +28,7 @@ from pyband.proto.cosmos.tx.v1beta1 import (
 
 from pyband.proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
 
-from pyband.exceptions import UnknownType, NotFoundError, FailToExecute
+from pyband.exceptions import NotFoundError, NotFoundError, EmptyMsgError
 
 
 class Client:
@@ -55,26 +56,31 @@ class Client:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
     def get_account(self, address: str) -> auth_type.BaseAccount:
-        account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
-        account = auth_type.BaseAccount()
-        if account_any.Is(account.DESCRIPTOR):
-            account_any.Unpack(account)
-            return account
-        else:
-            raise UnknownType("Unknown account")
+        try:
+            account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
+            account = auth_type.BaseAccount()
+            if account_any.Is(account.DESCRIPTOR):
+                account_any.Unpack(account)
+                return account
+        except:
+            return None
 
-    def get_request_id_by_tx_hash(self, tx_hash: bytes) -> str:
+    # return list of request, if no request, get from report
+    def get_request_id_by_tx_hash(self, tx_hash: bytes) -> List[str]:
         tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash))
-        if tx.tx_response.logs:
-            tx = tx.tx_response.logs[0]
-            for x in tx.events:
-                if x.type == "report":
-                    for y in x.attributes:
-                        if y.key == "id":
-                            return y.value
+        request_ids = []
+        for tx in tx.tx_response.logs:
+            request_event = [event for event in tx.events if event.type == "request" or event.type == "report"]
+            if len(request_event) == 1:
+                attrs = request_event[0].attributes
+                attr_id = [attr for attr in attrs if attr.key == "id"]
+                if len(attr_id) == 1:
+                    request_id = attr_id[0].value
+                    request_ids.append(request_id)
+        if len(request_ids) == 0:
             raise NotFoundError("Request Id is not found")
-        raise FailToExecute("Fail to execute")
-
+        return request_ids
+                     
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
             tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
@@ -94,12 +100,12 @@ class Client:
         latest_block = self.get_latest_block()
         return latest_block.block.header.chain_id
 
-    def get_reference_data(self, pairs: [str], min_count: int, ask_count: int):
+    def get_reference_data(self, pairs: [str], min_count: int, ask_count: int) -> oracle_query.QueryRequestPriceResponse:
+        if (len(pairs) == 0): raise EmptyMsgError("Pairs are required")
         return self.stubOracle.RequestPrice(
-            oracle_query.QueryRequestPriceRequest(symbols=pairs, min_count=min_count, ask_count=ask_count)
-        )
+        oracle_query.QueryRequestPriceRequest(symbols=pairs, min_count=min_count, ask_count=ask_count))   
 
-    def get_latest_request(self, oid: int, calldata: bytes, min_count: int, ask_count: int):
+    def get_latest_request(self, oid: int, calldata: bytes, min_count: int, ask_count: int) -> oracle_query.QueryRequestSearchResponse:
         return self.stubOracle.RequestSearch(
             oracle_query.QueryRequestSearchRequest(
                 oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count

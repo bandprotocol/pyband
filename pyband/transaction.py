@@ -58,7 +58,21 @@ class Transaction:
         self.memo = memo
         return self
 
-    def get_sign_doc(self) -> bytes:
+    def __generate_info__(self):
+        body = cosmos_tx_type.TxBody(
+            messages=self.msgs,
+            memo=self.memo,
+        )
+
+        body_bytes = body.SerializeToString()
+        mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
+        signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
+        auth_info = cosmos_tx_type.AuthInfo(signer_infos=[signer_info], fee=self.fee)
+        auth_info_bytes = auth_info.SerializeToString()
+
+        return body_bytes, auth_info_bytes
+
+    def get_sign_doc(self) -> cosmos_tx_type.SignDoc:
         if len(self.msgs) == 0:
             raise EmptyMsgError("message is empty")
 
@@ -71,20 +85,11 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body = cosmos_tx_type.TxBody(
-            messages=self.msgs,
-            memo=self.memo,
-        )
-
-        body_bytes = body.SerializeToString()
-        mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
-        signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
-        auth_info = cosmos_tx_type.AuthInfo(signer_infos=[signer_info], fee=self.fee)
-        auth_info_bytes = auth_info.SerializeToString()
+        infos = self.__generate_info__()
 
         sign_doc = cosmos_tx_type.SignDoc(
-            body_bytes=body_bytes,
-            auth_info_bytes=auth_info_bytes,
+            body_bytes=infos[0],
+            auth_info_bytes=infos[1],
             chain_id=self.chain_id,
             account_number=self.account_num,
         )
@@ -92,20 +97,8 @@ class Transaction:
 
     def get_tx_data(self, signature: bytes) -> bytes:
 
-        body = cosmos_tx_type.TxBody(
-            messages=self.msgs,
-            memo=self.memo,
-        )
+        infos = self.__generate_info__()
 
-        body_bytes = body.SerializeToString()
-
-        mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
-
-        signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
-
-        auth_info = cosmos_tx_type.AuthInfo(signer_infos=[signer_info], fee=self.fee)
-        auth_info_bytes = auth_info.SerializeToString()
-
-        tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
+        tx_raw = cosmos_tx_type.TxRaw(body_bytes=infos[0], auth_info_bytes=infos[1], signatures=[signature])
         tx_raw_bytes = tx_raw.SerializeToString()
         return tx_raw_bytes

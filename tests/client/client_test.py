@@ -23,9 +23,13 @@ from pyband.proto.oracle.v1.query_pb2 import (
     QueryRequestResponse,
     QueryReportersRequest,
     QueryReportersResponse,
+    QueryRequestPriceRequest,
+    QueryRequestPriceResponse,
+    QueryRequestSearchRequest,
+    QueryRequestSearchResponse,
 )
 
-from pyband.proto.oracle.v1.oracle_pb2 import Result, Report, Request, RawReport, RawRequest, IBCChannel
+from pyband.proto.oracle.v1.oracle_pb2 import Result, Report, Request, RawReport, RawRequest, IBCChannel, PriceResult
 
 from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2 import GetBlockByHeightRequest, GetLatestBlockResponse
 
@@ -57,7 +61,7 @@ from pyband.proto.cosmos.tx.signing.v1beta1.signing_pb2 import SIGN_MODE_DIRECT
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.any_pb2 import Any
 
-from pyband.exceptions import UnknownType, NotFoundError, FailToExecute
+from pyband.exceptions import UnknownType, NotFoundError, FailToExecute, NotFoundError, EmptyMsgError
 
 
 class OracleServicer(OracleServicerBase):
@@ -148,27 +152,130 @@ class OracleServicer(OracleServicerBase):
             ]
         )
 
+    def RequestPrice(self, request: QueryRequestPriceRequest, context):
+        # Assume that price = 10 will return price not found error
+        if request.ask_count != 10:
+            return QueryRequestPriceResponse(
+                price_results=[
+                    PriceResult(
+                        symbol="ETH",
+                        multiplier=1000000,
+                        px=2317610000,
+                        request_id=37653,
+                        resolve_time=1625407289,
+                    ),
+                    PriceResult(
+                        symbol="BTC",
+                        multiplier=1000000,
+                        px=35367670000,
+                        request_id=37653,
+                        resolve_time=1625407289,
+                    ),
+                ]
+            )
+
+    def RequestSearch(self, request: QueryRequestSearchRequest, context):
+        return QueryRequestSearchResponse(
+            request=QueryRequestResponse(
+                request=Request(
+                    oracle_script_id=47,
+                    calldata=b"\000\000\000@BDE15735EDFA21E8C4484866C865177D13E88C5BD0B016CB3F5835613189B263\000\000\000\000#u\240S",
+                    requested_validators=[
+                        "bandvaloper1zl5925n5u24njn9axpygz8lhjl5a8v4cpkzx5g",
+                        "bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                        "bandvaloper1e9sa38742tzhmandc4gkqve9zy8zc0yremaa3j",
+                        "bandvaloper1qa4k43m4avza36kkal0vmsvccnpyyp6ltyp2l5",
+                        "bandvaloper1t9vedyzsxewe6lhpf9vm47em2hly23xm6uqtec",
+                        "bandvaloper1l2hchtyawk9tk43zzjrzr2lcd0zyxngcjdsshe",
+                        "bandvaloper1d96u0qlvdp6vx3j6r33lujr93f7gdyy6erc839",
+                        "bandvaloper1t659auvvukjtfn2h3hfp7usw0dqg6auhkwa9fs",
+                    ],
+                    min_count=11,
+                    request_height=251543,
+                    request_time=1625077316,
+                    client_id="from_pyband_mumu_0",
+                    raw_requests=[
+                        RawRequest(
+                            external_id=1,
+                            data_source_id=83,
+                            calldata=b"BDE15735EDFA21E8C4484866C865177D13E88C5BD0B016CB3F5835613189B263 594911315",
+                        )
+                    ],
+                    execute_gas=3000000,
+                ),
+                reports=[
+                    Report(
+                        validator="bandvaloper1qa4k43m4avza36kkal0vmsvccnpyyp6ltyp2l5",
+                        in_before_resolve=True,
+                        raw_reports=[
+                            RawReport(
+                                external_id=1,
+                                data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                            )
+                        ],
+                    ),
+                    Report(
+                        validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                        in_before_resolve=True,
+                        raw_reports=[
+                            RawReport(
+                                external_id=1,
+                                data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                            )
+                        ],
+                    ),
+                    Report(
+                        validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                        in_before_resolve=True,
+                        raw_reports=[
+                            RawReport(
+                                external_id=1,
+                                data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                            )
+                        ],
+                    ),
+                    Report(
+                        validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                        in_before_resolve=True,
+                        raw_reports=[
+                            RawReport(
+                                external_id=1,
+                                data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                            )
+                        ],
+                    ),
+                    Report(
+                        validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                        in_before_resolve=True,
+                        raw_reports=[
+                            RawReport(
+                                external_id=1,
+                                data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                            )
+                        ],
+                    ),
+                ],
+                result=Result(
+                    client_id="from_pyband_mumu_0",
+                    oracle_script_id=47,
+                    calldata=b"\000\000\000@BDE15735EDFA21E8C4484866C865177D13E88C5BD0B016CB3F5835613189B263\000\000\000\000#u\240S",
+                    ask_count=12,
+                    min_count=11,
+                    request_id=37635,
+                    ans_count=12,
+                    request_time=1625077316,
+                    resolve_time=1625077324,
+                    resolve_status=1,
+                    result=b"\000\000\000@\313\022\372/\200fpH\305\367\204\020h9\220\2621\336\276#\024m\323\322\271\213Q\331-\244\364\326\310\002\202o.\305&\300\345\177\312T\t\216\023{\213\311\035\300\350z\0246\337\316\326\220 x\270\333",
+                ),
+            )
+        )
+
 
 class CosmosTransactionServicer(CosmosTxServicerBase):
     def GetTx(self, request: GetTxRequest, context) -> GetTxResponse:
-        if request.hash == "txhashFail":
-            return GetTxResponse(
-                tx_response=TxResponse(
-                    height=246251,
-                    txhash=b"32E2C5BC9EAB222E449CF4687F16F1C8E22F7D90C92096114470F35D246E8914",
-                    codespace="oracle",
-                    code=2,
-                    raw_log="failed to execute message; message index: 0: out-of-gas while executing the wasm script: bad wasm execution",
-                    gas_wanted=30000000,
-                    gas_used=20417359,
-                    tx=Any(
-                        type_url="/cosmos.tx.v1beta1.Tx",
-                        value=b"\n{\ny\n\031/oracle.v1.MsgRequestData\022\\\0101\022\020\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000d\030\n \010*\016from_hackerman8\377\331\304\t@\001J+band1p46uhvdk8vr829v747v85hst3mur2dzlmlac7f\022Z\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\013\247\2077\3500\016\240\341Y\221T>\341\031\302\024\307\205H&\264\271\306N8\377\257\3272\333c\022\004\n\002\010\001\030\371\006\022\005\020\200\207\247\016\032@\263S\027\255\327\356J\272r\225j/H\266^\365\237\215\315\333@\307?\206Yf\232\361\253\221\014\301z\350z\212<\235.ck#&\221R9A\255tW,Q\215\211\300\300\363 :\006,K\027h",
-                    ),
-                    timestamp="2021-06-30T14:18:37Z",
-                )
-            )
-        elif request.hash == "txhashReqNotFound":
+        # Request id can come from request or report
+        if request.hash == "txhash":
             return GetTxResponse(
                 tx=Tx(
                     body=TxBody(
@@ -216,6 +323,14 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                                         Attribute(key="external_id", value="6"),
                                     ],
                                 ),
+                                StringEvent(
+                                    type="report",
+                                    attributes=[
+                                        Attribute(key="id", value="154966"),
+                                        Attribute(key="client_id", value="from_bandd_2"),
+                                        Attribute(key="oracle_script_id", value="37"),
+                                    ],
+                                ),
                             ]
                         )
                     ],
@@ -228,80 +343,104 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     timestamp="2021-06-04T06:07:37Z",
                 ),
             )
-        return GetTxResponse(
-            tx=Tx(
-                body=TxBody(
-                    messages=[
-                        Any(
-                            type_url="/oracle.v1.MsgRequestData",
-                            value=b"\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q",
-                        )
-                    ]
-                ),
-                auth_info=AuthInfo(
-                    signer_infos=[
-                        SignerInfo(
-                            public_key=Any(
-                                type_url="/cosmos.crypto.secp256k1.PubKey",
-                                value=b"\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
-                            ),
-                            mode_info=ModeInfo(single=ModeInfo.Single(mode=SIGN_MODE_DIRECT)),
-                            sequence=478,
-                        )
-                    ],
-                    fee=Fee(gas_limit=2000000),
-                ),
-                signatures=[
-                    b'4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340'
-                ],
-            ),
-            tx_response=TxResponse(
-                height=686917,
-                txhash="AFC6BDDC7E7041B1AC21C26E25A52550689D148BE9A0D8E797E45DD753BF7FB3",
-                data="0A090A0772657175657374",
-                raw_log='[{"events":[{"type":"message","attributes":[{"key":"action","value":"request"}]},{"type":"raw_request","attributes":[{"key":"data_source_id","value":"61"},{"key":"data_source_hash","value":"07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef"},{"key":"external_id","value":"6"},{"key":"calldata","value":"ETH BTC"},{"key":"data_source_id","value":"57"},{"key":"data_source_hash","value":"61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7"},{"key":"external_id","value":"0"},{"key":"calldata","value":"ETH BTC BAND"},{"key":"data_source_id","value":"62"},{"key":"data_source_hash","value":"107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289"},{"key":"external_id","value":"3"},{"key":"calldata","value":"ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"5"},{"key":"calldata","value":"huobipro ETH BTC BAND"},{"key":"data_source_id","value":"59"},{"key":"data_source_hash","value":"5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d"},{"key":"external_id","value":"2"},{"key":"calldata","value":"ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"4"},{"key":"calldata","value":"binance ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"9"},{"key":"calldata","value":"bittrex ETH BTC"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"7"},{"key":"calldata","value":"kraken ETH BTC"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"8"},{"key":"calldata","value":"bitfinex ETH BTC"},{"key":"data_source_id","value":"58"},{"key":"data_source_hash","value":"7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461"},{"key":"external_id","value":"1"},{"key":"calldata","value":"ETH BTC BAND UNI"}]},{"type":"request","attributes":[{"key":"id","value":"154966"},{"key":"client_id","value":"from_bandd_2"},{"key":"oracle_script_id","value":"37"},{"key":"calldata","value":"0000000500000003455448000000034254430000000442414e44000000034d495200000003554e490000000000000064"},{"key":"ask_count","value":"16"},{"key":"min_count","value":"10"},{"key":"gas_used","value":"196024"},{"key":"validator","value":"bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc"},{"key":"validator","value":"bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv"},{"key":"validator","value":"bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg"},{"key":"validator","value":"bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus"},{"key":"validator","value":"bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq"},{"key":"validator","value":"bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62"},{"key":"validator","value":"bandvaloper1a570h9e3rtvfhm030ta5hvel7e7e4lh4pgv8wj"},{"key":"validator","value":"bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5"},{"key":"validator","value":"bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf"},{"key":"validator","value":"bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e"},{"key":"validator","value":"bandvaloper1u6skdqfp3dcmvqfx28ej8v9nadf6mmpq6sp52a"},{"key":"validator","value":"bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy"},{"key":"validator","value":"bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977"},{"key":"validator","value":"bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v"},{"key":"validator","value":"bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa"},{"key":"validator","value":"bandvaloper1dafxd4nacdry36tvsv6htaclkma4xhj6l9qrfv"}]}]}]',
-                logs=[
-                    ABCIMessageLog(
-                        events=[
-                            StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
-                            StringEvent(
-                                type="raw_request",
-                                attributes=[
-                                    Attribute(key="data_source_id", value="61"),
-                                    Attribute(
-                                        key="data_source_hash",
-                                        value="07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef",
-                                    ),
-                                    Attribute(key="external_id", value="6"),
-                                ],
-                            ),
-                            StringEvent(
-                                type="report",
-                                attributes=[
-                                    Attribute(key="id", value="154966"),
-                                    Attribute(key="client_id", value="from_bandd_2"),
-                                    Attribute(key="oracle_script_id", value="37"),
-                                ],
-                            ),
+        elif request.hash == "txhashRequestMultiId":
+            return GetTxResponse(
+                tx=Tx(
+                    body=TxBody(
+                        messages=[
+                            Any(
+                                type_url="/oracle.v1.MsgRequestData",
+                                value=b"\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q",
+                            )
                         ]
-                    )
-                ],
-                gas_wanted=2000000,
-                gas_used=1059525,
-                tx=Any(
-                    type_url="/cosmos.tx.v1beta1.Tx",
-                    value=b'\n\233\001\n\230\001\n\031/oracle.v1.MsgRequestData\022{\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\022Y\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223\022\004\n\002\010\001\030\336\003\022\004\020\200\211z\032@4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340',
+                    ),
+                    auth_info=AuthInfo(
+                        signer_infos=[
+                            SignerInfo(
+                                public_key=Any(
+                                    type_url="/cosmos.crypto.secp256k1.PubKey",
+                                    value=b"\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
+                                ),
+                                mode_info=ModeInfo(single=ModeInfo.Single(mode=SIGN_MODE_DIRECT)),
+                                sequence=478,
+                            )
+                        ],
+                        fee=Fee(gas_limit=2000000),
+                    ),
+                    signatures=[
+                        b'4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340'
+                    ],
                 ),
-                timestamp="2021-06-04T06:07:37Z",
-            ),
-        )
+                tx_response=TxResponse(
+                    height=686917,
+                    txhash="AFC6BDDC7E7041B1AC21C26E25A52550689D148BE9A0D8E797E45DD753BF7FB3",
+                    data="0A090A0772657175657374",
+                    raw_log='[{"events":[{"type":"message","attributes":[{"key":"action","value":"request"}]},{"type":"raw_request","attributes":[{"key":"data_source_id","value":"61"},{"key":"data_source_hash","value":"07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef"},{"key":"external_id","value":"6"},{"key":"calldata","value":"ETH BTC"},{"key":"data_source_id","value":"57"},{"key":"data_source_hash","value":"61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7"},{"key":"external_id","value":"0"},{"key":"calldata","value":"ETH BTC BAND"},{"key":"data_source_id","value":"62"},{"key":"data_source_hash","value":"107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289"},{"key":"external_id","value":"3"},{"key":"calldata","value":"ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"5"},{"key":"calldata","value":"huobipro ETH BTC BAND"},{"key":"data_source_id","value":"59"},{"key":"data_source_hash","value":"5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d"},{"key":"external_id","value":"2"},{"key":"calldata","value":"ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"4"},{"key":"calldata","value":"binance ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"9"},{"key":"calldata","value":"bittrex ETH BTC"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"7"},{"key":"calldata","value":"kraken ETH BTC"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"8"},{"key":"calldata","value":"bitfinex ETH BTC"},{"key":"data_source_id","value":"58"},{"key":"data_source_hash","value":"7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461"},{"key":"external_id","value":"1"},{"key":"calldata","value":"ETH BTC BAND UNI"}]},{"type":"request","attributes":[{"key":"id","value":"154966"},{"key":"client_id","value":"from_bandd_2"},{"key":"oracle_script_id","value":"37"},{"key":"calldata","value":"0000000500000003455448000000034254430000000442414e44000000034d495200000003554e490000000000000064"},{"key":"ask_count","value":"16"},{"key":"min_count","value":"10"},{"key":"gas_used","value":"196024"},{"key":"validator","value":"bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc"},{"key":"validator","value":"bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv"},{"key":"validator","value":"bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg"},{"key":"validator","value":"bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus"},{"key":"validator","value":"bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq"},{"key":"validator","value":"bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62"},{"key":"validator","value":"bandvaloper1a570h9e3rtvfhm030ta5hvel7e7e4lh4pgv8wj"},{"key":"validator","value":"bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5"},{"key":"validator","value":"bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf"},{"key":"validator","value":"bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e"},{"key":"validator","value":"bandvaloper1u6skdqfp3dcmvqfx28ej8v9nadf6mmpq6sp52a"},{"key":"validator","value":"bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy"},{"key":"validator","value":"bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977"},{"key":"validator","value":"bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v"},{"key":"validator","value":"bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa"},{"key":"validator","value":"bandvaloper1dafxd4nacdry36tvsv6htaclkma4xhj6l9qrfv"}]}]}]',
+                    logs=[
+                        ABCIMessageLog(
+                            events=[
+                                StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                                StringEvent(
+                                    type="raw_request",
+                                    attributes=[
+                                        Attribute(key="data_source_id", value="61"),
+                                        Attribute(
+                                            key="data_source_hash",
+                                            value="07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef",
+                                        ),
+                                        Attribute(key="external_id", value="6"),
+                                    ],
+                                ),
+                                StringEvent(
+                                    type="request",
+                                    attributes=[
+                                        Attribute(key="id", value="111111"),
+                                        Attribute(key="client_id", value="from_bandd_2"),
+                                        Attribute(key="oracle_script_id", value="37"),
+                                    ],
+                                ),
+                            ]
+                        ),
+                        ABCIMessageLog(
+                            events=[
+                                StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                                StringEvent(
+                                    type="raw_request",
+                                    attributes=[
+                                        Attribute(key="data_source_id", value="61"),
+                                        Attribute(
+                                            key="data_source_hash",
+                                            value="07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef",
+                                        ),
+                                        Attribute(key="external_id", value="6"),
+                                    ],
+                                ),
+                                StringEvent(
+                                    type="request",
+                                    attributes=[
+                                        Attribute(key="id", value="222222"),
+                                        Attribute(key="client_id", value="from_bandd_2"),
+                                        Attribute(key="oracle_script_id", value="37"),
+                                    ],
+                                ),
+                            ]
+                        ),
+                    ],
+                    gas_wanted=2000000,
+                    gas_used=1059525,
+                    tx=Any(
+                        type_url="/cosmos.tx.v1beta1.Tx",
+                        value=b'\n\233\001\n\230\001\n\031/oracle.v1.MsgRequestData\022{\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\022Y\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223\022\004\n\002\010\001\030\336\003\022\004\020\200\211z\032@4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340',
+                    ),
+                    timestamp="2021-06-04T06:07:37Z",
+                ),
+            )
 
 
 class AuthServicer(AuthServicerBase):
     def Account(self, request, context) -> QueryAccountResponse:
-        # Account does not exsit
         if request.address == "noAccount":
-            return None
+            raise NotFoundError("Account not found")
         # Account exist
         acc = BaseAccount(account_number=1)
         any = Any()
@@ -605,37 +744,164 @@ def test_get_account_success(pyband_client):
 
 
 def test_get_account_not_exist(pyband_client):
-    with pytest.raises(grpc.RpcError):
-        pyband_client.get_account("noAccount")
+    account = pyband_client.get_account("noAccount")
+    assert account == None
 
 
 def test_get_account_invalid_input(pyband_client):
-    with pytest.raises(TypeError):
-        pyband_client.get_account(2)
+    account = pyband_client.get_account(2)
+    assert account == None
 
 
 def test_get_req_id_by_tx_hash_success(pyband_client):
-    reqId = pyband_client.get_request_id_by_tx_hash(b"txhash")
-    assert reqId == "154966"
+    reqId = pyband_client.get_request_id_by_tx_hash("txhash")
+    assert reqId == ["154966"]
 
 
 def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
-    with pytest.raises(TypeError):
-        pyband_client.get_request_id_by_tx_hash(3)
-
-
-def test_get_req_id_by_tx_hash_transaction_failed(pyband_client):
-    with pytest.raises(FailToExecute, match="Fail to execute"):
-        pyband_client.get_request_id_by_tx_hash(b"txhashFail")
-
-
-# ! Not sure whether the response is in the correct format or not
-def test_get_req_id_by_tx_hash_transaction_failed(pyband_client):
-    with pytest.raises(NotFoundError, match="Request Id is not found"):
-        pyband_client.get_request_id_by_tx_hash(b"txhashReqNotFound")
+    reqId = pyband_client.get_request_id_by_tx_hash(b"txhashRequestMultiId")
+    assert reqId == ["111111", "222222"]
 
 
 def test_get_chain_id(pyband_client):
     chain_id = pyband_client.get_chain_id()
-    print(chain_id)
     assert chain_id == "bandchain"
+
+
+def test_get_reference_data_success(pyband_client):
+    reference_data = pyband_client.get_reference_data(["ETH", "BTC"], 3, 4)
+    mock_result = QueryRequestPriceResponse(
+        price_results=[
+            PriceResult(
+                symbol="ETH",
+                multiplier=1000000,
+                px=2317610000,
+                request_id=37653,
+                resolve_time=1625407289,
+            ),
+            PriceResult(
+                symbol="BTC",
+                multiplier=1000000,
+                px=35367670000,
+                request_id=37653,
+                resolve_time=1625407289,
+            ),
+        ]
+    )
+    assert reference_data == mock_result
+
+
+# Assume that this input price will return price not found error
+def test_get_reference_data_wrong_price(pyband_client):
+    with pytest.raises(grpc.RpcError):
+        pyband_client.get_reference_data(["ETH", "BTC"], 3, 10)
+
+
+def test_get_reference_data_empty_paires(pyband_client):
+    with pytest.raises(EmptyMsgError, match="Pairs are required"):
+        pyband_client.get_reference_data([], 3, 4)
+
+
+def test_get_latest_request_success(pyband_client):
+    latest_request = pyband_client.get_latest_request(
+        47,
+        "0000004042444531353733354544464132314538433434383438363643383635313737443133453838433542443042303136434233463538333536313331383942323633000000002375a053",
+        11,
+        12,
+    )
+    mock_result = QueryRequestSearchResponse(
+        request=QueryRequestResponse(
+            request=Request(
+                oracle_script_id=47,
+                calldata=b"\000\000\000@BDE15735EDFA21E8C4484866C865177D13E88C5BD0B016CB3F5835613189B263\000\000\000\000#u\240S",
+                requested_validators=[
+                    "bandvaloper1zl5925n5u24njn9axpygz8lhjl5a8v4cpkzx5g",
+                    "bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                    "bandvaloper1e9sa38742tzhmandc4gkqve9zy8zc0yremaa3j",
+                    "bandvaloper1qa4k43m4avza36kkal0vmsvccnpyyp6ltyp2l5",
+                    "bandvaloper1t9vedyzsxewe6lhpf9vm47em2hly23xm6uqtec",
+                    "bandvaloper1l2hchtyawk9tk43zzjrzr2lcd0zyxngcjdsshe",
+                    "bandvaloper1d96u0qlvdp6vx3j6r33lujr93f7gdyy6erc839",
+                    "bandvaloper1t659auvvukjtfn2h3hfp7usw0dqg6auhkwa9fs",
+                ],
+                min_count=11,
+                request_height=251543,
+                request_time=1625077316,
+                client_id="from_pyband_mumu_0",
+                raw_requests=[
+                    RawRequest(
+                        external_id=1,
+                        data_source_id=83,
+                        calldata=b"BDE15735EDFA21E8C4484866C865177D13E88C5BD0B016CB3F5835613189B263 594911315",
+                    )
+                ],
+                execute_gas=3000000,
+            ),
+            reports=[
+                Report(
+                    validator="bandvaloper1qa4k43m4avza36kkal0vmsvccnpyyp6ltyp2l5",
+                    in_before_resolve=True,
+                    raw_reports=[
+                        RawReport(
+                            external_id=1,
+                            data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                        )
+                    ],
+                ),
+                Report(
+                    validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                    in_before_resolve=True,
+                    raw_reports=[
+                        RawReport(
+                            external_id=1,
+                            data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                        )
+                    ],
+                ),
+                Report(
+                    validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                    in_before_resolve=True,
+                    raw_reports=[
+                        RawReport(
+                            external_id=1,
+                            data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                        )
+                    ],
+                ),
+                Report(
+                    validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                    in_before_resolve=True,
+                    raw_reports=[
+                        RawReport(
+                            external_id=1,
+                            data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                        )
+                    ],
+                ),
+                Report(
+                    validator="bandvaloper1p46uhvdk8vr829v747v85hst3mur2dzlhfemmz",
+                    in_before_resolve=True,
+                    raw_reports=[
+                        RawReport(
+                            external_id=1,
+                            data=b"cb12fa2f80667048c5f78410683990b231debe23146dd3d2b98b51d92da4f4d6c802826f2ec526c0e57fca54098e137b8bc91dc0e87a1436dfced6902078b8db\n",
+                        )
+                    ],
+                ),
+            ],
+            result=Result(
+                client_id="from_pyband_mumu_0",
+                oracle_script_id=47,
+                calldata=b"\000\000\000@BDE15735EDFA21E8C4484866C865177D13E88C5BD0B016CB3F5835613189B263\000\000\000\000#u\240S",
+                ask_count=12,
+                min_count=11,
+                request_id=37635,
+                ans_count=12,
+                request_time=1625077316,
+                resolve_time=1625077324,
+                resolve_status=1,
+                result=b"\000\000\000@\313\022\372/\200fpH\305\367\204\020h9\220\2621\336\276#\024m\323\322\271\213Q\331-\244\364\326\310\002\202o.\305&\300\345\177\312T\t\216\023{\213\311\035\300\350z\0246\337\316\326\220 x\270\333",
+            ),
+        )
+    )
+    assert latest_request == mock_result
