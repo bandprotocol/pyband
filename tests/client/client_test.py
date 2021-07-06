@@ -1,5 +1,6 @@
 import pytest
 import grpc
+from pyband.data import ReferencePrice, ReferencePriceUpdated
 
 # Servicers
 from pyband.proto.oracle.v1.query_pb2_grpc import QueryServicer as OracleServicerBase
@@ -61,7 +62,7 @@ from pyband.proto.cosmos.tx.signing.v1beta1.signing_pb2 import SIGN_MODE_DIRECT
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.any_pb2 import Any
 
-from pyband.exceptions import UnknownType, NotFoundError, FailToExecute, NotFoundError, EmptyMsgError
+from pyband.exceptions import NotFoundError, NotFoundError, EmptyMsgError
 
 
 class OracleServicer(OracleServicerBase):
@@ -769,32 +770,22 @@ def test_get_chain_id(pyband_client):
 
 
 def test_get_reference_data_success(pyband_client):
-    reference_data = pyband_client.get_reference_data(["ETH", "BTC"], 3, 4)
-    mock_result = QueryRequestPriceResponse(
-        price_results=[
-            PriceResult(
-                symbol="ETH",
-                multiplier=1000000,
-                px=2317610000,
-                request_id=37653,
-                resolve_time=1625407289,
-            ),
-            PriceResult(
-                symbol="BTC",
-                multiplier=1000000,
-                px=35367670000,
-                request_id=37653,
-                resolve_time=1625407289,
-            ),
-        ]
-    )
-    assert reference_data == mock_result
+    [reference_data1, reference_data2] = pyband_client.get_reference_data(["ETH/USDT", "BTC/USDT"], 3, 4)
+    assert reference_data1.pair == "ETH/USDT" 
+    assert reference_data2.pair == "BTC/USDT"
+    assert reference_data1.rate == 2317.61
+    assert reference_data2.rate == 35367.67
+    assert type(reference_data1.updated_at.base) == int
+    assert type(reference_data1.updated_at.quote) == int
+    assert type(reference_data2.updated_at.base) == int
+    assert type(reference_data2.updated_at.quote) == int
+
 
 
 # Assume that this input price will return price not found error
 def test_get_reference_data_wrong_price(pyband_client):
     with pytest.raises(grpc.RpcError):
-        pyband_client.get_reference_data(["ETH", "BTC"], 3, 10)
+        pyband_client.get_reference_data(["ETH/USDT", "BTC/USDT"], 3, 10)
 
 
 def test_get_reference_data_empty_paires(pyband_client):

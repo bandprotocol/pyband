@@ -1,5 +1,9 @@
 import grpc
-from typing import List
+import time
+from .data import (ReferencePrice, ReferencePriceUpdated)
+
+from google.protobuf import any_pb2
+from typing import List, Optional
 
 from pyband.proto.oracle.v1 import (
     query_pb2_grpc as oracle_query_grpc,
@@ -53,7 +57,7 @@ class Client:
     def get_latest_block(self) -> tendermint_query.GetLatestBlockResponse:
         return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
-    def get_account(self, address: str) -> auth_type.BaseAccount:
+    def get_account(self, address: str) -> Optional[auth_type.BaseAccount]:
         try:
             account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
             account = auth_type.BaseAccount()
@@ -100,12 +104,43 @@ class Client:
 
     def get_reference_data(
         self, pairs: List[str], min_count: int, ask_count: int
-    ) -> oracle_query.QueryRequestPriceResponse:
+    ) -> List[ReferencePrice]:
         if len(pairs) == 0:
             raise EmptyMsgError("Pairs are required")
-        return self.stubOracle.RequestPrice(
-            oracle_query.QueryRequestPriceRequest(symbols=pairs, min_count=min_count, ask_count=ask_count)
+
+        symbols = set([symbol for pair in pairs for symbol in pair.split("/") if symbol != "USDT"])
+        price_data = self.stubOracle.RequestPrice(
+            oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count)
         )
+        symbol_dict = {
+            "USDT": {
+                "multiplier": 1000000000,
+                "px": 1000000000,
+                "resolve_time": int(time.time()),
+            }
+        }
+        for price in price_data.price_results:
+            symbol_dict[price.symbol] = {
+                "multiplier": price.multiplier,
+                "px": price.px,
+                "resolve_time": price.resolve_time,
+            }
+
+        results = []
+        for pair in pairs:
+            [base_symbol, quote_symbol] = pair.split("/")            
+            results.append(
+                 ReferencePrice(
+                    pair,
+                    rate=(int(symbol_dict[base_symbol]["px"]) * int(symbol_dict[quote_symbol]["multiplier"]))
+                    / (int(symbol_dict[quote_symbol]["px"]) * int(symbol_dict[base_symbol]["multiplier"])),
+                    updated_at=ReferencePriceUpdated(
+                        int(symbol_dict[base_symbol]["resolve_time"]),
+                        int(symbol_dict[quote_symbol]["resolve_time"]),
+                    ),
+                )
+            )
+        return(results)
 
     def get_latest_request(
         self, oid: int, calldata: bytes, min_count: int, ask_count: int

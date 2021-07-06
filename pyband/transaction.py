@@ -68,7 +68,7 @@ class Transaction:
         self.memo = memo
         return self
 
-    def __generate_info__(self):
+    def __generate_info__(self) -> [bytes, bytes]:
         body = cosmos_tx_type.TxBody(
             messages=self.msgs,
             memo=self.memo,
@@ -95,11 +95,12 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        infos = self.__generate_info__()
+        body_bytes, auth_info_bytes = self.__generate_info__()
+
 
         sign_doc = cosmos_tx_type.SignDoc(
-            body_bytes=infos[0],
-            auth_info_bytes=infos[1],
+            body_bytes=body_bytes,
+            auth_info_bytes=auth_info_bytes,
             chain_id=self.chain_id,
             account_number=self.account_num,
         )
@@ -107,8 +108,8 @@ class Transaction:
 
     def get_tx_data(self, signature: bytes) -> bytes:
 
-        infos = self.__generate_info__()
+        body_bytes, auth_info_bytes = self.__generate_info__()
 
-        tx_raw = cosmos_tx_type.TxRaw(body_bytes=infos[0], auth_info_bytes=infos[1], signatures=[signature])
+        tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
         tx_raw_bytes = tx_raw.SerializeToString()
         return tx_raw_bytes
