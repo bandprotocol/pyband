@@ -1,22 +1,32 @@
-from .wallet import PrivateKey
-from .constant import MAX_MEMO_CHARACTERS
-from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
+from typing import List
+
 from google.protobuf import any_pb2
-from pyband.proto.oracle.v1 import tx_pb2 as tx_oracle_type
 from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
+
 from pyband.client import Client
+from pyband.constant import MAX_MEMO_CHARACTERS
+from pyband.exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
 
 
 class Transaction:
-    def __init__(self):
-        self.msgs: List[any_pb2.Any] = []
-        self.account_num: Optional[int] = None
-        self.sequence: Optional[int] = None
-        self.chain_id: Optional[str] = None
-        self.fee: cosmos_tx_type.Fee = None
-        self.gas: int = 200000
-        self.memo: str = ""
+    def __init__(
+        self,
+        msgs: List[any_pb2.Any] = None,
+        account_num: int = None,
+        sequence: int = None,
+        chain_id: str = None,
+        fee: cosmos_tx_type.Fee = None,
+        gas: int = 200000,
+        memo: str = "",
+    ):
+        self.msgs = msgs or []
+        self.account_num = account_num
+        self.sequence = sequence
+        self.chain_id = chain_id
+        self.fee = fee
+        self.gas = gas
+        self.memo = memo
 
     def with_messages(self, *msgs: any_pb2.Any) -> "Transaction":
         self.msgs.extend(msgs)
@@ -30,7 +40,7 @@ class Transaction:
             self.account_num = account.account_number
             self.sequence = account.sequence
             return self
-        raise NotFoundError("Account doesn't exist.")
+        raise NotFoundError("Account doesn't exist")
 
     def with_account_num(self, account_num: int) -> "Transaction":
         self.account_num = account_num

@@ -1,5 +1,4 @@
 import grpc
-from google.protobuf import any_pb2
 from typing import List
 
 from pyband.proto.oracle.v1 import (
@@ -23,12 +22,11 @@ from pyband.proto.cosmos.auth.v1beta1 import (
 from pyband.proto.cosmos.tx.v1beta1 import (
     service_pb2_grpc as tx_service_grpc,
     service_pb2 as tx_service,
-    tx_pb2 as tx_type,
 )
 
 from pyband.proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
 
-from pyband.exceptions import NotFoundError, NotFoundError, EmptyMsgError
+from pyband.exceptions import NotFoundError, EmptyMsgError
 
 
 class Client:
@@ -80,7 +78,7 @@ class Client:
         if len(request_ids) == 0:
             raise NotFoundError("Request Id is not found")
         return request_ids
-                     
+
     def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
         return self.stubTx.BroadcastTx(
             tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
@@ -100,21 +98,20 @@ class Client:
         latest_block = self.get_latest_block()
         return latest_block.block.header.chain_id
 
-    def get_reference_data(self, pairs: [str], min_count: int, ask_count: int) -> oracle_query.QueryRequestPriceResponse:
-        if (len(pairs) == 0): raise EmptyMsgError("Pairs are required")
+    def get_reference_data(
+        self, pairs: List[str], min_count: int, ask_count: int
+    ) -> oracle_query.QueryRequestPriceResponse:
+        if len(pairs) == 0:
+            raise EmptyMsgError("Pairs are required")
         return self.stubOracle.RequestPrice(
-        oracle_query.QueryRequestPriceRequest(symbols=pairs, min_count=min_count, ask_count=ask_count))   
+            oracle_query.QueryRequestPriceRequest(symbols=pairs, min_count=min_count, ask_count=ask_count)
+        )
 
-    def get_latest_request(self, oid: int, calldata: bytes, min_count: int, ask_count: int) -> oracle_query.QueryRequestSearchResponse:
+    def get_latest_request(
+        self, oid: int, calldata: bytes, min_count: int, ask_count: int
+    ) -> oracle_query.QueryRequestSearchResponse:
         return self.stubOracle.RequestSearch(
             oracle_query.QueryRequestSearchRequest(
                 oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count
             )
         )
-
-    # ! Haven't implemented yet
-
-    # def get_price_symbols(self, symbols: List[str], min_count: int, ask_count: int) -> oracle_type.PriceResult:
-    #     return self.stubOracle.RequestPrice(oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count))
-
-    # def get_request_evm_proof_by_request_id(self, request_id: int) -> EVMProof:

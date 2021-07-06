@@ -506,7 +506,6 @@ def test_encode_decode_muti():
 
     # struct 7
     encoded = obi.encode(test_structs[6], 6)
-    print(encoded.hex())
     assert "0000000261310000000261320f00000002613300000002613444000000026135000000026136c8" == encoded.hex()
     assert test_structs[6] == obi.decode(encoded, 6)
 
