@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Tuple
 
 from google.protobuf import any_pb2
+from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
 
@@ -16,7 +17,7 @@ class Transaction:
         account_num: int = None,
         sequence: int = None,
         chain_id: str = None,
-        fee: cosmos_tx_type.Fee = None,
+        fee: List[Coin] = None,
         gas: int = 200000,
         memo: str = "",
     ):
@@ -24,7 +25,7 @@ class Transaction:
         self.account_num = account_num
         self.sequence = sequence
         self.chain_id = chain_id
-        self.fee = fee
+        self.fee = cosmos_tx_type.Fee(amount=fee, gas_limit=gas)
         self.gas = gas
         self.memo = memo
 
@@ -54,12 +55,12 @@ class Transaction:
         self.chain_id = chain_id
         return self
 
-    def with_fee(self, fee: cosmos_tx_type.Fee) -> "Transaction":
-        self.fee = fee
+    def with_fee(self, fee: List[Coin]) -> "Transaction":
+        self.fee = cosmos_tx_type.Fee(amount=fee, gas_limit=self.fee.gas_limit)
         return self
 
     def with_gas(self, gas: int) -> "Transaction":
-        self.gas = gas
+        self.fee.gas_limit = gas
         return self
 
     def with_memo(self, memo: str) -> "Transaction":
@@ -68,7 +69,7 @@ class Transaction:
         self.memo = memo
         return self
 
-    def __generate_info__(self) -> [bytes, bytes]:
+    def __generate_info(self) -> Tuple[str, str]:
         body = cosmos_tx_type.TxBody(
             messages=self.msgs,
             memo=self.memo,
@@ -95,21 +96,17 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body_bytes, auth_info_bytes = self.__generate_info__()
+        body_bytes, auth_info_bytes = self.__generate_info()
 
-
-        sign_doc = cosmos_tx_type.SignDoc(
+        return cosmos_tx_type.SignDoc(
             body_bytes=body_bytes,
             auth_info_bytes=auth_info_bytes,
             chain_id=self.chain_id,
             account_number=self.account_num,
         )
-        return sign_doc
 
-    def get_tx_data(self, signature: bytes) -> bytes:
-
-        body_bytes, auth_info_bytes = self.__generate_info__()
+    def get_tx_data(self, signature: bytes) -> str:
+        body_bytes, auth_info_bytes = self.__generate_info()
 
         tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
-        tx_raw_bytes = tx_raw.SerializeToString()
-        return tx_raw_bytes
+        return tx_raw.SerializeToString()
