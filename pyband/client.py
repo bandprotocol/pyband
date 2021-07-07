@@ -1,8 +1,7 @@
 import grpc
 import time
-from .data import (ReferencePrice, ReferencePriceUpdated)
+from .data import ReferencePrice, ReferencePriceUpdated
 
-from google.protobuf import any_pb2
 from typing import List, Optional
 
 from pyband.proto.oracle.v1 import (
@@ -102,18 +101,16 @@ class Client:
         latest_block = self.get_latest_block()
         return latest_block.block.header.chain_id
 
-    def get_reference_data(
-        self, pairs: List[str], min_count: int, ask_count: int
-    ) -> List[ReferencePrice]:
+    def get_reference_data(self, pairs: List[str], min_count: int, ask_count: int) -> List[ReferencePrice]:
         if len(pairs) == 0:
             raise EmptyMsgError("Pairs are required")
 
-        symbols = set([symbol for pair in pairs for symbol in pair.split("/") if symbol != "USDT"])
+        symbols = set([symbol for pair in pairs for symbol in pair.split("/") if symbol != "USD"])
         price_data = self.stubOracle.RequestPrice(
             oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count)
         )
         symbol_dict = {
-            "USDT": {
+            "USD": {
                 "multiplier": 1000000000,
                 "px": 1000000000,
                 "resolve_time": int(time.time()),
@@ -128,9 +125,9 @@ class Client:
 
         results = []
         for pair in pairs:
-            [base_symbol, quote_symbol] = pair.split("/")            
+            [base_symbol, quote_symbol] = pair.split("/")
             results.append(
-                 ReferencePrice(
+                ReferencePrice(
                     pair,
                     rate=(int(symbol_dict[base_symbol]["px"]) * int(symbol_dict[quote_symbol]["multiplier"]))
                     / (int(symbol_dict[quote_symbol]["px"]) * int(symbol_dict[base_symbol]["multiplier"])),
@@ -140,7 +137,7 @@ class Client:
                     ),
                 )
             )
-        return(results)
+        return results
 
     def get_latest_request(
         self, oid: int, calldata: bytes, min_count: int, ask_count: int

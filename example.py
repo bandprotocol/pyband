@@ -2,10 +2,10 @@ import os
 
 from pyband.client import Client
 from pyband.transaction import Transaction
+from pyband.wallet import PrivateKey
+
 from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
-from google.protobuf.any_pb2 import Any
-from pyband.wallet import PrivateKey
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     sender = sender_addr.to_acc_bech32()
 
     # Step 3
-    msg = MsgRequestData(
+    request_msg = MsgRequestData(
         oracle_script_id=37,
         calldata=bytes.fromhex("0000000200000003425443000000034554480000000000000064"),
         ask_count=4,
@@ -32,8 +32,6 @@ def main():
         execute_gas=200000,
         sender=sender,
     )
-    any_msg = Any()
-    any_msg.Pack(msg, type_url_prefix="")
 
     account = c.get_account(sender)
     account_num = account.account_number
@@ -45,7 +43,7 @@ def main():
     # Step 4
     txn = (
         Transaction()
-        .with_messages(any_msg)
+        .with_messages(request_msg)
         .with_sequence(sequence)
         .with_account_num(account_num)
         .with_chain_id(chain_id)

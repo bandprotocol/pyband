@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from google.protobuf import any_pb2
+from google.protobuf import any_pb2, message
 from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
@@ -13,7 +13,7 @@ from pyband.exceptions import EmptyMsgError, NotFoundError, UndefinedError, Valu
 class Transaction:
     def __init__(
         self,
-        msgs: List[any_pb2.Any] = None,
+        msgs: List[message.Message] = None,
         account_num: int = None,
         sequence: int = None,
         chain_id: str = None,
@@ -21,7 +21,7 @@ class Transaction:
         gas: int = 200000,
         memo: str = "",
     ):
-        self.msgs = msgs or []
+        self.msgs = self.__convet_msgs(msgs) if msgs is not None else []
         self.account_num = account_num
         self.sequence = sequence
         self.chain_id = chain_id
@@ -29,8 +29,17 @@ class Transaction:
         self.gas = gas
         self.memo = memo
 
-    def with_messages(self, *msgs: any_pb2.Any) -> "Transaction":
-        self.msgs.extend(msgs)
+    @staticmethod
+    def __convert_msgs(msgs: List[message.Message]) -> List[any_pb2.Any]:
+        any_msgs: List[any_pb2.Any] = []
+        for msg in msgs:
+            any_msg = any_pb2.Any()
+            any_msg.Pack(msg, type_url_prefix="")
+            any_msgs.append(any_msg)
+        return any_msgs
+
+    def with_messages(self, *msgs: message.Message) -> "Transaction":
+        self.msgs.extend(self.__convert_msgs(msgs))
         return self
 
     def with_sender(self, client: Client, sender: str) -> "Transaction":
