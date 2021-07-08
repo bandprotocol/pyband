@@ -172,6 +172,13 @@ class OracleServicer(OracleServicerBase):
                         request_id=37653,
                         resolve_time=1625407289,
                     ),
+                    PriceResult(
+                        symbol="USDT",
+                        multiplier=1000000,
+                        px=1000000,
+                        request_id=37650,
+                        resolve_time=1625407281,
+                    ),
                 ]
             )
 
@@ -770,8 +777,8 @@ def test_get_chain_id(pyband_client):
 
 
 def test_get_reference_data_success(pyband_client):
-    [reference_data1, reference_data2] = pyband_client.get_reference_data(["ETH/USDT", "BTC/USDT"], 3, 4)
-    assert reference_data1.pair == "ETH/USDT" 
+    [reference_data1, reference_data2] = pyband_client.get_reference_data(["ETH/USD", "BTC/USDT"], 3, 4)
+    assert reference_data1.pair == "ETH/USD"
     assert reference_data2.pair == "BTC/USDT"
     assert reference_data1.rate == 2317.61
     assert reference_data2.rate == 35367.67
@@ -779,7 +786,6 @@ def test_get_reference_data_success(pyband_client):
     assert type(reference_data1.updated_at.quote) == int
     assert type(reference_data2.updated_at.base) == int
     assert type(reference_data2.updated_at.quote) == int
-
 
 
 # Assume that this input price will return price not found error

@@ -55,9 +55,8 @@ def test_get_sign_doc_success():
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
-    t = Transaction().with_messages(msg_any).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
+
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     assert t.get_sign_doc() == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
         auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\036",
@@ -78,16 +77,14 @@ def test_get_sign_data_with_sender_success(pyband_client):
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
-    fee = Fee(amount=[Coin(amount="0", denom="uband")], gas_limit=200000)
+    fee = [Coin(amount="0", denom="uband")]
 
     t = Transaction()
     t = (
-        t.with_messages(msg_any)
+        t.with_messages(msg)
         .with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
         .with_chain_id("bandchain")
-        .with_gas(500000)
+        .with_gas(50000)
         .with_fee(fee)
     )
 
@@ -122,10 +119,8 @@ def test_get_sign_doc_account_num_fail():
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
 
-    t = Transaction().with_messages(msg_any).with_sequence(30).with_chain_id("bandchain")
+    t = Transaction().with_messages(msg).with_sequence(30).with_chain_id("bandchain")
     with pytest.raises(UndefinedError, match="account_num should be defined"):
         t.get_sign_doc()
 
@@ -142,10 +137,8 @@ def test_get_sign_doc_sequence_undefined():
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
 
-    t = Transaction().with_messages(msg_any).with_account_num(100).with_chain_id("bandchain")
+    t = Transaction().with_messages(msg).with_account_num(100).with_chain_id("bandchain")
     with pytest.raises(UndefinedError, match="sequence should be defined"):
         t.get_sign_doc()
 
@@ -162,10 +155,8 @@ def test_get_sign_doc_chain_id_undefined():
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
 
-    t = Transaction().with_messages(msg_any).with_account_num(100).with_sequence(30)
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30)
 
     with pytest.raises(UndefinedError, match="chain_id should be defined"):
         t.get_sign_doc()
@@ -183,10 +174,8 @@ def test_invalid_memo():
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
 
-    t = Transaction().with_messages(msg_any).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     with pytest.raises(ValueTooLargeError, match="memo is too large"):
         t.with_memo(
             "This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world.This is the longest memo in the world. This is the longest memo in the world.This is the longest memo in the world."
@@ -210,10 +199,8 @@ def test_get_tx_data_success():
         execute_gas=50000,
         sender=sender,
     )
-    msg_any = Any()
-    msg_any.Pack(msg, type_url_prefix="")
 
-    t = Transaction().with_messages(msg_any).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
 
     sign_doc = t.get_sign_doc()
     signature = priv.sign(sign_doc.SerializeToString())
