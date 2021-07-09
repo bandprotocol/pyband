@@ -53,9 +53,9 @@ def main():
     )
 
     # Step 5
-    sign_doc = txn.get_sign_doc()
+    sign_doc = txn.get_sign_doc(public_key)
     signature = private_key.sign(sign_doc.SerializeToString())
-    tx_raw_bytes = txn.get_tx_data(signature)
+    tx_raw_bytes = txn.get_tx_data(signature, public_key)
 
     # Step 6
     print(c.send_tx_block_mode(tx_raw_bytes))

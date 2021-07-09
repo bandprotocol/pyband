@@ -8,7 +8,7 @@ from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
 from .exceptions import ConvertError, DecodeError
 
-from pyband.proto.cosmos.crypto.ed25519.keys_pb2 import PubKey as PubKeyProto
+from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
 BECH32_PUBKEY_ACC_PREFIX = "bandpub"
 BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
@@ -33,7 +33,7 @@ class PrivateKey:
         """Unsupported, please use from_mnemonic to initialize."""
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PrivateKey.from_mnemonic() to construct me")
-        self.signing_key = None
+        self.signing_key: SigningKey = None
 
     @classmethod
     def generate(cls, path=DEFAULT_DERIVATION_PATH) -> Tuple[str, "PrivateKey"]:
@@ -111,7 +111,7 @@ class PublicKey:
         """Unsupported, please do not contruct it directly."""
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PublicKey's factory methods to construct me")
-        self.verify_key = None
+        self.verify_key: VerifyingKey = None
 
     @classmethod
     def _from_bech32(cls, bech: str, prefix: str) -> "PublicKey":
@@ -144,7 +144,7 @@ class PublicKey:
         return self.verify_key.to_string("compressed").hex()
 
     def to_pubKey_proto(self) -> PubKeyProto:
-        return PubKeyProto(key = bytes.fromhex(self.to_hex()))
+        return PubKeyProto(key = self.verify_key.to_string("compressed"))
 
     def _to_bech32(self, prefix: str) -> str:
         five_bit_r = convertbits(
