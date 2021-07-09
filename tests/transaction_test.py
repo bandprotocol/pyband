@@ -59,7 +59,7 @@ def test_get_sign_doc_success():
     t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     assert t.get_sign_doc() == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\036",
+        auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\036\022\004\020\300\232\014",
         chain_id="bandchain",
         account_number=100,
     )
@@ -79,18 +79,17 @@ def test_get_sign_data_with_sender_success(pyband_client):
     )
     fee = [Coin(amount="0", denom="uband")]
 
-    t = Transaction()
     t = (
-        t.with_messages(msg)
+        Transaction()
+        .with_messages(msg)
         .with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
         .with_chain_id("bandchain")
         .with_gas(50000)
         .with_fee(fee)
     )
-
     assert t.get_sign_doc() == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\300\232\014",
+        auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\320\206\003",
         chain_id="bandchain",
         account_number=104,
     )
@@ -205,8 +204,6 @@ def test_get_tx_data_success():
     sign_doc = t.get_sign_doc()
     signature = priv.sign(sign_doc.SerializeToString())
     tx_raw_bytes = t.get_tx_data(signature)
-
-    assert (
-        tx_raw_bytes
-        == b"\n\x87\x01\n\x84\x01\n\x19/oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte\x12\n\n\x08\x12\x04\n\x02\x08\x01\x18\x1e\x1a@~\xcd^d\x99W\r\xffB\x83\x9d\xc2\x10\xd3$_\x8d`X\x83\xc9\xff\xbb\xbap\xf4\xdc\x9a\x9a\xe4\x92\x03M\x93#\xc1\xdem\xa4h\x02\x8f\x0e\xc5\xff\rH\xbe\x0c\x13\xfa\x852\x7f\xa3\x03\x0b\xa9\x87\xa4\xffn#H"
+    assert str(tx_raw_bytes) == str(
+        b'\n\x87\x01\n\x84\x01\n\x19/oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte\x12\x10\n\x08\x12\x04\n\x02\x08\x01\x18\x1e\x12\x04\x10\xc0\x9a\x0c\x1a@\xf3\xb5z\xa4\xea\xc6\x02\xff\\\x862x\x80\xba\xbf\xd8%t\x88X\xddrDY^"C\xd7\x9c\xf1\xb3\xbe]\xe7Z\x9a\x07\xedX\xf7r\xd4\xf8\x044\xf8\xda\x86\x80(~J\xb8\r\x12\x03\x17\xcb\x9f\xb95\xa4&\xa1'
     )

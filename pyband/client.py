@@ -66,8 +66,7 @@ class Client:
         except:
             return None
 
-    # return list of request, if no request, get from report
-    def get_request_id_by_tx_hash(self, tx_hash: bytes) -> List[str]:
+    def get_request_id_by_tx_hash(self, tx_hash: bytes) -> List[int]:
         tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash))
         request_ids = []
         for tx in tx.tx_response.logs:
@@ -77,7 +76,7 @@ class Client:
                 attr_id = [attr for attr in attrs if attr.key == "id"]
                 if len(attr_id) == 1:
                     request_id = attr_id[0].value
-                    request_ids.append(request_id)
+                    request_ids.append(int(request_id))
         if len(request_ids) == 0:
             raise NotFoundError("Request Id is not found")
         return request_ids

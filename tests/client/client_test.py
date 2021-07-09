@@ -1,6 +1,5 @@
 import pytest
 import grpc
-from pyband.data import ReferencePrice, ReferencePriceUpdated
 
 # Servicers
 from pyband.proto.oracle.v1.query_pb2_grpc import QueryServicer as OracleServicerBase
@@ -12,13 +11,11 @@ from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2_grpc import ServiceSe
 from pyband.proto.oracle.v1.oracle_pb2 import DataSource, OracleScript
 from pyband.proto.cosmos.auth.v1beta1.auth_pb2 import BaseAccount
 from pyband.proto.cosmos.auth.v1beta1.query_pb2 import (
-    QueryAccountRequest,
     QueryAccountResponse,
 )
 from pyband.proto.oracle.v1.query_pb2 import (
     QueryDataSourceRequest,
     QueryDataSourceResponse,
-    QueryOracleScriptRequest,
     QueryOracleScriptResponse,
     QueryRequestRequest,
     QueryRequestResponse,
@@ -32,7 +29,7 @@ from pyband.proto.oracle.v1.query_pb2 import (
 
 from pyband.proto.oracle.v1.oracle_pb2 import Result, Report, Request, RawReport, RawRequest, IBCChannel, PriceResult
 
-from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2 import GetBlockByHeightRequest, GetLatestBlockResponse
+from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2 import GetLatestBlockResponse
 
 from pyband.proto.tendermint.types.types_pb2 import (
     BlockID,
@@ -41,7 +38,6 @@ from pyband.proto.tendermint.types.types_pb2 import (
     Data,
     Commit,
     CommitSig,
-    BlockIDFlag,
 )
 
 from pyband.proto.tendermint.version.types_pb2 import Consensus
@@ -62,7 +58,7 @@ from pyband.proto.cosmos.tx.signing.v1beta1.signing_pb2 import SIGN_MODE_DIRECT
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.any_pb2 import Any
 
-from pyband.exceptions import NotFoundError, NotFoundError, EmptyMsgError
+from pyband.exceptions import NotFoundError, EmptyMsgError
 
 
 class OracleServicer(OracleServicerBase):
@@ -763,12 +759,12 @@ def test_get_account_invalid_input(pyband_client):
 
 def test_get_req_id_by_tx_hash_success(pyband_client):
     reqId = pyband_client.get_request_id_by_tx_hash("txhash")
-    assert reqId == ["154966"]
+    assert reqId == [154966]
 
 
 def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
     reqId = pyband_client.get_request_id_by_tx_hash(b"txhashRequestMultiId")
-    assert reqId == ["111111", "222222"]
+    assert reqId == [111111, 222222]
 
 
 def test_get_chain_id(pyband_client):

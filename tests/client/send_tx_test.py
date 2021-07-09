@@ -6,12 +6,8 @@ from pyband.proto.cosmos.tx.v1beta1.service_pb2_grpc import ServiceServicer as C
 # Types
 from pyband.proto.cosmos.tx.v1beta1.service_pb2 import BroadcastTxRequest, BroadcastTxResponse
 from pyband.proto.cosmos.base.abci.v1beta1.abci_pb2 import TxResponse, ABCIMessageLog, StringEvent, Attribute
-from pyband.proto.tendermint.abci.types_pb2 import RequestCheckTx, ResponseCheckTx
 
-# Google
-from google.protobuf.any_pb2 import Any
-
-# Success, if code = 0
+# Note: Success, if code = 0
 class CosmosTransactionServicer(CosmosTxServicerBase):
     def BroadcastTx(self, request: BroadcastTxRequest, context) -> BroadcastTxResponse:
         if request.tx_bytes == b"async_any_hash":
