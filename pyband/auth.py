@@ -3,7 +3,8 @@ import base64
 
 from .client import Client
 from .wallet import PublicKey
-from .data import Request, RequestInfo
+
+from pyband.proto.oracle.v1.oracle_pb2 import Request
 
 REQUEST_DURATION = 100
 
@@ -112,7 +113,7 @@ class Auth:
 
     def is_reporter(self, validator: str, reporter_pubkey: str) -> bool:
         """
-        Verify that an address is a registerd reporter for validator
+        Verify that an address is a registered reporter for validator
 
         :param validator: a validator on BandChain
         :param reporter_pubkey: a public key of reporter

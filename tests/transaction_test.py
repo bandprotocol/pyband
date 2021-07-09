@@ -14,11 +14,15 @@ from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
 from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import QueryServicer as QueryServicerBase
 
 
-MNEMONIC = "foo"
+MNEMONIC = "s"
 PRIVATE_KEY = PrivateKey.from_mnemonic(MNEMONIC)
+PUBLIC_KEY = PRIVATE_KEY.to_pubkey()
+ADDRESS = PUBLIC_KEY.to_address()
+SENDER = ADDRESS.to_acc_bech32()
 
 
 class QueryServicer(QueryServicerBase):
+
     def Account(self, request: QueryAccountRequest, context):
         return QueryAccountResponse(
             account=Any(
@@ -57,13 +61,12 @@ def test_get_sign_doc_success():
     )
 
     t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
-    assert t.get_sign_doc() == SignDoc(
+    assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\036\022\004\020\300\232\014",
+        auth_info_bytes=b"\nN\nD\n\035/cosmos.crypto.ed25519.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\036\022\004\020\300\232\014",
         chain_id="bandchain",
         account_number=100,
     )
-
 
 def test_get_sign_data_with_sender_success(pyband_client):
     msg = MsgRequestData(
@@ -87,13 +90,13 @@ def test_get_sign_data_with_sender_success(pyband_client):
         .with_gas(50000)
         .with_fee(fee)
     )
-    assert t.get_sign_doc() == SignDoc(
+
+    assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\n\010\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\320\206\003",
+        auth_info_bytes=b"\nN\nD\n\035/cosmos.crypto.ed25519.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\320\206\003",
         chain_id="bandchain",
         account_number=104,
     )
-
 
 def test_create_transaction_with_sender_fail(pyband_client):
     with pytest.raises(EmptyMsgError, match="messsage is empty, please use with_messages at least 1 message"):
@@ -103,7 +106,7 @@ def test_create_transaction_with_sender_fail(pyband_client):
 def test_get_sign_doc_msg_empty():
     t = Transaction().with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     with pytest.raises(EmptyMsgError, match="message is empty"):
-        t.get_sign_doc()
+        t.get_sign_doc(PUBLIC_KEY)
 
 
 def test_get_sign_doc_account_num_fail():
@@ -121,7 +124,7 @@ def test_get_sign_doc_account_num_fail():
 
     t = Transaction().with_messages(msg).with_sequence(30).with_chain_id("bandchain")
     with pytest.raises(UndefinedError, match="account_num should be defined"):
-        t.get_sign_doc()
+        t.get_sign_doc(PUBLIC_KEY)
 
 
 def test_get_sign_doc_sequence_undefined():
@@ -139,7 +142,7 @@ def test_get_sign_doc_sequence_undefined():
 
     t = Transaction().with_messages(msg).with_account_num(100).with_chain_id("bandchain")
     with pytest.raises(UndefinedError, match="sequence should be defined"):
-        t.get_sign_doc()
+        t.get_sign_doc(PUBLIC_KEY)
 
 
 def test_get_sign_doc_chain_id_undefined():
@@ -158,7 +161,7 @@ def test_get_sign_doc_chain_id_undefined():
     t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30)
 
     with pytest.raises(UndefinedError, match="chain_id should be defined"):
-        t.get_sign_doc()
+        t.get_sign_doc(PUBLIC_KEY)
 
 
 def test_invalid_memo():
@@ -182,11 +185,6 @@ def test_invalid_memo():
 
 
 def test_get_tx_data_success():
-    priv = PrivateKey.from_mnemonic("s")
-    pubkey = priv.to_pubkey()
-    addr = pubkey.to_address()
-    sender = addr.to_acc_bech32()
-
     msg = MsgRequestData(
         oracle_script_id=1,
         calldata=bytes.fromhex("000000034254430000000000000001"),
@@ -196,14 +194,13 @@ def test_get_tx_data_success():
         fee_limit=[Coin(amount="100", denom="uband")],
         prepare_gas=30000,
         execute_gas=50000,
-        sender=sender,
+        sender=SENDER,
     )
 
     t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
 
-    sign_doc = t.get_sign_doc()
-    signature = priv.sign(sign_doc.SerializeToString())
-    tx_raw_bytes = t.get_tx_data(signature)
-    assert str(tx_raw_bytes) == str(
-        b'\n\x87\x01\n\x84\x01\n\x19/oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte\x12\x10\n\x08\x12\x04\n\x02\x08\x01\x18\x1e\x12\x04\x10\xc0\x9a\x0c\x1a@\xf3\xb5z\xa4\xea\xc6\x02\xff\\\x862x\x80\xba\xbf\xd8%t\x88X\xddrDY^"C\xd7\x9c\xf1\xb3\xbe]\xe7Z\x9a\x07\xedX\xf7r\xd4\xf8\x044\xf8\xda\x86\x80(~J\xb8\r\x12\x03\x17\xcb\x9f\xb95\xa4&\xa1'
-    )
+    sign_doc = t.get_sign_doc(PUBLIC_KEY)
+    signature = PRIVATE_KEY.sign(sign_doc.SerializeToString())
+    tx_raw_bytes = t.get_tx_data(signature, PUBLIC_KEY)
+    print(tx_raw_bytes)
+    assert tx_raw_bytes == b"\n\x87\x01\n\x84\x01\n\x19/oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte\x12V\nN\nD\n\x1d/cosmos.crypto.ed25519.PubKey\x12#\n!\x03\xfep\x8b\xdafRO\xd2\xc6\xbc\xe9\x06\x82\xe3\x85U\xa8Q\xe0=*\xeeOb\x9b\x05\xde\x90\xf5\x1e\xd9\xbc\x12\x04\n\x02\x08\x01\x18\x1e\x12\x04\x10\xc0\x9a\x0c\x1a@n\xdb\x01\xa2\x8a\xb1\x9b\xda4nc\xa5S\x84\xff\xd9\x1d\xe9\x91^\xe5%\xc6\x17B4\r\x99\xd1\xe4\x04\x08Z\x1d\x80\xbd\xa0P\xa7\xb6\x10\xc0q,\xbc \xa5u\xf8\x02\xec\xa7\xa4.\xba\xc8\x95,\xfc\x8e\xcf\xec\xf2\x13"

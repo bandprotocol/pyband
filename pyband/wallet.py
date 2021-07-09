@@ -8,6 +8,8 @@ from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
 from .exceptions import ConvertError, DecodeError
 
+from pyband.proto.cosmos.crypto.ed25519.keys_pb2 import PubKey as PubKeyProto
+
 BECH32_PUBKEY_ACC_PREFIX = "bandpub"
 BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
 BECH32_PUBKEY_CONS_PREFIX = "bandvalconspub"
@@ -21,7 +23,7 @@ DEFAULT_DERIVATION_PATH = "m/44'/494'/0'/0/0"
 
 class PrivateKey:
     """
-    Class for wrapping SigningKey using for signature creation and public key derivation.
+    Class for wrapping SigningKey that is used for signature creation and public key derivation.
 
     :ivar signing_key: the ecdsa SigningKey instance
     :vartype signing_key: ecdsa.SigningKey
@@ -87,7 +89,7 @@ class PrivateKey:
 
     def sign(self, msg: bytes) -> bytes:
         """
-        Sign and the given message using the edcsa sign_deterministic function.
+        Sign the given message using the edcsa sign_deterministic function.
 
         :param msg: the message that will be hashed and signed
 
@@ -98,7 +100,7 @@ class PrivateKey:
 
 class PublicKey:
     """
-    Class for wraping VerifyKey using for signature verification. Adding method to encode/decode
+    Class for warpping VerifyKey using for signature verification. Adding method to encode/decode
     to Bech32 format.
 
     :ivar verify_key: the ecdsa VerifyingKey instance
@@ -134,11 +136,15 @@ class PublicKey:
     def from_cons_bech32(cls, bech: str) -> "PublicKey":
         return cls._from_bech32(bech, BECH32_PUBKEY_CONS_PREFIX)
 
+        
     def to_hex(self) -> str:
         """
-        Return a hex representation of verify key.
+        Return a hex representation of verified key.
         """
         return self.verify_key.to_string("compressed").hex()
+
+    def to_pubKey_proto(self) -> PubKeyProto:
+        return PubKeyProto(key = bytes.fromhex(self.to_hex()))
 
     def _to_bech32(self, prefix: str) -> str:
         five_bit_r = convertbits(
@@ -169,7 +175,7 @@ class PublicKey:
 
     def verify(self, msg: bytes, sig: bytes) -> bool:
         """
-        Verify a signature made over provided data.
+        Verify a signature made from the given message.
 
         :param msg: data signed by the `signature`, will be hashed using sha256 function
         :param sig: encoding of the signature

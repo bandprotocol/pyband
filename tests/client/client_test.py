@@ -10,9 +10,7 @@ from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2_grpc import ServiceSe
 # Types
 from pyband.proto.oracle.v1.oracle_pb2 import DataSource, OracleScript
 from pyband.proto.cosmos.auth.v1beta1.auth_pb2 import BaseAccount
-from pyband.proto.cosmos.auth.v1beta1.query_pb2 import (
-    QueryAccountResponse,
-)
+from pyband.proto.cosmos.auth.v1beta1.query_pb2 import QueryAccountResponse
 from pyband.proto.oracle.v1.query_pb2 import (
     QueryDataSourceRequest,
     QueryDataSourceResponse,
