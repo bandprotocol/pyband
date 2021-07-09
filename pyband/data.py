@@ -12,46 +12,6 @@ EpochTime = NewType("EpochTime", int)
 
 
 @dataclass
-class Coin(object):
-    amount: int
-    denom: str
-
-    @classmethod
-    def from_json(cls, coin) -> "Coin":
-        return cls(int(coin["amount"]), coin["denom"])
-
-    def as_json(self) -> dict:
-        return {"amount": str(self.amount), "denom": self.denom}
-
-    def validate(self) -> bool:
-        if self.amount < 0:
-            raise NegativeIntegerError("Expect amount more than 0")
-
-        if len(self.denom) == 0:
-            raise ValueError("Expect denom")
-
-        return True
-
-
-@dataclass
-class DataSource(object):
-    owner: Address
-    name: str = ""
-    description: str = ""
-    filename: str = ""
-
-
-@dataclass
-class OracleScript(object):
-    owner: Address
-    name: str = ""
-    description: str = ""
-    filename: str = ""
-    schema: str = ""
-    source_code_url: str = ""
-
-
-@dataclass
 class RawRequest(object):
     data_source_id: int
     external_id: int = 0
@@ -122,29 +82,6 @@ class Account(object):
 
 
 @dataclass
-class TransactionSyncMode(object):
-    tx_hash: HexBytes
-    code: int
-    error_log: Optional[str]
-
-
-@dataclass
-class TransactionAsyncMode(object):
-    tx_hash: HexBytes
-
-
-@dataclass
-class TransactionBlockMode(object):
-    height: int
-    tx_hash: HexBytes
-    gas_wanted: int
-    gas_used: int
-    code: int
-    log: List[dict]
-    error_log: Optional[str]
-
-
-@dataclass
 class BlockHeaderInfo(object):
     chain_id: str
     height: int
@@ -193,15 +130,3 @@ class ReferencePrice(object):
 class EVMProof(object):
     json_proof: dict
     evm_proof_bytes: HexBytes
-
-
-DACITE_CONFIG = Config(
-    type_hooks={
-        int: int,
-        bytes: base64.b64decode,
-        HexBytes: bytes.fromhex,
-        EpochTime: parse_epoch_time,
-        Address: Address.from_acc_bech32,
-        Coin: Coin.from_json,
-    }
-)
