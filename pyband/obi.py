@@ -1,5 +1,5 @@
 from typing import Any, Tuple
-from .exceptions import SchemaError, DecodeError
+from pyband.exceptions import SchemaError, DecodeError
 
 
 class PyObiSpec(object):

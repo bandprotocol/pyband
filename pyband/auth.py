@@ -1,8 +1,8 @@
 import json
 import base64
 
-from .client import Client
-from .wallet import PublicKey
+from pyband.client import Client
+from pyband.wallet import PublicKey
 
 from pyband.proto.oracle.v1.oracle_pb2 import Request
 

@@ -16,7 +16,7 @@ def main():
     # Step 2
     MNEMONIC = os.getenv("MNEMONIC")
     private_key = PrivateKey.from_mnemonic(MNEMONIC)
-    public_key = private_key.to_pubkey()
+    public_key = private_key.to_public_key()
     sender_addr = public_key.to_address()
     sender = sender_addr.to_acc_bech32()
 

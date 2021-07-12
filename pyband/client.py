@@ -1,6 +1,6 @@
 import grpc
 import time
-from .data import ReferencePrice, ReferencePriceUpdated
+from pyband.data import ReferencePrice, ReferencePriceUpdated
 
 from typing import List, Optional
 

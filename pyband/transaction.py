@@ -9,7 +9,6 @@ from pyband.client import Client
 from pyband.constant import MAX_MEMO_CHARACTERS
 from pyband.exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
 
-from google.protobuf.any_pb2 import Any
 
 from .wallet import PublicKey
 class Transaction:
@@ -32,10 +31,10 @@ class Transaction:
         self.memo = memo
 
     @staticmethod
-    def __convert_msgs(msgs: List[message.Message]) -> List[Any]:
-        any_msgs: List[Any] = []
+    def __convert_msgs(msgs: List[message.Message]) -> List[any_pb2.Any]:
+        any_msgs: List[any_pb2.Any] = []
         for msg in msgs:
-            any_msg = Any()
+            any_msg = any_pb2.Any()
             any_msg.Pack(msg, type_url_prefix="")
             any_msgs.append(any_msg)
         return any_msgs
@@ -80,24 +79,28 @@ class Transaction:
         self.memo = memo
         return self
 
-    def __generate_info(self, publicKey: PublicKey) -> Tuple[str, str]:
+    def __generate_info(self, public_key: PublicKey = None) -> Tuple[str, str]:
         body = cosmos_tx_type.TxBody(
             messages=self.msgs,
             memo=self.memo,
         )
-        
-        any_publicKey = Any()
-        any_publicKey.Pack(publicKey.to_pubKey_proto(), type_url_prefix="")
-
+       
         body_bytes = body.SerializeToString()
         mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
-        signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence, public_key=any_publicKey)
+
+        if (public_key):
+            any_public_key = any_pb2.Any()
+            any_public_key.Pack(public_key.to_public_key_proto(), type_url_prefix="")
+            signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence, public_key=any_public_key)
+        else:
+            signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
+
         auth_info = cosmos_tx_type.AuthInfo(signer_infos=[signer_info], fee=self.fee)
         auth_info_bytes = auth_info.SerializeToString()
 
         return body_bytes, auth_info_bytes
 
-    def get_sign_doc(self, publicKey: PublicKey) -> cosmos_tx_type.SignDoc:
+    def get_sign_doc(self, public_key: PublicKey = None) -> cosmos_tx_type.SignDoc:
         if len(self.msgs) == 0:
             raise EmptyMsgError("message is empty")
 
@@ -110,7 +113,7 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body_bytes, auth_info_bytes = self.__generate_info(publicKey)
+        body_bytes, auth_info_bytes = self.__generate_info(public_key)
 
         return cosmos_tx_type.SignDoc(
             body_bytes=body_bytes,
@@ -119,8 +122,8 @@ class Transaction:
             account_number=self.account_num,
         )
 
-    def get_tx_data(self, signature: bytes, publicKey: PublicKey) -> str:
-        body_bytes, auth_info_bytes = self.__generate_info(publicKey)
+    def get_tx_data(self, signature: bytes, public_key: PublicKey = None) -> str:
+        body_bytes, auth_info_bytes = self.__generate_info(public_key)
 
         tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
         return tx_raw.SerializeToString()

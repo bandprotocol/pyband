@@ -6,7 +6,7 @@ from bip32 import BIP32
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, BadSignatureError
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
-from .exceptions import ConvertError, DecodeError
+from pyband.exceptions import ConvertError, DecodeError
 
 from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
@@ -77,15 +77,15 @@ class PrivateKey:
         """
         return self.signing_key.to_string().hex()
 
-    def to_pubkey(self) -> "PublicKey":
+    def to_public_key(self) -> "PublicKey":
         """
         Return the PublicKey associated with this private key.
 
         :return: a PublicKey that can be used to verify the signatures made with this PrivateKey
         """
-        pubkey = PublicKey(_error_do_not_use_init_directly=True)
-        pubkey.verify_key = self.signing_key.get_verifying_key()
-        return pubkey
+        public_key = PublicKey(_error_do_not_use_init_directly=True)
+        public_key.verify_key = self.signing_key.get_verifying_key()
+        return public_key
 
     def sign(self, msg: bytes) -> bytes:
         """
@@ -143,7 +143,7 @@ class PublicKey:
         """
         return self.verify_key.to_string("compressed").hex()
 
-    def to_pubKey_proto(self) -> PubKeyProto:
+    def to_public_key_proto(self) -> PubKeyProto:
         return PubKeyProto(key = self.verify_key.to_string("compressed"))
 
     def _to_bech32(self, prefix: str) -> str:
