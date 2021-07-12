@@ -63,7 +63,7 @@ def test_get_sign_doc_success():
     t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\nN\nD\n\035/cosmos.crypto.ed25519.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\036\022\004\020\300\232\014",
+        auth_info_bytes=b"\nP\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\036\022\004\020\300\232\014",
         chain_id="bandchain",
         account_number=100,
     )
@@ -90,10 +90,9 @@ def test_get_sign_data_with_sender_success(pyband_client):
         .with_gas(50000)
         .with_fee(fee)
     )
-
     assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\nN\nD\n\035/cosmos.crypto.ed25519.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\320\206\003",
+        auth_info_bytes=b"\nP\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\320\206\003",
         chain_id="bandchain",
         account_number=104,
     )
@@ -202,5 +201,4 @@ def test_get_tx_data_success():
     sign_doc = t.get_sign_doc(PUBLIC_KEY)
     signature = PRIVATE_KEY.sign(sign_doc.SerializeToString())
     tx_raw_bytes = t.get_tx_data(signature, PUBLIC_KEY)
-    print(tx_raw_bytes)
-    assert tx_raw_bytes == b"\n\x87\x01\n\x84\x01\n\x19/oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte\x12V\nN\nD\n\x1d/cosmos.crypto.ed25519.PubKey\x12#\n!\x03\xfep\x8b\xdafRO\xd2\xc6\xbc\xe9\x06\x82\xe3\x85U\xa8Q\xe0=*\xeeOb\x9b\x05\xde\x90\xf5\x1e\xd9\xbc\x12\x04\n\x02\x08\x01\x18\x1e\x12\x04\x10\xc0\x9a\x0c\x1a@n\xdb\x01\xa2\x8a\xb1\x9b\xda4nc\xa5S\x84\xff\xd9\x1d\xe9\x91^\xe5%\xc6\x17B4\r\x99\xd1\xe4\x04\x08Z\x1d\x80\xbd\xa0P\xa7\xb6\x10\xc0q,\xbc \xa5u\xf8\x02\xec\xa7\xa4.\xba\xc8\x95,\xfc\x8e\xcf\xec\xf2\x13"
+    assert tx_raw_bytes == b"\n\x87\x01\n\x84\x01\n\x19/oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte\x12X\nP\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\xfep\x8b\xdafRO\xd2\xc6\xbc\xe9\x06\x82\xe3\x85U\xa8Q\xe0=*\xeeOb\x9b\x05\xde\x90\xf5\x1e\xd9\xbc\x12\x04\n\x02\x08\x01\x18\x1e\x12\x04\x10\xc0\x9a\x0c\x1a@/\xa2\xe7\xb3e\xf8\x13\x7f$\x162q\x11\xbaX\xa0\x93\xbeWeO\xc7~\x0e3\xe5F\xd0\xbd\xf1\xd5\xe1k\xefnxuv\x14l?\x8a3\x06Z_7\x93\xd7\xcc\xbf\xc0\xa2S\xff\xaa\x19\xfd}\xddO\xe3\xd9\xb1"
