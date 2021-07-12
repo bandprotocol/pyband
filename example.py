@@ -6,6 +6,7 @@ from pyband.wallet import PrivateKey
 
 from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
+from google.protobuf.json_format import MessageToJson
 
 
 def main():
@@ -58,7 +59,9 @@ def main():
     tx_raw_bytes = txn.get_tx_data(signature, public_key)
 
     # Step 6
-    print(c.send_tx_block_mode(tx_raw_bytes))
+    tx_block = c.send_tx_block_mode(tx_raw_bytes)
+    # Converting to JSON
+    print(MessageToJson(tx_block))
 
 
 if __name__ == "__main__":
