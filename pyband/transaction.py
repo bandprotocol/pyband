@@ -8,9 +8,9 @@ from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
 from pyband.client import Client
 from pyband.constant import MAX_MEMO_CHARACTERS
 from pyband.exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
+from pyband.wallet import PublicKey
 
 
-from .wallet import PublicKey
 class Transaction:
     def __init__(
         self,
@@ -84,14 +84,16 @@ class Transaction:
             messages=self.msgs,
             memo=self.memo,
         )
-       
+
         body_bytes = body.SerializeToString()
         mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
 
-        if (public_key):
+        if public_key:
             any_public_key = any_pb2.Any()
             any_public_key.Pack(public_key.to_public_key_proto(), type_url_prefix="")
-            signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence, public_key=any_public_key)
+            signer_info = cosmos_tx_type.SignerInfo(
+                mode_info=mode_info, sequence=self.sequence, public_key=any_public_key
+            )
         else:
             signer_info = cosmos_tx_type.SignerInfo(mode_info=mode_info, sequence=self.sequence)
 
