@@ -136,7 +136,6 @@ class PublicKey:
     def from_cons_bech32(cls, bech: str) -> "PublicKey":
         return cls._from_bech32(bech, BECH32_PUBKEY_CONS_PREFIX)
 
-        
     def to_hex(self) -> str:
         """
         Return a hex representation of verified key.
@@ -144,7 +143,7 @@ class PublicKey:
         return self.verify_key.to_string("compressed").hex()
 
     def to_public_key_proto(self) -> PubKeyProto:
-        return PubKeyProto(key = self.verify_key.to_string("compressed"))
+        return PubKeyProto(key=self.verify_key.to_string("compressed"))
 
     def _to_bech32(self, prefix: str) -> str:
         five_bit_r = convertbits(
