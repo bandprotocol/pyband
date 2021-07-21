@@ -1,6 +1,6 @@
 <div align="center">
-  <h2>PyBand</h2>
-  <blockquote>BandChain Python Library</blockquote>
+    <h2>PyBand</h2>
+    <blockquote>BandChain Python Library</blockquote>
 </div>
 
 Pyband is a library that is used for interacting with BandChain using `gRPC` protocol.
@@ -37,23 +37,23 @@ from pyband import Client, PyObi
 
 
 def main():
-  grpc_url = "rpc-laozi-testnet2.bandchain.org:9090"
-  c = Client(grpc_url)
+    grpc_url = "rpc-laozi-testnet2.bandchain.org:9090"
+    c = Client(grpc_url)
 
-  oid = 37
-  calldata = "000000060000000342544300000003455448000000034d495200000003414e4300000004444f4745000000044c554e41000000003b9aca00"
-  min_count = 3
-  ask_count = 6
+    oid = 37
+    calldata = "000000060000000342544300000003455448000000034d495200000003414e4300000004444f4745000000044c554e41000000003b9aca00"
+    min_count = 3
+    ask_count = 6
 
-  req_info = c.get_latest_request(oid, calldata, min_count, ask_count)
-  oracle_script = c.get_oracle_script(oid)
-  obi = PyObi(oracle_script.schema)
-  
-  # Convert the calldata to readable syntax
-  print(obi.decode_input(bytes.fromhex(calldata)))
-  
-  # Showing the result
-  print(obi.decode_output(req_info.request.result.result))
+    req_info = c.get_latest_request(oid, calldata, min_count, ask_count)
+    oracle_script = c.get_oracle_script(oid)
+    obi = PyObi(oracle_script.schema)
+
+    # Convert the calldata to readable syntax
+    print(obi.decode_input(bytes.fromhex(calldata)))
+
+    # Showing the result
+    print(obi.decode_output(req_info.request.result.result))
 
 if __name__ == "__main__":
     main()
