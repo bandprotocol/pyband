@@ -100,7 +100,7 @@ class PrivateKey:
 
 class PublicKey:
     """
-    Class for warpping VerifyKey using for signature verification. Adding method to encode/decode
+    Class for wrapping VerifyKey using for signature verification. Adding method to encode/decode
     to Bech32 format.
 
     :ivar verify_key: the ecdsa VerifyingKey instance
