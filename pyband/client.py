@@ -1,213 +1,143 @@
-import requests
+import grpc
 import time
 
-from dacite import from_dict
 from typing import List, Optional
-from .wallet import Address
-from .exceptions import EmptyRequestMsgError, QueryError
-from .data import (
-    Account,
-    Block,
-    DataSource,
-    OracleScript,
-    HexBytes,
-    RequestInfo,
-    DACITE_CONFIG,
-    TransactionSyncMode,
-    TransactionAsyncMode,
-    TransactionBlockMode,
-    ReferencePrice,
-    ReferencePriceUpdated,
-    EVMProof,
+
+from pyband.data import ReferencePrice, ReferencePriceUpdated
+from pyband.exceptions import NotFoundError, EmptyMsgError
+from pyband.proto.oracle.v1 import (
+    query_pb2_grpc as oracle_query_grpc,
+    query_pb2 as oracle_query,
+    oracle_pb2 as oracle_type,
+    tx_pb2_grpc as tx_oracle_grpc,
+)
+from pyband.proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
+from pyband.proto.cosmos.base.tendermint.v1beta1 import (
+    query_pb2_grpc as tendermint_query_grpc,
+    query_pb2 as tendermint_query,
+)
+from pyband.proto.cosmos.auth.v1beta1 import (
+    query_pb2_grpc as auth_query_grpc,
+    query_pb2 as auth_query,
+    auth_pb2 as auth_type,
+)
+from pyband.proto.cosmos.tx.v1beta1 import (
+    service_pb2_grpc as tx_service_grpc,
+    service_pb2 as tx_service,
 )
 
 
-class Client(object):
-    def __init__(self, rpc_url: str, timeout: Optional[int] = None) -> None:
-        self.rpc_url = rpc_url
-        self.timeout = timeout
+class Client:
+    def __init__(self, grpc_endpoint: str):
+        channel = grpc.insecure_channel(grpc_endpoint)
+        self.stubOracle = oracle_query_grpc.QueryStub(channel)
+        self.stubCosmosTendermint = tendermint_query_grpc.ServiceStub(channel)
+        self.stubAuth = auth_query_grpc.QueryStub(channel)
+        self.stubTx = tx_service_grpc.ServiceStub(channel)
+        self.stubOracleTx = tx_oracle_grpc.MsgStub(channel)
 
-    def _get(self, path, **kwargs):
-        r = requests.get(self.rpc_url + path, timeout=self.timeout, **kwargs)
-        r.raise_for_status()
-        return r.json()
+    def get_data_source(self, id: int) -> oracle_type.DataSource:
+        return self.stubOracle.DataSource(oracle_query.QueryDataSourceRequest(data_source_id=id)).data_source
 
-    def _post(self, path, **kwargs):
-        r = requests.post(self.rpc_url + path, timeout=self.timeout, **kwargs)
-        r.raise_for_status()
-        return r.json()
+    def get_oracle_script(self, id: int) -> oracle_type.OracleScript:
+        return self.stubOracle.OracleScript(oracle_query.QueryOracleScriptRequest(oracle_script_id=id)).oracle_script
 
-    def _get_result(self, path, **kwargs):
-        return self._get(path, **kwargs)["result"]
+    def get_request_by_id(self, id: int) -> oracle_query.QueryRequestResponse:
+        return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
 
-    def send_tx_sync_mode(self, data: dict) -> TransactionSyncMode:
-        data = self._post("/txs", json={"tx": data, "mode": "sync"})
-        if "code" in data:
-            code = int(data["code"])
-            error_log = data.get("raw_log")
-        else:
-            code = 0
-            error_log = None
+    def get_reporters(self, validator: str) -> oracle_type.ReportersPerValidator.reporters:
+        return self.stubOracle.Reporters(oracle_query.QueryReportersRequest(validator_address=validator)).reporter
 
-        return TransactionSyncMode(
-            tx_hash=HexBytes(bytes.fromhex(data["txhash"])),
-            code=code,
-            error_log=error_log,
-        )
+    def get_latest_block(self) -> tendermint_query.GetLatestBlockResponse:
+        return self.stubCosmosTendermint.GetLatestBlock(tendermint_query.GetLatestBlockRequest())
 
-    def send_tx_async_mode(self, data: dict) -> TransactionAsyncMode:
-        data = self._post("/txs", json={"tx": data, "mode": "async"})
-        return TransactionAsyncMode(tx_hash=HexBytes(bytes.fromhex(data["txhash"])))
-
-    def send_tx_block_mode(self, data: dict) -> TransactionBlockMode:
-        data = self._post("/txs", json={"tx": data, "mode": "block"})
-        if "code" in data:
-            code = int(data["code"])
-            error_log = data.get("raw_log")
-            log = []
-        else:
-            code = 0
-            error_log = None
-            log = data["logs"]
-
-        return TransactionBlockMode(
-            height=int(data["height"]),
-            tx_hash=HexBytes(bytes.fromhex(data["txhash"])),
-            gas_wanted=int(data["gas_wanted"]),
-            gas_used=int(data["gas_wanted"]),
-            code=code,
-            log=log,
-            error_log=error_log,
-        )
-
-    def get_chain_id(self) -> str:
-        return self._get("/bandchain/chain_id")["chain_id"]
-
-    def get_latest_block(self) -> Block:
-        return from_dict(
-            data_class=Block,
-            data=self._get("/blocks/latest"),
-            config=DACITE_CONFIG,
-        )
-
-    def get_account(self, address: Address) -> Optional[Account]:
+    def get_account(self, address: str) -> Optional[auth_type.BaseAccount]:
         try:
-            data = self._get("/cosmos/auth/v1beta1/accounts/{}".format(address.to_acc_bech32()))["account"]
-            return from_dict(
-                data_class=Account,
-                data=data,
-                config=DACITE_CONFIG,
-            )
+            account_any = self.stubAuth.Account(auth_query.QueryAccountRequest(address=address)).account
+            account = auth_type.BaseAccount()
+            if account_any.Is(account.DESCRIPTOR):
+                account_any.Unpack(account)
+                return account
         except:
             return None
 
-    def get_data_source(self, id: int) -> DataSource:
-        return from_dict(
-            data_class=DataSource,
-            data=self._get_result("/oracle/data_sources/{}".format(id)),
-            config=DACITE_CONFIG,
-        )
-
-    def get_oracle_script(self, id: int) -> OracleScript:
-        return from_dict(
-            data_class=OracleScript,
-            data=self._get_result("/oracle/oracle_scripts/{}".format(id)),
-            config=DACITE_CONFIG,
-        )
-
-    def get_request_by_id(self, id: int) -> RequestInfo:
-        return from_dict(
-            data_class=RequestInfo,
-            data=self._get("/oracle/v1/requests/{}".format(id)),
-            config=DACITE_CONFIG,
-        )
-
-    def get_latest_request(self, oid: int, calldata: bytes, min_count: int, ask_count: int) -> RequestInfo:
-        return from_dict(
-            data_class=RequestInfo,
-            data=self._get_result(
-                "/oracle/request_search",
-                params={
-                    "oid": oid,
-                    "calldata": calldata.hex(),
-                    "min_count": min_count,
-                    "ask_count": ask_count,
-                },
-            ),
-            config=DACITE_CONFIG,
-        )
-
-    def get_reporters(self, validator: Address) -> List[Address]:
-        data = self._get_result("/oracle/reporters/{}".format(validator.to_val_bech32()))
-        return [Address.from_acc_bech32(bech) for bech in data]
-
-    def get_price_symbols(self, min_count: int, ask_count: int) -> List[str]:
-        return self._get_result(
-            "/oracle/price_symbols",
-            params={
-                "min_count": min_count,
-                "ask_count": ask_count,
-            },
-        )
-
-    def get_request_id_by_tx_hash(self, tx_hash: HexBytes) -> List[int]:
-        msgs = self._get("/txs/{}".format(tx_hash.hex()))["logs"]
+    def get_request_id_by_tx_hash(self, tx_hash: bytes) -> List[int]:
+        tx = self.stubTx.GetTx(tx_service.GetTxRequest(hash=tx_hash))
         request_ids = []
-        for msg in msgs:
-            request_event = [event for event in msg["events"] if event["type"] == "request"]
+        for tx in tx.tx_response.logs:
+            request_event = [event for event in tx.events if event.type == "request" or event.type == "report"]
             if len(request_event) == 1:
-                attrs = request_event[0]["attributes"]
-                attr_id = [attr for attr in attrs if attr["key"] == "id"]
+                attrs = request_event[0].attributes
+                attr_id = [attr for attr in attrs if attr.key == "id"]
                 if len(attr_id) == 1:
-                    request_id = attr_id[0]["value"]
+                    request_id = attr_id[0].value
                     request_ids.append(int(request_id))
         if len(request_ids) == 0:
-            raise EmptyRequestMsgError("There is no request message in this tx")
+            raise NotFoundError("Request Id is not found")
         return request_ids
 
+    def send_tx_sync_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_SYNC)
+        ).tx_response
+
+    def send_tx_async_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_ASYNC)
+        ).tx_response
+
+    def send_tx_block_mode(self, tx_byte: bytes) -> abci_type.TxResponse:
+        return self.stubTx.BroadcastTx(
+            tx_service.BroadcastTxRequest(tx_bytes=tx_byte, mode=tx_service.BroadcastMode.BROADCAST_MODE_BLOCK)
+        ).tx_response
+
+    def get_chain_id(self) -> str:
+        latest_block = self.get_latest_block()
+        return latest_block.block.header.chain_id
+
     def get_reference_data(self, pairs: List[str], min_count: int, ask_count: int) -> List[ReferencePrice]:
+        if len(pairs) == 0:
+            raise EmptyMsgError("Pairs are required")
+
         symbols = set([symbol for pair in pairs for symbol in pair.split("/") if symbol != "USD"])
-        data = self._post(
-            "/oracle/request_prices",
-            json={
-                "symbols": list(symbols),
-                "min_count": min_count,
-                "ask_count": ask_count,
-            },
+        price_data = self.stubOracle.RequestPrice(
+            oracle_query.QueryRequestPriceRequest(symbols=symbols, min_count=min_count, ask_count=ask_count)
         )
-
-        try:
-            price_data = data["result"]
-            symbol_dict = {
-                "USD": {
-                    "multiplier": 1000000000,
-                    "px": 1000000000,
-                    "resolve_time": int(time.time()),
-                }
+        symbol_dict = {
+            "USD": {
+                "multiplier": 1000000000,
+                "px": 1000000000,
+                "resolve_time": int(time.time()),
             }
-            for price in price_data:
-                symbol_dict[price["symbol"]] = price
+        }
+        for price in price_data.price_results:
+            symbol_dict[price.symbol] = {
+                "multiplier": price.multiplier,
+                "px": price.px,
+                "resolve_time": price.resolve_time,
+            }
 
-            results = []
-            for pair in pairs:
-                [base_symbol, quote_symbol] = pair.split("/")
-                results.append(
-                    ReferencePrice(
-                        pair,
-                        rate=(int(symbol_dict[base_symbol]["px"]) * int(symbol_dict[quote_symbol]["multiplier"]))
-                        / (int(symbol_dict[quote_symbol]["px"]) * int(symbol_dict[base_symbol]["multiplier"])),
-                        updated_at=ReferencePriceUpdated(
-                            int(symbol_dict[base_symbol]["resolve_time"]),
-                            int(symbol_dict[quote_symbol]["resolve_time"]),
-                        ),
-                    )
+        results = []
+        for pair in pairs:
+            [base_symbol, quote_symbol] = pair.split("/")
+            results.append(
+                ReferencePrice(
+                    pair,
+                    rate=(int(symbol_dict[base_symbol]["px"]) * int(symbol_dict[quote_symbol]["multiplier"]))
+                    / (int(symbol_dict[quote_symbol]["px"]) * int(symbol_dict[base_symbol]["multiplier"])),
+                    updated_at=ReferencePriceUpdated(
+                        int(symbol_dict[base_symbol]["resolve_time"]),
+                        int(symbol_dict[quote_symbol]["resolve_time"]),
+                    ),
                 )
+            )
+        return results
 
-            return results
-
-        except:
-            raise QueryError("Error quering prices")
-
-    def get_request_evm_proof_by_request_id(self, request_id: int) -> EVMProof:
-        data = self._get_result("/oracle/proof/{}".format(request_id))
-        return EVMProof(json_proof=data["jsonProof"], evm_proof_bytes=HexBytes(bytes.fromhex(data["evmProofBytes"])))
+    def get_latest_request(
+        self, oid: int, calldata: bytes, min_count: int, ask_count: int
+    ) -> oracle_query.QueryRequestSearchResponse:
+        return self.stubOracle.RequestSearch(
+            oracle_query.QueryRequestSearchRequest(
+                oracle_script_id=oid, calldata=calldata, min_count=min_count, ask_count=ask_count
+            )
+        )

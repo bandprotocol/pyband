@@ -1,72 +1,68 @@
 import os
-from dotenv import load_dotenv
-from pyband.data import Coin
-from pyband.wallet import Address
-from pyband import Client, PyObi, PrivateKey
+
+from pyband.client import Client
 from pyband.transaction import Transaction
-from pyband.message import MsgRequest, MsgSend
+from pyband.wallet import PrivateKey
+
+from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
+from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
+from google.protobuf.json_format import MessageToJson
 
 
 def main():
-    # TODO
-    load_dotenv()
-    c = Client("http://35.187.228.10:1317")
-    # req_info = c.get_latest_request(6, bytes.fromhex("000000045041584700000003555344000000003b9aca00"), 4, 4)
-    # oracle_script = c.get_oracle_script(6)
-    # obi = PyObi(oracle_script.schema)
-    # print(obi.decode_output(req_info.result.response_packet_data.result))
+    # Step 1 Create a gRPC connection
+    grpc_url = "rpc-laozi-testnet2.bandchain.org:9090"
+    c = Client(grpc_url)
 
-    # _, priv = PrivateKey.generate()
-    priv = PrivateKey.from_mnemonic(os.getenv("TEST_MNEMONIC"))
-    addr = priv.to_pubkey().to_address()
-    # print(addr.to_acc_bech32())
+    # Step 2 Convert a menmonic to private key, public key, and sender
+    MNEMONIC = os.getenv("MNEMONIC")
+    private_key = PrivateKey.from_mnemonic(MNEMONIC)
+    public_key = private_key.to_public_key()
+    sender_addr = public_key.to_address()
+    sender = sender_addr.to_acc_bech32()
 
-    pubkey = priv.to_pubkey()
-    account = c.get_account(addr)
-    chain_id = "bandchain"
-
-    # Step 3
-    t = (
-        Transaction()
-        .with_messages(
-            # MsgSend(
-            #     from_address=addr,
-            #     to_address=Address.from_acc_bech32("band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte"),
-            #     amount=[Coin(amount=9999, denom="uband")],
-            # )
-            MsgRequest(
-                oracle_script_id=1,
-                calldata=bytes.fromhex("0000000342544300000000000003e8"),
-                ask_count=2,
-                min_count=1,
-                client_id="from_pyband",
-                fee_limit=[Coin(amount=1000000, denom="uband")],
-                prepare_gas=50000,
-                execute_gas=300000,
-                sender=addr,
-            ),
-        )
-        .with_account_num(account.account_number)
-        .with_sequence(account.sequence)
-        .with_chain_id(chain_id)
-        .with_gas(1000000)
-        .with_memo("TEST")
+    # Step 3 Prepare a transaction's properties
+    request_msg = MsgRequestData(
+        oracle_script_id=37,
+        calldata=bytes.fromhex("0000000200000003425443000000034554480000000000000064"),
+        ask_count=4,
+        min_count=3,
+        client_id="BandProtocol",
+        fee_limit=[Coin(amount="100", denom="uband")],
+        prepare_gas=50000,
+        execute_gas=200000,
+        sender=sender,
     )
 
-    # Step 4
-    raw_data = t.get_sign_data()
-    signature = priv.sign(raw_data)
-    raw_tx = t.get_tx_data(signature, pubkey)
+    account = c.get_account(sender)
+    account_num = account.account_number
+    sequence = account.sequence
 
-    print(c.send_tx_block_mode(raw_tx))
+    fee = [Coin(amount="0", denom="uband")]
+    chain_id = c.get_chain_id()
 
-    # print(priv.to_pubkey().to_acc_bech32(), priv.to_pubkey().to_address().to_acc_bech32())
+    # Step 4 Construct a transaction
+    txn = (
+        Transaction()
+        .with_messages(request_msg)
+        .with_sequence(sequence)
+        .with_account_num(account_num)
+        .with_chain_id(chain_id)
+        .with_gas(2000000)
+        .with_fee(fee)
+        .with_memo("")
+    )
 
-    # print(c.get_account(Address.from_acc_bech32("band1p40yh3zkmhcv0ecqp3mcazy83sa57rgjp07dun")))
-    # print(c.get_data_source(1))
-    # print(c.get_request_by_id(1))
+    # Step 5 Sign a transaction by using private key
+    sign_doc = txn.get_sign_doc(public_key)
+    signature = private_key.sign(sign_doc.SerializeToString())
+    tx_raw_bytes = txn.get_tx_data(signature, public_key)
 
-    # print(c.get_reference_data(["ETH/USD", "BTC/ETH", "BAND/BTC"], 2, 4))
+    # Step 6 Broadcast a transaction
+    tx_block = c.send_tx_block_mode(tx_raw_bytes)
+
+    # Converting to JSON for readability
+    print(MessageToJson(tx_block))
 
 
 if __name__ == "__main__":

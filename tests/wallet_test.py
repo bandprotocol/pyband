@@ -47,7 +47,7 @@ def test_private_key_from_hex():
 
 
 def test_private_key_to_public_key():
-    pub_key = PrivateKey.from_mnemonic(TEST_MNEMONIC).to_pubkey()
+    pub_key = PrivateKey.from_mnemonic(TEST_MNEMONIC).to_public_key()
     assert (
         pub_key.to_hex()
         == "0351e98e1be097250f2ff4188c0aace0a716e69a992cd77f9dfe436b3e8b34280d"
@@ -82,16 +82,16 @@ def test_public_key_from_bech32():
 def test_public_key_to_bech32():
     priv_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
 
-    assert priv_key.to_pubkey().to_acc_bech32() == TEST_ACC_PUBKEY
-    assert priv_key.to_pubkey().to_val_bech32() == TEST_VAL_PUBKEY
-    assert priv_key.to_pubkey().to_cons_bech32() == TEST_CONS_PUBKEY
+    assert priv_key.to_public_key().to_acc_bech32() == TEST_ACC_PUBKEY
+    assert priv_key.to_public_key().to_val_bech32() == TEST_VAL_PUBKEY
+    assert priv_key.to_public_key().to_cons_bech32() == TEST_CONS_PUBKEY
 
 
 def test_public_key_verify():
     priv_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
     sig = priv_key.sign(b"test msg")
 
-    pub_key = priv_key.to_pubkey()
+    pub_key = priv_key.to_public_key()
     assert pub_key.verify(b"test msg", sig) == True
     # Invalid message
     assert pub_key.verify(b"another msg", sig) == False
@@ -115,7 +115,7 @@ def test_address_from_bech32():
 
 
 def test_address_to_bech32():
-    addr = PrivateKey.from_mnemonic(TEST_MNEMONIC).to_pubkey().to_address()
+    addr = PrivateKey.from_mnemonic(TEST_MNEMONIC).to_public_key().to_address()
 
     assert addr.to_acc_bech32() == TEST_ACC_ADDRESS
     assert addr.to_val_bech32() == TEST_VAL_ADDRESS

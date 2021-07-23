@@ -1,383 +1,311 @@
 import pytest
 
-from pyband.client import Client
-from pyband.data import (
-    TransactionSyncMode,
-    TransactionAsyncMode,
-    TransactionBlockMode,
-    HexBytes,
-)
-from requests.exceptions import ReadTimeout
-from unittest.mock import patch
+# Servicer
+from pyband.proto.cosmos.tx.v1beta1.service_pb2_grpc import ServiceServicer as CosmosTxServicerBase
 
-TEST_RPC = "https://api-mock.bandprotocol.com/rest"
-TEST_MSG = {
-    "msg": [
-        {
-            "type": "oracle/Request",
-            "value": {
-                "oracle_script_id": "1",
-                "calldata": "AAAAA0JUQwAAAAAAAAAB",
-                "ask_count": "4",
-                "min_count": "3",
-                "client_id": "from_pyband",
-                "sender": "band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte",
-            },
-        }
-    ],
-    "fee": {"gas": "1000000", "amount": [{"denom": "uband", "amount": "0"}]},
-    "memo": "Memo",
-    "signatures": [
-        {
-            "signature": "hQpMSSaOVbT5vd3yladNX9RNA9vSq4ts4cPufdoesjUtPje5i73f048MM0xPnAB7JWSRuUSsZD5M6L6WGk3Qkw==",
-            "pub_key": {
-                "type": "tendermint/PubKeySecp256k1",
-                "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
-            },
-            "account_number": "36",
-            "sequence": "1092",
-        }
-    ],
-}
+# Types
+from pyband.proto.cosmos.tx.v1beta1.service_pb2 import BroadcastTxRequest, BroadcastTxResponse
+from pyband.proto.cosmos.base.abci.v1beta1.abci_pb2 import TxResponse, ABCIMessageLog, StringEvent, Attribute
 
-TEST_WRONG_SEQUENCE_MSG = {
-    "msg": [
-        {
-            "type": "oracle/Request",
-            "value": {
-                "oracle_script_id": "1",
-                "calldata": "AAAAA0JUQwAAAAAAAAAB",
-                "ask_count": "4",
-                "min_count": "3",
-                "client_id": "from_pyband",
-                "sender": "band1jrhuqrymzt4mnvgw8cvy3s9zhx3jj0dq30qpte",
-            },
-        }
-    ],
-    "fee": {"gas": "1000000", "amount": [{"denom": "uband", "amount": "0"}]},
-    "memo": "Memo",
-    "signatures": [
-        {
-            "signature": "hQpMSSaOVbT5vd3yladNX9RNA9vSq4ts4cPufdoesjUtPje5i73f048MM0xPnAB7JWSRuUSsZD5M6L6WGk3Qkw==",
-            "pub_key": {
-                "type": "tendermint/PubKeySecp256k1",
-                "value": "A/5wi9pmUk/SxrzpBoLjhVWoUeA9Ku5PYpsF3pD1Htm8",
-            },
-            "account_number": "0",
-            "sequence": "1092",
-        }
-    ],
-}
-
-TIMEOUT = 3
-
-client = Client(TEST_RPC, TIMEOUT)
+# Note: Success, if code = 0
+class CosmosTransactionServicer(CosmosTxServicerBase):
+    def BroadcastTx(self, request: BroadcastTxRequest, context) -> BroadcastTxResponse:
+        if request.tx_bytes == b"async_any_hash":
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="txhash",
+                )
+            )
+        elif request.tx_bytes == b"sync_success":
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="6E9A3A8145A0A6562AAE4A4066125006A392620A5656E3CCB145C22FF3CC8AA0",
+                    raw_log="[]",
+                )
+            )
+        elif request.tx_bytes == b"sync_fail_wrong_bytes":
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="C278EC5A69C34AACE42773E41B1163E6CE40C906F2A14F807D39D1B2A1C2DFF5",
+                    codespace="sdk",
+                    code=2,
+                    raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 13, WireType:\"bytes\"}: tx parse error",
+                )
+            )
+        elif request.tx_bytes == b"block_success":
+            return block_mode_success_result
+        elif request.tx_bytes == b"block_out_of_gas":
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    height=1284491,
+                    txhash="2CE53A417435AD62F14C27535E19E6B5B2B0FDBF4CDC3532148DAE29BE5666BE",
+                    codespace="sdk",
+                    code=11,
+                    raw_log="out of gas in location: PER_VALIDATOR_REQUEST_FEE; gasWanted: 200000, gasUsed: 517238: out of gas",
+                    gas_wanted=200000,
+                    gas_used=517238,
+                )
+            )
+        elif request.tx_bytes == b"block_fail":
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="CC06ABAE35591E6668451D9B05D04A0E0C4257A582E4D714975363260A092233",
+                    codespace="sdk",
+                    code=5,
+                    raw_log="0uband, is smaller than 9000000uband: insufficient funds: insufficient funds",
+                    gas_wanted=5000000,
+                    gas_used=21747,
+                )
+            )
+        elif request.tx_bytes == b"block_fail_wrong_bytes":
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="7CA12506E88CF8B814E20848B229460F91FC0370C44A7C4FEE786960CE30C36D",
+                    codespace="sdk",
+                    code=2,
+                    raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 14, WireType:\"start_group\"}: tx parse error",
+                    gas_used=6429,
+                )
+            )
 
 
-@patch("requests.post")
-def test_send_tx_sync_mode_timeout(requests_mock):
-    requests_mock.side_effect = ReadTimeout
-    with pytest.raises(ReadTimeout):
-        res = client.send_tx_sync_mode(TEST_MSG)
+@pytest.fixture(scope="module")
+def pyband_client(_grpc_server, grpc_addr):
+    from pyband.proto.cosmos.tx.v1beta1.service_pb2_grpc import add_ServiceServicer_to_server as add_cosmos_tx
+
+    add_cosmos_tx(CosmosTransactionServicer(), _grpc_server)
+
+    _grpc_server.add_insecure_port(grpc_addr)
+    _grpc_server.start()
+
+    from pyband.client import Client
+
+    yield Client(grpc_addr)
+    _grpc_server.stop(grace=None)
 
 
-@patch("requests.post")
-def test_send_tx_block_mode_timeout(requests_mock):
-    requests_mock.side_effect = ReadTimeout
-    with pytest.raises(ReadTimeout):
-        res = client.send_tx_block_mode(TEST_MSG)
-
-
-@patch("requests.post")
-def test_send_tx_async_mode_timeout(requests_mock):
-    requests_mock.side_effect = ReadTimeout
-    with pytest.raises(ReadTimeout):
-        res = client.send_tx_async_mode(TEST_MSG)
-
-
-def test_send_tx_sync_mode_success(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "0",
-            "txhash": "E204AAD58ACA8F00942B1BB66D9F745F5E2C21E04C5DF6A0CB73DF02B6B51121",
-            "raw_log": "[]",
-        },
-        status_code=200,
+# Async mode: returns immediately (transaction might fail)
+# send any bytes value -> will result in response txhash
+def test_send_tx_async_mode_success(pyband_client):
+    tx_response = pyband_client.send_tx_async_mode(b"async_any_hash")
+    mock_result = TxResponse(
+        txhash="txhash",
     )
+    assert tx_response == mock_result
 
-    assert client.send_tx_sync_mode(TEST_MSG) == TransactionSyncMode(
-        tx_hash=HexBytes(bytes.fromhex("E204AAD58ACA8F00942B1BB66D9F745F5E2C21E04C5DF6A0CB73DF02B6B51121")),
-        code=0,
-        error_log=None,
+
+def test_send_tx_async_mode_invalid_input(pyband_client):
+    with pytest.raises(TypeError):
+        pyband_client.send_tx_async_mode(1)
+
+
+# Sync mode: wait for checkTx execution response
+# Success if code = 0
+def test_send_tx_sync_mode_success(pyband_client):
+    tx_response = pyband_client.send_tx_sync_mode(b"sync_success")
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="6E9A3A8145A0A6562AAE4A4066125006A392620A5656E3CCB145C22FF3CC8AA0",
+            raw_log="[]",
+        )
     )
+    assert tx_response == mock_result.tx_response
 
 
-def test_send_tx_sync_mode_wrong_sequence_fail(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "0",
-            "txhash": "611F45A21BB7937E451CDE78D124218603644635CC40A97D2BC1E854CED8D6E6",
-            "code": 4,
-            "raw_log": "unauthorized: signature verification failed; verify correct account sequence and chain-id",
-        },
-        status_code=200,
+# Fail if code != 0, invalid bytes code = 2
+def test_send_tx_sync_mode_invalid_bytes(pyband_client):
+    tx_response = pyband_client.send_tx_sync_mode(b"sync_fail_wrong_bytes")
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="C278EC5A69C34AACE42773E41B1163E6CE40C906F2A14F807D39D1B2A1C2DFF5",
+            codespace="sdk",
+            code=2,
+            raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 13, WireType:\"bytes\"}: tx parse error",
+        )
     )
-    assert client.send_tx_sync_mode(TEST_WRONG_SEQUENCE_MSG) == TransactionSyncMode(
-        tx_hash=HexBytes(bytes.fromhex("611F45A21BB7937E451CDE78D124218603644635CC40A97D2BC1E854CED8D6E6")),
-        code=4,
-        error_log="unauthorized: signature verification failed; verify correct account sequence and chain-id",
+    assert tx_response == mock_result.tx_response
+
+
+def test_send_tx_sync_mode_invalid_input(pyband_client):
+    with pytest.raises(TypeError):
+        pyband_client.send_tx_sync_mode(1)
+
+
+# Block mode: wait for tx to be committed to a block
+def test_send_tx_block_mode_success(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(b"block_success")
+    mock_result = block_mode_success_result
+
+
+def test_send_tx_block_mode_out_of_gas(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(b"block_out_of_gas")
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            height=1284491,
+            txhash="2CE53A417435AD62F14C27535E19E6B5B2B0FDBF4CDC3532148DAE29BE5666BE",
+            codespace="sdk",
+            code=11,
+            raw_log="out of gas in location: PER_VALIDATOR_REQUEST_FEE; gasWanted: 200000, gasUsed: 517238: out of gas",
+            gas_wanted=200000,
+            gas_used=517238,
+        )
     )
+    assert tx_response == mock_result.tx_response
 
 
-def test_send_tx_sync_mode_return_only_code(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "0",
-            "txhash": "611F45A21BB7937E451CDE78D124218603644635CC40A97D2BC1E854CED8D6E6",
-            "code": 19,
-        },
-        status_code=200,
+# Fail if code != 0
+def test_send_tx_block_mode_fail(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(b"block_fail")
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="CC06ABAE35591E6668451D9B05D04A0E0C4257A582E4D714975363260A092233",
+            codespace="sdk",
+            code=5,
+            raw_log="0uband, is smaller than 9000000uband: insufficient funds: insufficient funds",
+            gas_wanted=5000000,
+            gas_used=21747,
+        )
     )
-    assert client.send_tx_sync_mode(TEST_WRONG_SEQUENCE_MSG) == TransactionSyncMode(
-        tx_hash=HexBytes(bytes.fromhex("611F45A21BB7937E451CDE78D124218603644635CC40A97D2BC1E854CED8D6E6")),
-        code=19,
-        error_log=None,
+    assert tx_response == mock_result.tx_response
+
+
+# Fail if code != 0, invalid bytes code = 2
+def test_send_tx_block_mode_invalid_bytes(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(b"block_fail_wrong_bytes")
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="7CA12506E88CF8B814E20848B229460F91FC0370C44A7C4FEE786960CE30C36D",
+            codespace="sdk",
+            code=2,
+            raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 14, WireType:\"start_group\"}: tx parse error",
+            gas_used=6429,
+        )
     )
+    assert tx_response == mock_result.tx_response
 
 
-def test_send_tx_async_mode_success(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "0",
-            "txhash": "E204AAD58ACA8F00942B1BB66D9F745F5E2C21E04C5DF6A0CB73DF02B6B51121",
-            "raw_log": "[]",
-        },
-        status_code=200,
-    )
-
-    assert client.send_tx_async_mode(TEST_MSG) == TransactionAsyncMode(
-        tx_hash=HexBytes(bytes.fromhex("E204AAD58ACA8F00942B1BB66D9F745F5E2C21E04C5DF6A0CB73DF02B6B51121"))
-    )
+def test_send_tx_block_mode_invalid_input(pyband_client):
+    with pytest.raises(TypeError):
+        pyband_client.send_tx_block_mode(1)
 
 
-def test_send_tx_block_mode_success(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "715786",
-            "txhash": "2DE264D16164BCCF695E960553FED537EDC00D0E3EDF69D6BFE4168C476AD03C",
-            "raw_log": '[{"msg_index":0,"log":"","events":[{"type":"message","attributes":[{"key":"action","value":"request"}]},{"type":"raw_request","attributes":[{"key":"data_source_id","value":"1"},{"key":"data_source_hash","value":"c56de9061a78ac96748c83e8a22330accf6ee8ebb499c8525613149a70ec49d0"},{"key":"external_id","value":"1"},{"key":"calldata","value":"BTC"},{"key":"data_source_id","value":"2"},{"key":"data_source_hash","value":"dd155f719c5201336d4852830a3ad446ddf01b1ab647cf6ea5d7b9e7678a7479"},{"key":"external_id","value":"2"},{"key":"calldata","value":"BTC"},{"key":"data_source_id","value":"3"},{"key":"data_source_hash","value":"f3bad1a6d88cd30ce311d6845f114422f9c2c52c32c45b5086d69d052ad90921"},{"key":"external_id","value":"3"},{"key":"calldata","value":"BTC"}]},{"type":"request","attributes":[{"key":"id","value":"51"},{"key":"client_id","value":"from_pyband"},{"key":"oracle_script_id","value":"1"},{"key":"calldata","value":"000000034254430000000000000001"},{"key":"ask_count","value":"4"},{"key":"min_count","value":"3"},{"key":"gas_used","value":"2405"},{"key":"validator","value":"bandvaloper1cg26m90y3wk50p9dn8pema8zmaa22plx3ensxr"},{"key":"validator","value":"bandvaloper1ma0cxd4wpcqk3kz7fr8x609rqmgqgvrpem0txh"},{"key":"validator","value":"bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst"},{"key":"validator","value":"bandvaloper1p40yh3zkmhcv0ecqp3mcazy83sa57rgjde6wec"}]}]}]',
-            "logs": [
-                {
-                    "msg_index": 0,
-                    "log": "",
-                    "events": [
-                        {
-                            "type": "message",
-                            "attributes": [{"key": "action", "value": "request"}],
-                        },
-                        {
-                            "type": "raw_request",
-                            "attributes": [
-                                {"key": "data_source_id", "value": "1"},
-                                {
-                                    "key": "data_source_hash",
-                                    "value": "c56de9061a78ac96748c83e8a22330accf6ee8ebb499c8525613149a70ec49d0",
-                                },
-                                {"key": "external_id", "value": "1"},
-                                {"key": "calldata", "value": "BTC"},
-                                {"key": "data_source_id", "value": "2"},
-                                {
-                                    "key": "data_source_hash",
-                                    "value": "dd155f719c5201336d4852830a3ad446ddf01b1ab647cf6ea5d7b9e7678a7479",
-                                },
-                                {"key": "external_id", "value": "2"},
-                                {"key": "calldata", "value": "BTC"},
-                                {"key": "data_source_id", "value": "3"},
-                                {
-                                    "key": "data_source_hash",
-                                    "value": "f3bad1a6d88cd30ce311d6845f114422f9c2c52c32c45b5086d69d052ad90921",
-                                },
-                                {"key": "external_id", "value": "3"},
-                                {"key": "calldata", "value": "BTC"},
-                            ],
-                        },
-                        {
-                            "type": "request",
-                            "attributes": [
-                                {"key": "id", "value": "51"},
-                                {"key": "client_id", "value": "from_pyband"},
-                                {"key": "oracle_script_id", "value": "1"},
-                                {
-                                    "key": "calldata",
-                                    "value": "000000034254430000000000000001",
-                                },
-                                {"key": "ask_count", "value": "4"},
-                                {"key": "min_count", "value": "3"},
-                                {"key": "gas_used", "value": "2405"},
-                                {
-                                    "key": "validator",
-                                    "value": "bandvaloper1cg26m90y3wk50p9dn8pema8zmaa22plx3ensxr",
-                                },
-                                {
-                                    "key": "validator",
-                                    "value": "bandvaloper1ma0cxd4wpcqk3kz7fr8x609rqmgqgvrpem0txh",
-                                },
-                                {
-                                    "key": "validator",
-                                    "value": "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
-                                },
-                                {
-                                    "key": "validator",
-                                    "value": "bandvaloper1p40yh3zkmhcv0ecqp3mcazy83sa57rgjde6wec",
-                                },
-                            ],
-                        },
-                    ],
-                }
-            ],
-            "gas_wanted": "1000000",
-            "gas_used": "343054",
-        },
-        status_code=200,
-    )
-
-    assert client.send_tx_block_mode(TEST_MSG) == TransactionBlockMode(
-        height=715786,
-        tx_hash=HexBytes(bytes.fromhex("2DE264D16164BCCF695E960553FED537EDC00D0E3EDF69D6BFE4168C476AD03C")),
-        gas_wanted=1000000,
-        gas_used=1000000,
-        log=[
-            {
-                "msg_index": 0,
-                "log": "",
-                "events": [
-                    {
-                        "type": "message",
-                        "attributes": [{"key": "action", "value": "request"}],
-                    },
-                    {
-                        "type": "raw_request",
-                        "attributes": [
-                            {"key": "data_source_id", "value": "1"},
-                            {
-                                "key": "data_source_hash",
-                                "value": "c56de9061a78ac96748c83e8a22330accf6ee8ebb499c8525613149a70ec49d0",
-                            },
-                            {"key": "external_id", "value": "1"},
-                            {"key": "calldata", "value": "BTC"},
-                            {"key": "data_source_id", "value": "2"},
-                            {
-                                "key": "data_source_hash",
-                                "value": "dd155f719c5201336d4852830a3ad446ddf01b1ab647cf6ea5d7b9e7678a7479",
-                            },
-                            {"key": "external_id", "value": "2"},
-                            {"key": "calldata", "value": "BTC"},
-                            {"key": "data_source_id", "value": "3"},
-                            {
-                                "key": "data_source_hash",
-                                "value": "f3bad1a6d88cd30ce311d6845f114422f9c2c52c32c45b5086d69d052ad90921",
-                            },
-                            {"key": "external_id", "value": "3"},
-                            {"key": "calldata", "value": "BTC"},
+block_mode_success_result = BroadcastTxResponse(
+    tx_response=TxResponse(
+        height=1285934,
+        txhash="767353B21A770E7D02E71BDCDD75AB5AB3F60E86CB4633A1BE49BEECA8A8CE4E",
+        data="0A090A0772657175657374",
+        raw_log="[{'events':[{'type':'message','attributes':[{'key':'action','value':'request'}]},{'type':'raw_request','attributes':[{'key':'data_source_id','value':'61'},{'key':'data_source_hash','value':'07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef'},{'key':'external_id','value':'6'},{'key':'calldata','value':'ETH'},{'key':'data_source_id','value':'57'},{'key':'data_source_hash','value':'61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7'},{'key':'external_id','value':'0'},{'key':'calldata','value':'ETH'},{'key':'data_source_id','value':'62'},{'key':'data_source_hash','value':'107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289'},{'key':'external_id','value':'3'},{'key':'calldata','value':'ETH'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'5'},{'key':'calldata','value':'huobipro ETH'},{'key':'data_source_id','value':'59'},{'key':'data_source_hash','value':'5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d'},{'key':'external_id','value':'2'},{'key':'calldata','value':'ETH'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'4'},{'key':'calldata','value':'binance ETH'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'9'},{'key':'calldata','value':'bittrex ETH'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'7'},{'key':'calldata','value':'kraken ETH'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'8'},{'key':'calldata','value':'bitfinex ETH'},{'key':'data_source_id','value':'58'},{'key':'data_source_hash','value':'7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461'},{'key':'external_id','value':'1'},{'key':'calldata','value':'ETH'}]},{'type':'request','attributes':[{'key':'id','value':'287004'},{'key':'client_id','value':'Blue'},{'key':'oracle_script_id','value':'37'},{'key':'calldata','value':'00000001000000034554480000000000000064'},{'key':'ask_count','value':'16'},{'key':'min_count','value':'10'},{'key':'gas_used','value':'71512'},{'key':'validator','value':'bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc'},{'key':'validator','value':'bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62'},{'key':'validator','value':'bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e'},{'key':'validator','value':'bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa'},{'key':'validator','value':'bandvaloper1npezmz5cw208gm7l7nhay5xm6h5k4we5axn663'},{'key':'validator','value':'bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v'},{'key':'validator','value':'bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf'},{'key':'validator','value':'bandvaloper1ejnk6k8ny3y5kwr234m3y32p7dxsx2a0wvcpyl'},{'key':'validator','value':'bandvaloper185sr49ntmfzfc5z52eh0z5m2vjvahwqa6qvk27'},{'key':'validator','value':'bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy'},{'key':'validator','value':'bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5'},{'key':'validator','value':'bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv'},{'key':'validator','value':'bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977'},{'key':'validator','value':'bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq'},{'key':'validator','value':'bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus'},{'key':'validator','value':'bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg'}]}]}]",
+        logs=[
+            ABCIMessageLog(
+                events=[
+                    StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                    StringEvent(
+                        type="raw_request",
+                        attributes=[
+                            Attribute(key="data_source_id", value="61"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef",
+                            ),
+                            Attribute(key="external_id", value="6"),
+                            Attribute(key="calldata", value="ETH"),
+                            Attribute(key="data_source_id", value="57"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7",
+                            ),
+                            Attribute(key="external_id", value="0"),
+                            Attribute(key="calldata", value="ETH"),
+                            Attribute(key="data_source_id", value="62"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289",
+                            ),
+                            Attribute(key="external_id", value="3"),
+                            Attribute(key="calldata", value="ETH"),
+                            Attribute(key="data_source_id", value="60"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac",
+                            ),
+                            Attribute(key="external_id", value="5"),
+                            Attribute(key="calldata", value="huobipro ETH"),
+                            Attribute(key="data_source_id", value="59"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d",
+                            ),
+                            Attribute(key="external_id", value="2"),
+                            Attribute(key="calldata", value="ETH"),
+                            Attribute(key="data_source_id", value="60"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac",
+                            ),
+                            Attribute(key="external_id", value="4"),
+                            Attribute(key="calldata", value="binance ETH"),
+                            Attribute(key="data_source_id", value="60"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac",
+                            ),
+                            Attribute(key="external_id", value="9"),
+                            Attribute(key="calldata", value="bittrex ETH"),
+                            Attribute(key="data_source_id", value="60"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac",
+                            ),
+                            Attribute(key="external_id", value="7"),
+                            Attribute(key="calldata", value="kraken ETH"),
+                            Attribute(key="data_source_id", value="60"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac",
+                            ),
+                            Attribute(key="external_id", value="8"),
+                            Attribute(key="calldata", value="bitfinex ETH"),
+                            Attribute(key="data_source_id", value="58"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461",
+                            ),
+                            Attribute(key="external_id", value="1"),
+                            Attribute(key="calldata", value="ETH"),
                         ],
-                    },
-                    {
-                        "type": "request",
-                        "attributes": [
-                            {"key": "id", "value": "51"},
-                            {"key": "client_id", "value": "from_pyband"},
-                            {"key": "oracle_script_id", "value": "1"},
-                            {
-                                "key": "calldata",
-                                "value": "000000034254430000000000000001",
-                            },
-                            {"key": "ask_count", "value": "4"},
-                            {"key": "min_count", "value": "3"},
-                            {"key": "gas_used", "value": "2405"},
-                            {
-                                "key": "validator",
-                                "value": "bandvaloper1cg26m90y3wk50p9dn8pema8zmaa22plx3ensxr",
-                            },
-                            {
-                                "key": "validator",
-                                "value": "bandvaloper1ma0cxd4wpcqk3kz7fr8x609rqmgqgvrpem0txh",
-                            },
-                            {
-                                "key": "validator",
-                                "value": "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
-                            },
-                            {
-                                "key": "validator",
-                                "value": "bandvaloper1p40yh3zkmhcv0ecqp3mcazy83sa57rgjde6wec",
-                            },
+                    ),
+                    StringEvent(
+                        type="request",
+                        attributes=[
+                            Attribute(key="id", value="287004"),
+                            Attribute(key="client_id", value="Blue"),
+                            Attribute(key="oracle_script_id", value="37"),
+                            Attribute(key="calldata", value="00000001000000034554480000000000000064"),
+                            Attribute(key="ask_count", value="16"),
+                            Attribute(key="min_count", value="10"),
+                            Attribute(key="gas_used", value="71512"),
+                            Attribute(key="validator", value="bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc"),
+                            Attribute(key="validator", value="bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62"),
+                            Attribute(key="validator", value="bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e"),
+                            Attribute(key="validator", value="bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa"),
+                            Attribute(key="validator", value="bandvaloper1npezmz5cw208gm7l7nhay5xm6h5k4we5axn663"),
+                            Attribute(key="validator", value="bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v"),
+                            Attribute(key="validator", value="bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf"),
+                            Attribute(key="validator", value="bandvaloper1ejnk6k8ny3y5kwr234m3y32p7dxsx2a0wvcpyl"),
+                            Attribute(key="validator", value="bandvaloper185sr49ntmfzfc5z52eh0z5m2vjvahwqa6qvk27"),
+                            Attribute(key="validator", value="bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy"),
+                            Attribute(key="validator", value="bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5"),
+                            Attribute(key="validator", value="bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv"),
+                            Attribute(key="validator", value="bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977"),
+                            Attribute(key="validator", value="bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq"),
+                            Attribute(key="validator", value="bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus"),
+                            Attribute(key="validator", value="bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg"),
                         ],
-                    },
-                ],
-            }
+                    ),
+                ]
+            )
         ],
-        error_log=None,
-        code=0,
+        gas_wanted=2000000,
+        gas_used=789441,
     )
-
-
-def test_send_tx_block_wrong_sequence_fail(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "0",
-            "txhash": "7F1CFFD674CAAEEB25922E9C6E9F8F8CEF7A325E25B64E8DAB070D7409FD1F72",
-            "codespace": "sdk",
-            "code": 4,
-            "raw_log": "unauthorized: signature verification failed; verify correct account sequence and chain-id",
-            "gas_wanted": "1000000",
-            "gas_used": "27402",
-        },
-        status_code=200,
-    )
-
-    assert client.send_tx_block_mode(TEST_MSG) == TransactionBlockMode(
-        height=0,
-        tx_hash=HexBytes(bytes.fromhex("7F1CFFD674CAAEEB25922E9C6E9F8F8CEF7A325E25B64E8DAB070D7409FD1F72")),
-        gas_wanted=1000000,
-        gas_used=1000000,
-        code=4,
-        log=[],
-        error_log="unauthorized: signature verification failed; verify correct account sequence and chain-id",
-    )
-
-
-def test_send_tx_block_return_code(requests_mock):
-    requests_mock.register_uri(
-        "POST",
-        "{}/txs".format(TEST_RPC),
-        json={
-            "height": "0",
-            "txhash": "7F1CFFD674CAAEEB25922E9C6E9F8F8CEF7A325E25B64E8DAB070D7409FD1F72",
-            "codespace": "sdk",
-            "code": 19,
-            "gas_wanted": "1000000",
-            "gas_used": "27402",
-        },
-        status_code=200,
-    )
-
-    assert client.send_tx_block_mode(TEST_MSG) == TransactionBlockMode(
-        height=0,
-        tx_hash=HexBytes(bytes.fromhex("7F1CFFD674CAAEEB25922E9C6E9F8F8CEF7A325E25B64E8DAB070D7409FD1F72")),
-        gas_wanted=1000000,
-        gas_used=1000000,
-        code=19,
-        log=[],
-        error_log=None,
-    )
+)

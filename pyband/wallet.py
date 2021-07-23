@@ -6,7 +6,9 @@ from bip32 import BIP32
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, BadSignatureError
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
-from .exceptions import ConvertError, DecodeError
+from pyband.exceptions import ConvertError, DecodeError
+
+from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
 BECH32_PUBKEY_ACC_PREFIX = "bandpub"
 BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
@@ -21,7 +23,7 @@ DEFAULT_DERIVATION_PATH = "m/44'/494'/0'/0/0"
 
 class PrivateKey:
     """
-    Class for wrapping SigningKey using for signature creation and public key derivation.
+    Class for wrapping SigningKey that is used for signature creation and public key derivation.
 
     :ivar signing_key: the ecdsa SigningKey instance
     :vartype signing_key: ecdsa.SigningKey
@@ -31,7 +33,7 @@ class PrivateKey:
         """Unsupported, please use from_mnemonic to initialize."""
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PrivateKey.from_mnemonic() to construct me")
-        self.signing_key = None
+        self.signing_key: SigningKey = None
 
     @classmethod
     def generate(cls, path=DEFAULT_DERIVATION_PATH) -> Tuple[str, "PrivateKey"]:
@@ -75,19 +77,19 @@ class PrivateKey:
         """
         return self.signing_key.to_string().hex()
 
-    def to_pubkey(self) -> "PublicKey":
+    def to_public_key(self) -> "PublicKey":
         """
         Return the PublicKey associated with this private key.
 
         :return: a PublicKey that can be used to verify the signatures made with this PrivateKey
         """
-        pubkey = PublicKey(_error_do_not_use_init_directly=True)
-        pubkey.verify_key = self.signing_key.get_verifying_key()
-        return pubkey
+        public_key = PublicKey(_error_do_not_use_init_directly=True)
+        public_key.verify_key = self.signing_key.get_verifying_key()
+        return public_key
 
     def sign(self, msg: bytes) -> bytes:
         """
-        Sign and the given message using the edcsa sign_deterministic function.
+        Sign the given message using the edcsa sign_deterministic function.
 
         :param msg: the message that will be hashed and signed
 
@@ -98,7 +100,7 @@ class PrivateKey:
 
 class PublicKey:
     """
-    Class for wraping VerifyKey using for signature verification. Adding method to encode/decode
+    Class for wrapping VerifyKey using for signature verification. Adding method to encode/decode
     to Bech32 format.
 
     :ivar verify_key: the ecdsa VerifyingKey instance
@@ -109,7 +111,7 @@ class PublicKey:
         """Unsupported, please do not contruct it directly."""
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PublicKey's factory methods to construct me")
-        self.verify_key = None
+        self.verify_key: VerifyingKey = None
 
     @classmethod
     def _from_bech32(cls, bech: str, prefix: str) -> "PublicKey":
@@ -136,9 +138,12 @@ class PublicKey:
 
     def to_hex(self) -> str:
         """
-        Return a hex representation of verify key.
+        Return a hex representation of verified key.
         """
         return self.verify_key.to_string("compressed").hex()
+
+    def to_public_key_proto(self) -> PubKeyProto:
+        return PubKeyProto(key=self.verify_key.to_string("compressed"))
 
     def _to_bech32(self, prefix: str) -> str:
         five_bit_r = convertbits(
@@ -169,7 +174,7 @@ class PublicKey:
 
     def verify(self, msg: bytes, sig: bytes) -> bool:
         """
-        Verify a signature made over provided data.
+        Verify a signature made from the given message.
 
         :param msg: data signed by the `signature`, will be hashed using sha256 function
         :param sig: encoding of the signature
