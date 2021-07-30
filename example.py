@@ -1,8 +1,6 @@
 import os
 
-from pyband.client import Client
-from pyband.transaction import Transaction
-from pyband.wallet import PrivateKey
+from pyband import Client, Transaction, PrivateKey
 
 from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData

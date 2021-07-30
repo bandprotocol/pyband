@@ -3,25 +3,25 @@ import time
 
 from typing import List, Optional
 
-from pyband.data import ReferencePrice, ReferencePriceUpdated
-from pyband.exceptions import NotFoundError, EmptyMsgError
-from pyband.proto.oracle.v1 import (
+from .data import ReferencePrice, ReferencePriceUpdated
+from .exceptions import NotFoundError, EmptyMsgError
+from .proto.oracle.v1 import (
     query_pb2_grpc as oracle_query_grpc,
     query_pb2 as oracle_query,
     oracle_pb2 as oracle_type,
     tx_pb2_grpc as tx_oracle_grpc,
 )
-from pyband.proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
-from pyband.proto.cosmos.base.tendermint.v1beta1 import (
+from .proto.cosmos.base.abci.v1beta1 import abci_pb2 as abci_type
+from .proto.cosmos.base.tendermint.v1beta1 import (
     query_pb2_grpc as tendermint_query_grpc,
     query_pb2 as tendermint_query,
 )
-from pyband.proto.cosmos.auth.v1beta1 import (
+from .proto.cosmos.auth.v1beta1 import (
     query_pb2_grpc as auth_query_grpc,
     query_pb2 as auth_query,
     auth_pb2 as auth_type,
 )
-from pyband.proto.cosmos.tx.v1beta1 import (
+from .proto.cosmos.tx.v1beta1 import (
     service_pb2_grpc as tx_service_grpc,
     service_pb2 as tx_service,
 )

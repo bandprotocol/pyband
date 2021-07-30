@@ -6,9 +6,9 @@ from bip32 import BIP32
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, BadSignatureError
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
-from pyband.exceptions import ConvertError, DecodeError
+from .exceptions import ConvertError, DecodeError
 
-from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
+from .proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
 BECH32_PUBKEY_ACC_PREFIX = "bandpub"
 BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
