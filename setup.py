@@ -5,8 +5,9 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyband",
-    packages=["pyband"],
-    version="0.2.0.dev1",
+    packages=setuptools.find_packages(),
+    include_package_data=True,
+    version="0.2.6",
     license="MIT",
     description="Python library for BandChain",
     long_description=long_description,
@@ -15,7 +16,7 @@ setuptools.setup(
     author_email="dev@bandprotocol.com",
     url="https://github.com/bandprotocol/bandchain",
     keywords=["BAND", "BLOCKCHAIN", "ORACLE"],
-    install_requires=["requests", "dacite", "bech32", "bip32", "ecdsa", "mnemonic"],
+    install_requires=["bech32", "bip32", "ecdsa", "mnemonic", "grpcio", "protobuf"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
