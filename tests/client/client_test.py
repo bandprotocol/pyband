@@ -537,7 +537,7 @@ def pyband_client(_grpc_server, grpc_addr):
 
     from pyband.client import Client
 
-    yield Client(grpc_addr)
+    yield Client(grpc_addr, insecure=True)
     _grpc_server.stop(grace=None)
 
 
