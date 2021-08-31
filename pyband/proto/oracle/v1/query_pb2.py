@@ -12,9 +12,11 @@ _sym_db = _symbol_database.Default()
 
 
 from gogoproto import gogo_pb2 as gogoproto_dot_gogo__pb2
+from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from oracle.v1 import oracle_pb2 as oracle_dot_v1_dot_oracle__pb2
 from cosmos.base.v1beta1 import coin_pb2 as cosmos_dot_base_dot_v1beta1_dot_coin__pb2
+from cosmos_proto import cosmos_pb2 as cosmos__proto_dot_cosmos__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -23,9 +25,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z,github.com/bandprotocol/chain/x/oracle/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x15oracle/v1/query.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x16oracle/v1/oracle.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\x14\n\x12QueryCountsRequest\"d\n\x13QueryCountsResponse\x12\x19\n\x11\x64\x61ta_source_count\x18\x01 \x01(\x03\x12\x1b\n\x13oracle_script_count\x18\x02 \x01(\x03\x12\x15\n\rrequest_count\x18\x03 \x01(\x03\"%\n\x10QueryDataRequest\x12\x11\n\tdata_hash\x18\x01 \x01(\t\"!\n\x11QueryDataResponse\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\"0\n\x16QueryDataSourceRequest\x12\x16\n\x0e\x64\x61ta_source_id\x18\x01 \x01(\x03\"E\n\x17QueryDataSourceResponse\x12*\n\x0b\x64\x61ta_source\x18\x01 \x01(\x0b\x32\x15.oracle.v1.DataSource\"4\n\x18QueryOracleScriptRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x03\"K\n\x19QueryOracleScriptResponse\x12.\n\roracle_script\x18\x01 \x01(\x0b\x32\x17.oracle.v1.OracleScript\")\n\x13QueryRequestRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\x03\"\x88\x01\n\x14QueryRequestResponse\x12#\n\x07request\x18\x01 \x01(\x0b\x32\x12.oracle.v1.Request\x12(\n\x07reports\x18\x02 \x03(\x0b\x32\x11.oracle.v1.ReportB\x04\xc8\xde\x1f\x00\x12!\n\x06result\x18\x03 \x01(\x0b\x32\x11.oracle.v1.Result\"8\n\x1bQueryPendingRequestsRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"C\n\x1cQueryPendingRequestsResponse\x12#\n\x0brequest_ids\x18\x01 \x03(\x03\x42\x0e\xe2\xde\x1f\nRequestIDs\"\x14\n\x12QueryParamsRequest\">\n\x13QueryParamsResponse\x12\'\n\x06params\x18\x01 \x01(\x0b\x32\x11.oracle.v1.ParamsB\x04\xc8\xde\x1f\x00\"2\n\x15QueryValidatorRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"D\n\x16QueryValidatorResponse\x12*\n\x06status\x18\x01 \x01(\x0b\x32\x1a.oracle.v1.ValidatorStatus\"2\n\x15QueryReportersRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"*\n\x16QueryReportersResponse\x12\x10\n\x08reporter\x18\x01 \x03(\t\"\x1e\n\x1cQueryActiveValidatorsRequest\"O\n\x1dQueryActiveValidatorsResponse\x12.\n\nvalidators\x18\x01 \x03(\x0b\x32\x1a.oracle.v1.ActiveValidator\"m\n\x19QueryRequestSearchRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x03\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\t\x12\x11\n\task_count\x18\x03 \x01(\x04\x12\x11\n\tmin_count\x18\x04 \x01(\x04\"N\n\x1aQueryRequestSearchResponse\x12\x30\n\x07request\x18\x01 \x01(\x0b\x32\x1f.oracle.v1.QueryRequestResponse\"Q\n\x18QueryRequestPriceRequest\x12\x0f\n\x07symbols\x18\x01 \x03(\t\x12\x11\n\task_count\x18\x02 \x01(\x03\x12\x11\n\tmin_count\x18\x03 \x01(\x03\"J\n\x19QueryRequestPriceResponse\x12-\n\rprice_results\x18\x01 \x03(\x0b\x32\x16.oracle.v1.PriceResult\"\x94\x01\n\x1fQueryRequestVerificationRequest\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x03\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x12\x10\n\x08reporter\x18\x05 \x01(\t\x12\x11\n\tsignature\x18\x06 \x01(\x0c\"\x88\x01\n QueryRequestVerificationResponse\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x03\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x12\x16\n\x0e\x64\x61ta_source_id\x18\x05 \x01(\x03\"S\n\x17QueryRequestPoolRequest\x12\x13\n\x0brequest_key\x18\x01 \x01(\t\x12\x0f\n\x07port_id\x18\x02 \x01(\t\x12\x12\n\nchannel_id\x18\x03 \x01(\t\"\x96\x01\n\x18QueryRequestPoolResponse\x12\x1c\n\x14request_pool_address\x18\x01 \x01(\t\x12\\\n\x07\x62\x61lance\x18\x02 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins2\xb0\x0e\n\x05Query\x12\x62\n\x06\x43ounts\x12\x1d.oracle.v1.QueryCountsRequest\x1a\x1e.oracle.v1.QueryCountsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/counts\x12\x66\n\x04\x44\x61ta\x12\x1b.oracle.v1.QueryDataRequest\x1a\x1c.oracle.v1.QueryDataResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/oracle/v1/data/{data_hash}\x12\x85\x01\n\nDataSource\x12!.oracle.v1.QueryDataSourceRequest\x1a\".oracle.v1.QueryDataSourceResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/data_sources/{data_source_id}\x12\x8f\x01\n\x0cOracleScript\x12#.oracle.v1.QueryOracleScriptRequest\x1a$.oracle.v1.QueryOracleScriptResponse\"4\x82\xd3\xe4\x93\x02.\x12,/oracle/v1/oracle_scripts/{oracle_script_id}\x12t\n\x07Request\x12\x1e.oracle.v1.QueryRequestRequest\x1a\x1f.oracle.v1.QueryRequestResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /oracle/v1/requests/{request_id}\x12\x9b\x01\n\x0fPendingRequests\x12&.oracle.v1.QueryPendingRequestsRequest\x1a\'.oracle.v1.QueryPendingRequestsResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//oracle/v1/pending_requests/{validator_address}\x12\x83\x01\n\tValidator\x12 .oracle.v1.QueryValidatorRequest\x1a!.oracle.v1.QueryValidatorResponse\"1\x82\xd3\xe4\x93\x02+\x12)/oracle/v1/validators/{validator_address}\x12\x82\x01\n\tReporters\x12 .oracle.v1.QueryReportersRequest\x1a!.oracle.v1.QueryReportersResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/reporters/{validator_address}\x12\x8b\x01\n\x10\x41\x63tiveValidators\x12\'.oracle.v1.QueryActiveValidatorsRequest\x1a(.oracle.v1.QueryActiveValidatorsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/oracle/v1/active_validators\x12\x62\n\x06Params\x12\x1d.oracle.v1.QueryParamsRequest\x1a\x1e.oracle.v1.QueryParamsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/params\x12\x7f\n\rRequestSearch\x12$.oracle.v1.QueryRequestSearchRequest\x1a%.oracle.v1.QueryRequestSearchResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_search\x12|\n\x0cRequestPrice\x12#.oracle.v1.QueryRequestPriceRequest\x1a$.oracle.v1.QueryRequestPriceResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_prices\x12\x91\x01\n\x13RequestVerification\x12*.oracle.v1.QueryRequestVerificationRequest\x1a+.oracle.v1.QueryRequestVerificationResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/verify_request\x12\x9c\x01\n\x0bRequestPool\x12\".oracle.v1.QueryRequestPoolRequest\x1a#.oracle.v1.QueryRequestPoolResponse\"D\x82\xd3\xe4\x93\x02>\x12</oracle/v1/request_pool/{request_key}/{port_id}/{channel_id}B.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
+  serialized_pb=b'\n\x15oracle/v1/query.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x16oracle/v1/oracle.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\x1a\x19\x63osmos_proto/cosmos.proto\"\x14\n\x12QueryCountsRequest\"d\n\x13QueryCountsResponse\x12\x19\n\x11\x64\x61ta_source_count\x18\x01 \x01(\x04\x12\x1b\n\x13oracle_script_count\x18\x02 \x01(\x04\x12\x15\n\rrequest_count\x18\x03 \x01(\x04\"%\n\x10QueryDataRequest\x12\x11\n\tdata_hash\x18\x01 \x01(\t\"!\n\x11QueryDataResponse\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\"0\n\x16QueryDataSourceRequest\x12\x16\n\x0e\x64\x61ta_source_id\x18\x01 \x01(\x04\"E\n\x17QueryDataSourceResponse\x12*\n\x0b\x64\x61ta_source\x18\x01 \x01(\x0b\x32\x15.oracle.v1.DataSource\"4\n\x18QueryOracleScriptRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x04\"K\n\x19QueryOracleScriptResponse\x12.\n\roracle_script\x18\x01 \x01(\x0b\x32\x17.oracle.v1.OracleScript\")\n\x13QueryRequestRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\x04\"\x88\x01\n\x14QueryRequestResponse\x12#\n\x07request\x18\x01 \x01(\x0b\x32\x12.oracle.v1.Request\x12(\n\x07reports\x18\x02 \x03(\x0b\x32\x11.oracle.v1.ReportB\x04\xc8\xde\x1f\x00\x12!\n\x06result\x18\x03 \x01(\x0b\x32\x11.oracle.v1.Result\"8\n\x1bQueryPendingRequestsRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"C\n\x1cQueryPendingRequestsResponse\x12#\n\x0brequest_ids\x18\x01 \x03(\x04\x42\x0e\xe2\xde\x1f\nRequestIDs\"\x14\n\x12QueryParamsRequest\">\n\x13QueryParamsResponse\x12\'\n\x06params\x18\x01 \x01(\x0b\x32\x11.oracle.v1.ParamsB\x04\xc8\xde\x1f\x00\"2\n\x15QueryValidatorRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"D\n\x16QueryValidatorResponse\x12*\n\x06status\x18\x01 \x01(\x0b\x32\x1a.oracle.v1.ValidatorStatus\"M\n\x16QueryIsReporterRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\x12\x18\n\x10reporter_address\x18\x02 \x01(\t\".\n\x17QueryIsReporterResponse\x12\x13\n\x0bis_reporter\x18\x01 \x01(\x08\"2\n\x15QueryReportersRequest\x12\x19\n\x11validator_address\x18\x01 \x01(\t\"*\n\x16QueryReportersResponse\x12\x10\n\x08reporter\x18\x01 \x03(\t\"\x1e\n\x1cQueryActiveValidatorsRequest\"O\n\x1dQueryActiveValidatorsResponse\x12.\n\nvalidators\x18\x01 \x03(\x0b\x32\x1a.oracle.v1.ActiveValidator\"m\n\x19QueryRequestSearchRequest\x12\x18\n\x10oracle_script_id\x18\x01 \x01(\x04\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\t\x12\x11\n\task_count\x18\x03 \x01(\x04\x12\x11\n\tmin_count\x18\x04 \x01(\x04\"N\n\x1aQueryRequestSearchResponse\x12\x30\n\x07request\x18\x01 \x01(\x0b\x32\x1f.oracle.v1.QueryRequestResponse\"Q\n\x18QueryRequestPriceRequest\x12\x0f\n\x07symbols\x18\x01 \x03(\t\x12\x11\n\task_count\x18\x02 \x01(\x04\x12\x11\n\tmin_count\x18\x03 \x01(\x04\"J\n\x19QueryRequestPriceResponse\x12-\n\rprice_results\x18\x01 \x03(\x0b\x32\x16.oracle.v1.PriceResult\"\x94\x01\n\x1fQueryRequestVerificationRequest\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x04\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x04\x12\x10\n\x08reporter\x18\x05 \x01(\t\x12\x11\n\tsignature\x18\x06 \x01(\x0c\"\x88\x01\n QueryRequestVerificationResponse\x12\x10\n\x08\x63hain_id\x18\x01 \x01(\t\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12\x12\n\nrequest_id\x18\x03 \x01(\x04\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\x04\x12\x16\n\x0e\x64\x61ta_source_id\x18\x05 \x01(\x04\x32\xab\x0e\n\x05Query\x12\x62\n\x06\x43ounts\x12\x1d.oracle.v1.QueryCountsRequest\x1a\x1e.oracle.v1.QueryCountsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/counts\x12\x66\n\x04\x44\x61ta\x12\x1b.oracle.v1.QueryDataRequest\x1a\x1c.oracle.v1.QueryDataResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/oracle/v1/data/{data_hash}\x12\x85\x01\n\nDataSource\x12!.oracle.v1.QueryDataSourceRequest\x1a\".oracle.v1.QueryDataSourceResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/data_sources/{data_source_id}\x12\x8f\x01\n\x0cOracleScript\x12#.oracle.v1.QueryOracleScriptRequest\x1a$.oracle.v1.QueryOracleScriptResponse\"4\x82\xd3\xe4\x93\x02.\x12,/oracle/v1/oracle_scripts/{oracle_script_id}\x12t\n\x07Request\x12\x1e.oracle.v1.QueryRequestRequest\x1a\x1f.oracle.v1.QueryRequestResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /oracle/v1/requests/{request_id}\x12\x9b\x01\n\x0fPendingRequests\x12&.oracle.v1.QueryPendingRequestsRequest\x1a\'.oracle.v1.QueryPendingRequestsResponse\"7\x82\xd3\xe4\x93\x02\x31\x12//oracle/v1/pending_requests/{validator_address}\x12\x83\x01\n\tValidator\x12 .oracle.v1.QueryValidatorRequest\x1a!.oracle.v1.QueryValidatorResponse\"1\x82\xd3\xe4\x93\x02+\x12)/oracle/v1/validators/{validator_address}\x12\x97\x01\n\nIsReporter\x12!.oracle.v1.QueryIsReporterRequest\x1a\".oracle.v1.QueryIsReporterResponse\"B\x82\xd3\xe4\x93\x02<\x12:/oracle/v1/reporter/{validator_address}/{reporter_address}\x12\x82\x01\n\tReporters\x12 .oracle.v1.QueryReportersRequest\x1a!.oracle.v1.QueryReportersResponse\"0\x82\xd3\xe4\x93\x02*\x12(/oracle/v1/reporters/{validator_address}\x12\x8b\x01\n\x10\x41\x63tiveValidators\x12\'.oracle.v1.QueryActiveValidatorsRequest\x1a(.oracle.v1.QueryActiveValidatorsResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/oracle/v1/active_validators\x12\x62\n\x06Params\x12\x1d.oracle.v1.QueryParamsRequest\x1a\x1e.oracle.v1.QueryParamsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/oracle/v1/params\x12\x7f\n\rRequestSearch\x12$.oracle.v1.QueryRequestSearchRequest\x1a%.oracle.v1.QueryRequestSearchResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_search\x12|\n\x0cRequestPrice\x12#.oracle.v1.QueryRequestPriceRequest\x1a$.oracle.v1.QueryRequestPriceResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/request_prices\x12\x91\x01\n\x13RequestVerification\x12*.oracle.v1.QueryRequestVerificationRequest\x1a+.oracle.v1.QueryRequestVerificationResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/oracle/v1/verify_requestB.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
   ,
-  dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,oracle_dot_v1_dot_oracle__pb2.DESCRIPTOR,cosmos_dot_base_dot_v1beta1_dot_coin__pb2.DESCRIPTOR,])
+  dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,oracle_dot_v1_dot_oracle__pb2.DESCRIPTOR,cosmos_dot_base_dot_v1beta1_dot_coin__pb2.DESCRIPTOR,cosmos__proto_dot_cosmos__pb2.DESCRIPTOR,])
 
 
 
@@ -50,8 +52,8 @@ _QUERYCOUNTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=144,
-  serialized_end=164,
+  serialized_start=198,
+  serialized_end=218,
 )
 
 
@@ -65,21 +67,21 @@ _QUERYCOUNTSRESPONSE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='data_source_count', full_name='oracle.v1.QueryCountsResponse.data_source_count', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='oracle_script_count', full_name='oracle.v1.QueryCountsResponse.oracle_script_count', index=1,
-      number=2, type=3, cpp_type=2, label=1,
+      number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_count', full_name='oracle.v1.QueryCountsResponse.request_count', index=2,
-      number=3, type=3, cpp_type=2, label=1,
+      number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -96,8 +98,8 @@ _QUERYCOUNTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=166,
-  serialized_end=266,
+  serialized_start=220,
+  serialized_end=320,
 )
 
 
@@ -128,8 +130,8 @@ _QUERYDATAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=268,
-  serialized_end=305,
+  serialized_start=322,
+  serialized_end=359,
 )
 
 
@@ -160,8 +162,8 @@ _QUERYDATARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=307,
-  serialized_end=340,
+  serialized_start=361,
+  serialized_end=394,
 )
 
 
@@ -175,7 +177,7 @@ _QUERYDATASOURCEREQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='data_source_id', full_name='oracle.v1.QueryDataSourceRequest.data_source_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -192,8 +194,8 @@ _QUERYDATASOURCEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=342,
-  serialized_end=390,
+  serialized_start=396,
+  serialized_end=444,
 )
 
 
@@ -224,8 +226,8 @@ _QUERYDATASOURCERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=392,
-  serialized_end=461,
+  serialized_start=446,
+  serialized_end=515,
 )
 
 
@@ -239,7 +241,7 @@ _QUERYORACLESCRIPTREQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.QueryOracleScriptRequest.oracle_script_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -256,8 +258,8 @@ _QUERYORACLESCRIPTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=463,
-  serialized_end=515,
+  serialized_start=517,
+  serialized_end=569,
 )
 
 
@@ -288,8 +290,8 @@ _QUERYORACLESCRIPTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=517,
-  serialized_end=592,
+  serialized_start=571,
+  serialized_end=646,
 )
 
 
@@ -303,7 +305,7 @@ _QUERYREQUESTREQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.QueryRequestRequest.request_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -320,8 +322,8 @@ _QUERYREQUESTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=594,
-  serialized_end=635,
+  serialized_start=648,
+  serialized_end=689,
 )
 
 
@@ -366,8 +368,8 @@ _QUERYREQUESTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=638,
-  serialized_end=774,
+  serialized_start=692,
+  serialized_end=828,
 )
 
 
@@ -398,8 +400,8 @@ _QUERYPENDINGREQUESTSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=776,
-  serialized_end=832,
+  serialized_start=830,
+  serialized_end=886,
 )
 
 
@@ -413,7 +415,7 @@ _QUERYPENDINGREQUESTSRESPONSE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='request_ids', full_name='oracle.v1.QueryPendingRequestsResponse.request_ids', index=0,
-      number=1, type=3, cpp_type=2, label=3,
+      number=1, type=4, cpp_type=4, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -430,8 +432,8 @@ _QUERYPENDINGREQUESTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=834,
-  serialized_end=901,
+  serialized_start=888,
+  serialized_end=955,
 )
 
 
@@ -455,8 +457,8 @@ _QUERYPARAMSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=903,
-  serialized_end=923,
+  serialized_start=957,
+  serialized_end=977,
 )
 
 
@@ -487,8 +489,8 @@ _QUERYPARAMSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=925,
-  serialized_end=987,
+  serialized_start=979,
+  serialized_end=1041,
 )
 
 
@@ -519,8 +521,8 @@ _QUERYVALIDATORREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=989,
-  serialized_end=1039,
+  serialized_start=1043,
+  serialized_end=1093,
 )
 
 
@@ -551,8 +553,79 @@ _QUERYVALIDATORRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1041,
-  serialized_end=1109,
+  serialized_start=1095,
+  serialized_end=1163,
+)
+
+
+_QUERYISREPORTERREQUEST = _descriptor.Descriptor(
+  name='QueryIsReporterRequest',
+  full_name='oracle.v1.QueryIsReporterRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='validator_address', full_name='oracle.v1.QueryIsReporterRequest.validator_address', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='reporter_address', full_name='oracle.v1.QueryIsReporterRequest.reporter_address', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1165,
+  serialized_end=1242,
+)
+
+
+_QUERYISREPORTERRESPONSE = _descriptor.Descriptor(
+  name='QueryIsReporterResponse',
+  full_name='oracle.v1.QueryIsReporterResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='is_reporter', full_name='oracle.v1.QueryIsReporterResponse.is_reporter', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1244,
+  serialized_end=1290,
 )
 
 
@@ -583,8 +656,8 @@ _QUERYREPORTERSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1111,
-  serialized_end=1161,
+  serialized_start=1292,
+  serialized_end=1342,
 )
 
 
@@ -615,8 +688,8 @@ _QUERYREPORTERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1163,
-  serialized_end=1205,
+  serialized_start=1344,
+  serialized_end=1386,
 )
 
 
@@ -640,8 +713,8 @@ _QUERYACTIVEVALIDATORSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1207,
-  serialized_end=1237,
+  serialized_start=1388,
+  serialized_end=1418,
 )
 
 
@@ -672,8 +745,8 @@ _QUERYACTIVEVALIDATORSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1239,
-  serialized_end=1318,
+  serialized_start=1420,
+  serialized_end=1499,
 )
 
 
@@ -687,7 +760,7 @@ _QUERYREQUESTSEARCHREQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.QueryRequestSearchRequest.oracle_script_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -725,8 +798,8 @@ _QUERYREQUESTSEARCHREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1320,
-  serialized_end=1429,
+  serialized_start=1501,
+  serialized_end=1610,
 )
 
 
@@ -757,8 +830,8 @@ _QUERYREQUESTSEARCHRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1431,
-  serialized_end=1509,
+  serialized_start=1612,
+  serialized_end=1690,
 )
 
 
@@ -779,14 +852,14 @@ _QUERYREQUESTPRICEREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='ask_count', full_name='oracle.v1.QueryRequestPriceRequest.ask_count', index=1,
-      number=2, type=3, cpp_type=2, label=1,
+      number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='min_count', full_name='oracle.v1.QueryRequestPriceRequest.min_count', index=2,
-      number=3, type=3, cpp_type=2, label=1,
+      number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -803,8 +876,8 @@ _QUERYREQUESTPRICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1511,
-  serialized_end=1592,
+  serialized_start=1692,
+  serialized_end=1773,
 )
 
 
@@ -835,8 +908,8 @@ _QUERYREQUESTPRICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1594,
-  serialized_end=1668,
+  serialized_start=1775,
+  serialized_end=1849,
 )
 
 
@@ -864,14 +937,14 @@ _QUERYREQUESTVERIFICATIONREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.QueryRequestVerificationRequest.request_id', index=2,
-      number=3, type=3, cpp_type=2, label=1,
+      number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='external_id', full_name='oracle.v1.QueryRequestVerificationRequest.external_id', index=3,
-      number=4, type=3, cpp_type=2, label=1,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -902,8 +975,8 @@ _QUERYREQUESTVERIFICATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1671,
-  serialized_end=1819,
+  serialized_start=1852,
+  serialized_end=2000,
 )
 
 
@@ -931,21 +1004,21 @@ _QUERYREQUESTVERIFICATIONRESPONSE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.QueryRequestVerificationResponse.request_id', index=2,
-      number=3, type=3, cpp_type=2, label=1,
+      number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='external_id', full_name='oracle.v1.QueryRequestVerificationResponse.external_id', index=3,
-      number=4, type=3, cpp_type=2, label=1,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='data_source_id', full_name='oracle.v1.QueryRequestVerificationResponse.data_source_id', index=4,
-      number=5, type=3, cpp_type=2, label=1,
+      number=5, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -962,93 +1035,8 @@ _QUERYREQUESTVERIFICATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1822,
-  serialized_end=1958,
-)
-
-
-_QUERYREQUESTPOOLREQUEST = _descriptor.Descriptor(
-  name='QueryRequestPoolRequest',
-  full_name='oracle.v1.QueryRequestPoolRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='request_key', full_name='oracle.v1.QueryRequestPoolRequest.request_key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='port_id', full_name='oracle.v1.QueryRequestPoolRequest.port_id', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='channel_id', full_name='oracle.v1.QueryRequestPoolRequest.channel_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1960,
-  serialized_end=2043,
-)
-
-
-_QUERYREQUESTPOOLRESPONSE = _descriptor.Descriptor(
-  name='QueryRequestPoolResponse',
-  full_name='oracle.v1.QueryRequestPoolResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='request_pool_address', full_name='oracle.v1.QueryRequestPoolResponse.request_pool_address', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='balance', full_name='oracle.v1.QueryRequestPoolResponse.balance', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=b'\310\336\037\000\252\337\037(github.com/cosmos/cosmos-sdk/types.Coins', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2046,
-  serialized_end=2196,
+  serialized_start=2003,
+  serialized_end=2139,
 )
 
 _QUERYDATASOURCERESPONSE.fields_by_name['data_source'].message_type = oracle_dot_v1_dot_oracle__pb2._DATASOURCE
@@ -1061,7 +1049,6 @@ _QUERYVALIDATORRESPONSE.fields_by_name['status'].message_type = oracle_dot_v1_do
 _QUERYACTIVEVALIDATORSRESPONSE.fields_by_name['validators'].message_type = oracle_dot_v1_dot_oracle__pb2._ACTIVEVALIDATOR
 _QUERYREQUESTSEARCHRESPONSE.fields_by_name['request'].message_type = _QUERYREQUESTRESPONSE
 _QUERYREQUESTPRICERESPONSE.fields_by_name['price_results'].message_type = oracle_dot_v1_dot_oracle__pb2._PRICERESULT
-_QUERYREQUESTPOOLRESPONSE.fields_by_name['balance'].message_type = cosmos_dot_base_dot_v1beta1_dot_coin__pb2._COIN
 DESCRIPTOR.message_types_by_name['QueryCountsRequest'] = _QUERYCOUNTSREQUEST
 DESCRIPTOR.message_types_by_name['QueryCountsResponse'] = _QUERYCOUNTSRESPONSE
 DESCRIPTOR.message_types_by_name['QueryDataRequest'] = _QUERYDATAREQUEST
@@ -1078,6 +1065,8 @@ DESCRIPTOR.message_types_by_name['QueryParamsRequest'] = _QUERYPARAMSREQUEST
 DESCRIPTOR.message_types_by_name['QueryParamsResponse'] = _QUERYPARAMSRESPONSE
 DESCRIPTOR.message_types_by_name['QueryValidatorRequest'] = _QUERYVALIDATORREQUEST
 DESCRIPTOR.message_types_by_name['QueryValidatorResponse'] = _QUERYVALIDATORRESPONSE
+DESCRIPTOR.message_types_by_name['QueryIsReporterRequest'] = _QUERYISREPORTERREQUEST
+DESCRIPTOR.message_types_by_name['QueryIsReporterResponse'] = _QUERYISREPORTERRESPONSE
 DESCRIPTOR.message_types_by_name['QueryReportersRequest'] = _QUERYREPORTERSREQUEST
 DESCRIPTOR.message_types_by_name['QueryReportersResponse'] = _QUERYREPORTERSRESPONSE
 DESCRIPTOR.message_types_by_name['QueryActiveValidatorsRequest'] = _QUERYACTIVEVALIDATORSREQUEST
@@ -1088,8 +1077,6 @@ DESCRIPTOR.message_types_by_name['QueryRequestPriceRequest'] = _QUERYREQUESTPRIC
 DESCRIPTOR.message_types_by_name['QueryRequestPriceResponse'] = _QUERYREQUESTPRICERESPONSE
 DESCRIPTOR.message_types_by_name['QueryRequestVerificationRequest'] = _QUERYREQUESTVERIFICATIONREQUEST
 DESCRIPTOR.message_types_by_name['QueryRequestVerificationResponse'] = _QUERYREQUESTVERIFICATIONRESPONSE
-DESCRIPTOR.message_types_by_name['QueryRequestPoolRequest'] = _QUERYREQUESTPOOLREQUEST
-DESCRIPTOR.message_types_by_name['QueryRequestPoolResponse'] = _QUERYREQUESTPOOLRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 QueryCountsRequest = _reflection.GeneratedProtocolMessageType('QueryCountsRequest', (_message.Message,), {
@@ -1204,6 +1191,20 @@ QueryValidatorResponse = _reflection.GeneratedProtocolMessageType('QueryValidato
   })
 _sym_db.RegisterMessage(QueryValidatorResponse)
 
+QueryIsReporterRequest = _reflection.GeneratedProtocolMessageType('QueryIsReporterRequest', (_message.Message,), {
+  'DESCRIPTOR' : _QUERYISREPORTERREQUEST,
+  '__module__' : 'oracle.v1.query_pb2'
+  # @@protoc_insertion_point(class_scope:oracle.v1.QueryIsReporterRequest)
+  })
+_sym_db.RegisterMessage(QueryIsReporterRequest)
+
+QueryIsReporterResponse = _reflection.GeneratedProtocolMessageType('QueryIsReporterResponse', (_message.Message,), {
+  'DESCRIPTOR' : _QUERYISREPORTERRESPONSE,
+  '__module__' : 'oracle.v1.query_pb2'
+  # @@protoc_insertion_point(class_scope:oracle.v1.QueryIsReporterResponse)
+  })
+_sym_db.RegisterMessage(QueryIsReporterResponse)
+
 QueryReportersRequest = _reflection.GeneratedProtocolMessageType('QueryReportersRequest', (_message.Message,), {
   'DESCRIPTOR' : _QUERYREPORTERSREQUEST,
   '__module__' : 'oracle.v1.query_pb2'
@@ -1274,26 +1275,11 @@ QueryRequestVerificationResponse = _reflection.GeneratedProtocolMessageType('Que
   })
 _sym_db.RegisterMessage(QueryRequestVerificationResponse)
 
-QueryRequestPoolRequest = _reflection.GeneratedProtocolMessageType('QueryRequestPoolRequest', (_message.Message,), {
-  'DESCRIPTOR' : _QUERYREQUESTPOOLREQUEST,
-  '__module__' : 'oracle.v1.query_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.QueryRequestPoolRequest)
-  })
-_sym_db.RegisterMessage(QueryRequestPoolRequest)
-
-QueryRequestPoolResponse = _reflection.GeneratedProtocolMessageType('QueryRequestPoolResponse', (_message.Message,), {
-  'DESCRIPTOR' : _QUERYREQUESTPOOLRESPONSE,
-  '__module__' : 'oracle.v1.query_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.QueryRequestPoolResponse)
-  })
-_sym_db.RegisterMessage(QueryRequestPoolResponse)
-
 
 DESCRIPTOR._options = None
 _QUERYREQUESTRESPONSE.fields_by_name['reports']._options = None
 _QUERYPENDINGREQUESTSRESPONSE.fields_by_name['request_ids']._options = None
 _QUERYPARAMSRESPONSE.fields_by_name['params']._options = None
-_QUERYREQUESTPOOLRESPONSE.fields_by_name['balance']._options = None
 
 _QUERY = _descriptor.ServiceDescriptor(
   name='Query',
@@ -1302,8 +1288,8 @@ _QUERY = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=2199,
-  serialized_end=4039,
+  serialized_start=2142,
+  serialized_end=3977,
   methods=[
   _descriptor.MethodDescriptor(
     name='Counts',
@@ -1376,9 +1362,19 @@ _QUERY = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='IsReporter',
+    full_name='oracle.v1.Query.IsReporter',
+    index=7,
+    containing_service=None,
+    input_type=_QUERYISREPORTERREQUEST,
+    output_type=_QUERYISREPORTERRESPONSE,
+    serialized_options=b'\202\323\344\223\002<\022:/oracle/v1/reporter/{validator_address}/{reporter_address}',
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='Reporters',
     full_name='oracle.v1.Query.Reporters',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_QUERYREPORTERSREQUEST,
     output_type=_QUERYREPORTERSRESPONSE,
@@ -1388,7 +1384,7 @@ _QUERY = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ActiveValidators',
     full_name='oracle.v1.Query.ActiveValidators',
-    index=8,
+    index=9,
     containing_service=None,
     input_type=_QUERYACTIVEVALIDATORSREQUEST,
     output_type=_QUERYACTIVEVALIDATORSRESPONSE,
@@ -1398,7 +1394,7 @@ _QUERY = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Params',
     full_name='oracle.v1.Query.Params',
-    index=9,
+    index=10,
     containing_service=None,
     input_type=_QUERYPARAMSREQUEST,
     output_type=_QUERYPARAMSRESPONSE,
@@ -1408,7 +1404,7 @@ _QUERY = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RequestSearch',
     full_name='oracle.v1.Query.RequestSearch',
-    index=10,
+    index=11,
     containing_service=None,
     input_type=_QUERYREQUESTSEARCHREQUEST,
     output_type=_QUERYREQUESTSEARCHRESPONSE,
@@ -1418,7 +1414,7 @@ _QUERY = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RequestPrice',
     full_name='oracle.v1.Query.RequestPrice',
-    index=11,
+    index=12,
     containing_service=None,
     input_type=_QUERYREQUESTPRICEREQUEST,
     output_type=_QUERYREQUESTPRICERESPONSE,
@@ -1428,21 +1424,11 @@ _QUERY = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RequestVerification',
     full_name='oracle.v1.Query.RequestVerification',
-    index=12,
+    index=13,
     containing_service=None,
     input_type=_QUERYREQUESTVERIFICATIONREQUEST,
     output_type=_QUERYREQUESTVERIFICATIONRESPONSE,
     serialized_options=b'\202\323\344\223\002\033\022\031/oracle/v1/verify_request',
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='RequestPool',
-    full_name='oracle.v1.Query.RequestPool',
-    index=13,
-    containing_service=None,
-    input_type=_QUERYREQUESTPOOLREQUEST,
-    output_type=_QUERYREQUESTPOOLRESPONSE,
-    serialized_options=b'\202\323\344\223\002>\022</oracle/v1/request_pool/{request_key}/{port_id}/{channel_id}',
     create_key=_descriptor._internal_create_key,
   ),
 ])

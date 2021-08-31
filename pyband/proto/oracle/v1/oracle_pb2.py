@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z,github.com/bandprotocol/chain/x/oracle/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x16oracle/v1/oracle.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19google/protobuf/any.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\xc2\x01\n\nDataSource\x12\r\n\x05owner\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x10\n\x08\x66ilename\x18\x04 \x01(\t\x12\x10\n\x08treasury\x18\x05 \x01(\t\x12X\n\x03\x66\x65\x65\x18\x06 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins:\x04\xe8\xa0\x1f\x01\"\x94\x01\n\x0cOracleScript\x12\r\n\x05owner\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x10\n\x08\x66ilename\x18\x04 \x01(\t\x12\x0e\n\x06schema\x18\x05 \x01(\t\x12*\n\x0fsource_code_url\x18\x06 \x01(\tB\x11\xe2\xde\x1f\rSourceCodeURL:\x04\xe8\xa0\x1f\x01\"\x91\x01\n\nRawRequest\x12\x31\n\x0b\x65xternal_id\x18\x01 \x01(\x03\x42\x1c\xe2\xde\x1f\nExternalID\xfa\xde\x1f\nExternalID\x12\x38\n\x0e\x64\x61ta_source_id\x18\x02 \x01(\x03\x42 \xe2\xde\x1f\x0c\x44\x61taSourceID\xfa\xde\x1f\x0c\x44\x61taSourceID\x12\x10\n\x08\x63\x61lldata\x18\x03 \x01(\x0c:\x04\xe8\xa0\x1f\x01\"e\n\tRawReport\x12\x31\n\x0b\x65xternal_id\x18\x01 \x01(\x03\x42\x1c\xe2\xde\x1f\nExternalID\xfa\xde\x1f\nExternalID\x12\x11\n\texit_code\x18\x02 \x01(\r\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c:\x04\xe8\xa0\x1f\x01\"\xe5\x02\n\x07Request\x12>\n\x10oracle_script_id\x18\x01 \x01(\x03\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\x0c\x12\x1c\n\x14requested_validators\x18\x03 \x03(\t\x12\x11\n\tmin_count\x18\x04 \x01(\x04\x12\x16\n\x0erequest_height\x18\x05 \x01(\x03\x12\x14\n\x0crequest_time\x18\x06 \x01(\x04\x12\x1f\n\tclient_id\x18\x07 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12\x31\n\x0craw_requests\x18\x08 \x03(\x0b\x32\x15.oracle.v1.RawRequestB\x04\xc8\xde\x1f\x00\x12:\n\x0bibc_channel\x18\t \x01(\x0b\x32\x15.oracle.v1.IBCChannelB\x0e\xe2\xde\x1f\nIBCChannel\x12\x13\n\x0b\x65xecute_gas\x18\n \x01(\x04:\x04\xe8\xa0\x1f\x01\"m\n\x06Report\x12\x11\n\tvalidator\x18\x01 \x01(\t\x12\x19\n\x11in_before_resolve\x18\x02 \x01(\x08\x12/\n\x0braw_reports\x18\x03 \x03(\x0b\x32\x14.oracle.v1.RawReportB\x04\xc8\xde\x1f\x00:\x04\xe8\xa0\x1f\x01\"\xd7\x02\n\x17OracleRequestPacketData\x12\x1f\n\tclient_id\x18\x01 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12>\n\x10oracle_script_id\x18\x02 \x01(\x03\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x03 \x01(\x0c\x12\x11\n\task_count\x18\x04 \x01(\x04\x12\x11\n\tmin_count\x18\x05 \x01(\x04\x12^\n\tfee_limit\x18\x06 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x13\n\x0brequest_key\x18\x07 \x01(\t\x12\x13\n\x0bprepare_gas\x18\x08 \x01(\x04\x12\x13\n\x0b\x65xecute_gas\x18\t \x01(\x04:\x04\xe8\xa0\x1f\x01\"Z\n\"OracleRequestPacketAcknowledgement\x12.\n\nrequest_id\x18\x01 \x01(\x03\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID:\x04\xe8\xa0\x1f\x01\"\xf2\x01\n\x18OracleResponsePacketData\x12\x1f\n\tclient_id\x18\x01 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12.\n\nrequest_id\x18\x02 \x01(\x03\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x11\n\tans_count\x18\x03 \x01(\x04\x12\x14\n\x0crequest_time\x18\x04 \x01(\x03\x12\x14\n\x0cresolve_time\x18\x05 \x01(\x03\x12\x30\n\x0eresolve_status\x18\x06 \x01(\x0e\x32\x18.oracle.v1.ResolveStatus\x12\x0e\n\x06result\x18\x07 \x01(\x0c:\x04\xe8\xa0\x1f\x01\"\xd8\x02\n\x06Result\x12\x1f\n\tclient_id\x18\x01 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12>\n\x10oracle_script_id\x18\x02 \x01(\x03\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x03 \x01(\x0c\x12\x11\n\task_count\x18\x04 \x01(\x04\x12\x11\n\tmin_count\x18\x05 \x01(\x04\x12.\n\nrequest_id\x18\x06 \x01(\x03\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x11\n\tans_count\x18\x07 \x01(\x04\x12\x14\n\x0crequest_time\x18\x08 \x01(\x03\x12\x14\n\x0cresolve_time\x18\t \x01(\x03\x12\x30\n\x0eresolve_status\x18\n \x01(\x0e\x32\x18.oracle.v1.ResolveStatus\x12\x0e\n\x06result\x18\x0b \x01(\x0c:\x04\xe8\xa0\x1f\x01\"_\n\x0fValidatorStatus\x12\x11\n\tis_active\x18\x01 \x01(\x08\x12\x33\n\x05since\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x08\xc8\xde\x1f\x00\x90\xdf\x1f\x01:\x04\xe8\xa0\x1f\x01\"1\n\x0f\x41\x63tiveValidator\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\r\n\x05power\x18\x02 \x01(\x04\"\xb8\x02\n\x06Params\x12\x1d\n\x15max_raw_request_count\x18\x01 \x01(\x04\x12\x15\n\rmax_ask_count\x18\x02 \x01(\x04\x12\x1e\n\x16\x65xpiration_block_count\x18\x03 \x01(\x04\x12\x16\n\x0e\x62\x61se_owasm_gas\x18\x04 \x01(\x04\x12!\n\x19per_validator_request_gas\x18\x05 \x01(\x04\x12\x1a\n\x12sampling_try_count\x18\x06 \x01(\x04\x12 \n\x18oracle_reward_percentage\x18\x07 \x01(\x04\x12!\n\x19inactive_penalty_duration\x18\x08 \x01(\x04\x12\x32\n\x13ibc_request_enabled\x18\t \x01(\x08\x42\x15\xe2\xde\x1f\x11IBCRequestEnabled:\x08\xe8\xa0\x1f\x01\x98\xa0\x1f\x00\"/\n\x12PendingResolveList\x12\x13\n\x0brequest_ids\x18\x01 \x03(\x03:\x04\xe8\xa0\x1f\x01\"7\n\nIBCChannel\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t:\x04\xe8\xa0\x1f\x01\"C\n\x15ReportersPerValidator\x12\x11\n\tvalidator\x18\x01 \x01(\t\x12\x17\n\treporters\x18\x02 \x03(\tB\x04\xc8\xde\x1f\x00\"\xb0\x01\n\x13RequestVerification\x12\x1d\n\x08\x63hain_id\x18\x01 \x01(\tB\x0b\xe2\xde\x1f\x07\x43hainID\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12.\n\nrequest_id\x18\x03 \x01(\x03\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x31\n\x0b\x65xternal_id\x18\x04 \x01(\x03\x42\x1c\xe2\xde\x1f\nExternalID\xfa\xde\x1f\nExternalID:\x04\xe8\xa0\x1f\x01\"\x83\x01\n\x0bPriceResult\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x12\n\nmultiplier\x18\x02 \x01(\x04\x12\n\n\x02px\x18\x03 \x01(\x04\x12.\n\nrequest_id\x18\x04 \x01(\x03\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x14\n\x0cresolve_time\x18\x05 \x01(\x03*\xfb\x01\n\rResolveStatus\x12<\n\x1fRESOLVE_STATUS_OPEN_UNSPECIFIED\x10\x00\x1a\x17\x8a\x9d \x13RESOLVE_STATUS_OPEN\x12\x36\n\x16RESOLVE_STATUS_SUCCESS\x10\x01\x1a\x1a\x8a\x9d \x16RESOLVE_STATUS_SUCCESS\x12\x36\n\x16RESOLVE_STATUS_FAILURE\x10\x02\x1a\x1a\x8a\x9d \x16RESOLVE_STATUS_FAILURE\x12\x36\n\x16RESOLVE_STATUS_EXPIRED\x10\x03\x1a\x1a\x8a\x9d \x16RESOLVE_STATUS_EXPIRED\x1a\x04\x88\xa3\x1e\x00\x42.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
+  serialized_pb=b'\n\x16oracle/v1/oracle.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19google/protobuf/any.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\xc2\x01\n\nDataSource\x12\r\n\x05owner\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x10\n\x08\x66ilename\x18\x04 \x01(\t\x12\x10\n\x08treasury\x18\x05 \x01(\t\x12X\n\x03\x66\x65\x65\x18\x06 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins:\x04\xe8\xa0\x1f\x01\"\x94\x01\n\x0cOracleScript\x12\r\n\x05owner\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x10\n\x08\x66ilename\x18\x04 \x01(\t\x12\x0e\n\x06schema\x18\x05 \x01(\t\x12*\n\x0fsource_code_url\x18\x06 \x01(\tB\x11\xe2\xde\x1f\rSourceCodeURL:\x04\xe8\xa0\x1f\x01\"\x91\x01\n\nRawRequest\x12\x31\n\x0b\x65xternal_id\x18\x01 \x01(\x04\x42\x1c\xe2\xde\x1f\nExternalID\xfa\xde\x1f\nExternalID\x12\x38\n\x0e\x64\x61ta_source_id\x18\x02 \x01(\x04\x42 \xe2\xde\x1f\x0c\x44\x61taSourceID\xfa\xde\x1f\x0c\x44\x61taSourceID\x12\x10\n\x08\x63\x61lldata\x18\x03 \x01(\x0c:\x04\xe8\xa0\x1f\x01\"e\n\tRawReport\x12\x31\n\x0b\x65xternal_id\x18\x01 \x01(\x04\x42\x1c\xe2\xde\x1f\nExternalID\xfa\xde\x1f\nExternalID\x12\x11\n\texit_code\x18\x02 \x01(\r\x12\x0c\n\x04\x64\x61ta\x18\x03 \x01(\x0c:\x04\xe8\xa0\x1f\x01\"\xe5\x02\n\x07Request\x12>\n\x10oracle_script_id\x18\x01 \x01(\x04\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\x0c\x12\x1c\n\x14requested_validators\x18\x03 \x03(\t\x12\x11\n\tmin_count\x18\x04 \x01(\x04\x12\x16\n\x0erequest_height\x18\x05 \x01(\x03\x12\x14\n\x0crequest_time\x18\x06 \x01(\x03\x12\x1f\n\tclient_id\x18\x07 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12\x31\n\x0craw_requests\x18\x08 \x03(\x0b\x32\x15.oracle.v1.RawRequestB\x04\xc8\xde\x1f\x00\x12:\n\x0bibc_channel\x18\t \x01(\x0b\x32\x15.oracle.v1.IBCChannelB\x0e\xe2\xde\x1f\nIBCChannel\x12\x13\n\x0b\x65xecute_gas\x18\n \x01(\x04:\x04\xe8\xa0\x1f\x01\"m\n\x06Report\x12\x11\n\tvalidator\x18\x01 \x01(\t\x12\x19\n\x11in_before_resolve\x18\x02 \x01(\x08\x12/\n\x0braw_reports\x18\x03 \x03(\x0b\x32\x14.oracle.v1.RawReportB\x04\xc8\xde\x1f\x00:\x04\xe8\xa0\x1f\x01\"\xc2\x02\n\x17OracleRequestPacketData\x12\x1f\n\tclient_id\x18\x01 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12>\n\x10oracle_script_id\x18\x02 \x01(\x04\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x03 \x01(\x0c\x12\x11\n\task_count\x18\x04 \x01(\x04\x12\x11\n\tmin_count\x18\x05 \x01(\x04\x12^\n\tfee_limit\x18\x06 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x13\n\x0bprepare_gas\x18\x07 \x01(\x04\x12\x13\n\x0b\x65xecute_gas\x18\x08 \x01(\x04:\x04\xe8\xa0\x1f\x01\"Z\n\"OracleRequestPacketAcknowledgement\x12.\n\nrequest_id\x18\x01 \x01(\x04\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID:\x04\xe8\xa0\x1f\x01\"\xf2\x01\n\x18OracleResponsePacketData\x12\x1f\n\tclient_id\x18\x01 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12.\n\nrequest_id\x18\x02 \x01(\x04\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x11\n\tans_count\x18\x03 \x01(\x04\x12\x14\n\x0crequest_time\x18\x04 \x01(\x03\x12\x14\n\x0cresolve_time\x18\x05 \x01(\x03\x12\x30\n\x0eresolve_status\x18\x06 \x01(\x0e\x32\x18.oracle.v1.ResolveStatus\x12\x0e\n\x06result\x18\x07 \x01(\x0c:\x04\xe8\xa0\x1f\x01\"\xd8\x02\n\x06Result\x12\x1f\n\tclient_id\x18\x01 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12>\n\x10oracle_script_id\x18\x02 \x01(\x04\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x03 \x01(\x0c\x12\x11\n\task_count\x18\x04 \x01(\x04\x12\x11\n\tmin_count\x18\x05 \x01(\x04\x12.\n\nrequest_id\x18\x06 \x01(\x04\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x11\n\tans_count\x18\x07 \x01(\x04\x12\x14\n\x0crequest_time\x18\x08 \x01(\x03\x12\x14\n\x0cresolve_time\x18\t \x01(\x03\x12\x30\n\x0eresolve_status\x18\n \x01(\x0e\x32\x18.oracle.v1.ResolveStatus\x12\x0e\n\x06result\x18\x0b \x01(\x0c:\x04\xe8\xa0\x1f\x01\"_\n\x0fValidatorStatus\x12\x11\n\tis_active\x18\x01 \x01(\x08\x12\x33\n\x05since\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x08\xc8\xde\x1f\x00\x90\xdf\x1f\x01:\x04\xe8\xa0\x1f\x01\"1\n\x0f\x41\x63tiveValidator\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\r\n\x05power\x18\x02 \x01(\x04\"\xf1\x02\n\x06Params\x12\x1d\n\x15max_raw_request_count\x18\x01 \x01(\x04\x12\x15\n\rmax_ask_count\x18\x02 \x01(\x04\x12\x19\n\x11max_calldata_size\x18\x03 \x01(\x04\x12\x1c\n\x14max_report_data_size\x18\x04 \x01(\x04\x12\x1e\n\x16\x65xpiration_block_count\x18\x05 \x01(\x04\x12\x16\n\x0e\x62\x61se_owasm_gas\x18\x06 \x01(\x04\x12!\n\x19per_validator_request_gas\x18\x07 \x01(\x04\x12\x1a\n\x12sampling_try_count\x18\x08 \x01(\x04\x12 \n\x18oracle_reward_percentage\x18\t \x01(\x04\x12!\n\x19inactive_penalty_duration\x18\n \x01(\x04\x12\x32\n\x13ibc_request_enabled\x18\x0b \x01(\x08\x42\x15\xe2\xde\x1f\x11IBCRequestEnabled:\x08\xe8\xa0\x1f\x01\x98\xa0\x1f\x00\"/\n\x12PendingResolveList\x12\x13\n\x0brequest_ids\x18\x01 \x03(\x04:\x04\xe8\xa0\x1f\x01\"7\n\nIBCChannel\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t:\x04\xe8\xa0\x1f\x01\"\xb0\x01\n\x13RequestVerification\x12\x1d\n\x08\x63hain_id\x18\x01 \x01(\tB\x0b\xe2\xde\x1f\x07\x43hainID\x12\x11\n\tvalidator\x18\x02 \x01(\t\x12.\n\nrequest_id\x18\x03 \x01(\x04\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x31\n\x0b\x65xternal_id\x18\x04 \x01(\x04\x42\x1c\xe2\xde\x1f\nExternalID\xfa\xde\x1f\nExternalID:\x04\xe8\xa0\x1f\x01\"\x83\x01\n\x0bPriceResult\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x12\n\nmultiplier\x18\x02 \x01(\x04\x12\n\n\x02px\x18\x03 \x01(\x04\x12.\n\nrequest_id\x18\x04 \x01(\x04\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12\x14\n\x0cresolve_time\x18\x05 \x01(\x03*\xfb\x01\n\rResolveStatus\x12<\n\x1fRESOLVE_STATUS_OPEN_UNSPECIFIED\x10\x00\x1a\x17\x8a\x9d \x13RESOLVE_STATUS_OPEN\x12\x36\n\x16RESOLVE_STATUS_SUCCESS\x10\x01\x1a\x1a\x8a\x9d \x16RESOLVE_STATUS_SUCCESS\x12\x36\n\x16RESOLVE_STATUS_FAILURE\x10\x02\x1a\x1a\x8a\x9d \x16RESOLVE_STATUS_FAILURE\x12\x36\n\x16RESOLVE_STATUS_EXPIRED\x10\x03\x1a\x1a\x8a\x9d \x16RESOLVE_STATUS_EXPIRED\x1a\x04\x88\xa3\x1e\x00\x42.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,cosmos_dot_base_dot_v1beta1_dot_coin__pb2.DESCRIPTOR,])
 
@@ -58,8 +58,8 @@ _RESOLVESTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=b'\210\243\036\000',
-  serialized_start=3203,
-  serialized_end=3454,
+  serialized_start=3170,
+  serialized_end=3421,
 )
 _sym_db.RegisterEnumDescriptor(_RESOLVESTATUS)
 
@@ -215,14 +215,14 @@ _RAWREQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='external_id', full_name='oracle.v1.RawRequest.external_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=b'\342\336\037\nExternalID\372\336\037\nExternalID', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='data_source_id', full_name='oracle.v1.RawRequest.data_source_id', index=1,
-      number=2, type=3, cpp_type=2, label=1,
+      number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -261,7 +261,7 @@ _RAWREPORT = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='external_id', full_name='oracle.v1.RawReport.external_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -307,7 +307,7 @@ _REQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.Request.oracle_script_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -342,7 +342,7 @@ _REQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_time', full_name='oracle.v1.Request.request_time', index=5,
-      number=6, type=4, cpp_type=4, label=1,
+      number=6, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -455,7 +455,7 @@ _ORACLEREQUESTPACKETDATA = _descriptor.Descriptor(
       serialized_options=b'\342\336\037\010ClientID', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.OracleRequestPacketData.oracle_script_id', index=1,
-      number=2, type=3, cpp_type=2, label=1,
+      number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -489,22 +489,15 @@ _ORACLEREQUESTPACKETDATA = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=b'\310\336\037\000\252\337\037(github.com/cosmos/cosmos-sdk/types.Coins', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='request_key', full_name='oracle.v1.OracleRequestPacketData.request_key', index=6,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='prepare_gas', full_name='oracle.v1.OracleRequestPacketData.prepare_gas', index=7,
-      number=8, type=4, cpp_type=4, label=1,
+      name='prepare_gas', full_name='oracle.v1.OracleRequestPacketData.prepare_gas', index=6,
+      number=7, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='execute_gas', full_name='oracle.v1.OracleRequestPacketData.execute_gas', index=8,
-      number=9, type=4, cpp_type=4, label=1,
+      name='execute_gas', full_name='oracle.v1.OracleRequestPacketData.execute_gas', index=7,
+      number=8, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -522,7 +515,7 @@ _ORACLEREQUESTPACKETDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1222,
-  serialized_end=1565,
+  serialized_end=1544,
 )
 
 
@@ -536,7 +529,7 @@ _ORACLEREQUESTPACKETACKNOWLEDGEMENT = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.OracleRequestPacketAcknowledgement.request_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -553,8 +546,8 @@ _ORACLEREQUESTPACKETACKNOWLEDGEMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1567,
-  serialized_end=1657,
+  serialized_start=1546,
+  serialized_end=1636,
 )
 
 
@@ -575,7 +568,7 @@ _ORACLERESPONSEPACKETDATA = _descriptor.Descriptor(
       serialized_options=b'\342\336\037\010ClientID', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.OracleResponsePacketData.request_id', index=1,
-      number=2, type=3, cpp_type=2, label=1,
+      number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -627,8 +620,8 @@ _ORACLERESPONSEPACKETDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1660,
-  serialized_end=1902,
+  serialized_start=1639,
+  serialized_end=1881,
 )
 
 
@@ -649,7 +642,7 @@ _RESULT = _descriptor.Descriptor(
       serialized_options=b'\342\336\037\010ClientID', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.Result.oracle_script_id', index=1,
-      number=2, type=3, cpp_type=2, label=1,
+      number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -677,7 +670,7 @@ _RESULT = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.Result.request_id', index=5,
-      number=6, type=3, cpp_type=2, label=1,
+      number=6, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -729,8 +722,8 @@ _RESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1905,
-  serialized_end=2249,
+  serialized_start=1884,
+  serialized_end=2228,
 )
 
 
@@ -768,8 +761,8 @@ _VALIDATORSTATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2251,
-  serialized_end=2346,
+  serialized_start=2230,
+  serialized_end=2325,
 )
 
 
@@ -807,8 +800,8 @@ _ACTIVEVALIDATOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2348,
-  serialized_end=2397,
+  serialized_start=2327,
+  serialized_end=2376,
 )
 
 
@@ -835,50 +828,64 @@ _PARAMS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='expiration_block_count', full_name='oracle.v1.Params.expiration_block_count', index=2,
+      name='max_calldata_size', full_name='oracle.v1.Params.max_calldata_size', index=2,
       number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='base_owasm_gas', full_name='oracle.v1.Params.base_owasm_gas', index=3,
+      name='max_report_data_size', full_name='oracle.v1.Params.max_report_data_size', index=3,
       number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='per_validator_request_gas', full_name='oracle.v1.Params.per_validator_request_gas', index=4,
+      name='expiration_block_count', full_name='oracle.v1.Params.expiration_block_count', index=4,
       number=5, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sampling_try_count', full_name='oracle.v1.Params.sampling_try_count', index=5,
+      name='base_owasm_gas', full_name='oracle.v1.Params.base_owasm_gas', index=5,
       number=6, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='oracle_reward_percentage', full_name='oracle.v1.Params.oracle_reward_percentage', index=6,
+      name='per_validator_request_gas', full_name='oracle.v1.Params.per_validator_request_gas', index=6,
       number=7, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='inactive_penalty_duration', full_name='oracle.v1.Params.inactive_penalty_duration', index=7,
+      name='sampling_try_count', full_name='oracle.v1.Params.sampling_try_count', index=7,
       number=8, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='ibc_request_enabled', full_name='oracle.v1.Params.ibc_request_enabled', index=8,
-      number=9, type=8, cpp_type=7, label=1,
+      name='oracle_reward_percentage', full_name='oracle.v1.Params.oracle_reward_percentage', index=8,
+      number=9, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='inactive_penalty_duration', full_name='oracle.v1.Params.inactive_penalty_duration', index=9,
+      number=10, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='ibc_request_enabled', full_name='oracle.v1.Params.ibc_request_enabled', index=10,
+      number=11, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -895,8 +902,8 @@ _PARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2400,
-  serialized_end=2712,
+  serialized_start=2379,
+  serialized_end=2748,
 )
 
 
@@ -910,7 +917,7 @@ _PENDINGRESOLVELIST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='request_ids', full_name='oracle.v1.PendingResolveList.request_ids', index=0,
-      number=1, type=3, cpp_type=2, label=3,
+      number=1, type=4, cpp_type=4, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -927,8 +934,8 @@ _PENDINGRESOLVELIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2714,
-  serialized_end=2761,
+  serialized_start=2750,
+  serialized_end=2797,
 )
 
 
@@ -966,47 +973,8 @@ _IBCCHANNEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2763,
-  serialized_end=2818,
-)
-
-
-_REPORTERSPERVALIDATOR = _descriptor.Descriptor(
-  name='ReportersPerValidator',
-  full_name='oracle.v1.ReportersPerValidator',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='validator', full_name='oracle.v1.ReportersPerValidator.validator', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='reporters', full_name='oracle.v1.ReportersPerValidator.reporters', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=b'\310\336\037\000', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2820,
-  serialized_end=2887,
+  serialized_start=2799,
+  serialized_end=2854,
 )
 
 
@@ -1034,14 +1002,14 @@ _REQUESTVERIFICATION = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.RequestVerification.request_id', index=2,
-      number=3, type=3, cpp_type=2, label=1,
+      number=3, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=b'\342\336\037\tRequestID\372\336\037\tRequestID', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='external_id', full_name='oracle.v1.RequestVerification.external_id', index=3,
-      number=4, type=3, cpp_type=2, label=1,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1058,8 +1026,8 @@ _REQUESTVERIFICATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2890,
-  serialized_end=3066,
+  serialized_start=2857,
+  serialized_end=3033,
 )
 
 
@@ -1094,7 +1062,7 @@ _PRICERESULT = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.PriceResult.request_id', index=3,
-      number=4, type=3, cpp_type=2, label=1,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1118,8 +1086,8 @@ _PRICERESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3069,
-  serialized_end=3200,
+  serialized_start=3036,
+  serialized_end=3167,
 )
 
 _DATASOURCE.fields_by_name['fee'].message_type = cosmos_dot_base_dot_v1beta1_dot_coin__pb2._COIN
@@ -1145,7 +1113,6 @@ DESCRIPTOR.message_types_by_name['ActiveValidator'] = _ACTIVEVALIDATOR
 DESCRIPTOR.message_types_by_name['Params'] = _PARAMS
 DESCRIPTOR.message_types_by_name['PendingResolveList'] = _PENDINGRESOLVELIST
 DESCRIPTOR.message_types_by_name['IBCChannel'] = _IBCCHANNEL
-DESCRIPTOR.message_types_by_name['ReportersPerValidator'] = _REPORTERSPERVALIDATOR
 DESCRIPTOR.message_types_by_name['RequestVerification'] = _REQUESTVERIFICATION
 DESCRIPTOR.message_types_by_name['PriceResult'] = _PRICERESULT
 DESCRIPTOR.enum_types_by_name['ResolveStatus'] = _RESOLVESTATUS
@@ -1256,13 +1223,6 @@ IBCChannel = _reflection.GeneratedProtocolMessageType('IBCChannel', (_message.Me
   })
 _sym_db.RegisterMessage(IBCChannel)
 
-ReportersPerValidator = _reflection.GeneratedProtocolMessageType('ReportersPerValidator', (_message.Message,), {
-  'DESCRIPTOR' : _REPORTERSPERVALIDATOR,
-  '__module__' : 'oracle.v1.oracle_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.ReportersPerValidator)
-  })
-_sym_db.RegisterMessage(ReportersPerValidator)
-
 RequestVerification = _reflection.GeneratedProtocolMessageType('RequestVerification', (_message.Message,), {
   'DESCRIPTOR' : _REQUESTVERIFICATION,
   '__module__' : 'oracle.v1.oracle_pb2'
@@ -1319,7 +1279,6 @@ _PARAMS.fields_by_name['ibc_request_enabled']._options = None
 _PARAMS._options = None
 _PENDINGRESOLVELIST._options = None
 _IBCCHANNEL._options = None
-_REPORTERSPERVALIDATOR.fields_by_name['reporters']._options = None
 _REQUESTVERIFICATION.fields_by_name['chain_id']._options = None
 _REQUESTVERIFICATION.fields_by_name['request_id']._options = None
 _REQUESTVERIFICATION.fields_by_name['external_id']._options = None

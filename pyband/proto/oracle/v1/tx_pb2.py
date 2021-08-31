@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z,github.com/bandprotocol/chain/x/oracle/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12oracle/v1/tx.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19google/protobuf/any.proto\x1a\x16oracle/v1/oracle.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\xc9\x02\n\x0eMsgRequestData\x12>\n\x10oracle_script_id\x18\x01 \x01(\x03\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\x0c\x12\x11\n\task_count\x18\x03 \x01(\x04\x12\x11\n\tmin_count\x18\x04 \x01(\x04\x12\x1f\n\tclient_id\x18\x05 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12^\n\tfee_limit\x18\x06 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x13\n\x0bprepare_gas\x18\x07 \x01(\x04\x12\x13\n\x0b\x65xecute_gas\x18\x08 \x01(\x04\x12\x0e\n\x06sender\x18\t \x01(\t:\x04\xe8\xa0\x1f\x01\"\x18\n\x16MsgRequestDataResponse\"\x9b\x01\n\rMsgReportData\x12.\n\nrequest_id\x18\x01 \x01(\x03\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12/\n\x0braw_reports\x18\x02 \x03(\x0b\x32\x14.oracle.v1.RawReportB\x04\xc8\xde\x1f\x00\x12\x11\n\tvalidator\x18\x03 \x01(\t\x12\x10\n\x08reporter\x18\x04 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x17\n\x15MsgReportDataResponse\"\xdd\x01\n\x13MsgCreateDataSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x12\n\nexecutable\x18\x03 \x01(\x0c\x12X\n\x03\x66\x65\x65\x18\x04 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x10\n\x08treasury\x18\x05 \x01(\t\x12\r\n\x05owner\x18\x06 \x01(\t\x12\x0e\n\x06sender\x18\x07 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1d\n\x1bMsgCreateDataSourceResponse\"\x95\x02\n\x11MsgEditDataSource\x12\x38\n\x0e\x64\x61ta_source_id\x18\x01 \x01(\x03\x42 \xe2\xde\x1f\x0c\x44\x61taSourceID\xfa\xde\x1f\x0c\x44\x61taSourceID\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x12\n\nexecutable\x18\x04 \x01(\x0c\x12X\n\x03\x66\x65\x65\x18\x05 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x10\n\x08treasury\x18\x06 \x01(\t\x12\r\n\x05owner\x18\x07 \x01(\t\x12\x0e\n\x06sender\x18\x08 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1b\n\x19MsgEditDataSourceResponse\"\xa9\x01\n\x15MsgCreateOracleScript\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06schema\x18\x03 \x01(\t\x12*\n\x0fsource_code_url\x18\x04 \x01(\tB\x11\xe2\xde\x1f\rSourceCodeURL\x12\x0c\n\x04\x63ode\x18\x05 \x01(\x0c\x12\r\n\x05owner\x18\x06 \x01(\t\x12\x0e\n\x06sender\x18\x07 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1f\n\x1dMsgCreateOracleScriptResponse\"\xe7\x01\n\x13MsgEditOracleScript\x12>\n\x10oracle_script_id\x18\x01 \x01(\x03\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0e\n\x06schema\x18\x04 \x01(\t\x12*\n\x0fsource_code_url\x18\x05 \x01(\tB\x11\xe2\xde\x1f\rSourceCodeURL\x12\x0c\n\x04\x63ode\x18\x06 \x01(\x0c\x12\r\n\x05owner\x18\x07 \x01(\t\x12\x0e\n\x06sender\x18\x08 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1d\n\x1bMsgEditOracleScriptResponse\"&\n\x0bMsgActivate\x12\x11\n\tvalidator\x18\x01 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x15\n\x13MsgActivateResponse\";\n\x0eMsgAddReporter\x12\x11\n\tvalidator\x18\x01 \x01(\t\x12\x10\n\x08reporter\x18\x02 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x18\n\x16MsgAddReporterResponse\">\n\x11MsgRemoveReporter\x12\x11\n\tvalidator\x18\x01 \x01(\t\x12\x10\n\x08reporter\x18\x02 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1b\n\x19MsgRemoveReporterResponse2\xf3\x05\n\x03Msg\x12K\n\x0bRequestData\x12\x19.oracle.v1.MsgRequestData\x1a!.oracle.v1.MsgRequestDataResponse\x12H\n\nReportData\x12\x18.oracle.v1.MsgReportData\x1a .oracle.v1.MsgReportDataResponse\x12Z\n\x10\x43reateDataSource\x12\x1e.oracle.v1.MsgCreateDataSource\x1a&.oracle.v1.MsgCreateDataSourceResponse\x12T\n\x0e\x45\x64itDataSource\x12\x1c.oracle.v1.MsgEditDataSource\x1a$.oracle.v1.MsgEditDataSourceResponse\x12`\n\x12\x43reateOracleScript\x12 .oracle.v1.MsgCreateOracleScript\x1a(.oracle.v1.MsgCreateOracleScriptResponse\x12Z\n\x10\x45\x64itOracleScript\x12\x1e.oracle.v1.MsgEditOracleScript\x1a&.oracle.v1.MsgEditOracleScriptResponse\x12\x42\n\x08\x41\x63tivate\x12\x16.oracle.v1.MsgActivate\x1a\x1e.oracle.v1.MsgActivateResponse\x12K\n\x0b\x41\x64\x64Reporter\x12\x19.oracle.v1.MsgAddReporter\x1a!.oracle.v1.MsgAddReporterResponse\x12T\n\x0eRemoveReporter\x12\x1c.oracle.v1.MsgRemoveReporter\x1a$.oracle.v1.MsgRemoveReporterResponseB.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
+  serialized_pb=b'\n\x12oracle/v1/tx.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19google/protobuf/any.proto\x1a\x16oracle/v1/oracle.proto\x1a\x1e\x63osmos/base/v1beta1/coin.proto\"\xc9\x02\n\x0eMsgRequestData\x12>\n\x10oracle_script_id\x18\x01 \x01(\x04\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x10\n\x08\x63\x61lldata\x18\x02 \x01(\x0c\x12\x11\n\task_count\x18\x03 \x01(\x04\x12\x11\n\tmin_count\x18\x04 \x01(\x04\x12\x1f\n\tclient_id\x18\x05 \x01(\tB\x0c\xe2\xde\x1f\x08\x43lientID\x12^\n\tfee_limit\x18\x06 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x13\n\x0bprepare_gas\x18\x07 \x01(\x04\x12\x13\n\x0b\x65xecute_gas\x18\x08 \x01(\x04\x12\x0e\n\x06sender\x18\t \x01(\t:\x04\xe8\xa0\x1f\x01\"\x18\n\x16MsgRequestDataResponse\"\x89\x01\n\rMsgReportData\x12.\n\nrequest_id\x18\x01 \x01(\x04\x42\x1a\xe2\xde\x1f\tRequestID\xfa\xde\x1f\tRequestID\x12/\n\x0braw_reports\x18\x02 \x03(\x0b\x32\x14.oracle.v1.RawReportB\x04\xc8\xde\x1f\x00\x12\x11\n\tvalidator\x18\x03 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x17\n\x15MsgReportDataResponse\"\xdd\x01\n\x13MsgCreateDataSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x12\n\nexecutable\x18\x03 \x01(\x0c\x12X\n\x03\x66\x65\x65\x18\x04 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x10\n\x08treasury\x18\x05 \x01(\t\x12\r\n\x05owner\x18\x06 \x01(\t\x12\x0e\n\x06sender\x18\x07 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1d\n\x1bMsgCreateDataSourceResponse\"\x95\x02\n\x11MsgEditDataSource\x12\x38\n\x0e\x64\x61ta_source_id\x18\x01 \x01(\x04\x42 \xe2\xde\x1f\x0c\x44\x61taSourceID\xfa\xde\x1f\x0c\x44\x61taSourceID\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x12\n\nexecutable\x18\x04 \x01(\x0c\x12X\n\x03\x66\x65\x65\x18\x05 \x03(\x0b\x32\x19.cosmos.base.v1beta1.CoinB0\xc8\xde\x1f\x00\xaa\xdf\x1f(github.com/cosmos/cosmos-sdk/types.Coins\x12\x10\n\x08treasury\x18\x06 \x01(\t\x12\r\n\x05owner\x18\x07 \x01(\t\x12\x0e\n\x06sender\x18\x08 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1b\n\x19MsgEditDataSourceResponse\"\xa9\x01\n\x15MsgCreateOracleScript\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0e\n\x06schema\x18\x03 \x01(\t\x12*\n\x0fsource_code_url\x18\x04 \x01(\tB\x11\xe2\xde\x1f\rSourceCodeURL\x12\x0c\n\x04\x63ode\x18\x05 \x01(\x0c\x12\r\n\x05owner\x18\x06 \x01(\t\x12\x0e\n\x06sender\x18\x07 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1f\n\x1dMsgCreateOracleScriptResponse\"\xe7\x01\n\x13MsgEditOracleScript\x12>\n\x10oracle_script_id\x18\x01 \x01(\x04\x42$\xe2\xde\x1f\x0eOracleScriptID\xfa\xde\x1f\x0eOracleScriptID\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0e\n\x06schema\x18\x04 \x01(\t\x12*\n\x0fsource_code_url\x18\x05 \x01(\tB\x11\xe2\xde\x1f\rSourceCodeURL\x12\x0c\n\x04\x63ode\x18\x06 \x01(\x0c\x12\r\n\x05owner\x18\x07 \x01(\t\x12\x0e\n\x06sender\x18\x08 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x1d\n\x1bMsgEditOracleScriptResponse\"&\n\x0bMsgActivate\x12\x11\n\tvalidator\x18\x01 \x01(\t:\x04\xe8\xa0\x1f\x01\"\x15\n\x13MsgActivateResponse2\xd0\x04\n\x03Msg\x12K\n\x0bRequestData\x12\x19.oracle.v1.MsgRequestData\x1a!.oracle.v1.MsgRequestDataResponse\x12H\n\nReportData\x12\x18.oracle.v1.MsgReportData\x1a .oracle.v1.MsgReportDataResponse\x12Z\n\x10\x43reateDataSource\x12\x1e.oracle.v1.MsgCreateDataSource\x1a&.oracle.v1.MsgCreateDataSourceResponse\x12T\n\x0e\x45\x64itDataSource\x12\x1c.oracle.v1.MsgEditDataSource\x1a$.oracle.v1.MsgEditDataSourceResponse\x12`\n\x12\x43reateOracleScript\x12 .oracle.v1.MsgCreateOracleScript\x1a(.oracle.v1.MsgCreateOracleScriptResponse\x12Z\n\x10\x45\x64itOracleScript\x12\x1e.oracle.v1.MsgEditOracleScript\x1a&.oracle.v1.MsgEditOracleScriptResponse\x12\x42\n\x08\x41\x63tivate\x12\x16.oracle.v1.MsgActivate\x1a\x1e.oracle.v1.MsgActivateResponseB.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,oracle_dot_v1_dot_oracle__pb2.DESCRIPTOR,cosmos_dot_base_dot_v1beta1_dot_coin__pb2.DESCRIPTOR,])
 
@@ -41,7 +41,7 @@ _MSGREQUESTDATA = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.MsgRequestData.oracle_script_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -154,7 +154,7 @@ _MSGREPORTDATA = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='request_id', full_name='oracle.v1.MsgReportData.request_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -173,13 +173,6 @@ _MSGREPORTDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='reporter', full_name='oracle.v1.MsgReportData.reporter', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -193,7 +186,7 @@ _MSGREPORTDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=530,
-  serialized_end=685,
+  serialized_end=667,
 )
 
 
@@ -217,8 +210,8 @@ _MSGREPORTDATARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=687,
-  serialized_end=710,
+  serialized_start=669,
+  serialized_end=692,
 )
 
 
@@ -291,8 +284,8 @@ _MSGCREATEDATASOURCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=713,
-  serialized_end=934,
+  serialized_start=695,
+  serialized_end=916,
 )
 
 
@@ -316,8 +309,8 @@ _MSGCREATEDATASOURCERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=936,
-  serialized_end=965,
+  serialized_start=918,
+  serialized_end=947,
 )
 
 
@@ -331,7 +324,7 @@ _MSGEDITDATASOURCE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='data_source_id', full_name='oracle.v1.MsgEditDataSource.data_source_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -397,8 +390,8 @@ _MSGEDITDATASOURCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=968,
-  serialized_end=1245,
+  serialized_start=950,
+  serialized_end=1227,
 )
 
 
@@ -422,8 +415,8 @@ _MSGEDITDATASOURCERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1247,
-  serialized_end=1274,
+  serialized_start=1229,
+  serialized_end=1256,
 )
 
 
@@ -496,8 +489,8 @@ _MSGCREATEORACLESCRIPT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1277,
-  serialized_end=1446,
+  serialized_start=1259,
+  serialized_end=1428,
 )
 
 
@@ -521,8 +514,8 @@ _MSGCREATEORACLESCRIPTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1448,
-  serialized_end=1479,
+  serialized_start=1430,
+  serialized_end=1461,
 )
 
 
@@ -536,7 +529,7 @@ _MSGEDITORACLESCRIPT = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='oracle_script_id', full_name='oracle.v1.MsgEditOracleScript.oracle_script_id', index=0,
-      number=1, type=3, cpp_type=2, label=1,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -602,8 +595,8 @@ _MSGEDITORACLESCRIPT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1482,
-  serialized_end=1713,
+  serialized_start=1464,
+  serialized_end=1695,
 )
 
 
@@ -627,8 +620,8 @@ _MSGEDITORACLESCRIPTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1715,
-  serialized_end=1744,
+  serialized_start=1697,
+  serialized_end=1726,
 )
 
 
@@ -659,8 +652,8 @@ _MSGACTIVATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1746,
-  serialized_end=1784,
+  serialized_start=1728,
+  serialized_end=1766,
 )
 
 
@@ -684,136 +677,8 @@ _MSGACTIVATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1786,
-  serialized_end=1807,
-)
-
-
-_MSGADDREPORTER = _descriptor.Descriptor(
-  name='MsgAddReporter',
-  full_name='oracle.v1.MsgAddReporter',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='validator', full_name='oracle.v1.MsgAddReporter.validator', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='reporter', full_name='oracle.v1.MsgAddReporter.reporter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=b'\350\240\037\001',
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1809,
-  serialized_end=1868,
-)
-
-
-_MSGADDREPORTERRESPONSE = _descriptor.Descriptor(
-  name='MsgAddReporterResponse',
-  full_name='oracle.v1.MsgAddReporterResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1870,
-  serialized_end=1894,
-)
-
-
-_MSGREMOVEREPORTER = _descriptor.Descriptor(
-  name='MsgRemoveReporter',
-  full_name='oracle.v1.MsgRemoveReporter',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='validator', full_name='oracle.v1.MsgRemoveReporter.validator', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='reporter', full_name='oracle.v1.MsgRemoveReporter.reporter', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=b'\350\240\037\001',
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1896,
-  serialized_end=1958,
-)
-
-
-_MSGREMOVEREPORTERRESPONSE = _descriptor.Descriptor(
-  name='MsgRemoveReporterResponse',
-  full_name='oracle.v1.MsgRemoveReporterResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1960,
-  serialized_end=1987,
+  serialized_start=1768,
+  serialized_end=1789,
 )
 
 _MSGREQUESTDATA.fields_by_name['fee_limit'].message_type = cosmos_dot_base_dot_v1beta1_dot_coin__pb2._COIN
@@ -834,10 +699,6 @@ DESCRIPTOR.message_types_by_name['MsgEditOracleScript'] = _MSGEDITORACLESCRIPT
 DESCRIPTOR.message_types_by_name['MsgEditOracleScriptResponse'] = _MSGEDITORACLESCRIPTRESPONSE
 DESCRIPTOR.message_types_by_name['MsgActivate'] = _MSGACTIVATE
 DESCRIPTOR.message_types_by_name['MsgActivateResponse'] = _MSGACTIVATERESPONSE
-DESCRIPTOR.message_types_by_name['MsgAddReporter'] = _MSGADDREPORTER
-DESCRIPTOR.message_types_by_name['MsgAddReporterResponse'] = _MSGADDREPORTERRESPONSE
-DESCRIPTOR.message_types_by_name['MsgRemoveReporter'] = _MSGREMOVEREPORTER
-DESCRIPTOR.message_types_by_name['MsgRemoveReporterResponse'] = _MSGREMOVEREPORTERRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 MsgRequestData = _reflection.GeneratedProtocolMessageType('MsgRequestData', (_message.Message,), {
@@ -938,34 +799,6 @@ MsgActivateResponse = _reflection.GeneratedProtocolMessageType('MsgActivateRespo
   })
 _sym_db.RegisterMessage(MsgActivateResponse)
 
-MsgAddReporter = _reflection.GeneratedProtocolMessageType('MsgAddReporter', (_message.Message,), {
-  'DESCRIPTOR' : _MSGADDREPORTER,
-  '__module__' : 'oracle.v1.tx_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.MsgAddReporter)
-  })
-_sym_db.RegisterMessage(MsgAddReporter)
-
-MsgAddReporterResponse = _reflection.GeneratedProtocolMessageType('MsgAddReporterResponse', (_message.Message,), {
-  'DESCRIPTOR' : _MSGADDREPORTERRESPONSE,
-  '__module__' : 'oracle.v1.tx_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.MsgAddReporterResponse)
-  })
-_sym_db.RegisterMessage(MsgAddReporterResponse)
-
-MsgRemoveReporter = _reflection.GeneratedProtocolMessageType('MsgRemoveReporter', (_message.Message,), {
-  'DESCRIPTOR' : _MSGREMOVEREPORTER,
-  '__module__' : 'oracle.v1.tx_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.MsgRemoveReporter)
-  })
-_sym_db.RegisterMessage(MsgRemoveReporter)
-
-MsgRemoveReporterResponse = _reflection.GeneratedProtocolMessageType('MsgRemoveReporterResponse', (_message.Message,), {
-  'DESCRIPTOR' : _MSGREMOVEREPORTERRESPONSE,
-  '__module__' : 'oracle.v1.tx_pb2'
-  # @@protoc_insertion_point(class_scope:oracle.v1.MsgRemoveReporterResponse)
-  })
-_sym_db.RegisterMessage(MsgRemoveReporterResponse)
-
 
 DESCRIPTOR._options = None
 _MSGREQUESTDATA.fields_by_name['oracle_script_id']._options = None
@@ -986,8 +819,6 @@ _MSGEDITORACLESCRIPT.fields_by_name['oracle_script_id']._options = None
 _MSGEDITORACLESCRIPT.fields_by_name['source_code_url']._options = None
 _MSGEDITORACLESCRIPT._options = None
 _MSGACTIVATE._options = None
-_MSGADDREPORTER._options = None
-_MSGREMOVEREPORTER._options = None
 
 _MSG = _descriptor.ServiceDescriptor(
   name='Msg',
@@ -996,8 +827,8 @@ _MSG = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1990,
-  serialized_end=2745,
+  serialized_start=1792,
+  serialized_end=2384,
   methods=[
   _descriptor.MethodDescriptor(
     name='RequestData',
@@ -1066,26 +897,6 @@ _MSG = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_MSGACTIVATE,
     output_type=_MSGACTIVATERESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='AddReporter',
-    full_name='oracle.v1.Msg.AddReporter',
-    index=7,
-    containing_service=None,
-    input_type=_MSGADDREPORTER,
-    output_type=_MSGADDREPORTERRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='RemoveReporter',
-    full_name='oracle.v1.Msg.RemoveReporter',
-    index=8,
-    containing_service=None,
-    input_type=_MSGREMOVEREPORTER,
-    output_type=_MSGREMOVEREPORTERRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

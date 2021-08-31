@@ -23,9 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ibc/core/connection/v1/query.proto',
   package='ibc.core.connection.v1',
   syntax='proto3',
-  serialized_options=b'Z;github.com/cosmos/cosmos-sdk/x/ibc/core/03-connection/types',
+  serialized_options=b'Z9github.com/cosmos/ibc-go/modules/core/03-connection/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\"ibc/core/connection/v1/query.proto\x12\x16ibc.core.connection.v1\x1a\x14gogoproto/gogo.proto\x1a*cosmos/base/query/v1beta1/pagination.proto\x1a\x1fibc/core/client/v1/client.proto\x1a\'ibc/core/connection/v1/connection.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/protobuf/any.proto\"/\n\x16QueryConnectionRequest\x12\x15\n\rconnection_id\x18\x01 \x01(\t\"\x9b\x01\n\x17QueryConnectionResponse\x12\x39\n\nconnection\x18\x01 \x01(\x0b\x32%.ibc.core.connection.v1.ConnectionEnd\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"U\n\x17QueryConnectionsRequest\x12:\n\npagination\x18\x01 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xcc\x01\n\x18QueryConnectionsResponse\x12\x41\n\x0b\x63onnections\x18\x01 \x03(\x0b\x32,.ibc.core.connection.v1.IdentifiedConnection\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"2\n\x1dQueryClientConnectionsRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\"\x81\x01\n\x1eQueryClientConnectionsResponse\x12\x18\n\x10\x63onnection_paths\x18\x01 \x03(\t\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"T\n!QueryConnectionClientStateRequest\x12/\n\rconnection_id\x18\x01 \x01(\tB\x18\xf2\xde\x1f\x14yaml:\"connection_id\"\"\xb7\x01\n\"QueryConnectionClientStateResponse\x12J\n\x17identified_client_state\x18\x01 \x01(\x0b\x32).ibc.core.client.v1.IdentifiedClientState\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"\x89\x01\n$QueryConnectionConsensusStateRequest\x12/\n\rconnection_id\x18\x01 \x01(\tB\x18\xf2\xde\x1f\x14yaml:\"connection_id\"\x12\x17\n\x0frevision_number\x18\x02 \x01(\x04\x12\x17\n\x0frevision_height\x18\x03 \x01(\x04\"\xb0\x01\n%QueryConnectionConsensusStateResponse\x12-\n\x0f\x63onsensus_state\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x11\n\tclient_id\x18\x02 \x01(\t\x12\r\n\x05proof\x18\x03 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x04 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\x32\xa9\x08\n\x05Query\x12\xaf\x01\n\nConnection\x12..ibc.core.connection.v1.QueryConnectionRequest\x1a/.ibc.core.connection.v1.QueryConnectionResponse\"@\x82\xd3\xe4\x93\x02:\x12\x38/ibc/core/connection/v1beta1/connections/{connection_id}\x12\xa2\x01\n\x0b\x43onnections\x12/.ibc.core.connection.v1.QueryConnectionsRequest\x1a\x30.ibc.core.connection.v1.QueryConnectionsResponse\"0\x82\xd3\xe4\x93\x02*\x12(/ibc/core/connection/v1beta1/connections\x12\xc7\x01\n\x11\x43lientConnections\x12\x35.ibc.core.connection.v1.QueryClientConnectionsRequest\x1a\x36.ibc.core.connection.v1.QueryClientConnectionsResponse\"C\x82\xd3\xe4\x93\x02=\x12;/ibc/core/connection/v1beta1/client_connections/{client_id}\x12\xdd\x01\n\x15\x43onnectionClientState\x12\x39.ibc.core.connection.v1.QueryConnectionClientStateRequest\x1a:.ibc.core.connection.v1.QueryConnectionClientStateResponse\"M\x82\xd3\xe4\x93\x02G\x12\x45/ibc/core/connection/v1beta1/connections/{connection_id}/client_state\x12\x9e\x02\n\x18\x43onnectionConsensusState\x12<.ibc.core.connection.v1.QueryConnectionConsensusStateRequest\x1a=.ibc.core.connection.v1.QueryConnectionConsensusStateResponse\"\x84\x01\x82\xd3\xe4\x93\x02~\x12|/ibc/core/connection/v1beta1/connections/{connection_id}/consensus_state/revision/{revision_number}/height/{revision_height}B=Z;github.com/cosmos/cosmos-sdk/x/ibc/core/03-connection/typesb\x06proto3'
+  serialized_pb=b'\n\"ibc/core/connection/v1/query.proto\x12\x16ibc.core.connection.v1\x1a\x14gogoproto/gogo.proto\x1a*cosmos/base/query/v1beta1/pagination.proto\x1a\x1fibc/core/client/v1/client.proto\x1a\'ibc/core/connection/v1/connection.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/protobuf/any.proto\"/\n\x16QueryConnectionRequest\x12\x15\n\rconnection_id\x18\x01 \x01(\t\"\x9b\x01\n\x17QueryConnectionResponse\x12\x39\n\nconnection\x18\x01 \x01(\x0b\x32%.ibc.core.connection.v1.ConnectionEnd\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"U\n\x17QueryConnectionsRequest\x12:\n\npagination\x18\x01 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xcc\x01\n\x18QueryConnectionsResponse\x12\x41\n\x0b\x63onnections\x18\x01 \x03(\x0b\x32,.ibc.core.connection.v1.IdentifiedConnection\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"2\n\x1dQueryClientConnectionsRequest\x12\x11\n\tclient_id\x18\x01 \x01(\t\"\x81\x01\n\x1eQueryClientConnectionsResponse\x12\x18\n\x10\x63onnection_paths\x18\x01 \x03(\t\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"T\n!QueryConnectionClientStateRequest\x12/\n\rconnection_id\x18\x01 \x01(\tB\x18\xf2\xde\x1f\x14yaml:\"connection_id\"\"\xb7\x01\n\"QueryConnectionClientStateResponse\x12J\n\x17identified_client_state\x18\x01 \x01(\x0b\x32).ibc.core.client.v1.IdentifiedClientState\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"\x89\x01\n$QueryConnectionConsensusStateRequest\x12/\n\rconnection_id\x18\x01 \x01(\tB\x18\xf2\xde\x1f\x14yaml:\"connection_id\"\x12\x17\n\x0frevision_number\x18\x02 \x01(\x04\x12\x17\n\x0frevision_height\x18\x03 \x01(\x04\"\xb0\x01\n%QueryConnectionConsensusStateResponse\x12-\n\x0f\x63onsensus_state\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x11\n\tclient_id\x18\x02 \x01(\t\x12\r\n\x05proof\x18\x03 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x04 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\x32\x8f\x08\n\x05Query\x12\xaa\x01\n\nConnection\x12..ibc.core.connection.v1.QueryConnectionRequest\x1a/.ibc.core.connection.v1.QueryConnectionResponse\";\x82\xd3\xe4\x93\x02\x35\x12\x33/ibc/core/connection/v1/connections/{connection_id}\x12\x9d\x01\n\x0b\x43onnections\x12/.ibc.core.connection.v1.QueryConnectionsRequest\x1a\x30.ibc.core.connection.v1.QueryConnectionsResponse\"+\x82\xd3\xe4\x93\x02%\x12#/ibc/core/connection/v1/connections\x12\xc2\x01\n\x11\x43lientConnections\x12\x35.ibc.core.connection.v1.QueryClientConnectionsRequest\x1a\x36.ibc.core.connection.v1.QueryClientConnectionsResponse\">\x82\xd3\xe4\x93\x02\x38\x12\x36/ibc/core/connection/v1/client_connections/{client_id}\x12\xd8\x01\n\x15\x43onnectionClientState\x12\x39.ibc.core.connection.v1.QueryConnectionClientStateRequest\x1a:.ibc.core.connection.v1.QueryConnectionClientStateResponse\"H\x82\xd3\xe4\x93\x02\x42\x12@/ibc/core/connection/v1/connections/{connection_id}/client_state\x12\x98\x02\n\x18\x43onnectionConsensusState\x12<.ibc.core.connection.v1.QueryConnectionConsensusStateRequest\x1a=.ibc.core.connection.v1.QueryConnectionConsensusStateResponse\"\x7f\x82\xd3\xe4\x93\x02y\x12w/ibc/core/connection/v1/connections/{connection_id}/consensus_state/revision/{revision_number}/height/{revision_height}B;Z9github.com/cosmos/ibc-go/modules/core/03-connection/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,cosmos_dot_base_dot_query_dot_v1beta1_dot_pagination__pb2.DESCRIPTOR,ibc_dot_core_dot_client_dot_v1_dot_client__pb2.DESCRIPTOR,ibc_dot_core_dot_connection_dot_v1_dot_connection__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
 
@@ -553,7 +553,7 @@ _QUERY = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=1536,
-  serialized_end=2601,
+  serialized_end=2575,
   methods=[
   _descriptor.MethodDescriptor(
     name='Connection',
@@ -562,7 +562,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCONNECTIONREQUEST,
     output_type=_QUERYCONNECTIONRESPONSE,
-    serialized_options=b'\202\323\344\223\002:\0228/ibc/core/connection/v1beta1/connections/{connection_id}',
+    serialized_options=b'\202\323\344\223\0025\0223/ibc/core/connection/v1/connections/{connection_id}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -572,7 +572,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCONNECTIONSREQUEST,
     output_type=_QUERYCONNECTIONSRESPONSE,
-    serialized_options=b'\202\323\344\223\002*\022(/ibc/core/connection/v1beta1/connections',
+    serialized_options=b'\202\323\344\223\002%\022#/ibc/core/connection/v1/connections',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -582,7 +582,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCLIENTCONNECTIONSREQUEST,
     output_type=_QUERYCLIENTCONNECTIONSRESPONSE,
-    serialized_options=b'\202\323\344\223\002=\022;/ibc/core/connection/v1beta1/client_connections/{client_id}',
+    serialized_options=b'\202\323\344\223\0028\0226/ibc/core/connection/v1/client_connections/{client_id}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -592,7 +592,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCONNECTIONCLIENTSTATEREQUEST,
     output_type=_QUERYCONNECTIONCLIENTSTATERESPONSE,
-    serialized_options=b'\202\323\344\223\002G\022E/ibc/core/connection/v1beta1/connections/{connection_id}/client_state',
+    serialized_options=b'\202\323\344\223\002B\022@/ibc/core/connection/v1/connections/{connection_id}/client_state',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -602,7 +602,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCONNECTIONCONSENSUSSTATEREQUEST,
     output_type=_QUERYCONNECTIONCONSENSUSSTATERESPONSE,
-    serialized_options=b'\202\323\344\223\002~\022|/ibc/core/connection/v1beta1/connections/{connection_id}/consensus_state/revision/{revision_number}/height/{revision_height}',
+    serialized_options=b'\202\323\344\223\002y\022w/ibc/core/connection/v1/connections/{connection_id}/consensus_state/revision/{revision_number}/height/{revision_height}',
     create_key=_descriptor._internal_create_key,
   ),
 ])

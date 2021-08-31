@@ -20,9 +20,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ibc/core/connection/v1/connection.proto',
   package='ibc.core.connection.v1',
   syntax='proto3',
-  serialized_options=b'Z;github.com/cosmos/cosmos-sdk/x/ibc/core/03-connection/types',
+  serialized_options=b'Z9github.com/cosmos/ibc-go/modules/core/03-connection/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\'ibc/core/connection/v1/connection.proto\x12\x16ibc.core.connection.v1\x1a\x14gogoproto/gogo.proto\x1a\'ibc/core/commitment/v1/commitment.proto\"\x90\x02\n\rConnectionEnd\x12\'\n\tclient_id\x18\x01 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12\x31\n\x08versions\x18\x02 \x03(\x0b\x32\x1f.ibc.core.connection.v1.Version\x12,\n\x05state\x18\x03 \x01(\x0e\x32\x1d.ibc.core.connection.v1.State\x12@\n\x0c\x63ounterparty\x18\x04 \x01(\x0b\x32$.ibc.core.connection.v1.CounterpartyB\x04\xc8\xde\x1f\x00\x12-\n\x0c\x64\x65lay_period\x18\x05 \x01(\x04\x42\x17\xf2\xde\x1f\x13yaml:\"delay_period\":\x04\x88\xa0\x1f\x00\"\xb2\x02\n\x14IdentifiedConnection\x12\x19\n\x02id\x18\x01 \x01(\tB\r\xf2\xde\x1f\tyaml:\"id\"\x12\'\n\tclient_id\x18\x02 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12\x31\n\x08versions\x18\x03 \x03(\x0b\x32\x1f.ibc.core.connection.v1.Version\x12,\n\x05state\x18\x04 \x01(\x0e\x32\x1d.ibc.core.connection.v1.State\x12@\n\x0c\x63ounterparty\x18\x05 \x01(\x0b\x32$.ibc.core.connection.v1.CounterpartyB\x04\xc8\xde\x1f\x00\x12-\n\x0c\x64\x65lay_period\x18\x06 \x01(\x04\x42\x17\xf2\xde\x1f\x13yaml:\"delay_period\":\x04\x88\xa0\x1f\x00\"\xaa\x01\n\x0c\x43ounterparty\x12\'\n\tclient_id\x18\x01 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12/\n\rconnection_id\x18\x02 \x01(\tB\x18\xf2\xde\x1f\x14yaml:\"connection_id\"\x12:\n\x06prefix\x18\x03 \x01(\x0b\x32$.ibc.core.commitment.v1.MerklePrefixB\x04\xc8\xde\x1f\x00:\x04\x88\xa0\x1f\x00\"\x1c\n\x0b\x43lientPaths\x12\r\n\x05paths\x18\x01 \x03(\t\"I\n\x0f\x43onnectionPaths\x12\'\n\tclient_id\x18\x01 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12\r\n\x05paths\x18\x02 \x03(\t\"5\n\x07Version\x12\x12\n\nidentifier\x18\x01 \x01(\t\x12\x10\n\x08\x66\x65\x61tures\x18\x02 \x03(\t:\x04\x88\xa0\x1f\x00*\x99\x01\n\x05State\x12\x36\n\x1fSTATE_UNINITIALIZED_UNSPECIFIED\x10\x00\x1a\x11\x8a\x9d \rUNINITIALIZED\x12\x18\n\nSTATE_INIT\x10\x01\x1a\x08\x8a\x9d \x04INIT\x12\x1e\n\rSTATE_TRYOPEN\x10\x02\x1a\x0b\x8a\x9d \x07TRYOPEN\x12\x18\n\nSTATE_OPEN\x10\x03\x1a\x08\x8a\x9d \x04OPEN\x1a\x04\x88\xa3\x1e\x00\x42=Z;github.com/cosmos/cosmos-sdk/x/ibc/core/03-connection/typesb\x06proto3'
+  serialized_pb=b'\n\'ibc/core/connection/v1/connection.proto\x12\x16ibc.core.connection.v1\x1a\x14gogoproto/gogo.proto\x1a\'ibc/core/commitment/v1/commitment.proto\"\x90\x02\n\rConnectionEnd\x12\'\n\tclient_id\x18\x01 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12\x31\n\x08versions\x18\x02 \x03(\x0b\x32\x1f.ibc.core.connection.v1.Version\x12,\n\x05state\x18\x03 \x01(\x0e\x32\x1d.ibc.core.connection.v1.State\x12@\n\x0c\x63ounterparty\x18\x04 \x01(\x0b\x32$.ibc.core.connection.v1.CounterpartyB\x04\xc8\xde\x1f\x00\x12-\n\x0c\x64\x65lay_period\x18\x05 \x01(\x04\x42\x17\xf2\xde\x1f\x13yaml:\"delay_period\":\x04\x88\xa0\x1f\x00\"\xb2\x02\n\x14IdentifiedConnection\x12\x19\n\x02id\x18\x01 \x01(\tB\r\xf2\xde\x1f\tyaml:\"id\"\x12\'\n\tclient_id\x18\x02 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12\x31\n\x08versions\x18\x03 \x03(\x0b\x32\x1f.ibc.core.connection.v1.Version\x12,\n\x05state\x18\x04 \x01(\x0e\x32\x1d.ibc.core.connection.v1.State\x12@\n\x0c\x63ounterparty\x18\x05 \x01(\x0b\x32$.ibc.core.connection.v1.CounterpartyB\x04\xc8\xde\x1f\x00\x12-\n\x0c\x64\x65lay_period\x18\x06 \x01(\x04\x42\x17\xf2\xde\x1f\x13yaml:\"delay_period\":\x04\x88\xa0\x1f\x00\"\xaa\x01\n\x0c\x43ounterparty\x12\'\n\tclient_id\x18\x01 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12/\n\rconnection_id\x18\x02 \x01(\tB\x18\xf2\xde\x1f\x14yaml:\"connection_id\"\x12:\n\x06prefix\x18\x03 \x01(\x0b\x32$.ibc.core.commitment.v1.MerklePrefixB\x04\xc8\xde\x1f\x00:\x04\x88\xa0\x1f\x00\"\x1c\n\x0b\x43lientPaths\x12\r\n\x05paths\x18\x01 \x03(\t\"I\n\x0f\x43onnectionPaths\x12\'\n\tclient_id\x18\x01 \x01(\tB\x14\xf2\xde\x1f\x10yaml:\"client_id\"\x12\r\n\x05paths\x18\x02 \x03(\t\"5\n\x07Version\x12\x12\n\nidentifier\x18\x01 \x01(\t\x12\x10\n\x08\x66\x65\x61tures\x18\x02 \x03(\t:\x04\x88\xa0\x1f\x00\"U\n\x06Params\x12K\n\x1bmax_expected_time_per_block\x18\x01 \x01(\x04\x42&\xf2\xde\x1f\"yaml:\"max_expected_time_per_block\"*\x99\x01\n\x05State\x12\x36\n\x1fSTATE_UNINITIALIZED_UNSPECIFIED\x10\x00\x1a\x11\x8a\x9d \rUNINITIALIZED\x12\x18\n\nSTATE_INIT\x10\x01\x1a\x08\x8a\x9d \x04INIT\x12\x1e\n\rSTATE_TRYOPEN\x10\x02\x1a\x0b\x8a\x9d \x07TRYOPEN\x12\x18\n\nSTATE_OPEN\x10\x03\x1a\x08\x8a\x9d \x04OPEN\x1a\x04\x88\xa3\x1e\x00\x42;Z9github.com/cosmos/ibc-go/modules/core/03-connection/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,ibc_dot_core_dot_commitment_dot_v1_dot_commitment__pb2.DESCRIPTOR,])
 
@@ -56,8 +56,8 @@ _STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=b'\210\243\036\000',
-  serialized_start=1048,
-  serialized_end=1201,
+  serialized_start=1135,
+  serialized_end=1288,
 )
 _sym_db.RegisterEnumDescriptor(_STATE)
 
@@ -351,6 +351,38 @@ _VERSION = _descriptor.Descriptor(
   serialized_end=1045,
 )
 
+
+_PARAMS = _descriptor.Descriptor(
+  name='Params',
+  full_name='ibc.core.connection.v1.Params',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='max_expected_time_per_block', full_name='ibc.core.connection.v1.Params.max_expected_time_per_block', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=b'\362\336\037\"yaml:\"max_expected_time_per_block\"', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1047,
+  serialized_end=1132,
+)
+
 _CONNECTIONEND.fields_by_name['versions'].message_type = _VERSION
 _CONNECTIONEND.fields_by_name['state'].enum_type = _STATE
 _CONNECTIONEND.fields_by_name['counterparty'].message_type = _COUNTERPARTY
@@ -364,6 +396,7 @@ DESCRIPTOR.message_types_by_name['Counterparty'] = _COUNTERPARTY
 DESCRIPTOR.message_types_by_name['ClientPaths'] = _CLIENTPATHS
 DESCRIPTOR.message_types_by_name['ConnectionPaths'] = _CONNECTIONPATHS
 DESCRIPTOR.message_types_by_name['Version'] = _VERSION
+DESCRIPTOR.message_types_by_name['Params'] = _PARAMS
 DESCRIPTOR.enum_types_by_name['State'] = _STATE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -409,6 +442,13 @@ Version = _reflection.GeneratedProtocolMessageType('Version', (_message.Message,
   })
 _sym_db.RegisterMessage(Version)
 
+Params = _reflection.GeneratedProtocolMessageType('Params', (_message.Message,), {
+  'DESCRIPTOR' : _PARAMS,
+  '__module__' : 'ibc.core.connection.v1.connection_pb2'
+  # @@protoc_insertion_point(class_scope:ibc.core.connection.v1.Params)
+  })
+_sym_db.RegisterMessage(Params)
+
 
 DESCRIPTOR._options = None
 _STATE._options = None
@@ -431,4 +471,5 @@ _COUNTERPARTY.fields_by_name['prefix']._options = None
 _COUNTERPARTY._options = None
 _CONNECTIONPATHS.fields_by_name['client_id']._options = None
 _VERSION._options = None
+_PARAMS.fields_by_name['max_expected_time_per_block']._options = None
 # @@protoc_insertion_point(module_scope)
