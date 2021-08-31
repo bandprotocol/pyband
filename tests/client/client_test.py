@@ -554,7 +554,7 @@ def test_get_data_source_success(pyband_client):
 
 
 def test_get_data_source_invalid(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(ValueError):
         pyband_client.get_data_source(-1)
 
 
@@ -577,7 +577,7 @@ def test_get_oracle_script_success(pyband_client):
 
 
 def test_get_oracle_script_invalid(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(ValueError):
         pyband_client.get_oracle_script(-1)
 
 
@@ -649,7 +649,7 @@ def test_get_request_by_id_not_found(pyband_client):
 
 
 def test_get_request_by_id_invalid(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(ValueError):
         pyband_client.get_request_by_id(-1)
 
 
