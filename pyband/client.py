@@ -28,8 +28,20 @@ from .proto.cosmos.tx.v1beta1 import (
 
 
 class Client:
-    def __init__(self, grpc_endpoint: str):
-        channel = grpc.insecure_channel(grpc_endpoint)
+    def __init__(
+        self,
+        grpc_endpoint: str,
+        insecure: bool = False,
+        credentials: grpc.ChannelCredentials = None,
+    ):
+        channel = (
+            grpc.insecure_channel(grpc_endpoint)
+            if insecure
+            else grpc.secure_channel(
+                grpc_endpoint,
+                credentials or grpc.ssl_channel_credentials(),
+            )
+        )
         self.stubOracle = oracle_query_grpc.QueryStub(channel)
         self.stubCosmosTendermint = tendermint_query_grpc.ServiceStub(channel)
         self.stubAuth = auth_query_grpc.QueryStub(channel)

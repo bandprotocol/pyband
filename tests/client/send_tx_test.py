@@ -29,7 +29,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     txhash="C278EC5A69C34AACE42773E41B1163E6CE40C906F2A14F807D39D1B2A1C2DFF5",
                     codespace="sdk",
                     code=2,
-                    raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 13, WireType:\"bytes\"}: tx parse error",
+                    raw_log='errUnknownField "*tx.TxRaw": {TagNum: 13, WireType:"bytes"}: tx parse error',
                 )
             )
         elif request.tx_bytes == b"block_success":
@@ -63,7 +63,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     txhash="7CA12506E88CF8B814E20848B229460F91FC0370C44A7C4FEE786960CE30C36D",
                     codespace="sdk",
                     code=2,
-                    raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 14, WireType:\"start_group\"}: tx parse error",
+                    raw_log='errUnknownField "*tx.TxRaw": {TagNum: 14, WireType:"start_group"}: tx parse error',
                     gas_used=6429,
                 )
             )
@@ -80,7 +80,7 @@ def pyband_client(_grpc_server, grpc_addr):
 
     from pyband.client import Client
 
-    yield Client(grpc_addr)
+    yield Client(grpc_addr, insecure=True)
     _grpc_server.stop(grace=None)
 
 
@@ -120,7 +120,7 @@ def test_send_tx_sync_mode_invalid_bytes(pyband_client):
             txhash="C278EC5A69C34AACE42773E41B1163E6CE40C906F2A14F807D39D1B2A1C2DFF5",
             codespace="sdk",
             code=2,
-            raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 13, WireType:\"bytes\"}: tx parse error",
+            raw_log='errUnknownField "*tx.TxRaw": {TagNum: 13, WireType:"bytes"}: tx parse error',
         )
     )
     assert tx_response == mock_result.tx_response
@@ -177,7 +177,7 @@ def test_send_tx_block_mode_invalid_bytes(pyband_client):
             txhash="7CA12506E88CF8B814E20848B229460F91FC0370C44A7C4FEE786960CE30C36D",
             codespace="sdk",
             code=2,
-            raw_log="errUnknownField \"*tx.TxRaw\": {TagNum: 14, WireType:\"start_group\"}: tx parse error",
+            raw_log='errUnknownField "*tx.TxRaw": {TagNum: 14, WireType:"start_group"}: tx parse error',
             gas_used=6429,
         )
     )
