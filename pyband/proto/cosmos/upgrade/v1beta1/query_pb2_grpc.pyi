@@ -23,6 +23,8 @@ class QueryStub:
     # as a trusted kernel for the next version of this chain. It will only be
     # stored at the last height of this chain.
     # UpgradedConsensusState RPC not supported with legacy querier
+    # This rpc is deprecated now that IBC has its own replacement
+    # (https://github.com/cosmos/ibc-go/blob/2c880a22e9f9cc75f62b527ca94aa75ce1106001/proto/ibc/core/client/v1/query.proto#L54)
     UpgradedConsensusState:grpc.UnaryUnaryMultiCallable[
         global___QueryUpgradedConsensusStateRequest,
         global___QueryUpgradedConsensusStateResponse] = ...
@@ -53,6 +55,8 @@ class QueryServicer(metaclass=abc.ABCMeta):
     # as a trusted kernel for the next version of this chain. It will only be
     # stored at the last height of this chain.
     # UpgradedConsensusState RPC not supported with legacy querier
+    # This rpc is deprecated now that IBC has its own replacement
+    # (https://github.com/cosmos/ibc-go/blob/2c880a22e9f9cc75f62b527ca94aa75ce1106001/proto/ibc/core/client/v1/query.proto#L54)
     @abc.abstractmethod
     def UpgradedConsensusState(self,
         request: global___QueryUpgradedConsensusStateRequest,
