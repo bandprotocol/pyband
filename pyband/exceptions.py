@@ -2,23 +2,7 @@ class PybandError(Exception):
     pass
 
 
-class EmptyRequestMsgError(PybandError):
-    pass
-
-
-class QueryError(PybandError):
-    pass
-
-
-class NegativeIntegerError(PybandError):
-    pass
-
-
 class ValueTooLargeError(PybandError):
-    pass
-
-
-class InsufficientCoinError(PybandError):
     pass
 
 
@@ -39,14 +23,6 @@ class DecodeError(PybandError):
 
 
 class ConvertError(PybandError):
-    pass
-
-
-class UnsuccessfulCallError(PybandError):
-    pass
-
-
-class CreateError(PybandError):
     pass
 
 
