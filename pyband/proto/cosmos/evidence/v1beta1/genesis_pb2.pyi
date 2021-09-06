@@ -12,13 +12,13 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the evidence module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     EVIDENCE_FIELD_NUMBER: builtins.int
-
+    # evidence defines all the evidence at genesis.
     @property
     def evidence(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[google.protobuf.any_pb2.Any]: ...
-
     def __init__(self,
         *,
         evidence : typing.Optional[typing.Iterable[google.protobuf.any_pb2.Any]] = ...,

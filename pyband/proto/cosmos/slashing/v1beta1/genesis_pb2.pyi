@@ -12,21 +12,23 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the slashing module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
     SIGNING_INFOS_FIELD_NUMBER: builtins.int
     MISSED_BLOCKS_FIELD_NUMBER: builtins.int
-
+    # params defines all the paramaters of related to deposit.
     @property
     def params(self) -> cosmos.slashing.v1beta1.slashing_pb2.Params: ...
-
+    # signing_infos represents a map between validator addresses and their
+    # signing infos.
     @property
     def signing_infos(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___SigningInfo]: ...
-
+    # missed_blocks represents a map between validator addresses and their
+    # missed blocks.
     @property
     def missed_blocks(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorMissedBlocks]: ...
-
     def __init__(self,
         *,
         params : typing.Optional[cosmos.slashing.v1beta1.slashing_pb2.Params] = ...,
@@ -37,15 +39,16 @@ class GenesisState(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"missed_blocks",b"missed_blocks",u"params",b"params",u"signing_infos",b"signing_infos"]) -> None: ...
 global___GenesisState = GenesisState
 
+# SigningInfo stores validator signing info of corresponding address.
 class SigningInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ADDRESS_FIELD_NUMBER: builtins.int
     VALIDATOR_SIGNING_INFO_FIELD_NUMBER: builtins.int
+    # address is the validator address.
     address: typing.Text = ...
-
+    # validator_signing_info represents the signing info of this validator.
     @property
     def validator_signing_info(self) -> cosmos.slashing.v1beta1.slashing_pb2.ValidatorSigningInfo: ...
-
     def __init__(self,
         *,
         address : typing.Text = ...,
@@ -55,15 +58,17 @@ class SigningInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"address",b"address",u"validator_signing_info",b"validator_signing_info"]) -> None: ...
 global___SigningInfo = SigningInfo
 
+# ValidatorMissedBlocks contains array of missed blocks of corresponding
+# address.
 class ValidatorMissedBlocks(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ADDRESS_FIELD_NUMBER: builtins.int
     MISSED_BLOCKS_FIELD_NUMBER: builtins.int
+    # address is the validator address.
     address: typing.Text = ...
-
+    # missed_blocks is an array of missed blocks by the validator.
     @property
     def missed_blocks(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___MissedBlock]: ...
-
     def __init__(self,
         *,
         address : typing.Text = ...,
@@ -72,13 +77,15 @@ class ValidatorMissedBlocks(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"address",b"address",u"missed_blocks",b"missed_blocks"]) -> None: ...
 global___ValidatorMissedBlocks = ValidatorMissedBlocks
 
+# MissedBlock contains height and missed status as boolean.
 class MissedBlock(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INDEX_FIELD_NUMBER: builtins.int
     MISSED_FIELD_NUMBER: builtins.int
+    # index is the height at which the block was missed.
     index: builtins.int = ...
+    # missed is the missed status.
     missed: builtins.bool = ...
-
     def __init__(self,
         *,
         index : builtins.int = ...,

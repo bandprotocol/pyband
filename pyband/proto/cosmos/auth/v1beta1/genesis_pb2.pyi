@@ -13,17 +13,17 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the auth module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
     ACCOUNTS_FIELD_NUMBER: builtins.int
-
+    # params defines all the paramaters of the module.
     @property
     def params(self) -> cosmos.auth.v1beta1.auth_pb2.Params: ...
-
+    # accounts are the accounts present at genesis.
     @property
     def accounts(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[google.protobuf.any_pb2.Any]: ...
-
     def __init__(self,
         *,
         params : typing.Optional[cosmos.auth.v1beta1.auth_pb2.Params] = ...,

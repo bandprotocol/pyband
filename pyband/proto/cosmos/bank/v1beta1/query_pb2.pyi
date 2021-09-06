@@ -14,13 +14,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# QueryBalanceRequest is the request type for the Query/Balance RPC method.
 class QueryBalanceRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ADDRESS_FIELD_NUMBER: builtins.int
     DENOM_FIELD_NUMBER: builtins.int
+    # address is the address to query balances for.
     address: typing.Text = ...
+    # denom is the coin denom to query balances for.
     denom: typing.Text = ...
-
     def __init__(self,
         *,
         address : typing.Text = ...,
@@ -29,13 +31,13 @@ class QueryBalanceRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"address",b"address",u"denom",b"denom"]) -> None: ...
 global___QueryBalanceRequest = QueryBalanceRequest
 
+# QueryBalanceResponse is the response type for the Query/Balance RPC method.
 class QueryBalanceResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BALANCE_FIELD_NUMBER: builtins.int
-
+    # balance is the balance of the coin.
     @property
     def balance(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         balance : typing.Optional[cosmos.base.v1beta1.coin_pb2.Coin] = ...,
@@ -44,15 +46,16 @@ class QueryBalanceResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"balance",b"balance"]) -> None: ...
 global___QueryBalanceResponse = QueryBalanceResponse
 
+# QueryBalanceRequest is the request type for the Query/AllBalances RPC method.
 class QueryAllBalancesRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ADDRESS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # address is the address to query balances for.
     address: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         address : typing.Text = ...,
@@ -62,17 +65,18 @@ class QueryAllBalancesRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"address",b"address",u"pagination",b"pagination"]) -> None: ...
 global___QueryAllBalancesRequest = QueryAllBalancesRequest
 
+# QueryAllBalancesResponse is the response type for the Query/AllBalances RPC
+# method.
 class QueryAllBalancesResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BALANCES_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # balances is the balances of all the coins.
     @property
     def balances(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         balances : typing.Optional[typing.Iterable[cosmos.base.v1beta1.coin_pb2.Coin]] = ...,
@@ -82,32 +86,49 @@ class QueryAllBalancesResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"balances",b"balances",u"pagination",b"pagination"]) -> None: ...
 global___QueryAllBalancesResponse = QueryAllBalancesResponse
 
+# QueryTotalSupplyRequest is the request type for the Query/TotalSupply RPC
+# method.
 class QueryTotalSupplyRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
+    PAGINATION_FIELD_NUMBER: builtins.int
+    # pagination defines an optional pagination for the request.
+    @property
+    def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
     def __init__(self,
+        *,
+        pagination : typing.Optional[cosmos.base.query.v1beta1.pagination_pb2.PageRequest] = ...,
         ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination"]) -> None: ...
 global___QueryTotalSupplyRequest = QueryTotalSupplyRequest
 
+# QueryTotalSupplyResponse is the response type for the Query/TotalSupply RPC
+# method
 class QueryTotalSupplyResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SUPPLY_FIELD_NUMBER: builtins.int
-
+    PAGINATION_FIELD_NUMBER: builtins.int
+    # supply is the supply of the coins
     @property
     def supply(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
+    # pagination defines the pagination in the response.
+    @property
+    def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
     def __init__(self,
         *,
         supply : typing.Optional[typing.Iterable[cosmos.base.v1beta1.coin_pb2.Coin]] = ...,
+        pagination : typing.Optional[cosmos.base.query.v1beta1.pagination_pb2.PageResponse] = ...,
         ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal[u"supply",b"supply"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"supply",b"supply"]) -> None: ...
 global___QueryTotalSupplyResponse = QueryTotalSupplyResponse
 
+# QuerySupplyOfRequest is the request type for the Query/SupplyOf RPC method.
 class QuerySupplyOfRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DENOM_FIELD_NUMBER: builtins.int
+    # denom is the coin denom to query balances for.
     denom: typing.Text = ...
-
     def __init__(self,
         *,
         denom : typing.Text = ...,
@@ -115,13 +136,13 @@ class QuerySupplyOfRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"denom",b"denom"]) -> None: ...
 global___QuerySupplyOfRequest = QuerySupplyOfRequest
 
+# QuerySupplyOfResponse is the response type for the Query/SupplyOf RPC method.
 class QuerySupplyOfResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     AMOUNT_FIELD_NUMBER: builtins.int
-
+    # amount is the supply of the coin.
     @property
     def amount(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         amount : typing.Optional[cosmos.base.v1beta1.coin_pb2.Coin] = ...,
@@ -130,20 +151,19 @@ class QuerySupplyOfResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount"]) -> None: ...
 global___QuerySupplyOfResponse = QuerySupplyOfResponse
 
+# QueryParamsRequest defines the request type for querying x/bank parameters.
 class QueryParamsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___QueryParamsRequest = QueryParamsRequest
 
+# QueryParamsResponse defines the response type for querying x/bank parameters.
 class QueryParamsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
-
     @property
     def params(self) -> cosmos.bank.v1beta1.bank_pb2.Params: ...
-
     def __init__(self,
         *,
         params : typing.Optional[cosmos.bank.v1beta1.bank_pb2.Params] = ...,
@@ -152,13 +172,13 @@ class QueryParamsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"params",b"params"]) -> None: ...
 global___QueryParamsResponse = QueryParamsResponse
 
+# QueryDenomsMetadataRequest is the request type for the Query/DenomsMetadata RPC method.
 class QueryDenomsMetadataRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         pagination : typing.Optional[cosmos.base.query.v1beta1.pagination_pb2.PageRequest] = ...,
@@ -167,17 +187,18 @@ class QueryDenomsMetadataRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination"]) -> None: ...
 global___QueryDenomsMetadataRequest = QueryDenomsMetadataRequest
 
+# QueryDenomsMetadataResponse is the response type for the Query/DenomsMetadata RPC
+# method.
 class QueryDenomsMetadataResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     METADATAS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # metadata provides the client information for all the registered tokens.
     @property
     def metadatas(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.bank.v1beta1.bank_pb2.Metadata]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         metadatas : typing.Optional[typing.Iterable[cosmos.bank.v1beta1.bank_pb2.Metadata]] = ...,
@@ -187,11 +208,12 @@ class QueryDenomsMetadataResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"metadatas",b"metadatas",u"pagination",b"pagination"]) -> None: ...
 global___QueryDenomsMetadataResponse = QueryDenomsMetadataResponse
 
+# QueryDenomMetadataRequest is the request type for the Query/DenomMetadata RPC method.
 class QueryDenomMetadataRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DENOM_FIELD_NUMBER: builtins.int
+    # denom is the coin denom to query the metadata for.
     denom: typing.Text = ...
-
     def __init__(self,
         *,
         denom : typing.Text = ...,
@@ -199,13 +221,14 @@ class QueryDenomMetadataRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"denom",b"denom"]) -> None: ...
 global___QueryDenomMetadataRequest = QueryDenomMetadataRequest
 
+# QueryDenomMetadataResponse is the response type for the Query/DenomMetadata RPC
+# method.
 class QueryDenomMetadataResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     METADATA_FIELD_NUMBER: builtins.int
-
+    # metadata describes and provides all the client information for the requested token.
     @property
     def metadata(self) -> cosmos.bank.v1beta1.bank_pb2.Metadata: ...
-
     def __init__(self,
         *,
         metadata : typing.Optional[cosmos.bank.v1beta1.bank_pb2.Metadata] = ...,

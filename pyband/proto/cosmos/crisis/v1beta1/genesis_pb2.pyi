@@ -11,13 +11,14 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the crisis module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CONSTANT_FEE_FIELD_NUMBER: builtins.int
-
+    # constant_fee is the fee used to verify the invariant in the crisis
+    # module.
     @property
     def constant_fee(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         constant_fee : typing.Optional[cosmos.base.v1beta1.coin_pb2.Coin] = ...,

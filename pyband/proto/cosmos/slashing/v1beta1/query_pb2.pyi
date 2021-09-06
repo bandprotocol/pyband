@@ -13,20 +13,19 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# QueryParamsRequest is the request type for the Query/Params RPC method
 class QueryParamsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___QueryParamsRequest = QueryParamsRequest
 
+# QueryParamsResponse is the response type for the Query/Params RPC method
 class QueryParamsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
-
     @property
     def params(self) -> cosmos.slashing.v1beta1.slashing_pb2.Params: ...
-
     def __init__(self,
         *,
         params : typing.Optional[cosmos.slashing.v1beta1.slashing_pb2.Params] = ...,
@@ -35,11 +34,13 @@ class QueryParamsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"params",b"params"]) -> None: ...
 global___QueryParamsResponse = QueryParamsResponse
 
+# QuerySigningInfoRequest is the request type for the Query/SigningInfo RPC
+# method
 class QuerySigningInfoRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CONS_ADDRESS_FIELD_NUMBER: builtins.int
+    # cons_address is the address to query signing info of
     cons_address: typing.Text = ...
-
     def __init__(self,
         *,
         cons_address : typing.Text = ...,
@@ -47,13 +48,14 @@ class QuerySigningInfoRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"cons_address",b"cons_address"]) -> None: ...
 global___QuerySigningInfoRequest = QuerySigningInfoRequest
 
+# QuerySigningInfoResponse is the response type for the Query/SigningInfo RPC
+# method
 class QuerySigningInfoResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VAL_SIGNING_INFO_FIELD_NUMBER: builtins.int
-
+    # val_signing_info is the signing info of requested val cons address
     @property
     def val_signing_info(self) -> cosmos.slashing.v1beta1.slashing_pb2.ValidatorSigningInfo: ...
-
     def __init__(self,
         *,
         val_signing_info : typing.Optional[cosmos.slashing.v1beta1.slashing_pb2.ValidatorSigningInfo] = ...,
@@ -62,13 +64,13 @@ class QuerySigningInfoResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"val_signing_info",b"val_signing_info"]) -> None: ...
 global___QuerySigningInfoResponse = QuerySigningInfoResponse
 
+# QuerySigningInfosRequest is the request type for the Query/SigningInfos RPC
+# method
 class QuerySigningInfosRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PAGINATION_FIELD_NUMBER: builtins.int
-
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         pagination : typing.Optional[cosmos.base.query.v1beta1.pagination_pb2.PageRequest] = ...,
@@ -77,17 +79,17 @@ class QuerySigningInfosRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination"]) -> None: ...
 global___QuerySigningInfosRequest = QuerySigningInfosRequest
 
+# QuerySigningInfosResponse is the response type for the Query/SigningInfos RPC
+# method
 class QuerySigningInfosResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INFO_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # info is the signing info of all validators
     @property
     def info(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.slashing.v1beta1.slashing_pb2.ValidatorSigningInfo]: ...
-
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         info : typing.Optional[typing.Iterable[cosmos.slashing.v1beta1.slashing_pb2.ValidatorSigningInfo]] = ...,

@@ -57,7 +57,7 @@ class Client:
     def get_request_by_id(self, id: int) -> oracle_query.QueryRequestResponse:
         return self.stubOracle.Request(oracle_query.QueryRequestRequest(request_id=id))
 
-    def get_reporters(self, validator: str) -> oracle_type.ReportersPerValidator.reporters:
+    def get_reporters(self, validator: str) -> oracle_query.QueryReportersResponse.reporter:
         return self.stubOracle.Reporters(oracle_query.QueryReportersRequest(validator_address=validator)).reporter
 
     def get_latest_block(self) -> tendermint_query.GetLatestBlockResponse:

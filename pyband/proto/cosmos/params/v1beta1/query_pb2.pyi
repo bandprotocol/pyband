@@ -11,13 +11,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# QueryParamsRequest is request type for the Query/Params RPC method.
 class QueryParamsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SUBSPACE_FIELD_NUMBER: builtins.int
     KEY_FIELD_NUMBER: builtins.int
+    # subspace defines the module to query the parameter for.
     subspace: typing.Text = ...
+    # key defines the key of the parameter in the subspace.
     key: typing.Text = ...
-
     def __init__(self,
         *,
         subspace : typing.Text = ...,
@@ -26,13 +28,13 @@ class QueryParamsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"key",b"key",u"subspace",b"subspace"]) -> None: ...
 global___QueryParamsRequest = QueryParamsRequest
 
+# QueryParamsResponse is response type for the Query/Params RPC method.
 class QueryParamsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAM_FIELD_NUMBER: builtins.int
-
+    # param defines the queried parameter.
     @property
     def param(self) -> cosmos.params.v1beta1.params_pb2.ParamChange: ...
-
     def __init__(self,
         *,
         param : typing.Optional[cosmos.params.v1beta1.params_pb2.ParamChange] = ...,

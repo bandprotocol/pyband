@@ -14,19 +14,18 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgSubmitProposal defines an sdk.Msg type that supports submitting arbitrary
+# proposal Content.
 class MsgSubmitProposal(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CONTENT_FIELD_NUMBER: builtins.int
     INITIAL_DEPOSIT_FIELD_NUMBER: builtins.int
     PROPOSER_FIELD_NUMBER: builtins.int
-    proposer: typing.Text = ...
-
     @property
     def content(self) -> google.protobuf.any_pb2.Any: ...
-
     @property
     def initial_deposit(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
+    proposer: typing.Text = ...
     def __init__(self,
         *,
         content : typing.Optional[google.protobuf.any_pb2.Any] = ...,
@@ -37,11 +36,11 @@ class MsgSubmitProposal(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"content",b"content",u"initial_deposit",b"initial_deposit",u"proposer",b"proposer"]) -> None: ...
 global___MsgSubmitProposal = MsgSubmitProposal
 
+# MsgSubmitProposalResponse defines the Msg/SubmitProposal response type.
 class MsgSubmitProposalResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PROPOSAL_ID_FIELD_NUMBER: builtins.int
     proposal_id: builtins.int = ...
-
     def __init__(self,
         *,
         proposal_id : builtins.int = ...,
@@ -49,6 +48,7 @@ class MsgSubmitProposalResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"proposal_id",b"proposal_id"]) -> None: ...
 global___MsgSubmitProposalResponse = MsgSubmitProposalResponse
 
+# MsgVote defines a message to cast a vote.
 class MsgVote(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PROPOSAL_ID_FIELD_NUMBER: builtins.int
@@ -57,7 +57,6 @@ class MsgVote(google.protobuf.message.Message):
     proposal_id: builtins.int = ...
     voter: typing.Text = ...
     option: cosmos.gov.v1beta1.gov_pb2.VoteOption.V = ...
-
     def __init__(self,
         *,
         proposal_id : builtins.int = ...,
@@ -67,13 +66,40 @@ class MsgVote(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"option",b"option",u"proposal_id",b"proposal_id",u"voter",b"voter"]) -> None: ...
 global___MsgVote = MsgVote
 
+# MsgVoteResponse defines the Msg/Vote response type.
 class MsgVoteResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgVoteResponse = MsgVoteResponse
 
+# MsgVoteWeighted defines a message to cast a vote.
+class MsgVoteWeighted(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+    PROPOSAL_ID_FIELD_NUMBER: builtins.int
+    VOTER_FIELD_NUMBER: builtins.int
+    OPTIONS_FIELD_NUMBER: builtins.int
+    proposal_id: builtins.int = ...
+    voter: typing.Text = ...
+    @property
+    def options(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.gov.v1beta1.gov_pb2.WeightedVoteOption]: ...
+    def __init__(self,
+        *,
+        proposal_id : builtins.int = ...,
+        voter : typing.Text = ...,
+        options : typing.Optional[typing.Iterable[cosmos.gov.v1beta1.gov_pb2.WeightedVoteOption]] = ...,
+        ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal[u"options",b"options",u"proposal_id",b"proposal_id",u"voter",b"voter"]) -> None: ...
+global___MsgVoteWeighted = MsgVoteWeighted
+
+# MsgVoteWeightedResponse defines the Msg/VoteWeighted response type.
+class MsgVoteWeightedResponse(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+    def __init__(self,
+        ) -> None: ...
+global___MsgVoteWeightedResponse = MsgVoteWeightedResponse
+
+# MsgDeposit defines a message to submit a deposit to an existing proposal.
 class MsgDeposit(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PROPOSAL_ID_FIELD_NUMBER: builtins.int
@@ -81,10 +107,8 @@ class MsgDeposit(google.protobuf.message.Message):
     AMOUNT_FIELD_NUMBER: builtins.int
     proposal_id: builtins.int = ...
     depositor: typing.Text = ...
-
     @property
     def amount(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
     def __init__(self,
         *,
         proposal_id : builtins.int = ...,
@@ -94,9 +118,9 @@ class MsgDeposit(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"depositor",b"depositor",u"proposal_id",b"proposal_id"]) -> None: ...
 global___MsgDeposit = MsgDeposit
 
+# MsgDepositResponse defines the Msg/Deposit response type.
 class MsgDepositResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgDepositResponse = MsgDepositResponse

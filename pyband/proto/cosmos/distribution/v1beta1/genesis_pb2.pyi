@@ -13,13 +13,17 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# DelegatorWithdrawInfo is the address for where distributions rewards are
+# withdrawn to by default this struct is only used at genesis to feed in
+# default withdraw addresses.
 class DelegatorWithdrawInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDRESS_FIELD_NUMBER: builtins.int
     WITHDRAW_ADDRESS_FIELD_NUMBER: builtins.int
+    # delegator_address is the address of the delegator.
     delegator_address: typing.Text = ...
+    # withdraw_address is the address to withdraw the delegation rewards to.
     withdraw_address: typing.Text = ...
-
     def __init__(self,
         *,
         delegator_address : typing.Text = ...,
@@ -28,15 +32,16 @@ class DelegatorWithdrawInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_address",b"delegator_address",u"withdraw_address",b"withdraw_address"]) -> None: ...
 global___DelegatorWithdrawInfo = DelegatorWithdrawInfo
 
+# ValidatorOutstandingRewardsRecord is used for import/export via genesis json.
 class ValidatorOutstandingRewardsRecord(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     OUTSTANDING_REWARDS_FIELD_NUMBER: builtins.int
+    # validator_address is the address of the validator.
     validator_address: typing.Text = ...
-
+    # outstanding_rewards represents the oustanding rewards of a validator.
     @property
     def outstanding_rewards(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.DecCoin]: ...
-
     def __init__(self,
         *,
         validator_address : typing.Text = ...,
@@ -45,15 +50,17 @@ class ValidatorOutstandingRewardsRecord(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"outstanding_rewards",b"outstanding_rewards",u"validator_address",b"validator_address"]) -> None: ...
 global___ValidatorOutstandingRewardsRecord = ValidatorOutstandingRewardsRecord
 
+# ValidatorAccumulatedCommissionRecord is used for import / export via genesis
+# json.
 class ValidatorAccumulatedCommissionRecord(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     ACCUMULATED_FIELD_NUMBER: builtins.int
+    # validator_address is the address of the validator.
     validator_address: typing.Text = ...
-
+    # accumulated is the accumulated commission of a validator.
     @property
     def accumulated(self) -> cosmos.distribution.v1beta1.distribution_pb2.ValidatorAccumulatedCommission: ...
-
     def __init__(self,
         *,
         validator_address : typing.Text = ...,
@@ -63,17 +70,20 @@ class ValidatorAccumulatedCommissionRecord(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"accumulated",b"accumulated",u"validator_address",b"validator_address"]) -> None: ...
 global___ValidatorAccumulatedCommissionRecord = ValidatorAccumulatedCommissionRecord
 
+# ValidatorHistoricalRewardsRecord is used for import / export via genesis
+# json.
 class ValidatorHistoricalRewardsRecord(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     PERIOD_FIELD_NUMBER: builtins.int
     REWARDS_FIELD_NUMBER: builtins.int
+    # validator_address is the address of the validator.
     validator_address: typing.Text = ...
+    # period defines the period the historical rewards apply to.
     period: builtins.int = ...
-
+    # rewards defines the historical rewards of a validator.
     @property
     def rewards(self) -> cosmos.distribution.v1beta1.distribution_pb2.ValidatorHistoricalRewards: ...
-
     def __init__(self,
         *,
         validator_address : typing.Text = ...,
@@ -84,15 +94,16 @@ class ValidatorHistoricalRewardsRecord(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"period",b"period",u"rewards",b"rewards",u"validator_address",b"validator_address"]) -> None: ...
 global___ValidatorHistoricalRewardsRecord = ValidatorHistoricalRewardsRecord
 
+# ValidatorCurrentRewardsRecord is used for import / export via genesis json.
 class ValidatorCurrentRewardsRecord(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     REWARDS_FIELD_NUMBER: builtins.int
+    # validator_address is the address of the validator.
     validator_address: typing.Text = ...
-
+    # rewards defines the current rewards of a validator.
     @property
     def rewards(self) -> cosmos.distribution.v1beta1.distribution_pb2.ValidatorCurrentRewards: ...
-
     def __init__(self,
         *,
         validator_address : typing.Text = ...,
@@ -102,17 +113,19 @@ class ValidatorCurrentRewardsRecord(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"rewards",b"rewards",u"validator_address",b"validator_address"]) -> None: ...
 global___ValidatorCurrentRewardsRecord = ValidatorCurrentRewardsRecord
 
+# DelegatorStartingInfoRecord used for import / export via genesis json.
 class DelegatorStartingInfoRecord(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDRESS_FIELD_NUMBER: builtins.int
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     STARTING_INFO_FIELD_NUMBER: builtins.int
+    # delegator_address is the address of the delegator.
     delegator_address: typing.Text = ...
+    # validator_address is the address of the validator.
     validator_address: typing.Text = ...
-
+    # starting_info defines the starting info of a delegator.
     @property
     def starting_info(self) -> cosmos.distribution.v1beta1.distribution_pb2.DelegatorStartingInfo: ...
-
     def __init__(self,
         *,
         delegator_address : typing.Text = ...,
@@ -123,19 +136,22 @@ class DelegatorStartingInfoRecord(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_address",b"delegator_address",u"starting_info",b"starting_info",u"validator_address",b"validator_address"]) -> None: ...
 global___DelegatorStartingInfoRecord = DelegatorStartingInfoRecord
 
+# ValidatorSlashEventRecord is used for import / export via genesis json.
 class ValidatorSlashEventRecord(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     HEIGHT_FIELD_NUMBER: builtins.int
     PERIOD_FIELD_NUMBER: builtins.int
     VALIDATOR_SLASH_EVENT_FIELD_NUMBER: builtins.int
+    # validator_address is the address of the validator.
     validator_address: typing.Text = ...
+    # height defines the block height at which the slash event occured.
     height: builtins.int = ...
+    # period is the period of the slash event.
     period: builtins.int = ...
-
+    # validator_slash_event describes the slash event.
     @property
     def validator_slash_event(self) -> cosmos.distribution.v1beta1.distribution_pb2.ValidatorSlashEvent: ...
-
     def __init__(self,
         *,
         validator_address : typing.Text = ...,
@@ -147,6 +163,7 @@ class ValidatorSlashEventRecord(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"height",b"height",u"period",b"period",u"validator_address",b"validator_address",u"validator_slash_event",b"validator_slash_event"]) -> None: ...
 global___ValidatorSlashEventRecord = ValidatorSlashEventRecord
 
+# GenesisState defines the distribution module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
@@ -159,35 +176,35 @@ class GenesisState(google.protobuf.message.Message):
     VALIDATOR_CURRENT_REWARDS_FIELD_NUMBER: builtins.int
     DELEGATOR_STARTING_INFOS_FIELD_NUMBER: builtins.int
     VALIDATOR_SLASH_EVENTS_FIELD_NUMBER: builtins.int
-    previous_proposer: typing.Text = ...
-
+    # params defines all the paramaters of the module.
     @property
     def params(self) -> cosmos.distribution.v1beta1.distribution_pb2.Params: ...
-
+    # fee_pool defines the fee pool at genesis.
     @property
     def fee_pool(self) -> cosmos.distribution.v1beta1.distribution_pb2.FeePool: ...
-
+    # fee_pool defines the delegator withdraw infos at genesis.
     @property
     def delegator_withdraw_infos(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___DelegatorWithdrawInfo]: ...
-
+    # fee_pool defines the previous proposer at genesis.
+    previous_proposer: typing.Text = ...
+    # fee_pool defines the outstanding rewards of all validators at genesis.
     @property
     def outstanding_rewards(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorOutstandingRewardsRecord]: ...
-
+    # fee_pool defines the accumulated commisions of all validators at genesis.
     @property
     def validator_accumulated_commissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorAccumulatedCommissionRecord]: ...
-
+    # fee_pool defines the historical rewards of all validators at genesis.
     @property
     def validator_historical_rewards(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorHistoricalRewardsRecord]: ...
-
+    # fee_pool defines the current rewards of all validators at genesis.
     @property
     def validator_current_rewards(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorCurrentRewardsRecord]: ...
-
+    # fee_pool defines the delegator starting infos at genesis.
     @property
     def delegator_starting_infos(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___DelegatorStartingInfoRecord]: ...
-
+    # fee_pool defines the validator slash events at genesis.
     @property
     def validator_slash_events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorSlashEventRecord]: ...
-
     def __init__(self,
         *,
         params : typing.Optional[cosmos.distribution.v1beta1.distribution_pb2.Params] = ...,

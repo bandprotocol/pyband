@@ -12,32 +12,28 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the oracle module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
     DATA_SOURCES_FIELD_NUMBER: builtins.int
     ORACLE_SCRIPTS_FIELD_NUMBER: builtins.int
-    REPORTERS_FIELD_NUMBER: builtins.int
-
+    # Params defines all the paramaters of the module.
     @property
     def params(self) -> oracle.v1.oracle_pb2.Params: ...
-
+    # DataSources are data sources to be installed during genesis phase
     @property
     def data_sources(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[oracle.v1.oracle_pb2.DataSource]: ...
-
+    # OracleScripts are list of oracle scripts to be installed during genesis
+    # phase
     @property
     def oracle_scripts(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[oracle.v1.oracle_pb2.OracleScript]: ...
-
-    @property
-    def reporters(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[oracle.v1.oracle_pb2.ReportersPerValidator]: ...
-
     def __init__(self,
         *,
         params : typing.Optional[oracle.v1.oracle_pb2.Params] = ...,
         data_sources : typing.Optional[typing.Iterable[oracle.v1.oracle_pb2.DataSource]] = ...,
         oracle_scripts : typing.Optional[typing.Iterable[oracle.v1.oracle_pb2.OracleScript]] = ...,
-        reporters : typing.Optional[typing.Iterable[oracle.v1.oracle_pb2.ReportersPerValidator]] = ...,
         ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal[u"params",b"params"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal[u"data_sources",b"data_sources",u"oracle_scripts",b"oracle_scripts",u"params",b"params",u"reporters",b"reporters"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal[u"data_sources",b"data_sources",u"oracle_scripts",b"oracle_scripts",u"params",b"params"]) -> None: ...
 global___GenesisState = GenesisState

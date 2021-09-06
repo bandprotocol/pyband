@@ -11,6 +11,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# Snapshot contains Tendermint state sync snapshot info.
 class Snapshot(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
@@ -22,10 +23,8 @@ class Snapshot(google.protobuf.message.Message):
     format: builtins.int = ...
     chunks: builtins.int = ...
     hash: builtins.bytes = ...
-
     @property
     def metadata(self) -> global___Metadata: ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -38,13 +37,13 @@ class Snapshot(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"chunks",b"chunks",u"format",b"format",u"hash",b"hash",u"height",b"height",u"metadata",b"metadata"]) -> None: ...
 global___Snapshot = Snapshot
 
+# Metadata contains SDK-specific snapshot metadata.
 class Metadata(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CHUNK_HASHES_FIELD_NUMBER: builtins.int
-
+    # SHA-256 chunk hashes
     @property
     def chunk_hashes(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.bytes]: ...
-
     def __init__(self,
         *,
         chunk_hashes : typing.Optional[typing.Iterable[builtins.bytes]] = ...,

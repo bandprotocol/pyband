@@ -50,16 +50,6 @@ class MsgStub(object):
                 request_serializer=oracle_dot_v1_dot_tx__pb2.MsgActivate.SerializeToString,
                 response_deserializer=oracle_dot_v1_dot_tx__pb2.MsgActivateResponse.FromString,
                 )
-        self.AddReporter = channel.unary_unary(
-                '/oracle.v1.Msg/AddReporter',
-                request_serializer=oracle_dot_v1_dot_tx__pb2.MsgAddReporter.SerializeToString,
-                response_deserializer=oracle_dot_v1_dot_tx__pb2.MsgAddReporterResponse.FromString,
-                )
-        self.RemoveReporter = channel.unary_unary(
-                '/oracle.v1.Msg/RemoveReporter',
-                request_serializer=oracle_dot_v1_dot_tx__pb2.MsgRemoveReporter.SerializeToString,
-                response_deserializer=oracle_dot_v1_dot_tx__pb2.MsgRemoveReporterResponse.FromString,
-                )
 
 
 class MsgServicer(object):
@@ -115,20 +105,6 @@ class MsgServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def AddReporter(self, request, context):
-        """AddReporter defines a method for adding a new reporter for a validator.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def RemoveReporter(self, request, context):
-        """RemoveReporter defines a method for removing an reporter from a validator
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_MsgServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -166,16 +142,6 @@ def add_MsgServicer_to_server(servicer, server):
                     servicer.Activate,
                     request_deserializer=oracle_dot_v1_dot_tx__pb2.MsgActivate.FromString,
                     response_serializer=oracle_dot_v1_dot_tx__pb2.MsgActivateResponse.SerializeToString,
-            ),
-            'AddReporter': grpc.unary_unary_rpc_method_handler(
-                    servicer.AddReporter,
-                    request_deserializer=oracle_dot_v1_dot_tx__pb2.MsgAddReporter.FromString,
-                    response_serializer=oracle_dot_v1_dot_tx__pb2.MsgAddReporterResponse.SerializeToString,
-            ),
-            'RemoveReporter': grpc.unary_unary_rpc_method_handler(
-                    servicer.RemoveReporter,
-                    request_deserializer=oracle_dot_v1_dot_tx__pb2.MsgRemoveReporter.FromString,
-                    response_serializer=oracle_dot_v1_dot_tx__pb2.MsgRemoveReporterResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -304,39 +270,5 @@ class Msg(object):
         return grpc.experimental.unary_unary(request, target, '/oracle.v1.Msg/Activate',
             oracle_dot_v1_dot_tx__pb2.MsgActivate.SerializeToString,
             oracle_dot_v1_dot_tx__pb2.MsgActivateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def AddReporter(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/oracle.v1.Msg/AddReporter',
-            oracle_dot_v1_dot_tx__pb2.MsgAddReporter.SerializeToString,
-            oracle_dot_v1_dot_tx__pb2.MsgAddReporterResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def RemoveReporter(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/oracle.v1.Msg/RemoveReporter',
-            oracle_dot_v1_dot_tx__pb2.MsgRemoveReporter.SerializeToString,
-            oracle_dot_v1_dot_tx__pb2.MsgRemoveReporterResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

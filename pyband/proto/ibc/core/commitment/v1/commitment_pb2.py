@@ -19,9 +19,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ibc/core/commitment/v1/commitment.proto',
   package='ibc.core.commitment.v1',
   syntax='proto3',
-  serialized_options=b'Z;github.com/cosmos/cosmos-sdk/x/ibc/core/23-commitment/types',
+  serialized_options=b'Z9github.com/cosmos/ibc-go/modules/core/23-commitment/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\'ibc/core/commitment/v1/commitment.proto\x12\x16ibc.core.commitment.v1\x1a\x14gogoproto/gogo.proto\x1a\x13\x63onfio/proofs.proto\" \n\nMerkleRoot\x12\x0c\n\x04hash\x18\x01 \x01(\x0c:\x04\x88\xa0\x1f\x00\"9\n\x0cMerklePrefix\x12)\n\nkey_prefix\x18\x01 \x01(\x0c\x42\x15\xf2\xde\x1f\x11yaml:\"key_prefix\"\"9\n\nMerklePath\x12%\n\x08key_path\x18\x01 \x03(\tB\x13\xf2\xde\x1f\x0fyaml:\"key_path\":\x04\x98\xa0\x1f\x00\"5\n\x0bMerkleProof\x12&\n\x06proofs\x18\x01 \x03(\x0b\x32\x16.ics23.CommitmentProofB=Z;github.com/cosmos/cosmos-sdk/x/ibc/core/23-commitment/typesb\x06proto3'
+  serialized_pb=b'\n\'ibc/core/commitment/v1/commitment.proto\x12\x16ibc.core.commitment.v1\x1a\x14gogoproto/gogo.proto\x1a\x13\x63onfio/proofs.proto\" \n\nMerkleRoot\x12\x0c\n\x04hash\x18\x01 \x01(\x0c:\x04\x88\xa0\x1f\x00\"9\n\x0cMerklePrefix\x12)\n\nkey_prefix\x18\x01 \x01(\x0c\x42\x15\xf2\xde\x1f\x11yaml:\"key_prefix\"\"9\n\nMerklePath\x12%\n\x08key_path\x18\x01 \x03(\tB\x13\xf2\xde\x1f\x0fyaml:\"key_path\":\x04\x98\xa0\x1f\x00\"5\n\x0bMerkleProof\x12&\n\x06proofs\x18\x01 \x03(\x0b\x32\x16.ics23.CommitmentProofB;Z9github.com/cosmos/ibc-go/modules/core/23-commitment/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,confio_dot_proofs__pb2.DESCRIPTOR,])
 

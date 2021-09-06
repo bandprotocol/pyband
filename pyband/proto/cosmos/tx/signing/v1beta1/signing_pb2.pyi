@@ -14,30 +14,50 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
-class SignMode(metaclass=_SignMode):
+# SignMode represents a signing mode with its own security guarantees.
+class SignMode(_SignMode, metaclass=_SignModeEnumTypeWrapper):
+    pass
+class _SignMode:
     V = typing.NewType('V', builtins.int)
-
-global___SignMode = SignMode
-
-SIGN_MODE_UNSPECIFIED = SignMode.V(0)
-SIGN_MODE_DIRECT = SignMode.V(1)
-SIGN_MODE_TEXTUAL = SignMode.V(2)
-SIGN_MODE_LEGACY_AMINO_JSON = SignMode.V(127)
-
-class _SignMode(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[SignMode.V], builtins.type):  # type: ignore
+class _SignModeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_SignMode.V], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
+    # SIGN_MODE_UNSPECIFIED specifies an unknown signing mode and will be
+    # rejected
     SIGN_MODE_UNSPECIFIED = SignMode.V(0)
+    # SIGN_MODE_DIRECT specifies a signing mode which uses SignDoc and is
+    # verified with raw bytes from Tx
     SIGN_MODE_DIRECT = SignMode.V(1)
+    # SIGN_MODE_TEXTUAL is a future signing mode that will verify some
+    # human-readable textual representation on top of the binary representation
+    # from SIGN_MODE_DIRECT
     SIGN_MODE_TEXTUAL = SignMode.V(2)
+    # SIGN_MODE_LEGACY_AMINO_JSON is a backwards compatibility mode which uses
+    # Amino JSON and will be removed in the future
     SIGN_MODE_LEGACY_AMINO_JSON = SignMode.V(127)
 
+# SIGN_MODE_UNSPECIFIED specifies an unknown signing mode and will be
+# rejected
+SIGN_MODE_UNSPECIFIED = SignMode.V(0)
+# SIGN_MODE_DIRECT specifies a signing mode which uses SignDoc and is
+# verified with raw bytes from Tx
+SIGN_MODE_DIRECT = SignMode.V(1)
+# SIGN_MODE_TEXTUAL is a future signing mode that will verify some
+# human-readable textual representation on top of the binary representation
+# from SIGN_MODE_DIRECT
+SIGN_MODE_TEXTUAL = SignMode.V(2)
+# SIGN_MODE_LEGACY_AMINO_JSON is a backwards compatibility mode which uses
+# Amino JSON and will be removed in the future
+SIGN_MODE_LEGACY_AMINO_JSON = SignMode.V(127)
+global___SignMode = SignMode
+
+
+# SignatureDescriptors wraps multiple SignatureDescriptor's.
 class SignatureDescriptors(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SIGNATURES_FIELD_NUMBER: builtins.int
-
+    # signatures are the signature descriptors
     @property
     def signatures(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___SignatureDescriptor]: ...
-
     def __init__(self,
         *,
         signatures : typing.Optional[typing.Iterable[global___SignatureDescriptor]] = ...,
@@ -45,17 +65,24 @@ class SignatureDescriptors(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"signatures",b"signatures"]) -> None: ...
 global___SignatureDescriptors = SignatureDescriptors
 
+# SignatureDescriptor is a convenience type which represents the full data for
+# a signature including the public key of the signer, signing modes and the
+# signature itself. It is primarily used for coordinating signatures between
+# clients.
 class SignatureDescriptor(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+    # Data represents signature data
     class Data(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+        # Single is the signature data for a single signer
         class Single(google.protobuf.message.Message):
             DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
             MODE_FIELD_NUMBER: builtins.int
             SIGNATURE_FIELD_NUMBER: builtins.int
+            # mode is the signing mode of the single signer
             mode: global___SignMode.V = ...
+            # signature is the raw signature bytes
             signature: builtins.bytes = ...
-
             def __init__(self,
                 *,
                 mode : global___SignMode.V = ...,
@@ -63,17 +90,17 @@ class SignatureDescriptor(google.protobuf.message.Message):
                 ) -> None: ...
             def ClearField(self, field_name: typing_extensions.Literal[u"mode",b"mode",u"signature",b"signature"]) -> None: ...
 
+        # Multi is the signature data for a multisig public key
         class Multi(google.protobuf.message.Message):
             DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
             BITARRAY_FIELD_NUMBER: builtins.int
             SIGNATURES_FIELD_NUMBER: builtins.int
-
+            # bitarray specifies which keys within the multisig are signing
             @property
             def bitarray(self) -> cosmos.crypto.multisig.v1beta1.multisig_pb2.CompactBitArray: ...
-
+            # signatures is the signatures of the multi-signature
             @property
             def signatures(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___SignatureDescriptor.Data]: ...
-
             def __init__(self,
                 *,
                 bitarray : typing.Optional[cosmos.crypto.multisig.v1beta1.multisig_pb2.CompactBitArray] = ...,
@@ -84,13 +111,12 @@ class SignatureDescriptor(google.protobuf.message.Message):
 
         SINGLE_FIELD_NUMBER: builtins.int
         MULTI_FIELD_NUMBER: builtins.int
-
+        # single represents a single signer
         @property
         def single(self) -> global___SignatureDescriptor.Data.Single: ...
-
+        # multi represents a multisig signer
         @property
         def multi(self) -> global___SignatureDescriptor.Data.Multi: ...
-
         def __init__(self,
             *,
             single : typing.Optional[global___SignatureDescriptor.Data.Single] = ...,
@@ -103,14 +129,15 @@ class SignatureDescriptor(google.protobuf.message.Message):
     PUBLIC_KEY_FIELD_NUMBER: builtins.int
     DATA_FIELD_NUMBER: builtins.int
     SEQUENCE_FIELD_NUMBER: builtins.int
-    sequence: builtins.int = ...
-
+    # public_key is the public key of the signer
     @property
     def public_key(self) -> google.protobuf.any_pb2.Any: ...
-
     @property
     def data(self) -> global___SignatureDescriptor.Data: ...
-
+    # sequence is the sequence of the account, which describes the
+    # number of committed transactions signed by a given address. It is used to prevent
+    # replay attacks.
+    sequence: builtins.int = ...
     def __init__(self,
         *,
         public_key : typing.Optional[google.protobuf.any_pb2.Any] = ...,

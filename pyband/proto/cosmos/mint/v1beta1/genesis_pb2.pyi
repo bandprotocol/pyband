@@ -11,17 +11,17 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the mint module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MINTER_FIELD_NUMBER: builtins.int
     PARAMS_FIELD_NUMBER: builtins.int
-
+    # minter is a space for holding current inflation information.
     @property
     def minter(self) -> cosmos.mint.v1beta1.mint_pb2.Minter: ...
-
+    # params defines all the paramaters of the module.
     @property
     def params(self) -> cosmos.mint.v1beta1.mint_pb2.Params: ...
-
     def __init__(self,
         *,
         minter : typing.Optional[cosmos.mint.v1beta1.mint_pb2.Minter] = ...,

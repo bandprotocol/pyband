@@ -6,24 +6,30 @@ import abc
 import grpc
 
 from .query_pb2 import *
+# Query defines the gRPC querier service.
 class QueryStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # Evidence queries evidence based on evidence hash.
     Evidence:grpc.UnaryUnaryMultiCallable[
         global___QueryEvidenceRequest,
         global___QueryEvidenceResponse] = ...
 
+    # AllEvidence queries all evidence.
     AllEvidence:grpc.UnaryUnaryMultiCallable[
         global___QueryAllEvidenceRequest,
         global___QueryAllEvidenceResponse] = ...
 
 
+# Query defines the gRPC querier service.
 class QueryServicer(metaclass=abc.ABCMeta):
+    # Evidence queries evidence based on evidence hash.
     @abc.abstractmethod
     def Evidence(self,
         request: global___QueryEvidenceRequest,
         context: grpc.ServicerContext,
     ) -> global___QueryEvidenceResponse: ...
 
+    # AllEvidence queries all evidence.
     @abc.abstractmethod
     def AllEvidence(self,
         request: global___QueryAllEvidenceRequest,

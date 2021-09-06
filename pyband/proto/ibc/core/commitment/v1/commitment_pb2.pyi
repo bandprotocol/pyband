@@ -12,11 +12,12 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MerkleRoot defines a merkle root hash.
+# In the Cosmos SDK, the AppHash of a block header becomes the root.
 class MerkleRoot(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HASH_FIELD_NUMBER: builtins.int
     hash: builtins.bytes = ...
-
     def __init__(self,
         *,
         hash : builtins.bytes = ...,
@@ -24,11 +25,13 @@ class MerkleRoot(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"hash",b"hash"]) -> None: ...
 global___MerkleRoot = MerkleRoot
 
+# MerklePrefix is merkle path prefixed to the key.
+# The constructed key from the Path and the key will be append(Path.KeyPath,
+# append(Path.KeyPrefix, key...))
 class MerklePrefix(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_PREFIX_FIELD_NUMBER: builtins.int
     key_prefix: builtins.bytes = ...
-
     def __init__(self,
         *,
         key_prefix : builtins.bytes = ...,
@@ -36,13 +39,14 @@ class MerklePrefix(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"key_prefix",b"key_prefix"]) -> None: ...
 global___MerklePrefix = MerklePrefix
 
+# MerklePath is the path used to verify commitment proofs, which can be an
+# arbitrary structured object (defined by a commitment type).
+# MerklePath is represented from root-to-leaf
 class MerklePath(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_PATH_FIELD_NUMBER: builtins.int
-
     @property
     def key_path(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[typing.Text]: ...
-
     def __init__(self,
         *,
         key_path : typing.Optional[typing.Iterable[typing.Text]] = ...,
@@ -50,13 +54,16 @@ class MerklePath(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"key_path",b"key_path"]) -> None: ...
 global___MerklePath = MerklePath
 
+# MerkleProof is a wrapper type over a chain of CommitmentProofs.
+# It demonstrates membership or non-membership for an element or set of
+# elements, verifiable in conjunction with a known commitment root. Proofs
+# should be succinct.
+# MerkleProofs are ordered from leaf-to-root
 class MerkleProof(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PROOFS_FIELD_NUMBER: builtins.int
-
     @property
     def proofs(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[confio.proofs_pb2.CommitmentProof]: ...
-
     def __init__(self,
         *,
         proofs : typing.Optional[typing.Iterable[confio.proofs_pb2.CommitmentProof]] = ...,

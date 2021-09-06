@@ -20,10 +20,8 @@ class Proof(google.protobuf.message.Message):
     total: builtins.int = ...
     index: builtins.int = ...
     leaf_hash: builtins.bytes = ...
-
     @property
     def aunts(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.bytes]: ...
-
     def __init__(self,
         *,
         total : builtins.int = ...,
@@ -38,11 +36,11 @@ class ValueOp(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
     PROOF_FIELD_NUMBER: builtins.int
+    # Encoded in ProofOp.Key.
     key: builtins.bytes = ...
-
+    # To encode in ProofOp.Data
     @property
     def proof(self) -> global___Proof: ...
-
     def __init__(self,
         *,
         key : builtins.bytes = ...,
@@ -60,7 +58,6 @@ class DominoOp(google.protobuf.message.Message):
     key: typing.Text = ...
     input: typing.Text = ...
     output: typing.Text = ...
-
     def __init__(self,
         *,
         key : typing.Text = ...,
@@ -70,6 +67,9 @@ class DominoOp(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"input",b"input",u"key",b"key",u"output",b"output"]) -> None: ...
 global___DominoOp = DominoOp
 
+# ProofOp defines an operation used for calculating Merkle root
+# The data could be arbitrary format, providing nessecary data
+# for example neighbouring node hash
 class ProofOp(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TYPE_FIELD_NUMBER: builtins.int
@@ -78,7 +78,6 @@ class ProofOp(google.protobuf.message.Message):
     type: typing.Text = ...
     key: builtins.bytes = ...
     data: builtins.bytes = ...
-
     def __init__(self,
         *,
         type : typing.Text = ...,
@@ -88,13 +87,12 @@ class ProofOp(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"data",b"data",u"key",b"key",u"type",b"type"]) -> None: ...
 global___ProofOp = ProofOp
 
+# ProofOps is Merkle proof defined by the list of ProofOps
 class ProofOps(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     OPS_FIELD_NUMBER: builtins.int
-
     @property
     def ops(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ProofOp]: ...
-
     def __init__(self,
         *,
         ops : typing.Optional[typing.Iterable[global___ProofOp]] = ...,

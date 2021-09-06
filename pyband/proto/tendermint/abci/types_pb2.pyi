@@ -17,33 +17,42 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
-class CheckTxType(metaclass=_CheckTxType):
+class CheckTxType(_CheckTxType, metaclass=_CheckTxTypeEnumTypeWrapper):
+    pass
+class _CheckTxType:
     V = typing.NewType('V', builtins.int)
-
-global___CheckTxType = CheckTxType
-
-NEW = CheckTxType.V(0)
-RECHECK = CheckTxType.V(1)
-
-class _CheckTxType(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[CheckTxType.V], builtins.type):  # type: ignore
+class _CheckTxTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_CheckTxType.V], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
     NEW = CheckTxType.V(0)
     RECHECK = CheckTxType.V(1)
 
-class EvidenceType(metaclass=_EvidenceType):
+NEW = CheckTxType.V(0)
+RECHECK = CheckTxType.V(1)
+global___CheckTxType = CheckTxType
+
+
+class EvidenceType(_EvidenceType, metaclass=_EvidenceTypeEnumTypeWrapper):
+    pass
+class _EvidenceType:
     V = typing.NewType('V', builtins.int)
-
-global___EvidenceType = EvidenceType
-
-UNKNOWN = EvidenceType.V(0)
-DUPLICATE_VOTE = EvidenceType.V(1)
-LIGHT_CLIENT_ATTACK = EvidenceType.V(2)
-
-class _EvidenceType(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[EvidenceType.V], builtins.type):  # type: ignore
+class _EvidenceTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_EvidenceType.V], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
     UNKNOWN = EvidenceType.V(0)
     DUPLICATE_VOTE = EvidenceType.V(1)
     LIGHT_CLIENT_ATTACK = EvidenceType.V(2)
+
+UNKNOWN = EvidenceType.V(0)
+DUPLICATE_VOTE = EvidenceType.V(1)
+LIGHT_CLIENT_ATTACK = EvidenceType.V(2)
+global___EvidenceType = EvidenceType
+
+
+# This file is copied from http://github.com/tendermint/abci
+# NOTE: When using custom types, mind the warnings.
+# https://github.com/gogo/protobuf/blob/master/custom_types.md#warnings-and-issues
+
+#----------------------------------------
+# Request types
 
 class Request(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
@@ -62,52 +71,36 @@ class Request(google.protobuf.message.Message):
     OFFER_SNAPSHOT_FIELD_NUMBER: builtins.int
     LOAD_SNAPSHOT_CHUNK_FIELD_NUMBER: builtins.int
     APPLY_SNAPSHOT_CHUNK_FIELD_NUMBER: builtins.int
-
     @property
     def echo(self) -> global___RequestEcho: ...
-
     @property
     def flush(self) -> global___RequestFlush: ...
-
     @property
     def info(self) -> global___RequestInfo: ...
-
     @property
     def set_option(self) -> global___RequestSetOption: ...
-
     @property
     def init_chain(self) -> global___RequestInitChain: ...
-
     @property
     def query(self) -> global___RequestQuery: ...
-
     @property
     def begin_block(self) -> global___RequestBeginBlock: ...
-
     @property
     def check_tx(self) -> global___RequestCheckTx: ...
-
     @property
     def deliver_tx(self) -> global___RequestDeliverTx: ...
-
     @property
     def end_block(self) -> global___RequestEndBlock: ...
-
     @property
     def commit(self) -> global___RequestCommit: ...
-
     @property
     def list_snapshots(self) -> global___RequestListSnapshots: ...
-
     @property
     def offer_snapshot(self) -> global___RequestOfferSnapshot: ...
-
     @property
     def load_snapshot_chunk(self) -> global___RequestLoadSnapshotChunk: ...
-
     @property
     def apply_snapshot_chunk(self) -> global___RequestApplySnapshotChunk: ...
-
     def __init__(self,
         *,
         echo : typing.Optional[global___RequestEcho] = ...,
@@ -135,7 +128,6 @@ class RequestEcho(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MESSAGE_FIELD_NUMBER: builtins.int
     message: typing.Text = ...
-
     def __init__(self,
         *,
         message : typing.Text = ...,
@@ -145,7 +137,6 @@ global___RequestEcho = RequestEcho
 
 class RequestFlush(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___RequestFlush = RequestFlush
@@ -158,7 +149,6 @@ class RequestInfo(google.protobuf.message.Message):
     version: typing.Text = ...
     block_version: builtins.int = ...
     p2p_version: builtins.int = ...
-
     def __init__(self,
         *,
         version : typing.Text = ...,
@@ -168,13 +158,13 @@ class RequestInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"block_version",b"block_version",u"p2p_version",b"p2p_version",u"version",b"version"]) -> None: ...
 global___RequestInfo = RequestInfo
 
+# nondeterministic
 class RequestSetOption(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
     key: typing.Text = ...
     value: typing.Text = ...
-
     def __init__(self,
         *,
         key : typing.Text = ...,
@@ -191,19 +181,15 @@ class RequestInitChain(google.protobuf.message.Message):
     VALIDATORS_FIELD_NUMBER: builtins.int
     APP_STATE_BYTES_FIELD_NUMBER: builtins.int
     INITIAL_HEIGHT_FIELD_NUMBER: builtins.int
-    chain_id: typing.Text = ...
-    app_state_bytes: builtins.bytes = ...
-    initial_height: builtins.int = ...
-
     @property
     def time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-
+    chain_id: typing.Text = ...
     @property
     def consensus_params(self) -> global___ConsensusParams: ...
-
     @property
     def validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorUpdate]: ...
-
+    app_state_bytes: builtins.bytes = ...
+    initial_height: builtins.int = ...
     def __init__(self,
         *,
         time : typing.Optional[google.protobuf.timestamp_pb2.Timestamp] = ...,
@@ -227,7 +213,6 @@ class RequestQuery(google.protobuf.message.Message):
     path: typing.Text = ...
     height: builtins.int = ...
     prove: builtins.bool = ...
-
     def __init__(self,
         *,
         data : builtins.bytes = ...,
@@ -245,16 +230,12 @@ class RequestBeginBlock(google.protobuf.message.Message):
     LAST_COMMIT_INFO_FIELD_NUMBER: builtins.int
     BYZANTINE_VALIDATORS_FIELD_NUMBER: builtins.int
     hash: builtins.bytes = ...
-
     @property
     def header(self) -> tendermint.types.types_pb2.Header: ...
-
     @property
     def last_commit_info(self) -> global___LastCommitInfo: ...
-
     @property
     def byzantine_validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Evidence]: ...
-
     def __init__(self,
         *,
         hash : builtins.bytes = ...,
@@ -272,7 +253,6 @@ class RequestCheckTx(google.protobuf.message.Message):
     TYPE_FIELD_NUMBER: builtins.int
     tx: builtins.bytes = ...
     type: global___CheckTxType.V = ...
-
     def __init__(self,
         *,
         tx : builtins.bytes = ...,
@@ -285,7 +265,6 @@ class RequestDeliverTx(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TX_FIELD_NUMBER: builtins.int
     tx: builtins.bytes = ...
-
     def __init__(self,
         *,
         tx : builtins.bytes = ...,
@@ -297,7 +276,6 @@ class RequestEndBlock(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
     height: builtins.int = ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -307,27 +285,27 @@ global___RequestEndBlock = RequestEndBlock
 
 class RequestCommit(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___RequestCommit = RequestCommit
 
+# lists available snapshots
 class RequestListSnapshots(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___RequestListSnapshots = RequestListSnapshots
 
+# offers a snapshot to the application
 class RequestOfferSnapshot(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SNAPSHOT_FIELD_NUMBER: builtins.int
     APP_HASH_FIELD_NUMBER: builtins.int
-    app_hash: builtins.bytes = ...
-
+    # snapshot offered by peers
     @property
     def snapshot(self) -> global___Snapshot: ...
-
+    # light client-verified app hash for snapshot height
+    app_hash: builtins.bytes = ...
     def __init__(self,
         *,
         snapshot : typing.Optional[global___Snapshot] = ...,
@@ -337,6 +315,7 @@ class RequestOfferSnapshot(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"app_hash",b"app_hash",u"snapshot",b"snapshot"]) -> None: ...
 global___RequestOfferSnapshot = RequestOfferSnapshot
 
+# loads a snapshot chunk
 class RequestLoadSnapshotChunk(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
@@ -345,7 +324,6 @@ class RequestLoadSnapshotChunk(google.protobuf.message.Message):
     height: builtins.int = ...
     format: builtins.int = ...
     chunk: builtins.int = ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -355,6 +333,7 @@ class RequestLoadSnapshotChunk(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"chunk",b"chunk",u"format",b"format",u"height",b"height"]) -> None: ...
 global___RequestLoadSnapshotChunk = RequestLoadSnapshotChunk
 
+# Applies a snapshot chunk
 class RequestApplySnapshotChunk(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INDEX_FIELD_NUMBER: builtins.int
@@ -363,7 +342,6 @@ class RequestApplySnapshotChunk(google.protobuf.message.Message):
     index: builtins.int = ...
     chunk: builtins.bytes = ...
     sender: typing.Text = ...
-
     def __init__(self,
         *,
         index : builtins.int = ...,
@@ -372,6 +350,9 @@ class RequestApplySnapshotChunk(google.protobuf.message.Message):
         ) -> None: ...
     def ClearField(self, field_name: typing_extensions.Literal[u"chunk",b"chunk",u"index",b"index",u"sender",b"sender"]) -> None: ...
 global___RequestApplySnapshotChunk = RequestApplySnapshotChunk
+
+#----------------------------------------
+# Response types
 
 class Response(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
@@ -391,55 +372,38 @@ class Response(google.protobuf.message.Message):
     OFFER_SNAPSHOT_FIELD_NUMBER: builtins.int
     LOAD_SNAPSHOT_CHUNK_FIELD_NUMBER: builtins.int
     APPLY_SNAPSHOT_CHUNK_FIELD_NUMBER: builtins.int
-
     @property
     def exception(self) -> global___ResponseException: ...
-
     @property
     def echo(self) -> global___ResponseEcho: ...
-
     @property
     def flush(self) -> global___ResponseFlush: ...
-
     @property
     def info(self) -> global___ResponseInfo: ...
-
     @property
     def set_option(self) -> global___ResponseSetOption: ...
-
     @property
     def init_chain(self) -> global___ResponseInitChain: ...
-
     @property
     def query(self) -> global___ResponseQuery: ...
-
     @property
     def begin_block(self) -> global___ResponseBeginBlock: ...
-
     @property
     def check_tx(self) -> global___ResponseCheckTx: ...
-
     @property
     def deliver_tx(self) -> global___ResponseDeliverTx: ...
-
     @property
     def end_block(self) -> global___ResponseEndBlock: ...
-
     @property
     def commit(self) -> global___ResponseCommit: ...
-
     @property
     def list_snapshots(self) -> global___ResponseListSnapshots: ...
-
     @property
     def offer_snapshot(self) -> global___ResponseOfferSnapshot: ...
-
     @property
     def load_snapshot_chunk(self) -> global___ResponseLoadSnapshotChunk: ...
-
     @property
     def apply_snapshot_chunk(self) -> global___ResponseApplySnapshotChunk: ...
-
     def __init__(self,
         *,
         exception : typing.Optional[global___ResponseException] = ...,
@@ -464,11 +428,11 @@ class Response(google.protobuf.message.Message):
     def WhichOneof(self, oneof_group: typing_extensions.Literal[u"value",b"value"]) -> typing.Optional[typing_extensions.Literal["exception","echo","flush","info","set_option","init_chain","query","begin_block","check_tx","deliver_tx","end_block","commit","list_snapshots","offer_snapshot","load_snapshot_chunk","apply_snapshot_chunk"]]: ...
 global___Response = Response
 
+# nondeterministic
 class ResponseException(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ERROR_FIELD_NUMBER: builtins.int
     error: typing.Text = ...
-
     def __init__(self,
         *,
         error : typing.Text = ...,
@@ -480,7 +444,6 @@ class ResponseEcho(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MESSAGE_FIELD_NUMBER: builtins.int
     message: typing.Text = ...
-
     def __init__(self,
         *,
         message : typing.Text = ...,
@@ -490,7 +453,6 @@ global___ResponseEcho = ResponseEcho
 
 class ResponseFlush(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___ResponseFlush = ResponseFlush
@@ -507,7 +469,6 @@ class ResponseInfo(google.protobuf.message.Message):
     app_version: builtins.int = ...
     last_block_height: builtins.int = ...
     last_block_app_hash: builtins.bytes = ...
-
     def __init__(self,
         *,
         data : typing.Text = ...,
@@ -519,15 +480,16 @@ class ResponseInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"app_version",b"app_version",u"data",b"data",u"last_block_app_hash",b"last_block_app_hash",u"last_block_height",b"last_block_height",u"version",b"version"]) -> None: ...
 global___ResponseInfo = ResponseInfo
 
+# nondeterministic
 class ResponseSetOption(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CODE_FIELD_NUMBER: builtins.int
     LOG_FIELD_NUMBER: builtins.int
     INFO_FIELD_NUMBER: builtins.int
     code: builtins.int = ...
+    # bytes data = 2;
     log: typing.Text = ...
     info: typing.Text = ...
-
     def __init__(self,
         *,
         code : builtins.int = ...,
@@ -542,14 +504,11 @@ class ResponseInitChain(google.protobuf.message.Message):
     CONSENSUS_PARAMS_FIELD_NUMBER: builtins.int
     VALIDATORS_FIELD_NUMBER: builtins.int
     APP_HASH_FIELD_NUMBER: builtins.int
-    app_hash: builtins.bytes = ...
-
     @property
     def consensus_params(self) -> global___ConsensusParams: ...
-
     @property
     def validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorUpdate]: ...
-
+    app_hash: builtins.bytes = ...
     def __init__(self,
         *,
         consensus_params : typing.Optional[global___ConsensusParams] = ...,
@@ -572,17 +531,18 @@ class ResponseQuery(google.protobuf.message.Message):
     HEIGHT_FIELD_NUMBER: builtins.int
     CODESPACE_FIELD_NUMBER: builtins.int
     code: builtins.int = ...
+    # bytes data = 2; // use "value" instead.
+    # nondeterministic
     log: typing.Text = ...
+    # nondeterministic
     info: typing.Text = ...
     index: builtins.int = ...
     key: builtins.bytes = ...
     value: builtins.bytes = ...
-    height: builtins.int = ...
-    codespace: typing.Text = ...
-
     @property
     def proof_ops(self) -> tendermint.crypto.proof_pb2.ProofOps: ...
-
+    height: builtins.int = ...
+    codespace: typing.Text = ...
     def __init__(self,
         *,
         code : builtins.int = ...,
@@ -602,10 +562,8 @@ global___ResponseQuery = ResponseQuery
 class ResponseBeginBlock(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     EVENTS_FIELD_NUMBER: builtins.int
-
     @property
     def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Event]: ...
-
     def __init__(self,
         *,
         events : typing.Optional[typing.Iterable[global___Event]] = ...,
@@ -625,15 +583,15 @@ class ResponseCheckTx(google.protobuf.message.Message):
     CODESPACE_FIELD_NUMBER: builtins.int
     code: builtins.int = ...
     data: builtins.bytes = ...
+    # nondeterministic
     log: typing.Text = ...
+    # nondeterministic
     info: typing.Text = ...
     gas_wanted: builtins.int = ...
     gas_used: builtins.int = ...
-    codespace: typing.Text = ...
-
     @property
     def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Event]: ...
-
+    codespace: typing.Text = ...
     def __init__(self,
         *,
         code : builtins.int = ...,
@@ -660,15 +618,15 @@ class ResponseDeliverTx(google.protobuf.message.Message):
     CODESPACE_FIELD_NUMBER: builtins.int
     code: builtins.int = ...
     data: builtins.bytes = ...
+    # nondeterministic
     log: typing.Text = ...
+    # nondeterministic
     info: typing.Text = ...
     gas_wanted: builtins.int = ...
     gas_used: builtins.int = ...
-    codespace: typing.Text = ...
-
     @property
     def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Event]: ...
-
+    codespace: typing.Text = ...
     def __init__(self,
         *,
         code : builtins.int = ...,
@@ -688,16 +646,12 @@ class ResponseEndBlock(google.protobuf.message.Message):
     VALIDATOR_UPDATES_FIELD_NUMBER: builtins.int
     CONSENSUS_PARAM_UPDATES_FIELD_NUMBER: builtins.int
     EVENTS_FIELD_NUMBER: builtins.int
-
     @property
     def validator_updates(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ValidatorUpdate]: ...
-
     @property
     def consensus_param_updates(self) -> global___ConsensusParams: ...
-
     @property
     def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Event]: ...
-
     def __init__(self,
         *,
         validator_updates : typing.Optional[typing.Iterable[global___ValidatorUpdate]] = ...,
@@ -712,9 +666,9 @@ class ResponseCommit(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DATA_FIELD_NUMBER: builtins.int
     RETAIN_HEIGHT_FIELD_NUMBER: builtins.int
+    # reserve 1
     data: builtins.bytes = ...
     retain_height: builtins.int = ...
-
     def __init__(self,
         *,
         data : builtins.bytes = ...,
@@ -726,10 +680,8 @@ global___ResponseCommit = ResponseCommit
 class ResponseListSnapshots(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SNAPSHOTS_FIELD_NUMBER: builtins.int
-
     @property
     def snapshots(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Snapshot]: ...
-
     def __init__(self,
         *,
         snapshots : typing.Optional[typing.Iterable[global___Snapshot]] = ...,
@@ -739,28 +691,40 @@ global___ResponseListSnapshots = ResponseListSnapshots
 
 class ResponseOfferSnapshot(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-    class Result(metaclass=_Result):
+    class Result(_Result, metaclass=_ResultEnumTypeWrapper):
+        pass
+    class _Result:
         V = typing.NewType('V', builtins.int)
-
-    UNKNOWN = ResponseOfferSnapshot.Result.V(0)
-    ACCEPT = ResponseOfferSnapshot.Result.V(1)
-    ABORT = ResponseOfferSnapshot.Result.V(2)
-    REJECT = ResponseOfferSnapshot.Result.V(3)
-    REJECT_FORMAT = ResponseOfferSnapshot.Result.V(4)
-    REJECT_SENDER = ResponseOfferSnapshot.Result.V(5)
-
-    class _Result(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Result.V], builtins.type):  # type: ignore
+    class _ResultEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Result.V], builtins.type):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
+        # Unknown result, abort all snapshot restoration
         UNKNOWN = ResponseOfferSnapshot.Result.V(0)
+        # Snapshot accepted, apply chunks
         ACCEPT = ResponseOfferSnapshot.Result.V(1)
+        # Abort all snapshot restoration
         ABORT = ResponseOfferSnapshot.Result.V(2)
+        # Reject this specific snapshot, try others
         REJECT = ResponseOfferSnapshot.Result.V(3)
+        # Reject all snapshots of this format, try others
         REJECT_FORMAT = ResponseOfferSnapshot.Result.V(4)
+        # Reject all snapshots from the sender(s), try others
         REJECT_SENDER = ResponseOfferSnapshot.Result.V(5)
+
+    # Unknown result, abort all snapshot restoration
+    UNKNOWN = ResponseOfferSnapshot.Result.V(0)
+    # Snapshot accepted, apply chunks
+    ACCEPT = ResponseOfferSnapshot.Result.V(1)
+    # Abort all snapshot restoration
+    ABORT = ResponseOfferSnapshot.Result.V(2)
+    # Reject this specific snapshot, try others
+    REJECT = ResponseOfferSnapshot.Result.V(3)
+    # Reject all snapshots of this format, try others
+    REJECT_FORMAT = ResponseOfferSnapshot.Result.V(4)
+    # Reject all snapshots from the sender(s), try others
+    REJECT_SENDER = ResponseOfferSnapshot.Result.V(5)
 
     RESULT_FIELD_NUMBER: builtins.int
     result: global___ResponseOfferSnapshot.Result.V = ...
-
     def __init__(self,
         *,
         result : global___ResponseOfferSnapshot.Result.V = ...,
@@ -772,7 +736,6 @@ class ResponseLoadSnapshotChunk(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CHUNK_FIELD_NUMBER: builtins.int
     chunk: builtins.bytes = ...
-
     def __init__(self,
         *,
         chunk : builtins.bytes = ...,
@@ -782,36 +745,48 @@ global___ResponseLoadSnapshotChunk = ResponseLoadSnapshotChunk
 
 class ResponseApplySnapshotChunk(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-    class Result(metaclass=_Result):
+    class Result(_Result, metaclass=_ResultEnumTypeWrapper):
+        pass
+    class _Result:
         V = typing.NewType('V', builtins.int)
-
-    UNKNOWN = ResponseApplySnapshotChunk.Result.V(0)
-    ACCEPT = ResponseApplySnapshotChunk.Result.V(1)
-    ABORT = ResponseApplySnapshotChunk.Result.V(2)
-    RETRY = ResponseApplySnapshotChunk.Result.V(3)
-    RETRY_SNAPSHOT = ResponseApplySnapshotChunk.Result.V(4)
-    REJECT_SNAPSHOT = ResponseApplySnapshotChunk.Result.V(5)
-
-    class _Result(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Result.V], builtins.type):  # type: ignore
+    class _ResultEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Result.V], builtins.type):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
+        # Unknown result, abort all snapshot restoration
         UNKNOWN = ResponseApplySnapshotChunk.Result.V(0)
+        # Chunk successfully accepted
         ACCEPT = ResponseApplySnapshotChunk.Result.V(1)
+        # Abort all snapshot restoration
         ABORT = ResponseApplySnapshotChunk.Result.V(2)
+        # Retry chunk (combine with refetch and reject)
         RETRY = ResponseApplySnapshotChunk.Result.V(3)
+        # Retry snapshot (combine with refetch and reject)
         RETRY_SNAPSHOT = ResponseApplySnapshotChunk.Result.V(4)
+        # Reject this snapshot, try others
         REJECT_SNAPSHOT = ResponseApplySnapshotChunk.Result.V(5)
+
+    # Unknown result, abort all snapshot restoration
+    UNKNOWN = ResponseApplySnapshotChunk.Result.V(0)
+    # Chunk successfully accepted
+    ACCEPT = ResponseApplySnapshotChunk.Result.V(1)
+    # Abort all snapshot restoration
+    ABORT = ResponseApplySnapshotChunk.Result.V(2)
+    # Retry chunk (combine with refetch and reject)
+    RETRY = ResponseApplySnapshotChunk.Result.V(3)
+    # Retry snapshot (combine with refetch and reject)
+    RETRY_SNAPSHOT = ResponseApplySnapshotChunk.Result.V(4)
+    # Reject this snapshot, try others
+    REJECT_SNAPSHOT = ResponseApplySnapshotChunk.Result.V(5)
 
     RESULT_FIELD_NUMBER: builtins.int
     REFETCH_CHUNKS_FIELD_NUMBER: builtins.int
     REJECT_SENDERS_FIELD_NUMBER: builtins.int
     result: global___ResponseApplySnapshotChunk.Result.V = ...
-
+    # Chunks to refetch and reapply
     @property
     def refetch_chunks(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.int]: ...
-
+    # Chunk senders to reject and ban
     @property
     def reject_senders(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[typing.Text]: ...
-
     def __init__(self,
         *,
         result : global___ResponseApplySnapshotChunk.Result.V = ...,
@@ -821,25 +796,25 @@ class ResponseApplySnapshotChunk(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"refetch_chunks",b"refetch_chunks",u"reject_senders",b"reject_senders",u"result",b"result"]) -> None: ...
 global___ResponseApplySnapshotChunk = ResponseApplySnapshotChunk
 
+#----------------------------------------
+# Misc.
+
+# ConsensusParams contains all consensus-relevant parameters
+# that can be adjusted by the abci app
 class ConsensusParams(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BLOCK_FIELD_NUMBER: builtins.int
     EVIDENCE_FIELD_NUMBER: builtins.int
     VALIDATOR_FIELD_NUMBER: builtins.int
     VERSION_FIELD_NUMBER: builtins.int
-
     @property
     def block(self) -> global___BlockParams: ...
-
     @property
     def evidence(self) -> tendermint.types.params_pb2.EvidenceParams: ...
-
     @property
     def validator(self) -> tendermint.types.params_pb2.ValidatorParams: ...
-
     @property
     def version(self) -> tendermint.types.params_pb2.VersionParams: ...
-
     def __init__(self,
         *,
         block : typing.Optional[global___BlockParams] = ...,
@@ -851,13 +826,15 @@ class ConsensusParams(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"block",b"block",u"evidence",b"evidence",u"validator",b"validator",u"version",b"version"]) -> None: ...
 global___ConsensusParams = ConsensusParams
 
+# BlockParams contains limits on the block size.
 class BlockParams(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MAX_BYTES_FIELD_NUMBER: builtins.int
     MAX_GAS_FIELD_NUMBER: builtins.int
+    # Note: must be greater than 0
     max_bytes: builtins.int = ...
+    # Note: must be greater or equal to -1
     max_gas: builtins.int = ...
-
     def __init__(self,
         *,
         max_bytes : builtins.int = ...,
@@ -871,10 +848,8 @@ class LastCommitInfo(google.protobuf.message.Message):
     ROUND_FIELD_NUMBER: builtins.int
     VOTES_FIELD_NUMBER: builtins.int
     round: builtins.int = ...
-
     @property
     def votes(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___VoteInfo]: ...
-
     def __init__(self,
         *,
         round : builtins.int = ...,
@@ -883,15 +858,16 @@ class LastCommitInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"round",b"round",u"votes",b"votes"]) -> None: ...
 global___LastCommitInfo = LastCommitInfo
 
+# Event allows application developers to attach additional information to
+# ResponseBeginBlock, ResponseEndBlock, ResponseCheckTx and ResponseDeliverTx.
+# Later, transactions may be queried using these events.
 class Event(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TYPE_FIELD_NUMBER: builtins.int
     ATTRIBUTES_FIELD_NUMBER: builtins.int
     type: typing.Text = ...
-
     @property
     def attributes(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___EventAttribute]: ...
-
     def __init__(self,
         *,
         type : typing.Text = ...,
@@ -900,6 +876,7 @@ class Event(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"attributes",b"attributes",u"type",b"type"]) -> None: ...
 global___Event = Event
 
+# EventAttribute is a single key-value pair, associated with an event.
 class EventAttribute(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
@@ -907,8 +884,8 @@ class EventAttribute(google.protobuf.message.Message):
     INDEX_FIELD_NUMBER: builtins.int
     key: builtins.bytes = ...
     value: builtins.bytes = ...
+    # nondeterministic
     index: builtins.bool = ...
-
     def __init__(self,
         *,
         key : builtins.bytes = ...,
@@ -918,6 +895,9 @@ class EventAttribute(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"index",b"index",u"key",b"key",u"value",b"value"]) -> None: ...
 global___EventAttribute = EventAttribute
 
+# TxResult contains results of executing the transaction.
+#
+# One usage is indexing transaction results.
 class TxResult(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
@@ -927,10 +907,8 @@ class TxResult(google.protobuf.message.Message):
     height: builtins.int = ...
     index: builtins.int = ...
     tx: builtins.bytes = ...
-
     @property
     def result(self) -> global___ResponseDeliverTx: ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -942,13 +920,19 @@ class TxResult(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"height",b"height",u"index",b"index",u"result",b"result",u"tx",b"tx"]) -> None: ...
 global___TxResult = TxResult
 
+#----------------------------------------
+# Blockchain Types
+
+# Validator
 class Validator(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ADDRESS_FIELD_NUMBER: builtins.int
     POWER_FIELD_NUMBER: builtins.int
+    # The first 20 bytes of SHA256(public key)
     address: builtins.bytes = ...
+    # PubKey pub_key = 2 [(gogoproto.nullable)=false];
+    # The voting power
     power: builtins.int = ...
-
     def __init__(self,
         *,
         address : builtins.bytes = ...,
@@ -957,15 +941,14 @@ class Validator(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"address",b"address",u"power",b"power"]) -> None: ...
 global___Validator = Validator
 
+# ValidatorUpdate
 class ValidatorUpdate(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PUB_KEY_FIELD_NUMBER: builtins.int
     POWER_FIELD_NUMBER: builtins.int
-    power: builtins.int = ...
-
     @property
     def pub_key(self) -> tendermint.crypto.keys_pb2.PublicKey: ...
-
+    power: builtins.int = ...
     def __init__(self,
         *,
         pub_key : typing.Optional[tendermint.crypto.keys_pb2.PublicKey] = ...,
@@ -975,15 +958,14 @@ class ValidatorUpdate(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"power",b"power",u"pub_key",b"pub_key"]) -> None: ...
 global___ValidatorUpdate = ValidatorUpdate
 
+# VoteInfo
 class VoteInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_FIELD_NUMBER: builtins.int
     SIGNED_LAST_BLOCK_FIELD_NUMBER: builtins.int
-    signed_last_block: builtins.bool = ...
-
     @property
     def validator(self) -> global___Validator: ...
-
+    signed_last_block: builtins.bool = ...
     def __init__(self,
         *,
         validator : typing.Optional[global___Validator] = ...,
@@ -1001,15 +983,18 @@ class Evidence(google.protobuf.message.Message):
     TIME_FIELD_NUMBER: builtins.int
     TOTAL_VOTING_POWER_FIELD_NUMBER: builtins.int
     type: global___EvidenceType.V = ...
-    height: builtins.int = ...
-    total_voting_power: builtins.int = ...
-
+    # The offending validator
     @property
     def validator(self) -> global___Validator: ...
-
+    # The height when the offense occurred
+    height: builtins.int = ...
+    # The corresponding time where the offense occurred
     @property
     def time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-
+    # Total voting power of the validator set in case the ABCI application does
+    # not store historical validators.
+    # https://github.com/tendermint/tendermint/issues/4581
+    total_voting_power: builtins.int = ...
     def __init__(self,
         *,
         type : global___EvidenceType.V = ...,
@@ -1022,6 +1007,9 @@ class Evidence(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"height",b"height",u"time",b"time",u"total_voting_power",b"total_voting_power",u"type",b"type",u"validator",b"validator"]) -> None: ...
 global___Evidence = Evidence
 
+#----------------------------------------
+# State Sync Types
+
 class Snapshot(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
@@ -1029,12 +1017,16 @@ class Snapshot(google.protobuf.message.Message):
     CHUNKS_FIELD_NUMBER: builtins.int
     HASH_FIELD_NUMBER: builtins.int
     METADATA_FIELD_NUMBER: builtins.int
+    # The height at which the snapshot was taken
     height: builtins.int = ...
+    # The application-specific snapshot format
     format: builtins.int = ...
+    # Number of chunks in the snapshot
     chunks: builtins.int = ...
+    # Arbitrary snapshot hash, equal only if identical
     hash: builtins.bytes = ...
+    # Arbitrary application metadata
     metadata: builtins.bytes = ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,

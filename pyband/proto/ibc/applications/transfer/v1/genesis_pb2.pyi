@@ -12,19 +12,17 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the ibc-transfer genesis state
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PORT_ID_FIELD_NUMBER: builtins.int
     DENOM_TRACES_FIELD_NUMBER: builtins.int
     PARAMS_FIELD_NUMBER: builtins.int
     port_id: typing.Text = ...
-
     @property
     def denom_traces(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.applications.transfer.v1.transfer_pb2.DenomTrace]: ...
-
     @property
     def params(self) -> ibc.applications.transfer.v1.transfer_pb2.Params: ...
-
     def __init__(self,
         *,
         port_id : typing.Text = ...,

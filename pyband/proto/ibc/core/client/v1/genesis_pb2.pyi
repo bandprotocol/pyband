@@ -12,6 +12,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the ibc client submodule's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENTS_FIELD_NUMBER: builtins.int
@@ -20,21 +21,21 @@ class GenesisState(google.protobuf.message.Message):
     PARAMS_FIELD_NUMBER: builtins.int
     CREATE_LOCALHOST_FIELD_NUMBER: builtins.int
     NEXT_CLIENT_SEQUENCE_FIELD_NUMBER: builtins.int
-    create_localhost: builtins.bool = ...
-    next_client_sequence: builtins.int = ...
-
+    # client states with their corresponding identifiers
     @property
     def clients(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.core.client.v1.client_pb2.IdentifiedClientState]: ...
-
+    # consensus states from each client
     @property
     def clients_consensus(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.core.client.v1.client_pb2.ClientConsensusStates]: ...
-
+    # metadata from each client
     @property
     def clients_metadata(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___IdentifiedGenesisMetadata]: ...
-
     @property
     def params(self) -> ibc.core.client.v1.client_pb2.Params: ...
-
+    # create localhost on initialization
+    create_localhost: builtins.bool = ...
+    # the sequence for the next generated client identifier
+    next_client_sequence: builtins.int = ...
     def __init__(self,
         *,
         clients : typing.Optional[typing.Iterable[ibc.core.client.v1.client_pb2.IdentifiedClientState]] = ...,
@@ -48,13 +49,16 @@ class GenesisState(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"clients",b"clients",u"clients_consensus",b"clients_consensus",u"clients_metadata",b"clients_metadata",u"create_localhost",b"create_localhost",u"next_client_sequence",b"next_client_sequence",u"params",b"params"]) -> None: ...
 global___GenesisState = GenesisState
 
+# GenesisMetadata defines the genesis type for metadata that clients may return
+# with ExportMetadata
 class GenesisMetadata(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
+    # store key of metadata without clientID-prefix
     key: builtins.bytes = ...
+    # metadata value
     value: builtins.bytes = ...
-
     def __init__(self,
         *,
         key : builtins.bytes = ...,
@@ -63,15 +67,15 @@ class GenesisMetadata(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"key",b"key",u"value",b"value"]) -> None: ...
 global___GenesisMetadata = GenesisMetadata
 
+# IdentifiedGenesisMetadata has the client metadata with the corresponding
+# client id.
 class IdentifiedGenesisMetadata(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_ID_FIELD_NUMBER: builtins.int
     CLIENT_METADATA_FIELD_NUMBER: builtins.int
     client_id: typing.Text = ...
-
     @property
     def client_metadata(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___GenesisMetadata]: ...
-
     def __init__(self,
         *,
         client_id : typing.Text = ...,

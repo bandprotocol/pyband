@@ -11,15 +11,17 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# ClientState defines a loopback (localhost) client. It requires (read-only)
+# access to keys outside the client prefix.
 class ClientState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CHAIN_ID_FIELD_NUMBER: builtins.int
     HEIGHT_FIELD_NUMBER: builtins.int
+    # self chain ID
     chain_id: typing.Text = ...
-
+    # self latest block height
     @property
     def height(self) -> ibc.core.client.v1.client_pb2.Height: ...
-
     def __init__(self,
         *,
         chain_id : typing.Text = ...,

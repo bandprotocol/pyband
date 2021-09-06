@@ -13,21 +13,21 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the ibc module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_GENESIS_FIELD_NUMBER: builtins.int
     CONNECTION_GENESIS_FIELD_NUMBER: builtins.int
     CHANNEL_GENESIS_FIELD_NUMBER: builtins.int
-
+    # ICS002 - Clients genesis state
     @property
     def client_genesis(self) -> ibc.core.client.v1.genesis_pb2.GenesisState: ...
-
+    # ICS003 - Connections genesis state
     @property
     def connection_genesis(self) -> ibc.core.connection.v1.genesis_pb2.GenesisState: ...
-
+    # ICS004 - Channel genesis state
     @property
     def channel_genesis(self) -> ibc.core.channel.v1.genesis_pb2.GenesisState: ...
-
     def __init__(self,
         *,
         client_genesis : typing.Optional[ibc.core.client.v1.genesis_pb2.GenesisState] = ...,

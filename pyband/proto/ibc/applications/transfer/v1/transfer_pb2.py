@@ -18,9 +18,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ibc/applications/transfer/v1/transfer.proto',
   package='ibc.applications.transfer.v1',
   syntax='proto3',
-  serialized_options=b'Z>github.com/cosmos/cosmos-sdk/x/ibc/applications/transfer/types',
+  serialized_options=b'Z4github.com/cosmos/ibc-go/modules/apps/transfer/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n+ibc/applications/transfer/v1/transfer.proto\x12\x1cibc.applications.transfer.v1\x1a\x14gogoproto/gogo.proto\"Z\n\x17\x46ungibleTokenPacketData\x12\r\n\x05\x64\x65nom\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x04\x12\x0e\n\x06sender\x18\x03 \x01(\t\x12\x10\n\x08receiver\x18\x04 \x01(\t\".\n\nDenomTrace\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x12\n\nbase_denom\x18\x02 \x01(\t\"l\n\x06Params\x12-\n\x0csend_enabled\x18\x01 \x01(\x08\x42\x17\xf2\xde\x1f\x13yaml:\"send_enabled\"\x12\x33\n\x0freceive_enabled\x18\x02 \x01(\x08\x42\x1a\xf2\xde\x1f\x16yaml:\"receive_enabled\"B@Z>github.com/cosmos/cosmos-sdk/x/ibc/applications/transfer/typesb\x06proto3'
+  serialized_pb=b'\n+ibc/applications/transfer/v1/transfer.proto\x12\x1cibc.applications.transfer.v1\x1a\x14gogoproto/gogo.proto\"Z\n\x17\x46ungibleTokenPacketData\x12\r\n\x05\x64\x65nom\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x04\x12\x0e\n\x06sender\x18\x03 \x01(\t\x12\x10\n\x08receiver\x18\x04 \x01(\t\".\n\nDenomTrace\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x12\n\nbase_denom\x18\x02 \x01(\t\"l\n\x06Params\x12-\n\x0csend_enabled\x18\x01 \x01(\x08\x42\x17\xf2\xde\x1f\x13yaml:\"send_enabled\"\x12\x33\n\x0freceive_enabled\x18\x02 \x01(\x08\x42\x1a\xf2\xde\x1f\x16yaml:\"receive_enabled\"B6Z4github.com/cosmos/ibc-go/modules/apps/transfer/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,])
 

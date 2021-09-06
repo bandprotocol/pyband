@@ -10,13 +10,16 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# Coin defines a token with a denomination and an amount.
+#
+# NOTE: The amount field is an Int which implements the custom method
+# signatures required by gogoproto.
 class Coin(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DENOM_FIELD_NUMBER: builtins.int
     AMOUNT_FIELD_NUMBER: builtins.int
     denom: typing.Text = ...
     amount: typing.Text = ...
-
     def __init__(self,
         *,
         denom : typing.Text = ...,
@@ -25,13 +28,16 @@ class Coin(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"denom",b"denom"]) -> None: ...
 global___Coin = Coin
 
+# DecCoin defines a token with a denomination and a decimal amount.
+#
+# NOTE: The amount field is an Dec which implements the custom method
+# signatures required by gogoproto.
 class DecCoin(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DENOM_FIELD_NUMBER: builtins.int
     AMOUNT_FIELD_NUMBER: builtins.int
     denom: typing.Text = ...
     amount: typing.Text = ...
-
     def __init__(self,
         *,
         denom : typing.Text = ...,
@@ -40,11 +46,11 @@ class DecCoin(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"denom",b"denom"]) -> None: ...
 global___DecCoin = DecCoin
 
+# IntProto defines a Protobuf wrapper around an Int object.
 class IntProto(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INT_FIELD_NUMBER: builtins.int
     int: typing.Text = ...
-
     def __init__(self,
         *,
         int : typing.Text = ...,
@@ -52,11 +58,11 @@ class IntProto(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"int",b"int"]) -> None: ...
 global___IntProto = IntProto
 
+# DecProto defines a Protobuf wrapper around a Dec object.
 class DecProto(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DEC_FIELD_NUMBER: builtins.int
     dec: typing.Text = ...
-
     def __init__(self,
         *,
         dec : typing.Text = ...,

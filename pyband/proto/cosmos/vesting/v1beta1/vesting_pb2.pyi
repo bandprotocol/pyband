@@ -13,6 +13,8 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# BaseVestingAccount implements the VestingAccount interface. It contains all
+# the necessary fields needed for any vesting account implementation.
 class BaseVestingAccount(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BASE_ACCOUNT_FIELD_NUMBER: builtins.int
@@ -20,20 +22,15 @@ class BaseVestingAccount(google.protobuf.message.Message):
     DELEGATED_FREE_FIELD_NUMBER: builtins.int
     DELEGATED_VESTING_FIELD_NUMBER: builtins.int
     END_TIME_FIELD_NUMBER: builtins.int
-    end_time: builtins.int = ...
-
     @property
     def base_account(self) -> cosmos.auth.v1beta1.auth_pb2.BaseAccount: ...
-
     @property
     def original_vesting(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
     @property
     def delegated_free(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
     @property
     def delegated_vesting(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
+    end_time: builtins.int = ...
     def __init__(self,
         *,
         base_account : typing.Optional[cosmos.auth.v1beta1.auth_pb2.BaseAccount] = ...,
@@ -46,15 +43,15 @@ class BaseVestingAccount(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"base_account",b"base_account",u"delegated_free",b"delegated_free",u"delegated_vesting",b"delegated_vesting",u"end_time",b"end_time",u"original_vesting",b"original_vesting"]) -> None: ...
 global___BaseVestingAccount = BaseVestingAccount
 
+# ContinuousVestingAccount implements the VestingAccount interface. It
+# continuously vests by unlocking coins linearly with respect to time.
 class ContinuousVestingAccount(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BASE_VESTING_ACCOUNT_FIELD_NUMBER: builtins.int
     START_TIME_FIELD_NUMBER: builtins.int
-    start_time: builtins.int = ...
-
     @property
     def base_vesting_account(self) -> global___BaseVestingAccount: ...
-
+    start_time: builtins.int = ...
     def __init__(self,
         *,
         base_vesting_account : typing.Optional[global___BaseVestingAccount] = ...,
@@ -64,13 +61,14 @@ class ContinuousVestingAccount(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"base_vesting_account",b"base_vesting_account",u"start_time",b"start_time"]) -> None: ...
 global___ContinuousVestingAccount = ContinuousVestingAccount
 
+# DelayedVestingAccount implements the VestingAccount interface. It vests all
+# coins after a specific time, but non prior. In other words, it keeps them
+# locked until a specified time.
 class DelayedVestingAccount(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BASE_VESTING_ACCOUNT_FIELD_NUMBER: builtins.int
-
     @property
     def base_vesting_account(self) -> global___BaseVestingAccount: ...
-
     def __init__(self,
         *,
         base_vesting_account : typing.Optional[global___BaseVestingAccount] = ...,
@@ -79,15 +77,14 @@ class DelayedVestingAccount(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"base_vesting_account",b"base_vesting_account"]) -> None: ...
 global___DelayedVestingAccount = DelayedVestingAccount
 
+# Period defines a length of time and amount of coins that will vest.
 class Period(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     LENGTH_FIELD_NUMBER: builtins.int
     AMOUNT_FIELD_NUMBER: builtins.int
     length: builtins.int = ...
-
     @property
     def amount(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.base.v1beta1.coin_pb2.Coin]: ...
-
     def __init__(self,
         *,
         length : builtins.int = ...,
@@ -96,19 +93,18 @@ class Period(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"length",b"length"]) -> None: ...
 global___Period = Period
 
+# PeriodicVestingAccount implements the VestingAccount interface. It
+# periodically vests by unlocking coins during each specified period.
 class PeriodicVestingAccount(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BASE_VESTING_ACCOUNT_FIELD_NUMBER: builtins.int
     START_TIME_FIELD_NUMBER: builtins.int
     VESTING_PERIODS_FIELD_NUMBER: builtins.int
-    start_time: builtins.int = ...
-
     @property
     def base_vesting_account(self) -> global___BaseVestingAccount: ...
-
+    start_time: builtins.int = ...
     @property
     def vesting_periods(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Period]: ...
-
     def __init__(self,
         *,
         base_vesting_account : typing.Optional[global___BaseVestingAccount] = ...,
@@ -118,3 +114,19 @@ class PeriodicVestingAccount(google.protobuf.message.Message):
     def HasField(self, field_name: typing_extensions.Literal[u"base_vesting_account",b"base_vesting_account"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing_extensions.Literal[u"base_vesting_account",b"base_vesting_account",u"start_time",b"start_time",u"vesting_periods",b"vesting_periods"]) -> None: ...
 global___PeriodicVestingAccount = PeriodicVestingAccount
+
+# PermanentLockedAccount implements the VestingAccount interface. It does
+# not ever release coins, locking them indefinitely. Coins in this account can
+# still be used for delegating and for governance votes even while locked.
+class PermanentLockedAccount(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+    BASE_VESTING_ACCOUNT_FIELD_NUMBER: builtins.int
+    @property
+    def base_vesting_account(self) -> global___BaseVestingAccount: ...
+    def __init__(self,
+        *,
+        base_vesting_account : typing.Optional[global___BaseVestingAccount] = ...,
+        ) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal[u"base_vesting_account",b"base_vesting_account"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal[u"base_vesting_account",b"base_vesting_account"]) -> None: ...
+global___PermanentLockedAccount = PermanentLockedAccount

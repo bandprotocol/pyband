@@ -11,15 +11,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgSubmitEvidence represents a message that supports submitting arbitrary
+# Evidence of misbehavior such as equivocation or counterfactual signing.
 class MsgSubmitEvidence(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SUBMITTER_FIELD_NUMBER: builtins.int
     EVIDENCE_FIELD_NUMBER: builtins.int
     submitter: typing.Text = ...
-
     @property
     def evidence(self) -> google.protobuf.any_pb2.Any: ...
-
     def __init__(self,
         *,
         submitter : typing.Text = ...,
@@ -29,11 +29,12 @@ class MsgSubmitEvidence(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"evidence",b"evidence",u"submitter",b"submitter"]) -> None: ...
 global___MsgSubmitEvidence = MsgSubmitEvidence
 
+# MsgSubmitEvidenceResponse defines the Msg/SubmitEvidence response type.
 class MsgSubmitEvidenceResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HASH_FIELD_NUMBER: builtins.int
+    # hash defines the hash of the evidence.
     hash: builtins.bytes = ...
-
     def __init__(self,
         *,
         hash : builtins.bytes = ...,

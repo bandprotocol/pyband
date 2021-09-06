@@ -6,34 +6,54 @@ import abc
 import grpc
 
 from .tx_pb2 import *
+# Msg defines the bank Msg service.
 class MsgStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # SubmitProposal defines a method to create new proposal given a content.
     SubmitProposal:grpc.UnaryUnaryMultiCallable[
         global___MsgSubmitProposal,
         global___MsgSubmitProposalResponse] = ...
 
+    # Vote defines a method to add a vote on a specific proposal.
     Vote:grpc.UnaryUnaryMultiCallable[
         global___MsgVote,
         global___MsgVoteResponse] = ...
 
+    # VoteWeighted defines a method to add a weighted vote on a specific proposal.
+    VoteWeighted:grpc.UnaryUnaryMultiCallable[
+        global___MsgVoteWeighted,
+        global___MsgVoteWeightedResponse] = ...
+
+    # Deposit defines a method to add deposit on a specific proposal.
     Deposit:grpc.UnaryUnaryMultiCallable[
         global___MsgDeposit,
         global___MsgDepositResponse] = ...
 
 
+# Msg defines the bank Msg service.
 class MsgServicer(metaclass=abc.ABCMeta):
+    # SubmitProposal defines a method to create new proposal given a content.
     @abc.abstractmethod
     def SubmitProposal(self,
         request: global___MsgSubmitProposal,
         context: grpc.ServicerContext,
     ) -> global___MsgSubmitProposalResponse: ...
 
+    # Vote defines a method to add a vote on a specific proposal.
     @abc.abstractmethod
     def Vote(self,
         request: global___MsgVote,
         context: grpc.ServicerContext,
     ) -> global___MsgVoteResponse: ...
 
+    # VoteWeighted defines a method to add a weighted vote on a specific proposal.
+    @abc.abstractmethod
+    def VoteWeighted(self,
+        request: global___MsgVoteWeighted,
+        context: grpc.ServicerContext,
+    ) -> global___MsgVoteWeightedResponse: ...
+
+    # Deposit defines a method to add deposit on a specific proposal.
     @abc.abstractmethod
     def Deposit(self,
         request: global___MsgDeposit,

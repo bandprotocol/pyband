@@ -6,14 +6,20 @@ import abc
 import grpc
 
 from .query_pb2 import *
+# Query defines the gRPC querier service.
 class QueryStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # Params queries a specific parameter of a module, given its subspace and
+    # key.
     Params:grpc.UnaryUnaryMultiCallable[
         global___QueryParamsRequest,
         global___QueryParamsResponse] = ...
 
 
+# Query defines the gRPC querier service.
 class QueryServicer(metaclass=abc.ABCMeta):
+    # Params queries a specific parameter of a module, given its subspace and
+    # key.
     @abc.abstractmethod
     def Params(self,
         request: global___QueryParamsRequest,

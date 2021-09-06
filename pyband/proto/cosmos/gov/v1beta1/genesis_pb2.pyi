@@ -12,6 +12,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the gov module's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     STARTING_PROPOSAL_ID_FIELD_NUMBER: builtins.int
@@ -21,26 +22,26 @@ class GenesisState(google.protobuf.message.Message):
     DEPOSIT_PARAMS_FIELD_NUMBER: builtins.int
     VOTING_PARAMS_FIELD_NUMBER: builtins.int
     TALLY_PARAMS_FIELD_NUMBER: builtins.int
+    # starting_proposal_id is the ID of the starting proposal.
     starting_proposal_id: builtins.int = ...
-
+    # deposits defines all the deposits present at genesis.
     @property
     def deposits(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.gov.v1beta1.gov_pb2.Deposit]: ...
-
+    # votes defines all the votes present at genesis.
     @property
     def votes(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.gov.v1beta1.gov_pb2.Vote]: ...
-
+    # proposals defines all the proposals present at genesis.
     @property
     def proposals(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.gov.v1beta1.gov_pb2.Proposal]: ...
-
+    # params defines all the paramaters of related to deposit.
     @property
     def deposit_params(self) -> cosmos.gov.v1beta1.gov_pb2.DepositParams: ...
-
+    # params defines all the paramaters of related to voting.
     @property
     def voting_params(self) -> cosmos.gov.v1beta1.gov_pb2.VotingParams: ...
-
+    # params defines all the paramaters of related to tally.
     @property
     def tally_params(self) -> cosmos.gov.v1beta1.gov_pb2.TallyParams: ...
-
     def __init__(self,
         *,
         starting_proposal_id : builtins.int = ...,

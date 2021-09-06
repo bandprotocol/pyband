@@ -18,13 +18,10 @@ class Evidence(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DUPLICATE_VOTE_EVIDENCE_FIELD_NUMBER: builtins.int
     LIGHT_CLIENT_ATTACK_EVIDENCE_FIELD_NUMBER: builtins.int
-
     @property
     def duplicate_vote_evidence(self) -> global___DuplicateVoteEvidence: ...
-
     @property
     def light_client_attack_evidence(self) -> global___LightClientAttackEvidence: ...
-
     def __init__(self,
         *,
         duplicate_vote_evidence : typing.Optional[global___DuplicateVoteEvidence] = ...,
@@ -35,6 +32,7 @@ class Evidence(google.protobuf.message.Message):
     def WhichOneof(self, oneof_group: typing_extensions.Literal[u"sum",b"sum"]) -> typing.Optional[typing_extensions.Literal["duplicate_vote_evidence","light_client_attack_evidence"]]: ...
 global___Evidence = Evidence
 
+# DuplicateVoteEvidence contains evidence of a validator signed two conflicting votes.
 class DuplicateVoteEvidence(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VOTE_A_FIELD_NUMBER: builtins.int
@@ -42,18 +40,14 @@ class DuplicateVoteEvidence(google.protobuf.message.Message):
     TOTAL_VOTING_POWER_FIELD_NUMBER: builtins.int
     VALIDATOR_POWER_FIELD_NUMBER: builtins.int
     TIMESTAMP_FIELD_NUMBER: builtins.int
-    total_voting_power: builtins.int = ...
-    validator_power: builtins.int = ...
-
     @property
     def vote_a(self) -> tendermint.types.types_pb2.Vote: ...
-
     @property
     def vote_b(self) -> tendermint.types.types_pb2.Vote: ...
-
+    total_voting_power: builtins.int = ...
+    validator_power: builtins.int = ...
     @property
     def timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-
     def __init__(self,
         *,
         vote_a : typing.Optional[tendermint.types.types_pb2.Vote] = ...,
@@ -66,6 +60,7 @@ class DuplicateVoteEvidence(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"timestamp",b"timestamp",u"total_voting_power",b"total_voting_power",u"validator_power",b"validator_power",u"vote_a",b"vote_a",u"vote_b",b"vote_b"]) -> None: ...
 global___DuplicateVoteEvidence = DuplicateVoteEvidence
 
+# LightClientAttackEvidence contains evidence of a set of validators attempting to mislead a light client.
 class LightClientAttackEvidence(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CONFLICTING_BLOCK_FIELD_NUMBER: builtins.int
@@ -73,18 +68,14 @@ class LightClientAttackEvidence(google.protobuf.message.Message):
     BYZANTINE_VALIDATORS_FIELD_NUMBER: builtins.int
     TOTAL_VOTING_POWER_FIELD_NUMBER: builtins.int
     TIMESTAMP_FIELD_NUMBER: builtins.int
-    common_height: builtins.int = ...
-    total_voting_power: builtins.int = ...
-
     @property
     def conflicting_block(self) -> tendermint.types.types_pb2.LightBlock: ...
-
+    common_height: builtins.int = ...
     @property
     def byzantine_validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[tendermint.types.validator_pb2.Validator]: ...
-
+    total_voting_power: builtins.int = ...
     @property
     def timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-
     def __init__(self,
         *,
         conflicting_block : typing.Optional[tendermint.types.types_pb2.LightBlock] = ...,
@@ -100,10 +91,8 @@ global___LightClientAttackEvidence = LightClientAttackEvidence
 class EvidenceList(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     EVIDENCE_FIELD_NUMBER: builtins.int
-
     @property
     def evidence(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Evidence]: ...
-
     def __init__(self,
         *,
         evidence : typing.Optional[typing.Iterable[global___Evidence]] = ...,

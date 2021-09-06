@@ -14,6 +14,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgCreateValidator defines a SDK message for creating a new validator.
 class MsgCreateValidator(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DESCRIPTION_FIELD_NUMBER: builtins.int
@@ -23,22 +24,17 @@ class MsgCreateValidator(google.protobuf.message.Message):
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     PUBKEY_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
+    @property
+    def description(self) -> cosmos.staking.v1beta1.staking_pb2.Description: ...
+    @property
+    def commission(self) -> cosmos.staking.v1beta1.staking_pb2.CommissionRates: ...
     min_self_delegation: typing.Text = ...
     delegator_address: typing.Text = ...
     validator_address: typing.Text = ...
-
-    @property
-    def description(self) -> cosmos.staking.v1beta1.staking_pb2.Description: ...
-
-    @property
-    def commission(self) -> cosmos.staking.v1beta1.staking_pb2.CommissionRates: ...
-
     @property
     def pubkey(self) -> google.protobuf.any_pb2.Any: ...
-
     @property
     def value(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         description : typing.Optional[cosmos.staking.v1beta1.staking_pb2.Description] = ...,
@@ -53,26 +49,29 @@ class MsgCreateValidator(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"commission",b"commission",u"delegator_address",b"delegator_address",u"description",b"description",u"min_self_delegation",b"min_self_delegation",u"pubkey",b"pubkey",u"validator_address",b"validator_address",u"value",b"value"]) -> None: ...
 global___MsgCreateValidator = MsgCreateValidator
 
+# MsgCreateValidatorResponse defines the Msg/CreateValidator response type.
 class MsgCreateValidatorResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgCreateValidatorResponse = MsgCreateValidatorResponse
 
+# MsgEditValidator defines a SDK message for editing an existing validator.
 class MsgEditValidator(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DESCRIPTION_FIELD_NUMBER: builtins.int
     VALIDATOR_ADDRESS_FIELD_NUMBER: builtins.int
     COMMISSION_RATE_FIELD_NUMBER: builtins.int
     MIN_SELF_DELEGATION_FIELD_NUMBER: builtins.int
-    validator_address: typing.Text = ...
-    commission_rate: typing.Text = ...
-    min_self_delegation: typing.Text = ...
-
     @property
     def description(self) -> cosmos.staking.v1beta1.staking_pb2.Description: ...
-
+    validator_address: typing.Text = ...
+    # We pass a reference to the new commission rate and min self delegation as
+    # it's not mandatory to update. If not updated, the deserialized rate will be
+    # zero with no way to distinguish if an update was intended.
+    # REF: #2373
+    commission_rate: typing.Text = ...
+    min_self_delegation: typing.Text = ...
     def __init__(self,
         *,
         description : typing.Optional[cosmos.staking.v1beta1.staking_pb2.Description] = ...,
@@ -84,13 +83,15 @@ class MsgEditValidator(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"commission_rate",b"commission_rate",u"description",b"description",u"min_self_delegation",b"min_self_delegation",u"validator_address",b"validator_address"]) -> None: ...
 global___MsgEditValidator = MsgEditValidator
 
+# MsgEditValidatorResponse defines the Msg/EditValidator response type.
 class MsgEditValidatorResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgEditValidatorResponse = MsgEditValidatorResponse
 
+# MsgDelegate defines a SDK message for performing a delegation of coins
+# from a delegator to a validator.
 class MsgDelegate(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDRESS_FIELD_NUMBER: builtins.int
@@ -98,10 +99,8 @@ class MsgDelegate(google.protobuf.message.Message):
     AMOUNT_FIELD_NUMBER: builtins.int
     delegator_address: typing.Text = ...
     validator_address: typing.Text = ...
-
     @property
     def amount(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         delegator_address : typing.Text = ...,
@@ -112,13 +111,15 @@ class MsgDelegate(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"delegator_address",b"delegator_address",u"validator_address",b"validator_address"]) -> None: ...
 global___MsgDelegate = MsgDelegate
 
+# MsgDelegateResponse defines the Msg/Delegate response type.
 class MsgDelegateResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgDelegateResponse = MsgDelegateResponse
 
+# MsgBeginRedelegate defines a SDK message for performing a redelegation
+# of coins from a delegator and source validator to a destination validator.
 class MsgBeginRedelegate(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDRESS_FIELD_NUMBER: builtins.int
@@ -128,10 +129,8 @@ class MsgBeginRedelegate(google.protobuf.message.Message):
     delegator_address: typing.Text = ...
     validator_src_address: typing.Text = ...
     validator_dst_address: typing.Text = ...
-
     @property
     def amount(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         delegator_address : typing.Text = ...,
@@ -143,13 +142,12 @@ class MsgBeginRedelegate(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"delegator_address",b"delegator_address",u"validator_dst_address",b"validator_dst_address",u"validator_src_address",b"validator_src_address"]) -> None: ...
 global___MsgBeginRedelegate = MsgBeginRedelegate
 
+# MsgBeginRedelegateResponse defines the Msg/BeginRedelegate response type.
 class MsgBeginRedelegateResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     COMPLETION_TIME_FIELD_NUMBER: builtins.int
-
     @property
     def completion_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-
     def __init__(self,
         *,
         completion_time : typing.Optional[google.protobuf.timestamp_pb2.Timestamp] = ...,
@@ -158,6 +156,8 @@ class MsgBeginRedelegateResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"completion_time",b"completion_time"]) -> None: ...
 global___MsgBeginRedelegateResponse = MsgBeginRedelegateResponse
 
+# MsgUndelegate defines a SDK message for performing an undelegation from a
+# delegate and a validator.
 class MsgUndelegate(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDRESS_FIELD_NUMBER: builtins.int
@@ -165,10 +165,8 @@ class MsgUndelegate(google.protobuf.message.Message):
     AMOUNT_FIELD_NUMBER: builtins.int
     delegator_address: typing.Text = ...
     validator_address: typing.Text = ...
-
     @property
     def amount(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
     def __init__(self,
         *,
         delegator_address : typing.Text = ...,
@@ -179,13 +177,12 @@ class MsgUndelegate(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"amount",b"amount",u"delegator_address",b"delegator_address",u"validator_address",b"validator_address"]) -> None: ...
 global___MsgUndelegate = MsgUndelegate
 
+# MsgUndelegateResponse defines the Msg/Undelegate response type.
 class MsgUndelegateResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     COMPLETION_TIME_FIELD_NUMBER: builtins.int
-
     @property
     def completion_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-
     def __init__(self,
         *,
         completion_time : typing.Optional[google.protobuf.timestamp_pb2.Timestamp] = ...,

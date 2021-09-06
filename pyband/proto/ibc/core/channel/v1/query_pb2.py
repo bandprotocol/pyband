@@ -23,9 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ibc/core/channel/v1/query.proto',
   package='ibc.core.channel.v1',
   syntax='proto3',
-  serialized_options=b'Z8github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/types',
+  serialized_options=b'Z6github.com/cosmos/ibc-go/modules/core/04-channel/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1fibc/core/channel/v1/query.proto\x12\x13ibc.core.channel.v1\x1a\x1fibc/core/client/v1/client.proto\x1a*cosmos/base/query/v1beta1/pagination.proto\x1a!ibc/core/channel/v1/channel.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/protobuf/any.proto\x1a\x14gogoproto/gogo.proto\":\n\x13QueryChannelRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\"\x8c\x01\n\x14QueryChannelResponse\x12-\n\x07\x63hannel\x18\x01 \x01(\x0b\x32\x1c.ibc.core.channel.v1.Channel\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"R\n\x14QueryChannelsRequest\x12:\n\npagination\x18\x01 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xc0\x01\n\x15QueryChannelsResponse\x12\x38\n\x08\x63hannels\x18\x01 \x03(\x0b\x32&.ibc.core.channel.v1.IdentifiedChannel\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"p\n\x1eQueryConnectionChannelsRequest\x12\x12\n\nconnection\x18\x01 \x01(\t\x12:\n\npagination\x18\x02 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xca\x01\n\x1fQueryConnectionChannelsResponse\x12\x38\n\x08\x63hannels\x18\x01 \x03(\x0b\x32&.ibc.core.channel.v1.IdentifiedChannel\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"E\n\x1eQueryChannelClientStateRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\"\xb4\x01\n\x1fQueryChannelClientStateResponse\x12J\n\x17identified_client_state\x18\x01 \x01(\x0b\x32).ibc.core.client.v1.IdentifiedClientState\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"z\n!QueryChannelConsensusStateRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x17\n\x0frevision_number\x18\x03 \x01(\x04\x12\x17\n\x0frevision_height\x18\x04 \x01(\x04\"\xad\x01\n\"QueryChannelConsensusStateResponse\x12-\n\x0f\x63onsensus_state\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x11\n\tclient_id\x18\x02 \x01(\t\x12\r\n\x05proof\x18\x03 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x04 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"U\n\x1cQueryPacketCommitmentRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x10\n\x08sequence\x18\x03 \x01(\x04\"z\n\x1dQueryPacketCommitmentResponse\x12\x12\n\ncommitment\x18\x01 \x01(\x0c\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"\x80\x01\n\x1dQueryPacketCommitmentsRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12:\n\npagination\x18\x03 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xc6\x01\n\x1eQueryPacketCommitmentsResponse\x12\x35\n\x0b\x63ommitments\x18\x01 \x03(\x0b\x32 .ibc.core.channel.v1.PacketState\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"R\n\x19QueryPacketReceiptRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x10\n\x08sequence\x18\x03 \x01(\x04\"u\n\x1aQueryPacketReceiptResponse\x12\x10\n\x08received\x18\x02 \x01(\x08\x12\r\n\x05proof\x18\x03 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x04 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"Z\n!QueryPacketAcknowledgementRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x10\n\x08sequence\x18\x03 \x01(\x04\"\x84\x01\n\"QueryPacketAcknowledgementResponse\x12\x17\n\x0f\x61\x63knowledgement\x18\x01 \x01(\x0c\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"\x85\x01\n\"QueryPacketAcknowledgementsRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12:\n\npagination\x18\x03 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xd0\x01\n#QueryPacketAcknowledgementsResponse\x12:\n\x10\x61\x63knowledgements\x18\x01 \x03(\x0b\x32 .ibc.core.channel.v1.PacketState\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"i\n\x1dQueryUnreceivedPacketsRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12#\n\x1bpacket_commitment_sequences\x18\x03 \x03(\x04\"e\n\x1eQueryUnreceivedPacketsResponse\x12\x11\n\tsequences\x18\x01 \x03(\x04\x12\x30\n\x06height\x18\x02 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"_\n\x1aQueryUnreceivedAcksRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x1c\n\x14packet_ack_sequences\x18\x03 \x03(\x04\"b\n\x1bQueryUnreceivedAcksResponse\x12\x11\n\tsequences\x18\x01 \x03(\x04\x12\x30\n\x06height\x18\x02 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"F\n\x1fQueryNextSequenceReceiveRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\"\x88\x01\n QueryNextSequenceReceiveResponse\x12\x1d\n\x15next_sequence_receive\x18\x01 \x01(\x04\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\x32\xcf\x16\n\x05Query\x12\xa7\x01\n\x07\x43hannel\x12(.ibc.core.channel.v1.QueryChannelRequest\x1a).ibc.core.channel.v1.QueryChannelResponse\"G\x82\xd3\xe4\x93\x02\x41\x12?/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}\x12\x8d\x01\n\x08\x43hannels\x12).ibc.core.channel.v1.QueryChannelsRequest\x1a*.ibc.core.channel.v1.QueryChannelsResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/ibc/core/channel/v1beta1/channels\x12\xc4\x01\n\x12\x43onnectionChannels\x12\x33.ibc.core.channel.v1.QueryConnectionChannelsRequest\x1a\x34.ibc.core.channel.v1.QueryConnectionChannelsResponse\"C\x82\xd3\xe4\x93\x02=\x12;/ibc/core/channel/v1beta1/connections/{connection}/channels\x12\xd5\x01\n\x12\x43hannelClientState\x12\x33.ibc.core.channel.v1.QueryChannelClientStateRequest\x1a\x34.ibc.core.channel.v1.QueryChannelClientStateResponse\"T\x82\xd3\xe4\x93\x02N\x12L/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/client_state\x12\x98\x02\n\x15\x43hannelConsensusState\x12\x36.ibc.core.channel.v1.QueryChannelConsensusStateRequest\x1a\x37.ibc.core.channel.v1.QueryChannelConsensusStateResponse\"\x8d\x01\x82\xd3\xe4\x93\x02\x86\x01\x12\x83\x01/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/consensus_state/revision/{revision_number}/height/{revision_height}\x12\xe0\x01\n\x10PacketCommitment\x12\x31.ibc.core.channel.v1.QueryPacketCommitmentRequest\x1a\x32.ibc.core.channel.v1.QueryPacketCommitmentResponse\"e\x82\xd3\xe4\x93\x02_\x12]/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments/{sequence}\x12\xd8\x01\n\x11PacketCommitments\x12\x32.ibc.core.channel.v1.QueryPacketCommitmentsRequest\x1a\x33.ibc.core.channel.v1.QueryPacketCommitmentsResponse\"Z\x82\xd3\xe4\x93\x02T\x12R/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments\x12\xd4\x01\n\rPacketReceipt\x12..ibc.core.channel.v1.QueryPacketReceiptRequest\x1a/.ibc.core.channel.v1.QueryPacketReceiptResponse\"b\x82\xd3\xe4\x93\x02\\\x12Z/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_receipts/{sequence}\x12\xe8\x01\n\x15PacketAcknowledgement\x12\x36.ibc.core.channel.v1.QueryPacketAcknowledgementRequest\x1a\x37.ibc.core.channel.v1.QueryPacketAcknowledgementResponse\"^\x82\xd3\xe4\x93\x02X\x12V/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_acks/{sequence}\x12\xec\x01\n\x16PacketAcknowledgements\x12\x37.ibc.core.channel.v1.QueryPacketAcknowledgementsRequest\x1a\x38.ibc.core.channel.v1.QueryPacketAcknowledgementsResponse\"_\x82\xd3\xe4\x93\x02Y\x12W/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_acknowledgements\x12\x8c\x02\n\x11UnreceivedPackets\x12\x32.ibc.core.channel.v1.QueryUnreceivedPacketsRequest\x1a\x33.ibc.core.channel.v1.QueryUnreceivedPacketsResponse\"\x8d\x01\x82\xd3\xe4\x93\x02\x86\x01\x12\x83\x01/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_commitment_sequences}/unreceived_packets\x12\xf7\x01\n\x0eUnreceivedAcks\x12/.ibc.core.channel.v1.QueryUnreceivedAcksRequest\x1a\x30.ibc.core.channel.v1.QueryUnreceivedAcksResponse\"\x81\x01\x82\xd3\xe4\x93\x02{\x12y/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_ack_sequences}/unreceived_acks\x12\xd9\x01\n\x13NextSequenceReceive\x12\x34.ibc.core.channel.v1.QueryNextSequenceReceiveRequest\x1a\x35.ibc.core.channel.v1.QueryNextSequenceReceiveResponse\"U\x82\xd3\xe4\x93\x02O\x12M/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/next_sequenceB:Z8github.com/cosmos/cosmos-sdk/x/ibc/core/04-channel/typesb\x06proto3'
+  serialized_pb=b'\n\x1fibc/core/channel/v1/query.proto\x12\x13ibc.core.channel.v1\x1a\x1fibc/core/client/v1/client.proto\x1a*cosmos/base/query/v1beta1/pagination.proto\x1a!ibc/core/channel/v1/channel.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/protobuf/any.proto\x1a\x14gogoproto/gogo.proto\":\n\x13QueryChannelRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\"\x8c\x01\n\x14QueryChannelResponse\x12-\n\x07\x63hannel\x18\x01 \x01(\x0b\x32\x1c.ibc.core.channel.v1.Channel\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"R\n\x14QueryChannelsRequest\x12:\n\npagination\x18\x01 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xc0\x01\n\x15QueryChannelsResponse\x12\x38\n\x08\x63hannels\x18\x01 \x03(\x0b\x32&.ibc.core.channel.v1.IdentifiedChannel\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"p\n\x1eQueryConnectionChannelsRequest\x12\x12\n\nconnection\x18\x01 \x01(\t\x12:\n\npagination\x18\x02 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xca\x01\n\x1fQueryConnectionChannelsResponse\x12\x38\n\x08\x63hannels\x18\x01 \x03(\x0b\x32&.ibc.core.channel.v1.IdentifiedChannel\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"E\n\x1eQueryChannelClientStateRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\"\xb4\x01\n\x1fQueryChannelClientStateResponse\x12J\n\x17identified_client_state\x18\x01 \x01(\x0b\x32).ibc.core.client.v1.IdentifiedClientState\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"z\n!QueryChannelConsensusStateRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x17\n\x0frevision_number\x18\x03 \x01(\x04\x12\x17\n\x0frevision_height\x18\x04 \x01(\x04\"\xad\x01\n\"QueryChannelConsensusStateResponse\x12-\n\x0f\x63onsensus_state\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x11\n\tclient_id\x18\x02 \x01(\t\x12\r\n\x05proof\x18\x03 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x04 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"U\n\x1cQueryPacketCommitmentRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x10\n\x08sequence\x18\x03 \x01(\x04\"z\n\x1dQueryPacketCommitmentResponse\x12\x12\n\ncommitment\x18\x01 \x01(\x0c\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"\x80\x01\n\x1dQueryPacketCommitmentsRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12:\n\npagination\x18\x03 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xc6\x01\n\x1eQueryPacketCommitmentsResponse\x12\x35\n\x0b\x63ommitments\x18\x01 \x03(\x0b\x32 .ibc.core.channel.v1.PacketState\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"R\n\x19QueryPacketReceiptRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x10\n\x08sequence\x18\x03 \x01(\x04\"u\n\x1aQueryPacketReceiptResponse\x12\x10\n\x08received\x18\x02 \x01(\x08\x12\r\n\x05proof\x18\x03 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x04 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"Z\n!QueryPacketAcknowledgementRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x10\n\x08sequence\x18\x03 \x01(\x04\"\x84\x01\n\"QueryPacketAcknowledgementResponse\x12\x17\n\x0f\x61\x63knowledgement\x18\x01 \x01(\x0c\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"\x85\x01\n\"QueryPacketAcknowledgementsRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12:\n\npagination\x18\x03 \x01(\x0b\x32&.cosmos.base.query.v1beta1.PageRequest\"\xd0\x01\n#QueryPacketAcknowledgementsResponse\x12:\n\x10\x61\x63knowledgements\x18\x01 \x03(\x0b\x32 .ibc.core.channel.v1.PacketState\x12;\n\npagination\x18\x02 \x01(\x0b\x32\'.cosmos.base.query.v1beta1.PageResponse\x12\x30\n\x06height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"i\n\x1dQueryUnreceivedPacketsRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12#\n\x1bpacket_commitment_sequences\x18\x03 \x03(\x04\"e\n\x1eQueryUnreceivedPacketsResponse\x12\x11\n\tsequences\x18\x01 \x03(\x04\x12\x30\n\x06height\x18\x02 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"_\n\x1aQueryUnreceivedAcksRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\x12\x1c\n\x14packet_ack_sequences\x18\x03 \x03(\x04\"b\n\x1bQueryUnreceivedAcksResponse\x12\x11\n\tsequences\x18\x01 \x03(\x04\x12\x30\n\x06height\x18\x02 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\"F\n\x1fQueryNextSequenceReceiveRequest\x12\x0f\n\x07port_id\x18\x01 \x01(\t\x12\x12\n\nchannel_id\x18\x02 \x01(\t\"\x88\x01\n QueryNextSequenceReceiveResponse\x12\x1d\n\x15next_sequence_receive\x18\x01 \x01(\x04\x12\r\n\x05proof\x18\x02 \x01(\x0c\x12\x36\n\x0cproof_height\x18\x03 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00\x32\x8b\x16\n\x05Query\x12\xa2\x01\n\x07\x43hannel\x12(.ibc.core.channel.v1.QueryChannelRequest\x1a).ibc.core.channel.v1.QueryChannelResponse\"B\x82\xd3\xe4\x93\x02<\x12:/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}\x12\x88\x01\n\x08\x43hannels\x12).ibc.core.channel.v1.QueryChannelsRequest\x1a*.ibc.core.channel.v1.QueryChannelsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/ibc/core/channel/v1/channels\x12\xbf\x01\n\x12\x43onnectionChannels\x12\x33.ibc.core.channel.v1.QueryConnectionChannelsRequest\x1a\x34.ibc.core.channel.v1.QueryConnectionChannelsResponse\">\x82\xd3\xe4\x93\x02\x38\x12\x36/ibc/core/channel/v1/connections/{connection}/channels\x12\xd0\x01\n\x12\x43hannelClientState\x12\x33.ibc.core.channel.v1.QueryChannelClientStateRequest\x1a\x34.ibc.core.channel.v1.QueryChannelClientStateResponse\"O\x82\xd3\xe4\x93\x02I\x12G/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/client_state\x12\x92\x02\n\x15\x43hannelConsensusState\x12\x36.ibc.core.channel.v1.QueryChannelConsensusStateRequest\x1a\x37.ibc.core.channel.v1.QueryChannelConsensusStateResponse\"\x87\x01\x82\xd3\xe4\x93\x02\x80\x01\x12~/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/consensus_state/revision/{revision_number}/height/{revision_height}\x12\xdb\x01\n\x10PacketCommitment\x12\x31.ibc.core.channel.v1.QueryPacketCommitmentRequest\x1a\x32.ibc.core.channel.v1.QueryPacketCommitmentResponse\"`\x82\xd3\xe4\x93\x02Z\x12X/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{sequence}\x12\xd3\x01\n\x11PacketCommitments\x12\x32.ibc.core.channel.v1.QueryPacketCommitmentsRequest\x1a\x33.ibc.core.channel.v1.QueryPacketCommitmentsResponse\"U\x82\xd3\xe4\x93\x02O\x12M/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments\x12\xcf\x01\n\rPacketReceipt\x12..ibc.core.channel.v1.QueryPacketReceiptRequest\x1a/.ibc.core.channel.v1.QueryPacketReceiptResponse\"]\x82\xd3\xe4\x93\x02W\x12U/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_receipts/{sequence}\x12\xe3\x01\n\x15PacketAcknowledgement\x12\x36.ibc.core.channel.v1.QueryPacketAcknowledgementRequest\x1a\x37.ibc.core.channel.v1.QueryPacketAcknowledgementResponse\"Y\x82\xd3\xe4\x93\x02S\x12Q/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_acks/{sequence}\x12\xe7\x01\n\x16PacketAcknowledgements\x12\x37.ibc.core.channel.v1.QueryPacketAcknowledgementsRequest\x1a\x38.ibc.core.channel.v1.QueryPacketAcknowledgementsResponse\"Z\x82\xd3\xe4\x93\x02T\x12R/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_acknowledgements\x12\x86\x02\n\x11UnreceivedPackets\x12\x32.ibc.core.channel.v1.QueryUnreceivedPacketsRequest\x1a\x33.ibc.core.channel.v1.QueryUnreceivedPacketsResponse\"\x87\x01\x82\xd3\xe4\x93\x02\x80\x01\x12~/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_commitment_sequences}/unreceived_packets\x12\xf1\x01\n\x0eUnreceivedAcks\x12/.ibc.core.channel.v1.QueryUnreceivedAcksRequest\x1a\x30.ibc.core.channel.v1.QueryUnreceivedAcksResponse\"|\x82\xd3\xe4\x93\x02v\x12t/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_ack_sequences}/unreceived_acks\x12\xd4\x01\n\x13NextSequenceReceive\x12\x34.ibc.core.channel.v1.QueryNextSequenceReceiveRequest\x1a\x35.ibc.core.channel.v1.QueryNextSequenceReceiveResponse\"P\x82\xd3\xe4\x93\x02J\x12H/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/next_sequenceB8Z6github.com/cosmos/ibc-go/modules/core/04-channel/typesb\x06proto3'
   ,
   dependencies=[ibc_dot_core_dot_client_dot_v1_dot_client__pb2.DESCRIPTOR,cosmos_dot_base_dot_query_dot_v1beta1_dot_pagination__pb2.DESCRIPTOR,ibc_dot_core_dot_channel_dot_v1_dot_channel__pb2.DESCRIPTOR,google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,gogoproto_dot_gogo__pb2.DESCRIPTOR,])
 
@@ -1447,7 +1447,7 @@ _QUERY = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=3541,
-  serialized_end=6436,
+  serialized_end=6368,
   methods=[
   _descriptor.MethodDescriptor(
     name='Channel',
@@ -1456,7 +1456,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCHANNELREQUEST,
     output_type=_QUERYCHANNELRESPONSE,
-    serialized_options=b'\202\323\344\223\002A\022?/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}',
+    serialized_options=b'\202\323\344\223\002<\022:/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1466,7 +1466,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCHANNELSREQUEST,
     output_type=_QUERYCHANNELSRESPONSE,
-    serialized_options=b'\202\323\344\223\002$\022\"/ibc/core/channel/v1beta1/channels',
+    serialized_options=b'\202\323\344\223\002\037\022\035/ibc/core/channel/v1/channels',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1476,7 +1476,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCONNECTIONCHANNELSREQUEST,
     output_type=_QUERYCONNECTIONCHANNELSRESPONSE,
-    serialized_options=b'\202\323\344\223\002=\022;/ibc/core/channel/v1beta1/connections/{connection}/channels',
+    serialized_options=b'\202\323\344\223\0028\0226/ibc/core/channel/v1/connections/{connection}/channels',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1486,7 +1486,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCHANNELCLIENTSTATEREQUEST,
     output_type=_QUERYCHANNELCLIENTSTATERESPONSE,
-    serialized_options=b'\202\323\344\223\002N\022L/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/client_state',
+    serialized_options=b'\202\323\344\223\002I\022G/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/client_state',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1496,7 +1496,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYCHANNELCONSENSUSSTATEREQUEST,
     output_type=_QUERYCHANNELCONSENSUSSTATERESPONSE,
-    serialized_options=b'\202\323\344\223\002\206\001\022\203\001/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/consensus_state/revision/{revision_number}/height/{revision_height}',
+    serialized_options=b'\202\323\344\223\002\200\001\022~/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/consensus_state/revision/{revision_number}/height/{revision_height}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1506,7 +1506,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYPACKETCOMMITMENTREQUEST,
     output_type=_QUERYPACKETCOMMITMENTRESPONSE,
-    serialized_options=b'\202\323\344\223\002_\022]/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments/{sequence}',
+    serialized_options=b'\202\323\344\223\002Z\022X/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{sequence}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1516,7 +1516,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYPACKETCOMMITMENTSREQUEST,
     output_type=_QUERYPACKETCOMMITMENTSRESPONSE,
-    serialized_options=b'\202\323\344\223\002T\022R/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments',
+    serialized_options=b'\202\323\344\223\002O\022M/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1526,7 +1526,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYPACKETRECEIPTREQUEST,
     output_type=_QUERYPACKETRECEIPTRESPONSE,
-    serialized_options=b'\202\323\344\223\002\\\022Z/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_receipts/{sequence}',
+    serialized_options=b'\202\323\344\223\002W\022U/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_receipts/{sequence}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1536,7 +1536,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYPACKETACKNOWLEDGEMENTREQUEST,
     output_type=_QUERYPACKETACKNOWLEDGEMENTRESPONSE,
-    serialized_options=b'\202\323\344\223\002X\022V/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_acks/{sequence}',
+    serialized_options=b'\202\323\344\223\002S\022Q/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_acks/{sequence}',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1546,7 +1546,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYPACKETACKNOWLEDGEMENTSREQUEST,
     output_type=_QUERYPACKETACKNOWLEDGEMENTSRESPONSE,
-    serialized_options=b'\202\323\344\223\002Y\022W/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_acknowledgements',
+    serialized_options=b'\202\323\344\223\002T\022R/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_acknowledgements',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1556,7 +1556,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYUNRECEIVEDPACKETSREQUEST,
     output_type=_QUERYUNRECEIVEDPACKETSRESPONSE,
-    serialized_options=b'\202\323\344\223\002\206\001\022\203\001/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_commitment_sequences}/unreceived_packets',
+    serialized_options=b'\202\323\344\223\002\200\001\022~/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_commitment_sequences}/unreceived_packets',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1566,7 +1566,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYUNRECEIVEDACKSREQUEST,
     output_type=_QUERYUNRECEIVEDACKSRESPONSE,
-    serialized_options=b'\202\323\344\223\002{\022y/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_ack_sequences}/unreceived_acks',
+    serialized_options=b'\202\323\344\223\002v\022t/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/packet_commitments/{packet_ack_sequences}/unreceived_acks',
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
@@ -1576,7 +1576,7 @@ _QUERY = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_QUERYNEXTSEQUENCERECEIVEREQUEST,
     output_type=_QUERYNEXTSEQUENCERECEIVERESPONSE,
-    serialized_options=b'\202\323\344\223\002O\022M/ibc/core/channel/v1beta1/channels/{channel_id}/ports/{port_id}/next_sequence',
+    serialized_options=b'\202\323\344\223\002J\022H/ibc/core/channel/v1/channels/{channel_id}/ports/{port_id}/next_sequence',
     create_key=_descriptor._internal_create_key,
   ),
 ])

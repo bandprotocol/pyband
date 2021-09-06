@@ -11,13 +11,14 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
+# See cosmos.tx.v1betata1.ModeInfo.Multi for how to specify which signers
+# signed and with which modes.
 class MultiSignature(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SIGNATURES_FIELD_NUMBER: builtins.int
-
     @property
     def signatures(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.bytes]: ...
-
     def __init__(self,
         *,
         signatures : typing.Optional[typing.Iterable[builtins.bytes]] = ...,
@@ -25,13 +26,16 @@ class MultiSignature(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"signatures",b"signatures"]) -> None: ...
 global___MultiSignature = MultiSignature
 
+# CompactBitArray is an implementation of a space efficient bit array.
+# This is used to ensure that the encoded data takes up a minimal amount of
+# space after proto encoding.
+# This is not thread safe, and is not intended for concurrent usage.
 class CompactBitArray(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     EXTRA_BITS_STORED_FIELD_NUMBER: builtins.int
     ELEMS_FIELD_NUMBER: builtins.int
     extra_bits_stored: builtins.int = ...
     elems: builtins.bytes = ...
-
     def __init__(self,
         *,
         extra_bits_stored : builtins.int = ...,

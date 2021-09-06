@@ -6,14 +6,22 @@ import abc
 import grpc
 
 from .tx_pb2 import *
+# Msg defines the slashing Msg service.
 class MsgStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # Unjail defines a method for unjailing a jailed validator, thus returning
+    # them into the bonded validator set, so they can begin receiving provisions
+    # and rewards again.
     Unjail:grpc.UnaryUnaryMultiCallable[
         global___MsgUnjail,
         global___MsgUnjailResponse] = ...
 
 
+# Msg defines the slashing Msg service.
 class MsgServicer(metaclass=abc.ABCMeta):
+    # Unjail defines a method for unjailing a jailed validator, thus returning
+    # them into the bonded validator set, so they can begin receiving provisions
+    # and rewards again.
     @abc.abstractmethod
     def Unjail(self,
         request: global___MsgUnjail,

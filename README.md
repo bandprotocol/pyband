@@ -25,6 +25,11 @@ The library is available on [PyPI](https://pypi.org/project/pyband/)
 pip install pyband
 ```
 
+## Compatible
+
+Band 2.3.0, Cosmos-SDK 0.44.0, IBC-go 1.1.0
+
+
 ## 💎 Example Usage
 
 The example code below shows how the library can be used to get the result of the latest request for the price of any cryptocurrency. In this example, we will get the latest price of the following coin - BTC, ETH, MIR, ANC, DOGE, and LUNA. The specified parameters are

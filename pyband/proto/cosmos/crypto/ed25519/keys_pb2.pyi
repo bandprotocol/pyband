@@ -9,11 +9,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# PubKey is an ed25519 public key for handling Tendermint keys in SDK.
+# It's needed for Any serialization and SDK compatibility.
+# It must not be used in a non Tendermint key context because it doesn't implement
+# ADR-28. Nevertheless, you will like to use ed25519 in app user level
+# then you must create a new proto message and follow ADR-28 for Address construction.
 class PubKey(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
     key: builtins.bytes = ...
-
     def __init__(self,
         *,
         key : builtins.bytes = ...,
@@ -21,11 +25,12 @@ class PubKey(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"key",b"key"]) -> None: ...
 global___PubKey = PubKey
 
+# Deprecated: PrivKey defines a ed25519 private key.
+# NOTE: ed25519 keys must not be used in SDK apps except in a tendermint validator context.
 class PrivKey(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
     key: builtins.bytes = ...
-
     def __init__(self,
         *,
         key : builtins.bytes = ...,

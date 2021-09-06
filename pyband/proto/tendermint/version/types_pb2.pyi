@@ -10,13 +10,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# App includes the protocol and software version for the application.
+# This information is included in ResponseInfo. The App.Protocol can be
+# updated in ResponseEndBlock.
 class App(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PROTOCOL_FIELD_NUMBER: builtins.int
     SOFTWARE_FIELD_NUMBER: builtins.int
     protocol: builtins.int = ...
     software: typing.Text = ...
-
     def __init__(self,
         *,
         protocol : builtins.int = ...,
@@ -25,13 +27,15 @@ class App(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"protocol",b"protocol",u"software",b"software"]) -> None: ...
 global___App = App
 
+# Consensus captures the consensus rules for processing a block in the blockchain,
+# including all blockchain data structures and the rules of the application's
+# state transition machine.
 class Consensus(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BLOCK_FIELD_NUMBER: builtins.int
     APP_FIELD_NUMBER: builtins.int
     block: builtins.int = ...
     app: builtins.int = ...
-
     def __init__(self,
         *,
         block : builtins.int = ...,

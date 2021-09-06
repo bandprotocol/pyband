@@ -13,6 +13,8 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# TxResponse defines a structure containing relevant tx data and metadata. The
+# tags are stringified and the log is JSON decoded.
 class TxResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
@@ -27,23 +29,35 @@ class TxResponse(google.protobuf.message.Message):
     GAS_USED_FIELD_NUMBER: builtins.int
     TX_FIELD_NUMBER: builtins.int
     TIMESTAMP_FIELD_NUMBER: builtins.int
+    # The block height
     height: builtins.int = ...
+    # The transaction hash.
     txhash: typing.Text = ...
+    # Namespace for the Code
     codespace: typing.Text = ...
+    # Response code.
     code: builtins.int = ...
+    # Result bytes, if any.
     data: typing.Text = ...
+    # The output of the application's logger (raw string). May be
+    # non-deterministic.
     raw_log: typing.Text = ...
-    info: typing.Text = ...
-    gas_wanted: builtins.int = ...
-    gas_used: builtins.int = ...
-    timestamp: typing.Text = ...
-
+    # The output of the application's logger (typed). May be non-deterministic.
     @property
     def logs(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ABCIMessageLog]: ...
-
+    # Additional information. May be non-deterministic.
+    info: typing.Text = ...
+    # Amount of gas requested for transaction.
+    gas_wanted: builtins.int = ...
+    # Amount of gas consumed by transaction.
+    gas_used: builtins.int = ...
+    # The request transaction bytes.
     @property
     def tx(self) -> google.protobuf.any_pb2.Any: ...
-
+    # Time of the previous block. For heights > 1, it's the weighted median of
+    # the timestamps of the valid votes in the block.LastCommit. For height == 1,
+    # it's genesis time.
+    timestamp: typing.Text = ...
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -63,6 +77,7 @@ class TxResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"code",b"code",u"codespace",b"codespace",u"data",b"data",u"gas_used",b"gas_used",u"gas_wanted",b"gas_wanted",u"height",b"height",u"info",b"info",u"logs",b"logs",u"raw_log",b"raw_log",u"timestamp",b"timestamp",u"tx",b"tx",u"txhash",b"txhash"]) -> None: ...
 global___TxResponse = TxResponse
 
+# ABCIMessageLog defines a structure containing an indexed tx ABCI message log.
 class ABCIMessageLog(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MSG_INDEX_FIELD_NUMBER: builtins.int
@@ -70,10 +85,10 @@ class ABCIMessageLog(google.protobuf.message.Message):
     EVENTS_FIELD_NUMBER: builtins.int
     msg_index: builtins.int = ...
     log: typing.Text = ...
-
+    # Events contains a slice of Event objects that were emitted during some
+    # execution.
     @property
     def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___StringEvent]: ...
-
     def __init__(self,
         *,
         msg_index : builtins.int = ...,
@@ -83,15 +98,15 @@ class ABCIMessageLog(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"events",b"events",u"log",b"log",u"msg_index",b"msg_index"]) -> None: ...
 global___ABCIMessageLog = ABCIMessageLog
 
+# StringEvent defines en Event object wrapper where all the attributes
+# contain key/value pairs that are strings instead of raw bytes.
 class StringEvent(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TYPE_FIELD_NUMBER: builtins.int
     ATTRIBUTES_FIELD_NUMBER: builtins.int
     type: typing.Text = ...
-
     @property
     def attributes(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Attribute]: ...
-
     def __init__(self,
         *,
         type : typing.Text = ...,
@@ -100,13 +115,14 @@ class StringEvent(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"attributes",b"attributes",u"type",b"type"]) -> None: ...
 global___StringEvent = StringEvent
 
+# Attribute defines an attribute wrapper where the key and value are
+# strings instead of raw bytes.
 class Attribute(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
     key: typing.Text = ...
     value: typing.Text = ...
-
     def __init__(self,
         *,
         key : typing.Text = ...,
@@ -115,13 +131,15 @@ class Attribute(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"key",b"key",u"value",b"value"]) -> None: ...
 global___Attribute = Attribute
 
+# GasInfo defines tx execution gas context.
 class GasInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     GAS_WANTED_FIELD_NUMBER: builtins.int
     GAS_USED_FIELD_NUMBER: builtins.int
+    # GasWanted is the maximum units of work we allow this tx to perform.
     gas_wanted: builtins.int = ...
+    # GasUsed is the amount of gas actually consumed.
     gas_used: builtins.int = ...
-
     def __init__(self,
         *,
         gas_wanted : builtins.int = ...,
@@ -130,17 +148,21 @@ class GasInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"gas_used",b"gas_used",u"gas_wanted",b"gas_wanted"]) -> None: ...
 global___GasInfo = GasInfo
 
+# Result is the union of ResponseFormat and ResponseCheckTx.
 class Result(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DATA_FIELD_NUMBER: builtins.int
     LOG_FIELD_NUMBER: builtins.int
     EVENTS_FIELD_NUMBER: builtins.int
+    # Data is any data returned from message or handler execution. It MUST be
+    # length prefixed in order to separate data from multiple message executions.
     data: builtins.bytes = ...
+    # Log contains the log information from message or handler execution.
     log: typing.Text = ...
-
+    # Events contains a slice of Event objects that were emitted during message
+    # or handler execution.
     @property
     def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[tendermint.abci.types_pb2.Event]: ...
-
     def __init__(self,
         *,
         data : builtins.bytes = ...,
@@ -150,17 +172,16 @@ class Result(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"data",b"data",u"events",b"events",u"log",b"log"]) -> None: ...
 global___Result = Result
 
+# SimulationResponse defines the response generated when a transaction is
+# successfully simulated.
 class SimulationResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     GAS_INFO_FIELD_NUMBER: builtins.int
     RESULT_FIELD_NUMBER: builtins.int
-
     @property
     def gas_info(self) -> global___GasInfo: ...
-
     @property
     def result(self) -> global___Result: ...
-
     def __init__(self,
         *,
         gas_info : typing.Optional[global___GasInfo] = ...,
@@ -170,13 +191,14 @@ class SimulationResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"gas_info",b"gas_info",u"result",b"result"]) -> None: ...
 global___SimulationResponse = SimulationResponse
 
+# MsgData defines the data returned in a Result object during message
+# execution.
 class MsgData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MSG_TYPE_FIELD_NUMBER: builtins.int
     DATA_FIELD_NUMBER: builtins.int
     msg_type: typing.Text = ...
     data: builtins.bytes = ...
-
     def __init__(self,
         *,
         msg_type : typing.Text = ...,
@@ -185,13 +207,13 @@ class MsgData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"data",b"data",u"msg_type",b"msg_type"]) -> None: ...
 global___MsgData = MsgData
 
+# TxMsgData defines a list of MsgData. A transaction will have a MsgData object
+# for each message.
 class TxMsgData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DATA_FIELD_NUMBER: builtins.int
-
     @property
     def data(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___MsgData]: ...
-
     def __init__(self,
         *,
         data : typing.Optional[typing.Iterable[global___MsgData]] = ...,
@@ -199,6 +221,7 @@ class TxMsgData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"data",b"data"]) -> None: ...
 global___TxMsgData = TxMsgData
 
+# SearchTxsResult defines a structure for querying txs pageable
 class SearchTxsResult(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TOTAL_COUNT_FIELD_NUMBER: builtins.int
@@ -207,15 +230,19 @@ class SearchTxsResult(google.protobuf.message.Message):
     PAGE_TOTAL_FIELD_NUMBER: builtins.int
     LIMIT_FIELD_NUMBER: builtins.int
     TXS_FIELD_NUMBER: builtins.int
+    # Count of all txs
     total_count: builtins.int = ...
+    # Count of txs in current page
     count: builtins.int = ...
+    # Index of current page, start from 1
     page_number: builtins.int = ...
+    # Count of total pages
     page_total: builtins.int = ...
+    # Max count txs per page
     limit: builtins.int = ...
-
+    # List of txs in current page
     @property
     def txs(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___TxResponse]: ...
-
     def __init__(self,
         *,
         total_count : builtins.int = ...,

@@ -10,17 +10,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# SnapshotItem is an item contained in a rootmulti.Store snapshot.
 class SnapshotItem(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     STORE_FIELD_NUMBER: builtins.int
     IAVL_FIELD_NUMBER: builtins.int
-
     @property
     def store(self) -> global___SnapshotStoreItem: ...
-
     @property
     def iavl(self) -> global___SnapshotIAVLItem: ...
-
     def __init__(self,
         *,
         store : typing.Optional[global___SnapshotStoreItem] = ...,
@@ -31,11 +29,11 @@ class SnapshotItem(google.protobuf.message.Message):
     def WhichOneof(self, oneof_group: typing_extensions.Literal[u"item",b"item"]) -> typing.Optional[typing_extensions.Literal["store","iavl"]]: ...
 global___SnapshotItem = SnapshotItem
 
+# SnapshotStoreItem contains metadata about a snapshotted store.
 class SnapshotStoreItem(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     NAME_FIELD_NUMBER: builtins.int
     name: typing.Text = ...
-
     def __init__(self,
         *,
         name : typing.Text = ...,
@@ -43,6 +41,7 @@ class SnapshotStoreItem(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"name",b"name"]) -> None: ...
 global___SnapshotStoreItem = SnapshotStoreItem
 
+# SnapshotIAVLItem is an exported IAVL node.
 class SnapshotIAVLItem(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     KEY_FIELD_NUMBER: builtins.int
@@ -53,7 +52,6 @@ class SnapshotIAVLItem(google.protobuf.message.Message):
     value: builtins.bytes = ...
     version: builtins.int = ...
     height: builtins.int = ...
-
     def __init__(self,
         *,
         key : builtins.bytes = ...,

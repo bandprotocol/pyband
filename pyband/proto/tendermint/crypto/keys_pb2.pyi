@@ -10,13 +10,13 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# PublicKey defines the keys available for use with Tendermint Validators
 class PublicKey(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ED25519_FIELD_NUMBER: builtins.int
     SECP256K1_FIELD_NUMBER: builtins.int
     ed25519: builtins.bytes = ...
     secp256k1: builtins.bytes = ...
-
     def __init__(self,
         *,
         ed25519 : builtins.bytes = ...,

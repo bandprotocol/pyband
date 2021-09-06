@@ -10,11 +10,11 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgUnjail defines the Msg/Unjail request type
 class MsgUnjail(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
     validator_addr: typing.Text = ...
-
     def __init__(self,
         *,
         validator_addr : typing.Text = ...,
@@ -22,9 +22,9 @@ class MsgUnjail(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"validator_addr",b"validator_addr"]) -> None: ...
 global___MsgUnjail = MsgUnjail
 
+# MsgUnjailResponse defines the Msg/Unjail response type
 class MsgUnjailResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgUnjailResponse = MsgUnjailResponse

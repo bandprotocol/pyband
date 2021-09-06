@@ -10,6 +10,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgVerifyInvariant represents a message to verify a particular invariance.
 class MsgVerifyInvariant(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SENDER_FIELD_NUMBER: builtins.int
@@ -18,7 +19,6 @@ class MsgVerifyInvariant(google.protobuf.message.Message):
     sender: typing.Text = ...
     invariant_module_name: typing.Text = ...
     invariant_route: typing.Text = ...
-
     def __init__(self,
         *,
         sender : typing.Text = ...,
@@ -28,9 +28,9 @@ class MsgVerifyInvariant(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"invariant_module_name",b"invariant_module_name",u"invariant_route",b"invariant_route",u"sender",b"sender"]) -> None: ...
 global___MsgVerifyInvariant = MsgVerifyInvariant
 
+# MsgVerifyInvariantResponse defines the Msg/VerifyInvariant response type.
 class MsgVerifyInvariantResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgVerifyInvariantResponse = MsgVerifyInvariantResponse

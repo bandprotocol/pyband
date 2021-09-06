@@ -11,15 +11,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# CommitInfo defines commit information used by the multi-store when committing
+# a version/height.
 class CommitInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VERSION_FIELD_NUMBER: builtins.int
     STORE_INFOS_FIELD_NUMBER: builtins.int
     version: builtins.int = ...
-
     @property
     def store_infos(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___StoreInfo]: ...
-
     def __init__(self,
         *,
         version : builtins.int = ...,
@@ -28,15 +28,15 @@ class CommitInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"store_infos",b"store_infos",u"version",b"version"]) -> None: ...
 global___CommitInfo = CommitInfo
 
+# StoreInfo defines store-specific commit information. It contains a reference
+# between a store name and the commit ID.
 class StoreInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     NAME_FIELD_NUMBER: builtins.int
     COMMIT_ID_FIELD_NUMBER: builtins.int
     name: typing.Text = ...
-
     @property
     def commit_id(self) -> global___CommitID: ...
-
     def __init__(self,
         *,
         name : typing.Text = ...,
@@ -46,13 +46,14 @@ class StoreInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"commit_id",b"commit_id",u"name",b"name"]) -> None: ...
 global___StoreInfo = StoreInfo
 
+# CommitID defines the committment information when a specific store is
+# committed.
 class CommitID(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VERSION_FIELD_NUMBER: builtins.int
     HASH_FIELD_NUMBER: builtins.int
     version: builtins.int = ...
     hash: builtins.bytes = ...
-
     def __init__(self,
         *,
         version : builtins.int = ...,

@@ -6,34 +6,42 @@ import abc
 import grpc
 
 from .query_pb2 import *
+# Query provides defines the gRPC querier service
 class QueryStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # Params queries the parameters of slashing module
     Params:grpc.UnaryUnaryMultiCallable[
         global___QueryParamsRequest,
         global___QueryParamsResponse] = ...
 
+    # SigningInfo queries the signing info of given cons address
     SigningInfo:grpc.UnaryUnaryMultiCallable[
         global___QuerySigningInfoRequest,
         global___QuerySigningInfoResponse] = ...
 
+    # SigningInfos queries signing info of all validators
     SigningInfos:grpc.UnaryUnaryMultiCallable[
         global___QuerySigningInfosRequest,
         global___QuerySigningInfosResponse] = ...
 
 
+# Query provides defines the gRPC querier service
 class QueryServicer(metaclass=abc.ABCMeta):
+    # Params queries the parameters of slashing module
     @abc.abstractmethod
     def Params(self,
         request: global___QueryParamsRequest,
         context: grpc.ServicerContext,
     ) -> global___QueryParamsResponse: ...
 
+    # SigningInfo queries the signing info of given cons address
     @abc.abstractmethod
     def SigningInfo(self,
         request: global___QuerySigningInfoRequest,
         context: grpc.ServicerContext,
     ) -> global___QuerySigningInfoResponse: ...
 
+    # SigningInfos queries signing info of all validators
     @abc.abstractmethod
     def SigningInfos(self,
         request: global___QuerySigningInfosRequest,

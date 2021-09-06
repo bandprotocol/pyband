@@ -14,48 +14,75 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
-class DataType(metaclass=_DataType):
+# DataType defines the type of solo machine proof being created. This is done
+# to preserve uniqueness of different data sign byte encodings.
+class DataType(_DataType, metaclass=_DataTypeEnumTypeWrapper):
+    pass
+class _DataType:
     V = typing.NewType('V', builtins.int)
-
-global___DataType = DataType
-
-DATA_TYPE_UNINITIALIZED_UNSPECIFIED = DataType.V(0)
-DATA_TYPE_CLIENT_STATE = DataType.V(1)
-DATA_TYPE_CONSENSUS_STATE = DataType.V(2)
-DATA_TYPE_CONNECTION_STATE = DataType.V(3)
-DATA_TYPE_CHANNEL_STATE = DataType.V(4)
-DATA_TYPE_PACKET_COMMITMENT = DataType.V(5)
-DATA_TYPE_PACKET_ACKNOWLEDGEMENT = DataType.V(6)
-DATA_TYPE_PACKET_RECEIPT_ABSENCE = DataType.V(7)
-DATA_TYPE_NEXT_SEQUENCE_RECV = DataType.V(8)
-DATA_TYPE_HEADER = DataType.V(9)
-
-class _DataType(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[DataType.V], builtins.type):  # type: ignore
+class _DataTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_DataType.V], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
+    # Default State
     DATA_TYPE_UNINITIALIZED_UNSPECIFIED = DataType.V(0)
+    # Data type for client state verification
     DATA_TYPE_CLIENT_STATE = DataType.V(1)
+    # Data type for consensus state verification
     DATA_TYPE_CONSENSUS_STATE = DataType.V(2)
+    # Data type for connection state verification
     DATA_TYPE_CONNECTION_STATE = DataType.V(3)
+    # Data type for channel state verification
     DATA_TYPE_CHANNEL_STATE = DataType.V(4)
+    # Data type for packet commitment verification
     DATA_TYPE_PACKET_COMMITMENT = DataType.V(5)
+    # Data type for packet acknowledgement verification
     DATA_TYPE_PACKET_ACKNOWLEDGEMENT = DataType.V(6)
+    # Data type for packet receipt absence verification
     DATA_TYPE_PACKET_RECEIPT_ABSENCE = DataType.V(7)
+    # Data type for next sequence recv verification
     DATA_TYPE_NEXT_SEQUENCE_RECV = DataType.V(8)
+    # Data type for header verification
     DATA_TYPE_HEADER = DataType.V(9)
 
+# Default State
+DATA_TYPE_UNINITIALIZED_UNSPECIFIED = DataType.V(0)
+# Data type for client state verification
+DATA_TYPE_CLIENT_STATE = DataType.V(1)
+# Data type for consensus state verification
+DATA_TYPE_CONSENSUS_STATE = DataType.V(2)
+# Data type for connection state verification
+DATA_TYPE_CONNECTION_STATE = DataType.V(3)
+# Data type for channel state verification
+DATA_TYPE_CHANNEL_STATE = DataType.V(4)
+# Data type for packet commitment verification
+DATA_TYPE_PACKET_COMMITMENT = DataType.V(5)
+# Data type for packet acknowledgement verification
+DATA_TYPE_PACKET_ACKNOWLEDGEMENT = DataType.V(6)
+# Data type for packet receipt absence verification
+DATA_TYPE_PACKET_RECEIPT_ABSENCE = DataType.V(7)
+# Data type for next sequence recv verification
+DATA_TYPE_NEXT_SEQUENCE_RECV = DataType.V(8)
+# Data type for header verification
+DATA_TYPE_HEADER = DataType.V(9)
+global___DataType = DataType
+
+
+# ClientState defines a solo machine client that tracks the current consensus
+# state and if the client is frozen.
 class ClientState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SEQUENCE_FIELD_NUMBER: builtins.int
     FROZEN_SEQUENCE_FIELD_NUMBER: builtins.int
     CONSENSUS_STATE_FIELD_NUMBER: builtins.int
     ALLOW_UPDATE_AFTER_PROPOSAL_FIELD_NUMBER: builtins.int
+    # latest sequence of the client state
     sequence: builtins.int = ...
+    # frozen sequence of the solo machine
     frozen_sequence: builtins.int = ...
-    allow_update_after_proposal: builtins.bool = ...
-
     @property
     def consensus_state(self) -> global___ConsensusState: ...
-
+    # when set to true, will allow governance to update a solo machine client.
+    # The client will be unfrozen if it is frozen.
+    allow_update_after_proposal: builtins.bool = ...
     def __init__(self,
         *,
         sequence : builtins.int = ...,
@@ -67,17 +94,22 @@ class ClientState(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"allow_update_after_proposal",b"allow_update_after_proposal",u"consensus_state",b"consensus_state",u"frozen_sequence",b"frozen_sequence",u"sequence",b"sequence"]) -> None: ...
 global___ClientState = ClientState
 
+# ConsensusState defines a solo machine consensus state. The sequence of a
+# consensus state is contained in the "height" key used in storing the
+# consensus state.
 class ConsensusState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PUBLIC_KEY_FIELD_NUMBER: builtins.int
     DIVERSIFIER_FIELD_NUMBER: builtins.int
     TIMESTAMP_FIELD_NUMBER: builtins.int
-    diversifier: typing.Text = ...
-    timestamp: builtins.int = ...
-
+    # public key of the solo machine
     @property
     def public_key(self) -> google.protobuf.any_pb2.Any: ...
-
+    # diversifier allows the same public key to be re-used across different solo
+    # machine clients (potentially on different chains) without being considered
+    # misbehaviour.
+    diversifier: typing.Text = ...
+    timestamp: builtins.int = ...
     def __init__(self,
         *,
         public_key : typing.Optional[google.protobuf.any_pb2.Any] = ...,
@@ -88,6 +120,7 @@ class ConsensusState(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"diversifier",b"diversifier",u"public_key",b"public_key",u"timestamp",b"timestamp"]) -> None: ...
 global___ConsensusState = ConsensusState
 
+# Header defines a solo machine consensus header
 class Header(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SEQUENCE_FIELD_NUMBER: builtins.int
@@ -95,14 +128,13 @@ class Header(google.protobuf.message.Message):
     SIGNATURE_FIELD_NUMBER: builtins.int
     NEW_PUBLIC_KEY_FIELD_NUMBER: builtins.int
     NEW_DIVERSIFIER_FIELD_NUMBER: builtins.int
+    # sequence to update solo machine public key at
     sequence: builtins.int = ...
     timestamp: builtins.int = ...
     signature: builtins.bytes = ...
-    new_diversifier: typing.Text = ...
-
     @property
     def new_public_key(self) -> google.protobuf.any_pb2.Any: ...
-
+    new_diversifier: typing.Text = ...
     def __init__(self,
         *,
         sequence : builtins.int = ...,
@@ -115,6 +147,8 @@ class Header(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"new_diversifier",b"new_diversifier",u"new_public_key",b"new_public_key",u"sequence",b"sequence",u"signature",b"signature",u"timestamp",b"timestamp"]) -> None: ...
 global___Header = Header
 
+# Misbehaviour defines misbehaviour for a solo machine which consists
+# of a sequence and two signatures over different messages at that sequence.
 class Misbehaviour(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_ID_FIELD_NUMBER: builtins.int
@@ -123,13 +157,10 @@ class Misbehaviour(google.protobuf.message.Message):
     SIGNATURE_TWO_FIELD_NUMBER: builtins.int
     client_id: typing.Text = ...
     sequence: builtins.int = ...
-
     @property
     def signature_one(self) -> global___SignatureAndData: ...
-
     @property
     def signature_two(self) -> global___SignatureAndData: ...
-
     def __init__(self,
         *,
         client_id : typing.Text = ...,
@@ -141,6 +172,8 @@ class Misbehaviour(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"client_id",b"client_id",u"sequence",b"sequence",u"signature_one",b"signature_one",u"signature_two",b"signature_two"]) -> None: ...
 global___Misbehaviour = Misbehaviour
 
+# SignatureAndData contains a signature and the data signed over to create that
+# signature.
 class SignatureAndData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SIGNATURE_FIELD_NUMBER: builtins.int
@@ -151,7 +184,6 @@ class SignatureAndData(google.protobuf.message.Message):
     data_type: global___DataType.V = ...
     data: builtins.bytes = ...
     timestamp: builtins.int = ...
-
     def __init__(self,
         *,
         signature : builtins.bytes = ...,
@@ -162,13 +194,14 @@ class SignatureAndData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"data",b"data",u"data_type",b"data_type",u"signature",b"signature",u"timestamp",b"timestamp"]) -> None: ...
 global___SignatureAndData = SignatureAndData
 
+# TimestampedSignatureData contains the signature data and the timestamp of the
+# signature.
 class TimestampedSignatureData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SIGNATURE_DATA_FIELD_NUMBER: builtins.int
     TIMESTAMP_FIELD_NUMBER: builtins.int
     signature_data: builtins.bytes = ...
     timestamp: builtins.int = ...
-
     def __init__(self,
         *,
         signature_data : builtins.bytes = ...,
@@ -177,6 +210,7 @@ class TimestampedSignatureData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"signature_data",b"signature_data",u"timestamp",b"timestamp"]) -> None: ...
 global___TimestampedSignatureData = TimestampedSignatureData
 
+# SignBytes defines the signed bytes used for signature verification.
 class SignBytes(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SEQUENCE_FIELD_NUMBER: builtins.int
@@ -187,9 +221,10 @@ class SignBytes(google.protobuf.message.Message):
     sequence: builtins.int = ...
     timestamp: builtins.int = ...
     diversifier: typing.Text = ...
+    # type of the data used
     data_type: global___DataType.V = ...
+    # marshaled data
     data: builtins.bytes = ...
-
     def __init__(self,
         *,
         sequence : builtins.int = ...,
@@ -201,15 +236,16 @@ class SignBytes(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"data",b"data",u"data_type",b"data_type",u"diversifier",b"diversifier",u"sequence",b"sequence",u"timestamp",b"timestamp"]) -> None: ...
 global___SignBytes = SignBytes
 
+# HeaderData returns the SignBytes data for update verification.
 class HeaderData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     NEW_PUB_KEY_FIELD_NUMBER: builtins.int
     NEW_DIVERSIFIER_FIELD_NUMBER: builtins.int
-    new_diversifier: typing.Text = ...
-
+    # header public key
     @property
     def new_pub_key(self) -> google.protobuf.any_pb2.Any: ...
-
+    # header diversifier
+    new_diversifier: typing.Text = ...
     def __init__(self,
         *,
         new_pub_key : typing.Optional[google.protobuf.any_pb2.Any] = ...,
@@ -219,15 +255,14 @@ class HeaderData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"new_diversifier",b"new_diversifier",u"new_pub_key",b"new_pub_key"]) -> None: ...
 global___HeaderData = HeaderData
 
+# ClientStateData returns the SignBytes data for client state verification.
 class ClientStateData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     CLIENT_STATE_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
-
     @property
     def client_state(self) -> google.protobuf.any_pb2.Any: ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -237,15 +272,15 @@ class ClientStateData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"client_state",b"client_state",u"path",b"path"]) -> None: ...
 global___ClientStateData = ClientStateData
 
+# ConsensusStateData returns the SignBytes data for consensus state
+# verification.
 class ConsensusStateData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     CONSENSUS_STATE_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
-
     @property
     def consensus_state(self) -> google.protobuf.any_pb2.Any: ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -255,15 +290,15 @@ class ConsensusStateData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"consensus_state",b"consensus_state",u"path",b"path"]) -> None: ...
 global___ConsensusStateData = ConsensusStateData
 
+# ConnectionStateData returns the SignBytes data for connection state
+# verification.
 class ConnectionStateData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     CONNECTION_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
-
     @property
     def connection(self) -> ibc.core.connection.v1.connection_pb2.ConnectionEnd: ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -273,15 +308,15 @@ class ConnectionStateData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"connection",b"connection",u"path",b"path"]) -> None: ...
 global___ConnectionStateData = ConnectionStateData
 
+# ChannelStateData returns the SignBytes data for channel state
+# verification.
 class ChannelStateData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     CHANNEL_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
-
     @property
     def channel(self) -> ibc.core.channel.v1.channel_pb2.Channel: ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -291,13 +326,14 @@ class ChannelStateData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"channel",b"channel",u"path",b"path"]) -> None: ...
 global___ChannelStateData = ChannelStateData
 
+# PacketCommitmentData returns the SignBytes data for packet commitment
+# verification.
 class PacketCommitmentData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     COMMITMENT_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
     commitment: builtins.bytes = ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -306,13 +342,14 @@ class PacketCommitmentData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"commitment",b"commitment",u"path",b"path"]) -> None: ...
 global___PacketCommitmentData = PacketCommitmentData
 
+# PacketAcknowledgementData returns the SignBytes data for acknowledgement
+# verification.
 class PacketAcknowledgementData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     ACKNOWLEDGEMENT_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
     acknowledgement: builtins.bytes = ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -321,11 +358,12 @@ class PacketAcknowledgementData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"acknowledgement",b"acknowledgement",u"path",b"path"]) -> None: ...
 global___PacketAcknowledgementData = PacketAcknowledgementData
 
+# PacketReceiptAbsenceData returns the SignBytes data for
+# packet receipt absence verification.
 class PacketReceiptAbsenceData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,
@@ -333,13 +371,14 @@ class PacketReceiptAbsenceData(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"path",b"path"]) -> None: ...
 global___PacketReceiptAbsenceData = PacketReceiptAbsenceData
 
+# NextSequenceRecvData returns the SignBytes data for verification of the next
+# sequence to be received.
 class NextSequenceRecvData(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     NEXT_SEQ_RECV_FIELD_NUMBER: builtins.int
     path: builtins.bytes = ...
     next_seq_recv: builtins.int = ...
-
     def __init__(self,
         *,
         path : builtins.bytes = ...,

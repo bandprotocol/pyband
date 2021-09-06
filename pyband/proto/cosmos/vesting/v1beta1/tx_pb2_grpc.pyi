@@ -6,14 +6,20 @@ import abc
 import grpc
 
 from .tx_pb2 import *
+# Msg defines the bank Msg service.
 class MsgStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # CreateVestingAccount defines a method that enables creating a vesting
+    # account.
     CreateVestingAccount:grpc.UnaryUnaryMultiCallable[
         global___MsgCreateVestingAccount,
         global___MsgCreateVestingAccountResponse] = ...
 
 
+# Msg defines the bank Msg service.
 class MsgServicer(metaclass=abc.ABCMeta):
+    # CreateVestingAccount defines a method that enables creating a vesting
+    # account.
     @abc.abstractmethod
     def CreateVestingAccount(self,
         request: global___MsgCreateVestingAccount,

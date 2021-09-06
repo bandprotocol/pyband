@@ -10,13 +10,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# Minter represents the minting state.
 class Minter(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INFLATION_FIELD_NUMBER: builtins.int
     ANNUAL_PROVISIONS_FIELD_NUMBER: builtins.int
+    # current annual inflation rate
     inflation: typing.Text = ...
+    # current annual expected provisions
     annual_provisions: typing.Text = ...
-
     def __init__(self,
         *,
         inflation : typing.Text = ...,
@@ -25,6 +27,7 @@ class Minter(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"annual_provisions",b"annual_provisions",u"inflation",b"inflation"]) -> None: ...
 global___Minter = Minter
 
+# Params holds parameters for the mint module.
 class Params(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     MINT_DENOM_FIELD_NUMBER: builtins.int
@@ -33,13 +36,18 @@ class Params(google.protobuf.message.Message):
     INFLATION_MIN_FIELD_NUMBER: builtins.int
     GOAL_BONDED_FIELD_NUMBER: builtins.int
     BLOCKS_PER_YEAR_FIELD_NUMBER: builtins.int
+    # type of coin to mint
     mint_denom: typing.Text = ...
+    # maximum annual change in inflation rate
     inflation_rate_change: typing.Text = ...
+    # maximum inflation rate
     inflation_max: typing.Text = ...
+    # minimum inflation rate
     inflation_min: typing.Text = ...
+    # goal of percent bonded atoms
     goal_bonded: typing.Text = ...
+    # expected blocks per year
     blocks_per_year: builtins.int = ...
-
     def __init__(self,
         *,
         mint_denom : typing.Text = ...,

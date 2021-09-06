@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z,github.com/bandprotocol/chain/x/oracle/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x17oracle/v1/genesis.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x16oracle/v1/oracle.proto\"\xdc\x01\n\x0cGenesisState\x12\'\n\x06params\x18\x01 \x01(\x0b\x32\x11.oracle.v1.ParamsB\x04\xc8\xde\x1f\x00\x12\x31\n\x0c\x64\x61ta_sources\x18\x02 \x03(\x0b\x32\x15.oracle.v1.DataSourceB\x04\xc8\xde\x1f\x00\x12\x35\n\x0eoracle_scripts\x18\x03 \x03(\x0b\x32\x17.oracle.v1.OracleScriptB\x04\xc8\xde\x1f\x00\x12\x39\n\treporters\x18\x04 \x03(\x0b\x32 .oracle.v1.ReportersPerValidatorB\x04\xc8\xde\x1f\x00\x42.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
+  serialized_pb=b'\n\x17oracle/v1/genesis.proto\x12\toracle.v1\x1a\x14gogoproto/gogo.proto\x1a\x16oracle/v1/oracle.proto\"\xa1\x01\n\x0cGenesisState\x12\'\n\x06params\x18\x01 \x01(\x0b\x32\x11.oracle.v1.ParamsB\x04\xc8\xde\x1f\x00\x12\x31\n\x0c\x64\x61ta_sources\x18\x02 \x03(\x0b\x32\x15.oracle.v1.DataSourceB\x04\xc8\xde\x1f\x00\x12\x35\n\x0eoracle_scripts\x18\x03 \x03(\x0b\x32\x17.oracle.v1.OracleScriptB\x04\xc8\xde\x1f\x00\x42.Z,github.com/bandprotocol/chain/x/oracle/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,oracle_dot_v1_dot_oracle__pb2.DESCRIPTOR,])
 
@@ -57,13 +57,6 @@ _GENESISSTATE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=b'\310\336\037\000', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='reporters', full_name='oracle.v1.GenesisState.reporters', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=b'\310\336\037\000', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -77,13 +70,12 @@ _GENESISSTATE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=85,
-  serialized_end=305,
+  serialized_end=246,
 )
 
 _GENESISSTATE.fields_by_name['params'].message_type = oracle_dot_v1_dot_oracle__pb2._PARAMS
 _GENESISSTATE.fields_by_name['data_sources'].message_type = oracle_dot_v1_dot_oracle__pb2._DATASOURCE
 _GENESISSTATE.fields_by_name['oracle_scripts'].message_type = oracle_dot_v1_dot_oracle__pb2._ORACLESCRIPT
-_GENESISSTATE.fields_by_name['reporters'].message_type = oracle_dot_v1_dot_oracle__pb2._REPORTERSPERVALIDATOR
 DESCRIPTOR.message_types_by_name['GenesisState'] = _GENESISSTATE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -99,5 +91,4 @@ DESCRIPTOR._options = None
 _GENESISSTATE.fields_by_name['params']._options = None
 _GENESISSTATE.fields_by_name['data_sources']._options = None
 _GENESISSTATE.fields_by_name['oracle_scripts']._options = None
-_GENESISSTATE.fields_by_name['reporters']._options = None
 # @@protoc_insertion_point(module_scope)

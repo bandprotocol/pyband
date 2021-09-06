@@ -12,6 +12,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GenesisState defines the ibc channel submodule's genesis state.
 class GenesisState(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CHANNELS_FIELD_NUMBER: builtins.int
@@ -22,29 +23,22 @@ class GenesisState(google.protobuf.message.Message):
     RECV_SEQUENCES_FIELD_NUMBER: builtins.int
     ACK_SEQUENCES_FIELD_NUMBER: builtins.int
     NEXT_CHANNEL_SEQUENCE_FIELD_NUMBER: builtins.int
-    next_channel_sequence: builtins.int = ...
-
     @property
     def channels(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.core.channel.v1.channel_pb2.IdentifiedChannel]: ...
-
     @property
     def acknowledgements(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.core.channel.v1.channel_pb2.PacketState]: ...
-
     @property
     def commitments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.core.channel.v1.channel_pb2.PacketState]: ...
-
     @property
     def receipts(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[ibc.core.channel.v1.channel_pb2.PacketState]: ...
-
     @property
     def send_sequences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___PacketSequence]: ...
-
     @property
     def recv_sequences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___PacketSequence]: ...
-
     @property
     def ack_sequences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___PacketSequence]: ...
-
+    # the sequence for the next generated channel identifier
+    next_channel_sequence: builtins.int = ...
     def __init__(self,
         *,
         channels : typing.Optional[typing.Iterable[ibc.core.channel.v1.channel_pb2.IdentifiedChannel]] = ...,
@@ -59,6 +53,8 @@ class GenesisState(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"ack_sequences",b"ack_sequences",u"acknowledgements",b"acknowledgements",u"channels",b"channels",u"commitments",b"commitments",u"next_channel_sequence",b"next_channel_sequence",u"receipts",b"receipts",u"recv_sequences",b"recv_sequences",u"send_sequences",b"send_sequences"]) -> None: ...
 global___GenesisState = GenesisState
 
+# PacketSequence defines the genesis type necessary to retrieve and store
+# next send and receive sequences.
 class PacketSequence(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PORT_ID_FIELD_NUMBER: builtins.int
@@ -67,7 +63,6 @@ class PacketSequence(google.protobuf.message.Message):
     port_id: typing.Text = ...
     channel_id: typing.Text = ...
     sequence: builtins.int = ...
-
     def __init__(self,
         *,
         port_id : typing.Text = ...,

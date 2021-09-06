@@ -6,6 +6,9 @@ import abc
 import grpc
 
 from .types_pb2 import *
+#----------------------------------------
+# Service Definition
+
 class ABCIApplicationStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
     Echo:grpc.UnaryUnaryMultiCallable[
@@ -68,6 +71,9 @@ class ABCIApplicationStub:
         global___RequestApplySnapshotChunk,
         global___ResponseApplySnapshotChunk] = ...
 
+
+#----------------------------------------
+# Service Definition
 
 class ABCIApplicationServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod

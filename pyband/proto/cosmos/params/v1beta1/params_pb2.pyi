@@ -11,6 +11,7 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# ParameterChangeProposal defines a proposal to change one or more parameters.
 class ParameterChangeProposal(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TITLE_FIELD_NUMBER: builtins.int
@@ -18,10 +19,8 @@ class ParameterChangeProposal(google.protobuf.message.Message):
     CHANGES_FIELD_NUMBER: builtins.int
     title: typing.Text = ...
     description: typing.Text = ...
-
     @property
     def changes(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ParamChange]: ...
-
     def __init__(self,
         *,
         title : typing.Text = ...,
@@ -31,6 +30,8 @@ class ParameterChangeProposal(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"changes",b"changes",u"description",b"description",u"title",b"title"]) -> None: ...
 global___ParameterChangeProposal = ParameterChangeProposal
 
+# ParamChange defines an individual parameter change, for use in
+# ParameterChangeProposal.
 class ParamChange(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SUBSPACE_FIELD_NUMBER: builtins.int
@@ -39,7 +40,6 @@ class ParamChange(google.protobuf.message.Message):
     subspace: typing.Text = ...
     key: typing.Text = ...
     value: typing.Text = ...
-
     def __init__(self,
         *,
         subspace : typing.Text = ...,

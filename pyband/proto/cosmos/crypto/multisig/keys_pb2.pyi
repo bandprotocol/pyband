@@ -12,15 +12,16 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# LegacyAminoPubKey specifies a public key type
+# which nests multiple public keys and a threshold,
+# it uses legacy amino address rules.
 class LegacyAminoPubKey(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     THRESHOLD_FIELD_NUMBER: builtins.int
     PUBLIC_KEYS_FIELD_NUMBER: builtins.int
     threshold: builtins.int = ...
-
     @property
     def public_keys(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[google.protobuf.any_pb2.Any]: ...
-
     def __init__(self,
         *,
         threshold : builtins.int = ...,

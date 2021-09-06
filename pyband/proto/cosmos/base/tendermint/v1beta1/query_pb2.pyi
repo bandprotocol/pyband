@@ -16,15 +16,15 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# GetValidatorSetByHeightRequest is the request type for the Query/GetValidatorSetByHeight RPC method.
 class GetValidatorSetByHeightRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
     height: builtins.int = ...
-
+    # pagination defines an pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -34,19 +34,18 @@ class GetValidatorSetByHeightRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"height",b"height",u"pagination",b"pagination"]) -> None: ...
 global___GetValidatorSetByHeightRequest = GetValidatorSetByHeightRequest
 
+# GetValidatorSetByHeightResponse is the response type for the Query/GetValidatorSetByHeight RPC method.
 class GetValidatorSetByHeightResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BLOCK_HEIGHT_FIELD_NUMBER: builtins.int
     VALIDATORS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
     block_height: builtins.int = ...
-
     @property
     def validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Validator]: ...
-
+    # pagination defines an pagination for the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         block_height : builtins.int = ...,
@@ -57,13 +56,13 @@ class GetValidatorSetByHeightResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"block_height",b"block_height",u"pagination",b"pagination",u"validators",b"validators"]) -> None: ...
 global___GetValidatorSetByHeightResponse = GetValidatorSetByHeightResponse
 
+# GetLatestValidatorSetRequest is the request type for the Query/GetValidatorSetByHeight RPC method.
 class GetLatestValidatorSetRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # pagination defines an pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         pagination : typing.Optional[cosmos.base.query.v1beta1.pagination_pb2.PageRequest] = ...,
@@ -72,19 +71,18 @@ class GetLatestValidatorSetRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination"]) -> None: ...
 global___GetLatestValidatorSetRequest = GetLatestValidatorSetRequest
 
+# GetLatestValidatorSetResponse is the response type for the Query/GetValidatorSetByHeight RPC method.
 class GetLatestValidatorSetResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BLOCK_HEIGHT_FIELD_NUMBER: builtins.int
     VALIDATORS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
     block_height: builtins.int = ...
-
     @property
     def validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Validator]: ...
-
+    # pagination defines an pagination for the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         block_height : builtins.int = ...,
@@ -95,6 +93,7 @@ class GetLatestValidatorSetResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"block_height",b"block_height",u"pagination",b"pagination",u"validators",b"validators"]) -> None: ...
 global___GetLatestValidatorSetResponse = GetLatestValidatorSetResponse
 
+# Validator is the type for the validator-set.
 class Validator(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     ADDRESS_FIELD_NUMBER: builtins.int
@@ -102,12 +101,10 @@ class Validator(google.protobuf.message.Message):
     VOTING_POWER_FIELD_NUMBER: builtins.int
     PROPOSER_PRIORITY_FIELD_NUMBER: builtins.int
     address: typing.Text = ...
-    voting_power: builtins.int = ...
-    proposer_priority: builtins.int = ...
-
     @property
     def pub_key(self) -> google.protobuf.any_pb2.Any: ...
-
+    voting_power: builtins.int = ...
+    proposer_priority: builtins.int = ...
     def __init__(self,
         *,
         address : typing.Text = ...,
@@ -119,11 +116,11 @@ class Validator(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"address",b"address",u"proposer_priority",b"proposer_priority",u"pub_key",b"pub_key",u"voting_power",b"voting_power"]) -> None: ...
 global___Validator = Validator
 
+# GetBlockByHeightRequest is the request type for the Query/GetBlockByHeight RPC method.
 class GetBlockByHeightRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
     height: builtins.int = ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -131,17 +128,15 @@ class GetBlockByHeightRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"height",b"height"]) -> None: ...
 global___GetBlockByHeightRequest = GetBlockByHeightRequest
 
+# GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method.
 class GetBlockByHeightResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BLOCK_ID_FIELD_NUMBER: builtins.int
     BLOCK_FIELD_NUMBER: builtins.int
-
     @property
     def block_id(self) -> tendermint.types.types_pb2.BlockID: ...
-
     @property
     def block(self) -> tendermint.types.block_pb2.Block: ...
-
     def __init__(self,
         *,
         block_id : typing.Optional[tendermint.types.types_pb2.BlockID] = ...,
@@ -151,24 +146,22 @@ class GetBlockByHeightResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"block",b"block",u"block_id",b"block_id"]) -> None: ...
 global___GetBlockByHeightResponse = GetBlockByHeightResponse
 
+# GetLatestBlockRequest is the request type for the Query/GetLatestBlock RPC method.
 class GetLatestBlockRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___GetLatestBlockRequest = GetLatestBlockRequest
 
+# GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method.
 class GetLatestBlockResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     BLOCK_ID_FIELD_NUMBER: builtins.int
     BLOCK_FIELD_NUMBER: builtins.int
-
     @property
     def block_id(self) -> tendermint.types.types_pb2.BlockID: ...
-
     @property
     def block(self) -> tendermint.types.block_pb2.Block: ...
-
     def __init__(self,
         *,
         block_id : typing.Optional[tendermint.types.types_pb2.BlockID] = ...,
@@ -178,18 +171,18 @@ class GetLatestBlockResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"block",b"block",u"block_id",b"block_id"]) -> None: ...
 global___GetLatestBlockResponse = GetLatestBlockResponse
 
+# GetSyncingRequest is the request type for the Query/GetSyncing RPC method.
 class GetSyncingRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___GetSyncingRequest = GetSyncingRequest
 
+# GetSyncingResponse is the response type for the Query/GetSyncing RPC method.
 class GetSyncingResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SYNCING_FIELD_NUMBER: builtins.int
     syncing: builtins.bool = ...
-
     def __init__(self,
         *,
         syncing : builtins.bool = ...,
@@ -197,24 +190,22 @@ class GetSyncingResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"syncing",b"syncing"]) -> None: ...
 global___GetSyncingResponse = GetSyncingResponse
 
+# GetNodeInfoRequest is the request type for the Query/GetNodeInfo RPC method.
 class GetNodeInfoRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___GetNodeInfoRequest = GetNodeInfoRequest
 
+# GetNodeInfoResponse is the request type for the Query/GetNodeInfo RPC method.
 class GetNodeInfoResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DEFAULT_NODE_INFO_FIELD_NUMBER: builtins.int
     APPLICATION_VERSION_FIELD_NUMBER: builtins.int
-
     @property
     def default_node_info(self) -> tendermint.p2p.types_pb2.DefaultNodeInfo: ...
-
     @property
     def application_version(self) -> global___VersionInfo: ...
-
     def __init__(self,
         *,
         default_node_info : typing.Optional[tendermint.p2p.types_pb2.DefaultNodeInfo] = ...,
@@ -224,6 +215,7 @@ class GetNodeInfoResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"application_version",b"application_version",u"default_node_info",b"default_node_info"]) -> None: ...
 global___GetNodeInfoResponse = GetNodeInfoResponse
 
+# VersionInfo is the type for the GetNodeInfoResponse message.
 class VersionInfo(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     NAME_FIELD_NUMBER: builtins.int
@@ -240,11 +232,9 @@ class VersionInfo(google.protobuf.message.Message):
     git_commit: typing.Text = ...
     build_tags: typing.Text = ...
     go_version: typing.Text = ...
-    cosmos_sdk_version: typing.Text = ...
-
     @property
     def build_deps(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Module]: ...
-
+    cosmos_sdk_version: typing.Text = ...
     def __init__(self,
         *,
         name : typing.Text = ...,
@@ -259,15 +249,18 @@ class VersionInfo(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"app_name",b"app_name",u"build_deps",b"build_deps",u"build_tags",b"build_tags",u"cosmos_sdk_version",b"cosmos_sdk_version",u"git_commit",b"git_commit",u"go_version",b"go_version",u"name",b"name",u"version",b"version"]) -> None: ...
 global___VersionInfo = VersionInfo
 
+# Module is the type for VersionInfo
 class Module(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PATH_FIELD_NUMBER: builtins.int
     VERSION_FIELD_NUMBER: builtins.int
     SUM_FIELD_NUMBER: builtins.int
+    # module path
     path: typing.Text = ...
+    # module version
     version: typing.Text = ...
+    # checksum
     sum: typing.Text = ...
-
     def __init__(self,
         *,
         path : typing.Text = ...,

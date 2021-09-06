@@ -13,15 +13,16 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# QueryValidatorsRequest is request type for Query/Validators RPC method.
 class QueryValidatorsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     STATUS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # status enables to query for validators matching a given status.
     status: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         status : typing.Text = ...,
@@ -31,17 +32,17 @@ class QueryValidatorsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"status",b"status"]) -> None: ...
 global___QueryValidatorsRequest = QueryValidatorsRequest
 
+# QueryValidatorsResponse is response type for the Query/Validators RPC method
 class QueryValidatorsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATORS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # validators contains all the queried validators.
     @property
     def validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.Validator]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         validators : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.Validator]] = ...,
@@ -51,11 +52,12 @@ class QueryValidatorsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"validators",b"validators"]) -> None: ...
 global___QueryValidatorsResponse = QueryValidatorsResponse
 
+# QueryValidatorRequest is response type for the Query/Validator RPC method
 class QueryValidatorRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
+    # validator_addr defines the validator address to query for.
     validator_addr: typing.Text = ...
-
     def __init__(self,
         *,
         validator_addr : typing.Text = ...,
@@ -63,13 +65,13 @@ class QueryValidatorRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"validator_addr",b"validator_addr"]) -> None: ...
 global___QueryValidatorRequest = QueryValidatorRequest
 
+# QueryValidatorResponse is response type for the Query/Validator RPC method
 class QueryValidatorResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_FIELD_NUMBER: builtins.int
-
+    # validator defines the the validator info.
     @property
     def validator(self) -> cosmos.staking.v1beta1.staking_pb2.Validator: ...
-
     def __init__(self,
         *,
         validator : typing.Optional[cosmos.staking.v1beta1.staking_pb2.Validator] = ...,
@@ -78,15 +80,17 @@ class QueryValidatorResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"validator",b"validator"]) -> None: ...
 global___QueryValidatorResponse = QueryValidatorResponse
 
+# QueryValidatorDelegationsRequest is request type for the
+# Query/ValidatorDelegations RPC method
 class QueryValidatorDelegationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # validator_addr defines the validator address to query for.
     validator_addr: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         validator_addr : typing.Text = ...,
@@ -96,17 +100,17 @@ class QueryValidatorDelegationsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"validator_addr",b"validator_addr"]) -> None: ...
 global___QueryValidatorDelegationsRequest = QueryValidatorDelegationsRequest
 
+# QueryValidatorDelegationsResponse is response type for the
+# Query/ValidatorDelegations RPC method
 class QueryValidatorDelegationsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATION_RESPONSES_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
     @property
     def delegation_responses(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.DelegationResponse]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         delegation_responses : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.DelegationResponse]] = ...,
@@ -116,15 +120,17 @@ class QueryValidatorDelegationsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegation_responses",b"delegation_responses",u"pagination",b"pagination"]) -> None: ...
 global___QueryValidatorDelegationsResponse = QueryValidatorDelegationsResponse
 
+# QueryValidatorUnbondingDelegationsRequest is required type for the
+# Query/ValidatorUnbondingDelegations RPC method
 class QueryValidatorUnbondingDelegationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # validator_addr defines the validator address to query for.
     validator_addr: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         validator_addr : typing.Text = ...,
@@ -134,17 +140,17 @@ class QueryValidatorUnbondingDelegationsRequest(google.protobuf.message.Message)
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"validator_addr",b"validator_addr"]) -> None: ...
 global___QueryValidatorUnbondingDelegationsRequest = QueryValidatorUnbondingDelegationsRequest
 
+# QueryValidatorUnbondingDelegationsResponse is response type for the
+# Query/ValidatorUnbondingDelegations RPC method.
 class QueryValidatorUnbondingDelegationsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     UNBONDING_RESPONSES_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
     @property
     def unbonding_responses(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.UnbondingDelegation]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         unbonding_responses : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.UnbondingDelegation]] = ...,
@@ -154,13 +160,15 @@ class QueryValidatorUnbondingDelegationsResponse(google.protobuf.message.Message
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"unbonding_responses",b"unbonding_responses"]) -> None: ...
 global___QueryValidatorUnbondingDelegationsResponse = QueryValidatorUnbondingDelegationsResponse
 
+# QueryDelegationRequest is request type for the Query/Delegation RPC method.
 class QueryDelegationRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
+    # validator_addr defines the validator address to query for.
     validator_addr: typing.Text = ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -169,13 +177,13 @@ class QueryDelegationRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"validator_addr",b"validator_addr"]) -> None: ...
 global___QueryDelegationRequest = QueryDelegationRequest
 
+# QueryDelegationResponse is response type for the Query/Delegation RPC method.
 class QueryDelegationResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATION_RESPONSE_FIELD_NUMBER: builtins.int
-
+    # delegation_responses defines the delegation info of a delegation.
     @property
     def delegation_response(self) -> cosmos.staking.v1beta1.staking_pb2.DelegationResponse: ...
-
     def __init__(self,
         *,
         delegation_response : typing.Optional[cosmos.staking.v1beta1.staking_pb2.DelegationResponse] = ...,
@@ -184,13 +192,16 @@ class QueryDelegationResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegation_response",b"delegation_response"]) -> None: ...
 global___QueryDelegationResponse = QueryDelegationResponse
 
+# QueryUnbondingDelegationRequest is request type for the
+# Query/UnbondingDelegation RPC method.
 class QueryUnbondingDelegationRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
+    # validator_addr defines the validator address to query for.
     validator_addr: typing.Text = ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -199,13 +210,14 @@ class QueryUnbondingDelegationRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"validator_addr",b"validator_addr"]) -> None: ...
 global___QueryUnbondingDelegationRequest = QueryUnbondingDelegationRequest
 
+# QueryDelegationResponse is response type for the Query/UnbondingDelegation
+# RPC method.
 class QueryUnbondingDelegationResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     UNBOND_FIELD_NUMBER: builtins.int
-
+    # unbond defines the unbonding information of a delegation.
     @property
     def unbond(self) -> cosmos.staking.v1beta1.staking_pb2.UnbondingDelegation: ...
-
     def __init__(self,
         *,
         unbond : typing.Optional[cosmos.staking.v1beta1.staking_pb2.UnbondingDelegation] = ...,
@@ -214,15 +226,17 @@ class QueryUnbondingDelegationResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"unbond",b"unbond"]) -> None: ...
 global___QueryUnbondingDelegationResponse = QueryUnbondingDelegationResponse
 
+# QueryDelegatorDelegationsRequest is request type for the
+# Query/DelegatorDelegations RPC method.
 class QueryDelegatorDelegationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -232,17 +246,18 @@ class QueryDelegatorDelegationsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"pagination",b"pagination"]) -> None: ...
 global___QueryDelegatorDelegationsRequest = QueryDelegatorDelegationsRequest
 
+# QueryDelegatorDelegationsResponse is response type for the
+# Query/DelegatorDelegations RPC method.
 class QueryDelegatorDelegationsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATION_RESPONSES_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # delegation_responses defines all the delegations' info of a delegator.
     @property
     def delegation_responses(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.DelegationResponse]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         delegation_responses : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.DelegationResponse]] = ...,
@@ -252,15 +267,17 @@ class QueryDelegatorDelegationsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegation_responses",b"delegation_responses",u"pagination",b"pagination"]) -> None: ...
 global___QueryDelegatorDelegationsResponse = QueryDelegatorDelegationsResponse
 
+# QueryDelegatorUnbondingDelegationsRequest is request type for the
+# Query/DelegatorUnbondingDelegations RPC method.
 class QueryDelegatorUnbondingDelegationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -270,17 +287,17 @@ class QueryDelegatorUnbondingDelegationsRequest(google.protobuf.message.Message)
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"pagination",b"pagination"]) -> None: ...
 global___QueryDelegatorUnbondingDelegationsRequest = QueryDelegatorUnbondingDelegationsRequest
 
+# QueryUnbondingDelegatorDelegationsResponse is response type for the
+# Query/UnbondingDelegatorDelegations RPC method.
 class QueryDelegatorUnbondingDelegationsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     UNBONDING_RESPONSES_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
     @property
     def unbonding_responses(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.UnbondingDelegation]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         unbonding_responses : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.UnbondingDelegation]] = ...,
@@ -290,19 +307,23 @@ class QueryDelegatorUnbondingDelegationsResponse(google.protobuf.message.Message
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"unbonding_responses",b"unbonding_responses"]) -> None: ...
 global___QueryDelegatorUnbondingDelegationsResponse = QueryDelegatorUnbondingDelegationsResponse
 
+# QueryRedelegationsRequest is request type for the Query/Redelegations RPC
+# method.
 class QueryRedelegationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     SRC_VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
     DST_VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
+    # src_validator_addr defines the validator address to redelegate from.
     src_validator_addr: typing.Text = ...
+    # dst_validator_addr defines the validator address to redelegate to.
     dst_validator_addr: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -314,17 +335,17 @@ class QueryRedelegationsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"dst_validator_addr",b"dst_validator_addr",u"pagination",b"pagination",u"src_validator_addr",b"src_validator_addr"]) -> None: ...
 global___QueryRedelegationsRequest = QueryRedelegationsRequest
 
+# QueryRedelegationsResponse is response type for the Query/Redelegations RPC
+# method.
 class QueryRedelegationsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     REDELEGATION_RESPONSES_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
     @property
     def redelegation_responses(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.RedelegationResponse]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         redelegation_responses : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.RedelegationResponse]] = ...,
@@ -334,15 +355,17 @@ class QueryRedelegationsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"redelegation_responses",b"redelegation_responses"]) -> None: ...
 global___QueryRedelegationsResponse = QueryRedelegationsResponse
 
+# QueryDelegatorValidatorsRequest is request type for the
+# Query/DelegatorValidators RPC method.
 class QueryDelegatorValidatorsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
-
+    # pagination defines an optional pagination for the request.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageRequest: ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -352,17 +375,18 @@ class QueryDelegatorValidatorsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"pagination",b"pagination"]) -> None: ...
 global___QueryDelegatorValidatorsRequest = QueryDelegatorValidatorsRequest
 
+# QueryDelegatorValidatorsResponse is response type for the
+# Query/DelegatorValidators RPC method.
 class QueryDelegatorValidatorsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATORS_FIELD_NUMBER: builtins.int
     PAGINATION_FIELD_NUMBER: builtins.int
-
+    # validators defines the the validators' info of a delegator.
     @property
     def validators(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[cosmos.staking.v1beta1.staking_pb2.Validator]: ...
-
+    # pagination defines the pagination in the response.
     @property
     def pagination(self) -> cosmos.base.query.v1beta1.pagination_pb2.PageResponse: ...
-
     def __init__(self,
         *,
         validators : typing.Optional[typing.Iterable[cosmos.staking.v1beta1.staking_pb2.Validator]] = ...,
@@ -372,13 +396,16 @@ class QueryDelegatorValidatorsResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pagination",b"pagination",u"validators",b"validators"]) -> None: ...
 global___QueryDelegatorValidatorsResponse = QueryDelegatorValidatorsResponse
 
+# QueryDelegatorValidatorRequest is request type for the
+# Query/DelegatorValidator RPC method.
 class QueryDelegatorValidatorRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     DELEGATOR_ADDR_FIELD_NUMBER: builtins.int
     VALIDATOR_ADDR_FIELD_NUMBER: builtins.int
+    # delegator_addr defines the delegator address to query for.
     delegator_addr: typing.Text = ...
+    # validator_addr defines the validator address to query for.
     validator_addr: typing.Text = ...
-
     def __init__(self,
         *,
         delegator_addr : typing.Text = ...,
@@ -387,13 +414,14 @@ class QueryDelegatorValidatorRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"delegator_addr",b"delegator_addr",u"validator_addr",b"validator_addr"]) -> None: ...
 global___QueryDelegatorValidatorRequest = QueryDelegatorValidatorRequest
 
+# QueryDelegatorValidatorResponse response type for the
+# Query/DelegatorValidator RPC method.
 class QueryDelegatorValidatorResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     VALIDATOR_FIELD_NUMBER: builtins.int
-
+    # validator defines the the validator info.
     @property
     def validator(self) -> cosmos.staking.v1beta1.staking_pb2.Validator: ...
-
     def __init__(self,
         *,
         validator : typing.Optional[cosmos.staking.v1beta1.staking_pb2.Validator] = ...,
@@ -402,11 +430,13 @@ class QueryDelegatorValidatorResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"validator",b"validator"]) -> None: ...
 global___QueryDelegatorValidatorResponse = QueryDelegatorValidatorResponse
 
+# QueryHistoricalInfoRequest is request type for the Query/HistoricalInfo RPC
+# method.
 class QueryHistoricalInfoRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HEIGHT_FIELD_NUMBER: builtins.int
+    # height defines at which height to query the historical info.
     height: builtins.int = ...
-
     def __init__(self,
         *,
         height : builtins.int = ...,
@@ -414,13 +444,14 @@ class QueryHistoricalInfoRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"height",b"height"]) -> None: ...
 global___QueryHistoricalInfoRequest = QueryHistoricalInfoRequest
 
+# QueryHistoricalInfoResponse is response type for the Query/HistoricalInfo RPC
+# method.
 class QueryHistoricalInfoResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     HIST_FIELD_NUMBER: builtins.int
-
+    # hist defines the historical info at the given height.
     @property
     def hist(self) -> cosmos.staking.v1beta1.staking_pb2.HistoricalInfo: ...
-
     def __init__(self,
         *,
         hist : typing.Optional[cosmos.staking.v1beta1.staking_pb2.HistoricalInfo] = ...,
@@ -429,20 +460,20 @@ class QueryHistoricalInfoResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"hist",b"hist"]) -> None: ...
 global___QueryHistoricalInfoResponse = QueryHistoricalInfoResponse
 
+# QueryPoolRequest is request type for the Query/Pool RPC method.
 class QueryPoolRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___QueryPoolRequest = QueryPoolRequest
 
+# QueryPoolResponse is response type for the Query/Pool RPC method.
 class QueryPoolResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     POOL_FIELD_NUMBER: builtins.int
-
+    # pool defines the pool info.
     @property
     def pool(self) -> cosmos.staking.v1beta1.staking_pb2.Pool: ...
-
     def __init__(self,
         *,
         pool : typing.Optional[cosmos.staking.v1beta1.staking_pb2.Pool] = ...,
@@ -451,20 +482,20 @@ class QueryPoolResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"pool",b"pool"]) -> None: ...
 global___QueryPoolResponse = QueryPoolResponse
 
+# QueryParamsRequest is request type for the Query/Params RPC method.
 class QueryParamsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___QueryParamsRequest = QueryParamsRequest
 
+# QueryParamsResponse is response type for the Query/Params RPC method.
 class QueryParamsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     PARAMS_FIELD_NUMBER: builtins.int
-
+    # params holds all the parameters of this module.
     @property
     def params(self) -> cosmos.staking.v1beta1.staking_pb2.Params: ...
-
     def __init__(self,
         *,
         params : typing.Optional[cosmos.staking.v1beta1.staking_pb2.Params] = ...,

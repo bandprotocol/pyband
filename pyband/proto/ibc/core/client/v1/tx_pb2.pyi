@@ -11,19 +11,21 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgCreateClient defines a message to create an IBC client
 class MsgCreateClient(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_STATE_FIELD_NUMBER: builtins.int
     CONSENSUS_STATE_FIELD_NUMBER: builtins.int
     SIGNER_FIELD_NUMBER: builtins.int
-    signer: typing.Text = ...
-
+    # light client state
     @property
     def client_state(self) -> google.protobuf.any_pb2.Any: ...
-
+    # consensus state associated with the client that corresponds to a given
+    # height.
     @property
     def consensus_state(self) -> google.protobuf.any_pb2.Any: ...
-
+    # signer address
+    signer: typing.Text = ...
     def __init__(self,
         *,
         client_state : typing.Optional[google.protobuf.any_pb2.Any] = ...,
@@ -34,24 +36,27 @@ class MsgCreateClient(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"client_state",b"client_state",u"consensus_state",b"consensus_state",u"signer",b"signer"]) -> None: ...
 global___MsgCreateClient = MsgCreateClient
 
+# MsgCreateClientResponse defines the Msg/CreateClient response type.
 class MsgCreateClientResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgCreateClientResponse = MsgCreateClientResponse
 
+# MsgUpdateClient defines an sdk.Msg to update a IBC client state using
+# the given header.
 class MsgUpdateClient(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_ID_FIELD_NUMBER: builtins.int
     HEADER_FIELD_NUMBER: builtins.int
     SIGNER_FIELD_NUMBER: builtins.int
+    # client unique identifier
     client_id: typing.Text = ...
-    signer: typing.Text = ...
-
+    # header to update the light client
     @property
     def header(self) -> google.protobuf.any_pb2.Any: ...
-
+    # signer address
+    signer: typing.Text = ...
     def __init__(self,
         *,
         client_id : typing.Text = ...,
@@ -62,13 +67,15 @@ class MsgUpdateClient(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"client_id",b"client_id",u"header",b"header",u"signer",b"signer"]) -> None: ...
 global___MsgUpdateClient = MsgUpdateClient
 
+# MsgUpdateClientResponse defines the Msg/UpdateClient response type.
 class MsgUpdateClientResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgUpdateClientResponse = MsgUpdateClientResponse
 
+# MsgUpgradeClient defines an sdk.Msg to upgrade an IBC client to a new client
+# state
 class MsgUpgradeClient(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_ID_FIELD_NUMBER: builtins.int
@@ -77,17 +84,21 @@ class MsgUpgradeClient(google.protobuf.message.Message):
     PROOF_UPGRADE_CLIENT_FIELD_NUMBER: builtins.int
     PROOF_UPGRADE_CONSENSUS_STATE_FIELD_NUMBER: builtins.int
     SIGNER_FIELD_NUMBER: builtins.int
+    # client unique identifier
     client_id: typing.Text = ...
-    proof_upgrade_client: builtins.bytes = ...
-    proof_upgrade_consensus_state: builtins.bytes = ...
-    signer: typing.Text = ...
-
+    # upgraded client state
     @property
     def client_state(self) -> google.protobuf.any_pb2.Any: ...
-
+    # upgraded consensus state, only contains enough information to serve as a
+    # basis of trust in update logic
     @property
     def consensus_state(self) -> google.protobuf.any_pb2.Any: ...
-
+    # proof that old chain committed to new client
+    proof_upgrade_client: builtins.bytes = ...
+    # proof that old chain committed to new consensus state
+    proof_upgrade_consensus_state: builtins.bytes = ...
+    # signer address
+    signer: typing.Text = ...
     def __init__(self,
         *,
         client_id : typing.Text = ...,
@@ -101,24 +112,27 @@ class MsgUpgradeClient(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"client_id",b"client_id",u"client_state",b"client_state",u"consensus_state",b"consensus_state",u"proof_upgrade_client",b"proof_upgrade_client",u"proof_upgrade_consensus_state",b"proof_upgrade_consensus_state",u"signer",b"signer"]) -> None: ...
 global___MsgUpgradeClient = MsgUpgradeClient
 
+# MsgUpgradeClientResponse defines the Msg/UpgradeClient response type.
 class MsgUpgradeClientResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgUpgradeClientResponse = MsgUpgradeClientResponse
 
+# MsgSubmitMisbehaviour defines an sdk.Msg type that submits Evidence for
+# light client misbehaviour.
 class MsgSubmitMisbehaviour(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLIENT_ID_FIELD_NUMBER: builtins.int
     MISBEHAVIOUR_FIELD_NUMBER: builtins.int
     SIGNER_FIELD_NUMBER: builtins.int
+    # client unique identifier
     client_id: typing.Text = ...
-    signer: typing.Text = ...
-
+    # misbehaviour used for freezing the light client
     @property
     def misbehaviour(self) -> google.protobuf.any_pb2.Any: ...
-
+    # signer address
+    signer: typing.Text = ...
     def __init__(self,
         *,
         client_id : typing.Text = ...,
@@ -129,9 +143,10 @@ class MsgSubmitMisbehaviour(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"client_id",b"client_id",u"misbehaviour",b"misbehaviour",u"signer",b"signer"]) -> None: ...
 global___MsgSubmitMisbehaviour = MsgSubmitMisbehaviour
 
+# MsgSubmitMisbehaviourResponse defines the Msg/SubmitMisbehaviour response
+# type.
 class MsgSubmitMisbehaviourResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgSubmitMisbehaviourResponse = MsgSubmitMisbehaviourResponse

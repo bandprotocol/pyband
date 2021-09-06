@@ -19,9 +19,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='ibc/lightclients/localhost/v1/localhost.proto',
   package='ibc.lightclients.localhost.v1',
   syntax='proto3',
-  serialized_options=b'ZCgithub.com/cosmos/cosmos-sdk/x/ibc/light-clients/09-localhost/types',
+  serialized_options=b'ZAgithub.com/cosmos/ibc-go/modules/light-clients/09-localhost/types',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n-ibc/lightclients/localhost/v1/localhost.proto\x12\x1dibc.lightclients.localhost.v1\x1a\x14gogoproto/gogo.proto\x1a\x1fibc/core/client/v1/client.proto\"l\n\x0b\x43lientState\x12%\n\x08\x63hain_id\x18\x01 \x01(\tB\x13\xf2\xde\x1f\x0fyaml:\"chain_id\"\x12\x30\n\x06height\x18\x02 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00:\x04\x88\xa0\x1f\x00\x42\x45ZCgithub.com/cosmos/cosmos-sdk/x/ibc/light-clients/09-localhost/typesb\x06proto3'
+  serialized_pb=b'\n-ibc/lightclients/localhost/v1/localhost.proto\x12\x1dibc.lightclients.localhost.v1\x1a\x14gogoproto/gogo.proto\x1a\x1fibc/core/client/v1/client.proto\"l\n\x0b\x43lientState\x12%\n\x08\x63hain_id\x18\x01 \x01(\tB\x13\xf2\xde\x1f\x0fyaml:\"chain_id\"\x12\x30\n\x06height\x18\x02 \x01(\x0b\x32\x1a.ibc.core.client.v1.HeightB\x04\xc8\xde\x1f\x00:\x04\x88\xa0\x1f\x00\x42\x43ZAgithub.com/cosmos/ibc-go/modules/light-clients/09-localhost/typesb\x06proto3'
   ,
   dependencies=[gogoproto_dot_gogo__pb2.DESCRIPTOR,ibc_dot_core_dot_client_dot_v1_dot_client__pb2.DESCRIPTOR,])
 

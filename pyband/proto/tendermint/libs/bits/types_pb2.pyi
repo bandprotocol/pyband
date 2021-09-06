@@ -16,10 +16,8 @@ class BitArray(google.protobuf.message.Message):
     BITS_FIELD_NUMBER: builtins.int
     ELEMS_FIELD_NUMBER: builtins.int
     bits: builtins.int = ...
-
     @property
     def elems(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.int]: ...
-
     def __init__(self,
         *,
         bits : builtins.int = ...,

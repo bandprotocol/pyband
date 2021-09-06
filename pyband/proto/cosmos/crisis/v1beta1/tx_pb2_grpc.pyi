@@ -6,14 +6,18 @@ import abc
 import grpc
 
 from .tx_pb2 import *
+# Msg defines the bank Msg service.
 class MsgStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    # VerifyInvariant defines a method to verify a particular invariance.
     VerifyInvariant:grpc.UnaryUnaryMultiCallable[
         global___MsgVerifyInvariant,
         global___MsgVerifyInvariantResponse] = ...
 
 
+# Msg defines the bank Msg service.
 class MsgServicer(metaclass=abc.ABCMeta):
+    # VerifyInvariant defines a method to verify a particular invariance.
     @abc.abstractmethod
     def VerifyInvariant(self,
         request: global___MsgVerifyInvariant,

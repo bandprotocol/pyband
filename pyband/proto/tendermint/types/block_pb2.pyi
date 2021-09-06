@@ -18,19 +18,14 @@ class Block(google.protobuf.message.Message):
     DATA_FIELD_NUMBER: builtins.int
     EVIDENCE_FIELD_NUMBER: builtins.int
     LAST_COMMIT_FIELD_NUMBER: builtins.int
-
     @property
     def header(self) -> tendermint.types.types_pb2.Header: ...
-
     @property
     def data(self) -> tendermint.types.types_pb2.Data: ...
-
     @property
     def evidence(self) -> tendermint.types.evidence_pb2.EvidenceList: ...
-
     @property
     def last_commit(self) -> tendermint.types.types_pb2.Commit: ...
-
     def __init__(self,
         *,
         header : typing.Optional[tendermint.types.types_pb2.Header] = ...,

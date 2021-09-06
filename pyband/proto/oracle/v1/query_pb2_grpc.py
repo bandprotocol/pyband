@@ -50,6 +50,11 @@ class QueryStub(object):
                 request_serializer=oracle_dot_v1_dot_query__pb2.QueryValidatorRequest.SerializeToString,
                 response_deserializer=oracle_dot_v1_dot_query__pb2.QueryValidatorResponse.FromString,
                 )
+        self.IsReporter = channel.unary_unary(
+                '/oracle.v1.Query/IsReporter',
+                request_serializer=oracle_dot_v1_dot_query__pb2.QueryIsReporterRequest.SerializeToString,
+                response_deserializer=oracle_dot_v1_dot_query__pb2.QueryIsReporterResponse.FromString,
+                )
         self.Reporters = channel.unary_unary(
                 '/oracle.v1.Query/Reporters',
                 request_serializer=oracle_dot_v1_dot_query__pb2.QueryReportersRequest.SerializeToString,
@@ -79,11 +84,6 @@ class QueryStub(object):
                 '/oracle.v1.Query/RequestVerification',
                 request_serializer=oracle_dot_v1_dot_query__pb2.QueryRequestVerificationRequest.SerializeToString,
                 response_deserializer=oracle_dot_v1_dot_query__pb2.QueryRequestVerificationResponse.FromString,
-                )
-        self.RequestPool = channel.unary_unary(
-                '/oracle.v1.Query/RequestPool',
-                request_serializer=oracle_dot_v1_dot_query__pb2.QueryRequestPoolRequest.SerializeToString,
-                response_deserializer=oracle_dot_v1_dot_query__pb2.QueryRequestPoolResponse.FromString,
                 )
 
 
@@ -143,6 +143,13 @@ class QueryServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def IsReporter(self, request, context):
+        """IsReporter queries grant of account on this validator.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def Reporters(self, request, context):
         """Reporters queries all reporters associated with given validator address.
         """
@@ -187,14 +194,6 @@ class QueryServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def RequestPool(self, request, context):
-        """RequestPool queries the request pool information corresponding to the given
-        port, channel, and request key.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_QueryServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -233,6 +232,11 @@ def add_QueryServicer_to_server(servicer, server):
                     request_deserializer=oracle_dot_v1_dot_query__pb2.QueryValidatorRequest.FromString,
                     response_serializer=oracle_dot_v1_dot_query__pb2.QueryValidatorResponse.SerializeToString,
             ),
+            'IsReporter': grpc.unary_unary_rpc_method_handler(
+                    servicer.IsReporter,
+                    request_deserializer=oracle_dot_v1_dot_query__pb2.QueryIsReporterRequest.FromString,
+                    response_serializer=oracle_dot_v1_dot_query__pb2.QueryIsReporterResponse.SerializeToString,
+            ),
             'Reporters': grpc.unary_unary_rpc_method_handler(
                     servicer.Reporters,
                     request_deserializer=oracle_dot_v1_dot_query__pb2.QueryReportersRequest.FromString,
@@ -262,11 +266,6 @@ def add_QueryServicer_to_server(servicer, server):
                     servicer.RequestVerification,
                     request_deserializer=oracle_dot_v1_dot_query__pb2.QueryRequestVerificationRequest.FromString,
                     response_serializer=oracle_dot_v1_dot_query__pb2.QueryRequestVerificationResponse.SerializeToString,
-            ),
-            'RequestPool': grpc.unary_unary_rpc_method_handler(
-                    servicer.RequestPool,
-                    request_deserializer=oracle_dot_v1_dot_query__pb2.QueryRequestPoolRequest.FromString,
-                    response_serializer=oracle_dot_v1_dot_query__pb2.QueryRequestPoolResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -399,6 +398,23 @@ class Query(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def IsReporter(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/oracle.v1.Query/IsReporter',
+            oracle_dot_v1_dot_query__pb2.QueryIsReporterRequest.SerializeToString,
+            oracle_dot_v1_dot_query__pb2.QueryIsReporterResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def Reporters(request,
             target,
             options=(),
@@ -497,22 +513,5 @@ class Query(object):
         return grpc.experimental.unary_unary(request, target, '/oracle.v1.Query/RequestVerification',
             oracle_dot_v1_dot_query__pb2.QueryRequestVerificationRequest.SerializeToString,
             oracle_dot_v1_dot_query__pb2.QueryRequestVerificationResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def RequestPool(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/oracle.v1.Query/RequestPool',
-            oracle_dot_v1_dot_query__pb2.QueryRequestPoolRequest.SerializeToString,
-            oracle_dot_v1_dot_query__pb2.QueryRequestPoolResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

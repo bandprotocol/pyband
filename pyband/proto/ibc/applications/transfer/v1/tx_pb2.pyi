@@ -12,6 +12,9 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# MsgTransfer defines a msg to transfer fungible tokens (i.e Coins) between
+# ICS20 enabled chains. See ICS Spec here:
+# https://github.com/cosmos/ics/tree/master/spec/ics-020-fungible-token-transfer#data-structures
 class MsgTransfer(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     SOURCE_PORT_FIELD_NUMBER: builtins.int
@@ -21,18 +24,24 @@ class MsgTransfer(google.protobuf.message.Message):
     RECEIVER_FIELD_NUMBER: builtins.int
     TIMEOUT_HEIGHT_FIELD_NUMBER: builtins.int
     TIMEOUT_TIMESTAMP_FIELD_NUMBER: builtins.int
+    # the port on which the packet will be sent
     source_port: typing.Text = ...
+    # the channel by which the packet will be sent
     source_channel: typing.Text = ...
-    sender: typing.Text = ...
-    receiver: typing.Text = ...
-    timeout_timestamp: builtins.int = ...
-
+    # the tokens to be transferred
     @property
     def token(self) -> cosmos.base.v1beta1.coin_pb2.Coin: ...
-
+    # the sender address
+    sender: typing.Text = ...
+    # the recipient address on the destination chain
+    receiver: typing.Text = ...
+    # Timeout height relative to the current block height.
+    # The timeout is disabled when set to 0.
     @property
     def timeout_height(self) -> ibc.core.client.v1.client_pb2.Height: ...
-
+    # Timeout timestamp (in nanoseconds) relative to the current block timestamp.
+    # The timeout is disabled when set to 0.
+    timeout_timestamp: builtins.int = ...
     def __init__(self,
         *,
         source_port : typing.Text = ...,
@@ -47,9 +56,9 @@ class MsgTransfer(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"receiver",b"receiver",u"sender",b"sender",u"source_channel",b"source_channel",u"source_port",b"source_port",u"timeout_height",b"timeout_height",u"timeout_timestamp",b"timeout_timestamp",u"token",b"token"]) -> None: ...
 global___MsgTransfer = MsgTransfer
 
+# MsgTransferResponse defines the Msg/Transfer response type.
 class MsgTransferResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___MsgTransferResponse = MsgTransferResponse

@@ -11,20 +11,20 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+# ListAllInterfacesRequest is the request type of the ListAllInterfaces RPC.
 class ListAllInterfacesRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
-
     def __init__(self,
         ) -> None: ...
 global___ListAllInterfacesRequest = ListAllInterfacesRequest
 
+# ListAllInterfacesResponse is the response type of the ListAllInterfaces RPC.
 class ListAllInterfacesResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INTERFACE_NAMES_FIELD_NUMBER: builtins.int
-
+    # interface_names is an array of all the registered interfaces.
     @property
     def interface_names(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[typing.Text]: ...
-
     def __init__(self,
         *,
         interface_names : typing.Optional[typing.Iterable[typing.Text]] = ...,
@@ -32,11 +32,13 @@ class ListAllInterfacesResponse(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"interface_names",b"interface_names"]) -> None: ...
 global___ListAllInterfacesResponse = ListAllInterfacesResponse
 
+# ListImplementationsRequest is the request type of the ListImplementations
+# RPC.
 class ListImplementationsRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     INTERFACE_NAME_FIELD_NUMBER: builtins.int
+    # interface_name defines the interface to query the implementations for.
     interface_name: typing.Text = ...
-
     def __init__(self,
         *,
         interface_name : typing.Text = ...,
@@ -44,13 +46,13 @@ class ListImplementationsRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal[u"interface_name",b"interface_name"]) -> None: ...
 global___ListImplementationsRequest = ListImplementationsRequest
 
+# ListImplementationsResponse is the response type of the ListImplementations
+# RPC.
 class ListImplementationsResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     IMPLEMENTATION_MESSAGE_NAMES_FIELD_NUMBER: builtins.int
-
     @property
     def implementation_message_names(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[typing.Text]: ...
-
     def __init__(self,
         *,
         implementation_message_names : typing.Optional[typing.Iterable[typing.Text]] = ...,
