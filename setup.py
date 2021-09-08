@@ -7,7 +7,7 @@ setuptools.setup(
     name="pyband",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    version="0.2.7",
+    version="0.2.8",
     license="MIT",
     description="Python library for BandChain",
     long_description=long_description,

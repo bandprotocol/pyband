@@ -1,1 +1,1 @@
-recursive-include pyband/proto *.py
+recursive-include pyband/proto *.py *pyi
