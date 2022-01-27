@@ -1,6 +1,7 @@
 import pytest
 
 from pyband.wallet import PrivateKey
+from pyband.transaction import Transaction
 
 from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.cosmos.bank.v1beta1.tx_pb2 import MsgSend
@@ -11,7 +12,10 @@ from pyband.proto.cosmos.tx.v1beta1.service_pb2_grpc import (
 )
 
 # Types
-from pyband.proto.cosmos.tx.v1beta1.service_pb2 import BroadcastTxResponse
+from pyband.proto.cosmos.tx.v1beta1.service_pb2 import (
+    BroadcastTxRequest,
+    BroadcastTxResponse,
+)
 from pyband.proto.cosmos.base.abci.v1beta1.abci_pb2 import TxResponse
 
 MNEMONIC = "s"
@@ -42,9 +46,23 @@ invalid_coins_msg = MsgSend(
 )
 
 
+def getTxBytes(msg):
+    t = (
+        Transaction()
+        .with_messages(msg)
+        .with_account_num(100)
+        .with_sequence(30)
+        .with_chain_id("bandchain")
+    )
+    sign_doc = t.get_sign_doc()
+    signature = PRIVATE_KEY.sign(sign_doc.SerializeToString())
+    tx_raw_bytes = t.get_tx_data(signature)
+    return tx_raw_bytes
+
+
 class CosmosTransactionServicer(CosmosTxServicerBase):
-    def BroadcastTx(self, request_msg: MsgSend, context) -> BroadcastTxResponse:
-        if request_msg == success_msg:
+    def BroadcastTx(self, request: BroadcastTxRequest, context) -> BroadcastTxResponse:
+        if request == getTxBytes(success_msg):
             return BroadcastTxResponse(
                 tx_response=TxResponse(
                     height=3278495,
@@ -52,7 +70,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     data="0A1E0A1C2F636F736D6F732E62616E6B2E763162657461312E4D736753656E64",
                 )
             )
-        elif request_msg == invalid_sender_msg:
+        elif request == getTxBytes(invalid_sender_msg):
             return BroadcastTxResponse(
                 tx_response=TxResponse(
                     txhash="6252299B8DF1A024F707E10B77627331FF9303CE0E6D6B3DC68F9CCB9BF742F9",
@@ -61,7 +79,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     raw_log="Invalid sender address (decoding bech32 failed: invalid bech32 string length 3): invalid address",
                 )
             )
-        elif request_msg == invalid_recipient_msg:
+        elif request == getTxBytes(invalid_recipient_msg):
             return BroadcastTxResponse(
                 tx_response=TxResponse(
                     txhash="88588BCB2B8813E51EE5EC5DFBB831B37C5C9C5B6528BBC333D7E9AA49110194",
@@ -70,7 +88,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     raw_log="Invalid recipient address (decoding bech32 failed: invalid bech32 string length 3): invalid address",
                 )
             )
-        elif request_msg == invalid_coins_msg:
+        elif request == getTxBytes(invalid_coins_msg):
             return BroadcastTxResponse(
                 tx_response=TxResponse(
                     txhash="7E66D52CE4E39D2A730B2EB4EC15E8D0A923D861C895D3B208300E74A7C459CE",
@@ -99,7 +117,7 @@ def pyband_client(_grpc_server, grpc_addr):
 
 
 def test_message_success(pyband_client):
-    tx_response = pyband_client.send_tx_block_mode(success_msg)
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(success_msg))
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             height=3278495,
@@ -112,7 +130,7 @@ def test_message_success(pyband_client):
 
 
 def test_message_invalid_sender(pyband_client):
-    tx_response = pyband_client.send_tx_block_mode(invalid_sender_msg)
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(invalid_sender_msg))
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="6252299B8DF1A024F707E10B77627331FF9303CE0E6D6B3DC68F9CCB9BF742F9",
@@ -126,7 +144,7 @@ def test_message_invalid_sender(pyband_client):
 
 
 def test_message_invalid_recipient(pyband_client):
-    tx_response = pyband_client.send_tx_block_mode(invalid_recipient_msg)
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(invalid_recipient_msg))
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="88588BCB2B8813E51EE5EC5DFBB831B37C5C9C5B6528BBC333D7E9AA49110194",
@@ -140,7 +158,7 @@ def test_message_invalid_recipient(pyband_client):
 
 
 def test_message_invalid_coins(pyband_client):
-    tx_response = pyband_client.send_tx_block_mode(invalid_coins_msg)
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(invalid_coins_msg))
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="7E66D52CE4E39D2A730B2EB4EC15E8D0A923D861C895D3B208300E74A7C459CE",
