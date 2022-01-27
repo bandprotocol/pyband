@@ -98,7 +98,7 @@ def pyband_client(_grpc_server, grpc_addr):
     _grpc_server.stop(grace=None)
 
 
-def test_message_success():
+def test_message_success(pyband_client):
     tx_response = pyband_client.send_tx_block_mode(success_msg)
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
@@ -111,7 +111,7 @@ def test_message_success():
     assert tx_response == mock_result.tx_response
 
 
-def test_message_invalid_sender():
+def test_message_invalid_sender(pyband_client):
     tx_response = pyband_client.send_tx_block_mode(invalid_sender_msg)
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
@@ -125,7 +125,7 @@ def test_message_invalid_sender():
     assert tx_response == mock_result.tx_response
 
 
-def test_message_invalid_recipient():
+def test_message_invalid_recipient(pyband_client):
     tx_response = pyband_client.send_tx_block_mode(invalid_recipient_msg)
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
@@ -139,7 +139,7 @@ def test_message_invalid_recipient():
     assert tx_response == mock_result.tx_response
 
 
-def test_message_invalid_coins():
+def test_message_invalid_coins(pyband_client):
     tx_response = pyband_client.send_tx_block_mode(invalid_coins_msg)
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
