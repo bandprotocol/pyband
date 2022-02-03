@@ -27,6 +27,15 @@ SENDER = ADDRESS.to_acc_bech32()
 OWNER = "band1jea90wa0cvmw3k9pzz0lwh5sv4n07fe2r30wpk"
 EXECUTABLE = b"\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01"
 
+success_ds_file = open("tests/mock_files/example_ds.py", "rb")
+success_ds_bytes = success_ds_file.read()
+success_ds_file.close()
+
+empty_ds_file = open("tests/mock_files/empty_ds.py", "rb")
+empty_ds_bytes = empty_ds_file.read()
+empty_ds_file.close()
+
+# Create Data Source Messages
 msg_create_ds_success = MsgCreateDataSource(
     name="CoinGecko",
     description="get symbol price from CoinGecko",
@@ -68,6 +77,63 @@ msg_create_ds_empty_executable = MsgCreateDataSource(
     executable=b"",
 )
 
+# Edit Data Source Messages
+msg_edit_ds_success = MsgEditDataSource(
+    name="CoinGecko",
+    description="get symbol price from CoinGecko",
+    sender=SENDER,
+    owner=SENDER,
+    treasury=SENDER,
+    data_source_id=250,
+    executable=success_ds_bytes,
+)
+
+msg_edit_ds_empty_sender = MsgEditDataSource(
+    name="CoinGecko",
+    description="get symbol price from CoinGecko",
+    sender="",
+    owner=SENDER,
+    treasury=SENDER,
+    data_source_id=250,
+    executable=success_ds_bytes,
+)
+msg_edit_ds_empty_owner = MsgEditDataSource(
+    name="CoinGecko",
+    description="get symbol price from CoinGecko",
+    sender=SENDER,
+    owner="",
+    treasury=SENDER,
+    data_source_id=250,
+    executable=success_ds_bytes,
+)
+msg_edit_ds_empty_treasury = MsgEditDataSource(
+    name="CoinGecko",
+    description="get symbol price from CoinGecko",
+    sender=SENDER,
+    owner=SENDER,
+    treasury="",
+    data_source_id=250,
+    executable=success_ds_bytes,
+)
+msg_edit_ds_invalid_ds_id = MsgEditDataSource(
+    name="CoinGecko",
+    description="get symbol price from CoinGecko",
+    sender=SENDER,
+    owner=SENDER,
+    treasury=SENDER,
+    data_source_id=None,
+    executable=success_ds_bytes,
+)
+msg_edit_ds_empty_executable = MsgEditDataSource(
+    name="CoinGecko",
+    description="get symbol price from CoinGecko",
+    sender=SENDER,
+    owner=SENDER,
+    treasury=SENDER,
+    data_source_id=250,
+    executable=empty_ds_bytes,
+)
+
 
 def getTxBytes(msg):
     t = (
@@ -85,6 +151,7 @@ def getTxBytes(msg):
 
 class CosmosTransactionServicer(CosmosTxServicerBase):
     def BroadcastTx(self, request: BroadcastTxRequest, context) -> BroadcastTxResponse:
+        # Create data source responses
         if request.tx_bytes == getTxBytes(msg_create_ds_success):
             return BroadcastTxResponse(
                 tx_response=TxResponse(
@@ -129,6 +196,61 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     raw_log="empty executable",
                 )
             )
+        # Edit data source responses
+        elif request.tx_bytes == getTxBytes(msg_edit_ds_success):
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    height=3433568,
+                    txhash="3D6A3D186B30BCCB3243851EA95398EED97E524D8E45CFD5254D1A67FCF5BF6F",
+                    data="0A1E0A1C2F6F7261636C652E76312E4D73674564697444617461536F75726365",
+                )
+            )
+        elif request.tx_bytes == getTxBytes(msg_edit_ds_empty_sender):
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="0B988DE25EA3B91A1EE9CF03E5BBF48041170CEE0E39B346350B952D902D18A3",
+                    codespace="undefined",
+                    code=1,
+                    raw_log="internal",
+                )
+            )
+        elif request.tx_bytes == getTxBytes(msg_edit_ds_empty_owner):
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="D8A00DF759793F70801A973217BDF80FCDCE870A1743459064C94CC0AD184491",
+                    codespace="undefined",
+                    code=1,
+                    raw_log="internal",
+                )
+            )
+        elif request.tx_bytes == getTxBytes(msg_edit_ds_empty_treasury):
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="D570E6F4D71B72E46424234082D7032748EF7D291B4FDD1CE581C251E09BF3CD",
+                    codespace="undefined",
+                    code=1,
+                    raw_log="internal",
+                )
+            )
+        elif request.tx_bytes == getTxBytes(msg_edit_ds_invalid_ds_id):
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    height=3433749,
+                    txhash="8FD2276E6A125F5A924F25106E72CA2B7C0FB45A5DFBBAB96AFA6B705204E7BC",
+                    codespace="oracle",
+                    code=3,
+                    raw_log="failed to execute message; message index: 0: id: 0: data source not found",
+                )
+            )
+        elif request.tx_bytes == getTxBytes(msg_edit_ds_empty_executable):
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="E969045E071AF3D5725CAE09AC6F328ED2F6C86AB907E3F499D301410D72FA0F",
+                    codespace="oracle",
+                    code=20,
+                    raw_log="empty executable",
+                )
+            )
 
 
 @pytest.fixture(scope="module")
@@ -147,6 +269,7 @@ def pyband_client(_grpc_server, grpc_addr):
     _grpc_server.stop(grace=None)
 
 
+# Create data source test cases
 def test_create_ds_success(pyband_client):
     tx_response = pyband_client.send_tx_block_mode(getTxBytes(msg_create_ds_success))
 
@@ -220,6 +343,103 @@ def test_create_ds_empty_executable(pyband_client):
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="6488960EB0E8057B35D87D9C68F0904272A3DEBB31A55F3C8027DE81B8F83E90",
+            codespace="oracle",
+            code=20,
+            raw_log="empty executable",
+        )
+    )
+
+    assert tx_response == mock_result.tx_response
+
+
+# Edit data source test cases
+def test_edit_ds_success(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(msg_edit_ds_success))
+
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            height=3433568,
+            txhash="3D6A3D186B30BCCB3243851EA95398EED97E524D8E45CFD5254D1A67FCF5BF6F",
+            data="0A1E0A1C2F6F7261636C652E76312E4D73674564697444617461536F75726365",
+        )
+    )
+
+    assert tx_response == mock_result.tx_response
+
+
+def test_edit_ds_empty_sender(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(msg_edit_ds_empty_sender))
+
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="0B988DE25EA3B91A1EE9CF03E5BBF48041170CEE0E39B346350B952D902D18A3",
+            codespace="undefined",
+            code=1,
+            raw_log="internal",
+        )
+    )
+
+    assert tx_response == mock_result.tx_response
+
+
+def test_edit_ds_empty_owner(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(getTxBytes(msg_edit_ds_empty_owner))
+
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="D8A00DF759793F70801A973217BDF80FCDCE870A1743459064C94CC0AD184491",
+            codespace="undefined",
+            code=1,
+            raw_log="internal",
+        )
+    )
+
+    assert tx_response == mock_result.tx_response
+
+
+def test_edit_ds_empty_treasury(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(
+        getTxBytes(msg_edit_ds_empty_treasury)
+    )
+
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="D570E6F4D71B72E46424234082D7032748EF7D291B4FDD1CE581C251E09BF3CD",
+            codespace="undefined",
+            code=1,
+            raw_log="internal",
+        )
+    )
+
+    assert tx_response == mock_result.tx_response
+
+
+def test_edit_ds_invalid_ds_id(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(
+        getTxBytes(msg_edit_ds_invalid_ds_id)
+    )
+
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            height=3433749,
+            txhash="8FD2276E6A125F5A924F25106E72CA2B7C0FB45A5DFBBAB96AFA6B705204E7BC",
+            codespace="oracle",
+            code=3,
+            raw_log="failed to execute message; message index: 0: id: 0: data source not found",
+        )
+    )
+
+    assert tx_response == mock_result.tx_response
+
+
+def test_edit_ds_empty_executable(pyband_client):
+    tx_response = pyband_client.send_tx_block_mode(
+        getTxBytes(msg_edit_ds_empty_executable)
+    )
+
+    mock_result = BroadcastTxResponse(
+        tx_response=TxResponse(
+            txhash="E969045E071AF3D5725CAE09AC6F328ED2F6C86AB907E3F499D301410D72FA0F",
             codespace="oracle",
             code=20,
             raw_log="empty executable",
