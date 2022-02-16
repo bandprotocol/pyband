@@ -26,12 +26,12 @@ def main():
     # Step 3
     send_msg = MsgCreateDataSource(
         sender=sender,
-        owner="Band Address of the Owner",
-        treasury="Band Address of the Treasury",
-        name="Name of the Data Source",
-        description="Description of the Data Source",
+        owner = "Band Address of the Owner",
+        treasury = "Band Address of the Treasury",
+        name = "Name of the Data Source",
+        description = "Description of the Data Source",
         fee = [Coin(amount="Fee per single request", denom="uband")], #1000000 Uband is one Band
-        executable= b'Paste your Code (Executable) in here\n', #the b'\n' converts your code into Byte
+        executable = b' Paste your Code (Executable) in here \n', #the b'\n' converts your code into []Byte
     )
 
     account = c.get_account(sender)
