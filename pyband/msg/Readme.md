@@ -14,4 +14,4 @@ If you have any questions:
 
 https://docs.bandchain.org/
 
-https://docs.bandchain.org/whitepaper/protocol-messages.html
+https://docs.bandchain.org/whitepaper/protocol-messages.htm
