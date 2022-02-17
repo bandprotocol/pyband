@@ -24,7 +24,7 @@ def main():
     
     # Step 3
     send_msg = MsgEditOracleScript(
-        oracle_script_id="Oracle Script ID from your existing Data Source without Brackets (int)",
+        oracle_script_id="Oracle Script ID from your existing Data Source without Quotation Marks (int)",
         sender=sender,
         owner = "Band Address of the Owner",
         name = "Name of the Oracle Script",
