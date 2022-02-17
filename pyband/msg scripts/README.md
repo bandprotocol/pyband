@@ -1,4 +1,4 @@
-Band Protocol pyband MSG Scripts
+Band Protocol pyband Msg Scripts
 
 1. MsgRequestData.py to Request Data
 
