@@ -25,11 +25,11 @@ def main():
     
     # Step 3
     send_msg = MsgRequestData(
-        oracle_script_id = "Oracle Script ID from any existing Oracle you wish to get Data from without Brackets (int)",
+        oracle_script_id = "Oracle Script ID from any existing Oracle you wish to get Data from without Quotation Marks (int)",
         sender = sender,
         calldata = "The data passed over to the oracle script for the script to use during its execution (string)",
-        ask_count = "Number of validators requested to answer the request without Brackets (int)",
-        min_count = "The minimum number of validators necessary for the request to proceed to the execution phase without Brackets (int)",
+        ask_count = "Number of validators requested to answer the request without Quotation Marks (int)",
+        min_count = "The minimum number of validators necessary for the request to proceed to the execution phase without Quotation Marks (int)",
         client_id = "The unique identifier of this oracle request, as specified by the client. This same unique ID will be sent back to the requester with the oracle response (string)",
     )
 
