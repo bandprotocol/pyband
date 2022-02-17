@@ -10,7 +10,7 @@ Band Protocol pyband MSG Scripts
 
 
 
-If you have any questions: 
+For questions: 
 
 https://docs.bandchain.org/
 
