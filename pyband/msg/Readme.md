@@ -8,4 +8,7 @@ Band Protocol pyband MSG Scripts
 4. MsgCreateOracleScript.py to create a new Oracle Script
 5. MsgEditOracleScript.py to edit a existing Oracle Script
 
-If you have any questions: https://docs.bandchain.org/whitepaper/protocol-messages.html and https://docs.bandchain.org/
+
+If you have any questions: 
+https://docs.bandchain.org/whitepaper/protocol-messages.html
+https://docs.bandchain.org/
