@@ -25,7 +25,7 @@ def main():
     
     # Step 3
     send_msg = MsgEditDataSource(
-        data_source_id="Data Source ID from your existing Data Source without Brackets (int)",
+        data_source_id="Data Source ID from your existing Data Source without Quotation Marks (int)",
         sender=sender,
         #now you can change your existingData Source completely
         owner = "Band Address of the Owner",
