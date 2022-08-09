@@ -1,4 +1,5 @@
 import hashlib
+import json
 
 from typing import Tuple
 from bech32 import bech32_encode, bech32_decode, convertbits
@@ -6,9 +7,13 @@ from bip32 import BIP32
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, BadSignatureError
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
-from .exceptions import ConvertError, DecodeError
+from pyband.exceptions import ConvertError, DecodeError
+from pyband.cosmos_app import CosmosApp
+from pyband.utils import bip44_to_list
+from pyband.transaction import Transaction
+from abc import abstractmethod
 
-from .proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
+from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
 BECH32_PUBKEY_ACC_PREFIX = "bandpub"
 BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
@@ -19,6 +24,7 @@ BECH32_ADDR_VAL_PREFIX = "bandvaloper"
 BECH32_ADDR_CONS_PREFIX = "bandvalcons"
 
 DEFAULT_DERIVATION_PATH = "m/44'/494'/0'/0/0"
+DEFAULT_LEDGER_DERIVATION_PATH = "m/44'/118'/0'/0/0"
 
 
 class PrivateKey:
@@ -45,7 +51,7 @@ class PrivateKey:
         :return: A tuple of mnemonic phrase and PrivateKey instance
         """
         phrase = Mnemonic(language="english").generate(strength=256)
-        return (phrase, cls.from_mnemonic(phrase, path))
+        return phrase, cls.from_mnemonic(phrase, path)
 
     @classmethod
     def from_mnemonic(cls, words: str, path=DEFAULT_DERIVATION_PATH) -> "PrivateKey":
@@ -242,3 +248,20 @@ class Address:
     def to_hex(self) -> str:
         """Return a hex representation of address"""
         return self.addr.hex()
+
+
+class Ledger:
+    def __init__(self, hid_path: str = DEFAULT_LEDGER_DERIVATION_PATH):
+        self._cosmos_app = CosmosApp(bip44_to_list(hid_path))
+
+    def disconnect(self):
+        self._cosmos_app.disconnect()
+
+    def app_info(self):
+        return self._cosmos_app.get_version()
+
+    def sign(self, transaction: Transaction):
+        return self._cosmos_app.sign_secp256k1(transaction.get_sign_doc().SerializeToString())
+
+    def get_pub_key_and_bech32_address(self):
+        return self._cosmos_app.ins_get_addr_secp256k1("band")
