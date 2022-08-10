@@ -1,5 +1,4 @@
 import hashlib
-import json
 
 from typing import Tuple
 from bech32 import bech32_encode, bech32_decode, convertbits
@@ -7,11 +6,9 @@ from bip32 import BIP32
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, BadSignatureError
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
-from pyband.exceptions import ConvertError, DecodeError
-from pyband.cosmos_app import CosmosApp
-from pyband.utils import bip44_to_list
-from pyband.transaction import Transaction
-from abc import abstractmethod
+from .exceptions import ConvertError, DecodeError
+from .cosmos_app import CosmosApp
+from .utils import bip44_to_list
 
 from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
@@ -260,8 +257,8 @@ class Ledger:
     def app_info(self):
         return self._cosmos_app.get_version()
 
-    def sign(self, transaction: Transaction):
-        return self._cosmos_app.sign_secp256k1(transaction.get_sign_doc().SerializeToString())
+    def sign(self, msg: bytes):
+        return self._cosmos_app.sign_secp256k1(msg)
 
     def get_pub_key_and_bech32_address(self):
         return self._cosmos_app.ins_get_addr_secp256k1("band")
