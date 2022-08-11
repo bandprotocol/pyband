@@ -3,7 +3,7 @@ from typing import Optional, NoReturn
 from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 from pyband.exceptions import CosmosAppError
-from pyband.utils import get_bip32_byte, split_packet
+from pyband.utils import get_bip32_byte, split_packet, bip44_to_list
 
 
 @dataclass
@@ -65,11 +65,11 @@ class SepcAddr(CosmosAppResults):
 
 class CosmosApp:
     def __init__(self, derivation_path):
-        self._dongle = getDongle()
-        self._derivation_path = derivation_path
+        self.dongle = getDongle()
+        self.derivation_path = derivation_path
 
     def disconnect(self) -> NoReturn:
-        self._dongle.close()
+        self.dongle.close()
 
     def get_version(self) -> AppVersion:
         command = CosmosAppCommand(
@@ -80,14 +80,14 @@ class CosmosApp:
         )
 
         try:
-            resp = self._dongle.exchange(command.get_message())
+            resp = self.dongle.exchange(command.get_message())
         except CommException as e:
             raise CosmosAppError(hex(e.sw))
         return AppVersion(*(resp[i] for i in range(4)))
 
     def ins_get_addr_secp256k1(self, hrp: str, req_confirm: bool = True) -> SepcAddr:
         try:
-            bip32_byte = get_bip32_byte(self._derivation_path, 3)
+            bip32_byte = get_bip32_byte(bip44_to_list(self.derivation_path), 3)
         except Exception as e:
             raise e
 
@@ -100,8 +100,7 @@ class CosmosApp:
         )
 
         try:
-            resp = self._dongle.exchange(command.get_message())
-            print(resp)
+            resp = self.dongle.exchange(command.get_message())
         except CommException as e:
             raise CosmosAppError(hex(e.sw))
         return SepcAddr(resp[:33], resp[33:])
@@ -112,10 +111,10 @@ class CosmosApp:
             INS=b"\x02",
             P1=b"\x00",
             P2=b"\x00",
-            data=get_bip32_byte(self._derivation_path, 3),
+            data=get_bip32_byte(bip44_to_list(self.derivation_path), 3),
         )
         try:
-            resp = self._dongle.exchange(command.get_message())
+            resp = self.dongle.exchange(command.get_message())
         except CommException as e:
             raise CosmosAppError(hex(e.sw))
 
@@ -133,7 +132,7 @@ class CosmosApp:
                 data=packet,
             )
             try:
-                resp = self._dongle.exchange(command.get_message())
+                resp = self.dongle.exchange(command.get_message())
             except CommException as e:
                 raise CosmosAppError(hex(e.sw))
         return resp

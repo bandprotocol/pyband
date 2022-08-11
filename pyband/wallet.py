@@ -248,17 +248,25 @@ class Address:
 
 
 class Ledger:
-    def __init__(self, hid_path: str = DEFAULT_LEDGER_DERIVATION_PATH):
-        self._cosmos_app = CosmosApp(bip44_to_list(hid_path))
+    def __init__(self, **kwargs):
+        if kwargs.get("derivation_path", None) is None:
+            hid_path = DEFAULT_LEDGER_DERIVATION_PATH
+        else:
+            hid_path = kwargs.get("path")
+
+        if kwargs.get("cosmos_app", None) is None:
+            self.cosmos_app = CosmosApp(bip44_to_list(hid_path))
+        else:
+            self.cosmos_app = kwargs.get("cosmos_app")
 
     def disconnect(self):
-        self._cosmos_app.disconnect()
+        self.cosmos_app.disconnect()
 
     def app_info(self):
-        return self._cosmos_app.get_version()
+        return self.cosmos_app.get_version()
 
     def sign(self, msg: bytes):
-        return self._cosmos_app.sign_secp256k1(msg)
+        return self.cosmos_app.sign_secp256k1(msg)
 
     def get_pub_key_and_bech32_address(self):
-        return self._cosmos_app.ins_get_addr_secp256k1("band")
+        return self.cosmos_app.ins_get_addr_secp256k1("band")

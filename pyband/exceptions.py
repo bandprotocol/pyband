@@ -56,6 +56,10 @@ class NotBip44Error(PybandError):
     pass
 
 
+class IncorrectLengthError(PybandError):
+    pass
+
+
 class CosmosAppError(PybandError):
     def __init__(self, return_code: Optional[str] = None):
         if return_code:
