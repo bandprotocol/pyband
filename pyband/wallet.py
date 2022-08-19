@@ -4,13 +4,14 @@ from typing import Tuple
 from bech32 import bech32_encode, bech32_decode, convertbits
 from bip32 import BIP32
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, BadSignatureError
+from ecdsa.der import remove_sequence, remove_integer, UnexpectedDER
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
 from .exceptions import ConvertError, DecodeError
-from .cosmos_app import CosmosApp
+from .cosmos_app import CosmosApp, AppVersion, SepcAddr
 from .utils import bip44_to_list
 
-from pyband.proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
+from .proto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as PubKeyProto
 
 BECH32_PUBKEY_ACC_PREFIX = "bandpub"
 BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
@@ -139,6 +140,12 @@ class PublicKey:
     def from_cons_bech32(cls, bech: str) -> "PublicKey":
         return cls._from_bech32(bech, BECH32_PUBKEY_CONS_PREFIX)
 
+    @classmethod
+    def from_hex(cls, pub: bytes) -> "PublicKey":
+        self = cls(_error_do_not_use_init_directly=True)
+        self.verify_key = VerifyingKey.from_string(pub, curve=SECP256k1, hashfunc=hashlib.sha256)
+        return self
+
     def to_hex(self) -> str:
         """
         Return a hex representation of verified key.
@@ -248,25 +255,32 @@ class Address:
 
 
 class Ledger:
-    def __init__(self, **kwargs):
-        if kwargs.get("derivation_path", None) is None:
-            hid_path = DEFAULT_LEDGER_DERIVATION_PATH
+    def __init__(self, app=None, path=DEFAULT_LEDGER_DERIVATION_PATH):
+        if app is not None:
+            self.cosmos_app = app
         else:
-            hid_path = kwargs.get("path")
+            self.cosmos_app = CosmosApp(bip44_to_list(path))
 
-        if kwargs.get("cosmos_app", None) is None:
-            self.cosmos_app = CosmosApp(bip44_to_list(hid_path))
-        else:
-            self.cosmos_app = kwargs.get("cosmos_app")
-
-    def disconnect(self):
+    def disconnect(self) -> None:
         self.cosmos_app.disconnect()
 
-    def app_info(self):
+    def app_info(self) -> AppVersion:
         return self.cosmos_app.get_version()
 
-    def sign(self, msg: bytes):
-        return self.cosmos_app.sign_secp256k1(msg)
+    def sign(self, msg: bytes) -> bytes:
+        body, rem = remove_sequence(self.cosmos_app.sign_secp256k1(msg))
+        if bool(rem) is True:
+            raise UnexpectedDER("Unexpected remainder")
 
-    def get_pub_key_and_bech32_address(self):
-        return self.cosmos_app.ins_get_addr_secp256k1("band")
+        r, rem = remove_integer(body)
+        s, rem = remove_integer(rem)
+        if bool(rem) is True:
+            raise UnexpectedDER("Unexpected remainder")
+
+        return r.to_bytes(32, "big") + s.to_bytes(32, "big")
+
+    def get_public_key(self) -> PublicKey:
+        return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).public_key)
+
+    def get_address(self, prefix=BECH32_ADDR_ACC_PREFIX) -> Address:
+        return Address.from_acc_bech32(self.cosmos_app.ins_get_addr_secp256k1(prefix).address.decode())

@@ -1,9 +1,9 @@
 from dataclasses import dataclass, fields
-from typing import Optional, NoReturn
+from typing import Optional, NoReturn, List
 from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 from pyband.exceptions import CosmosAppError
-from pyband.utils import get_bip32_byte, split_packet, bip44_to_list
+from pyband.utils import get_bip32_byte, split_packet
 
 
 @dataclass
@@ -64,7 +64,7 @@ class SepcAddr(CosmosAppResults):
 
 
 class CosmosApp:
-    def __init__(self, derivation_path):
+    def __init__(self, derivation_path: List[int]):
         self.dongle = getDongle()
         self.derivation_path = derivation_path
 
@@ -87,7 +87,7 @@ class CosmosApp:
 
     def ins_get_addr_secp256k1(self, hrp: str, req_confirm: bool = True) -> SepcAddr:
         try:
-            bip32_byte = get_bip32_byte(bip44_to_list(self.derivation_path), 3)
+            bip32_byte = get_bip32_byte(self.derivation_path, 3)
         except Exception as e:
             raise e
 
@@ -105,13 +105,13 @@ class CosmosApp:
             raise CosmosAppError(hex(e.sw))
         return SepcAddr(resp[:33], resp[33:])
 
-    def sign_secp256k1(self, msg: bytes) -> bytes:
+    def sign_secp256k1(self, msg: bytes) -> bytearray:
         command = CosmosAppCommand(
             CLA=b"\x55",
             INS=b"\x02",
             P1=b"\x00",
             P2=b"\x00",
-            data=get_bip32_byte(bip44_to_list(self.derivation_path), 3),
+            data=get_bip32_byte(self.derivation_path, 3),
         )
         try:
             resp = self.dongle.exchange(command.get_message())

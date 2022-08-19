@@ -1,6 +1,8 @@
+import json
+
 from typing import List, Tuple
 
-from google.protobuf import any_pb2, message
+from google.protobuf import any_pb2, message, json_format
 from .proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from .proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
 from .proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
@@ -9,6 +11,7 @@ from .client import Client
 from .constant import MAX_MEMO_CHARACTERS
 from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
 from .wallet import PublicKey
+from .utils import protobuf_to_json
 
 
 class Transaction:
@@ -79,14 +82,14 @@ class Transaction:
         self.memo = memo
         return self
 
-    def __generate_info(self, public_key: PublicKey = None) -> Tuple[str, str]:
+    def __generate_info(self, public_key: PublicKey, sign_mode: tx_sign.SignMode) -> Tuple[str, str]:
         body = cosmos_tx_type.TxBody(
             messages=self.msgs,
             memo=self.memo,
         )
 
         body_bytes = body.SerializeToString()
-        mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=tx_sign.SIGN_MODE_DIRECT))
+        mode_info = cosmos_tx_type.ModeInfo(single=cosmos_tx_type.ModeInfo.Single(mode=sign_mode))
 
         if public_key:
             any_public_key = any_pb2.Any()
@@ -115,7 +118,7 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body_bytes, auth_info_bytes = self.__generate_info(public_key)
+        body_bytes, auth_info_bytes = self.__generate_info(public_key, tx_sign.SIGN_MODE_DIRECT)
 
         return cosmos_tx_type.SignDoc(
             body_bytes=body_bytes,
@@ -124,8 +127,22 @@ class Transaction:
             account_number=self.account_num,
         )
 
-    def get_tx_data(self, signature: bytes, public_key: PublicKey = None) -> str:
-        body_bytes, auth_info_bytes = self.__generate_info(public_key)
+    def get_sign_message(self) -> bytes:
+        msg = {
+            "account_number": str(self.account_num),
+            "chain_id": self.chain_id,
+            "fee": {
+                a.replace("gasLimit", "gas"): b for a, b in json.loads(json_format.MessageToJson(self.fee)).items()
+            },
+            "memo": self.memo,
+            "msgs": [protobuf_to_json(msg) for msg in self.msgs],
+            "sequence": str(self.sequence),
+        }
+        return json.dumps(msg, separators=(",", ":"), sort_keys=True).encode("utf-8")
 
+    def get_tx_data(
+        self, signature: bytes, public_key: PublicKey = None, sign_mode: tx_sign.SignMode = tx_sign.SIGN_MODE_DIRECT
+    ) -> str:
+        body_bytes, auth_info_bytes = self.__generate_info(public_key, sign_mode)
         tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
         return tx_raw.SerializeToString()

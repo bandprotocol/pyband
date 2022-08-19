@@ -11,7 +11,7 @@ def valid_path():
 
 @pytest.fixture
 def invalid_paths():
-    return ["m/a'/b'/c'/d/e", "/44'/118'/0'/0/0", "m/44'/118'/0'/0/0/0"]
+    return ["m/a'/b'/c'/d/e", "/44'/118'/0'/0/0"]
 
 
 def test_is_bip44_success(valid_path):

@@ -7,11 +7,13 @@ import string
 
 from ecdsa import SigningKey, SECP256k1
 from ecdsa.util import sigencode_string_canonize
+from ecdsa.der import encode_sequence, encode_integer
 from bip32 import BIP32
 from bech32 import bech32_encode, convertbits
 from mnemonic import Mnemonic
 
 from pyband.exceptions import *
+from pyband.utils import bip44_to_list
 from pyband.cosmos_app import CosmosApp, CommException
 from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from pyband.proto.oracle.v1.tx_pb2 import MsgCreateDataSource
@@ -88,8 +90,6 @@ class MockDongle:
         )
 
         verifying_key = signing_key.get_verifying_key()
-        # five_bit_r = convertbits(bytes.fromhex("eb5ae98721") + verifying_key.to_string("compressed"), 8, 5)
-        # bech32_addr = bytes(bech32_encode("band", five_bit_r), "utf-8")
         addr = hashlib.new("ripemd160", hashlib.new("sha256", verifying_key.to_string("compressed")).digest()).digest()
         five_bit_r = convertbits(addr, 8, 5)
         return verifying_key.to_string("compressed") + bytes(bech32_encode("band", five_bit_r), "utf-8")
@@ -123,16 +123,20 @@ class MockDongle:
             )
 
             self._clear_cache()
-            return signed_msg
-            # return total_packets.to_bytes(1, "little")
+
+            r = encode_integer(int.from_bytes(signed_msg[:32], "big"))
+            s = encode_integer(int.from_bytes(signed_msg[32:], "big"))
+            encoded = encode_sequence(r, s)
+
+            return encoded
         else:
             raise CommException(LEDGER_RETURN_CODES.get("0x6400", "UNKNOWN"), sw=0x6400)
 
 
 class MockCosmosApp(CosmosApp):
-    def __init__(self, derivation_path):
+    def __init__(self, derivation_path: str):
         self.dongle = MockDongle(derivation_path)
-        self.derivation_path = derivation_path
+        self.derivation_path = bip44_to_list(derivation_path)
 
 
 @pytest.fixture()
@@ -148,8 +152,8 @@ def mock_cosmos_app(valid_derivation_path):
 @pytest.fixture()
 def mock_ledger(mock_cosmos_app):
     return Ledger(
-        derivation_path=mock_cosmos_app.derivation_path,
-        cosmos_app=mock_cosmos_app,
+        app=mock_cosmos_app,
+        path=mock_cosmos_app.derivation_path,
     )
 
 
@@ -191,14 +195,21 @@ def test_get_version(mock_ledger):
     assert resp.patch == 0
 
 
-def test_ins_get_addr_secp257k1(mock_private_key, mock_ledger):
+def test_ins_get_public_key(mock_private_key, mock_ledger):
+    comparison_public_key = mock_private_key.to_public_key()
+
+    resp = mock_ledger.get_public_key()
+
+    assert resp.verify_key == comparison_public_key.verify_key
+
+
+def test_ins_get_addr(mock_private_key, mock_ledger):
     comparison_public_key = mock_private_key.to_public_key()
     comparison_addr = comparison_public_key.to_address()
 
-    resp = mock_ledger.get_pub_key_and_bech32_address()
+    resp = mock_ledger.get_address()
 
-    assert resp.public_key == comparison_public_key.verify_key.to_string("compressed")
-    assert resp.address.decode("utf-8") == comparison_addr.to_acc_bech32()
+    assert resp.addr == comparison_addr.addr
 
 
 def test_sign_secp256k1(mock_private_key, mock_ledger, mock_message):
