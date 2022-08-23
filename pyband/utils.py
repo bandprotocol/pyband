@@ -1,10 +1,9 @@
 import re
-import json
 
-from typing import List
+from typing import List, Dict
 from google.protobuf.any_pb2 import Any as AnyProtobuf
+from google.protobuf.json_format import MessageToDict
 from .exceptions import NotBip44Error, IncorrectLengthError
-from google.protobuf.json_format import MessageToJson
 
 
 def is_bip44(derivation_path: str) -> bool:
@@ -39,10 +38,17 @@ def split_packet(byte_message: bytes) -> List[bytes]:
     return [bytes(byte_message[i : i + 250]) for i in range(0, len(byte_message), 250)]
 
 
-def protobuf_to_json(protobuf: AnyProtobuf):
-    res: dict = json.loads(MessageToJson(protobuf))
-    msg_type = res["@type"].split(".")
-    new_msg_type = "{x}/{y}".format(x=msg_type[0][1:].replace("cosmos", "cosmos-sdk"), y=msg_type[-1])
-    res.pop("@type")
-    val = {re.sub(r"(?<!^)(?=[A-Z])", "_", a).lower(): b for a, b in res.items()}
-    return {"type": new_msg_type, "value": val}
+def protobuf_to_json(protobuf: AnyProtobuf) -> Dict[str, str]:
+    protobuf_as_dict = dict(MessageToDict(protobuf, including_default_value_fields=True))
+
+    msg_type_as_list = protobuf_as_dict["@type"].split(".")
+    msg_type_as_list[0] = msg_type_as_list[0][1:]
+    protobuf_as_dict.pop("@type")
+
+    value = {re.sub(r"(?<!^)(?=[A-Z])", "_", field).lower(): value for field, value in protobuf_as_dict.items()}
+    msg_type = "{root}/{command}".format(
+        root=msg_type_as_list[0],
+        command=msg_type_as_list[-1].replace("Msg", ""),
+    ).replace("cosmos", "cosmos-sdk")
+
+    return {"type": msg_type, "value": value}
