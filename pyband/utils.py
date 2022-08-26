@@ -42,7 +42,9 @@ def protobuf_to_json(protobuf: AnyProtobuf) -> Dict[str, str]:
     protobuf_as_dict = dict(MessageToDict(protobuf, including_default_value_fields=True))
 
     msg_type_as_list = protobuf_as_dict["@type"].split(".")
-    msg_type_as_list[0] = msg_type_as_list[0][1:]
+
+    # Remove leading slash
+    msg_type_as_list = msg_type_as_list[0][1:]
     protobuf_as_dict.pop("@type")
 
     value = {re.sub(r"(?<!^)(?=[A-Z])", "_", field).lower(): value for field, value in protobuf_as_dict.items()}

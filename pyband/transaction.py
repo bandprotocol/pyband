@@ -5,7 +5,9 @@ from typing import List, Tuple
 from google.protobuf import any_pb2, message, json_format
 from .proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from .proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
-from .proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
+
+# from .proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
+from .proto.cosmos.tx.signing.v1beta1.signing_pb2 import SignMode, SIGN_MODE_DIRECT
 
 from .client import Client
 from .constant import MAX_MEMO_CHARACTERS
@@ -82,7 +84,7 @@ class Transaction:
         self.memo = memo
         return self
 
-    def __generate_info(self, public_key: PublicKey, sign_mode: tx_sign.SignMode) -> Tuple[str, str]:
+    def __generate_info(self, public_key: PublicKey, sign_mode: SignMode) -> Tuple[str, str]:
         body = cosmos_tx_type.TxBody(
             messages=self.msgs,
             memo=self.memo,
@@ -118,7 +120,7 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body_bytes, auth_info_bytes = self.__generate_info(public_key, tx_sign.SIGN_MODE_DIRECT)
+        body_bytes, auth_info_bytes = self.__generate_info(public_key, SIGN_MODE_DIRECT)
 
         return cosmos_tx_type.SignDoc(
             body_bytes=body_bytes,
@@ -141,7 +143,7 @@ class Transaction:
         return json.dumps(msg, separators=(",", ":"), sort_keys=True).encode("utf-8")
 
     def get_tx_data(
-        self, signature: bytes, public_key: PublicKey = None, sign_mode: tx_sign.SignMode = tx_sign.SIGN_MODE_DIRECT
+        self, signature: bytes, public_key: PublicKey = None, sign_mode: SignMode = SIGN_MODE_DIRECT
     ) -> str:
         body_bytes, auth_info_bytes = self.__generate_info(public_key, sign_mode)
         tx_raw = cosmos_tx_type.TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])

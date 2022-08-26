@@ -256,10 +256,7 @@ class Address:
 
 class Ledger:
     def __init__(self, app=None, path=DEFAULT_LEDGER_DERIVATION_PATH):
-        if app is not None:
-            self.cosmos_app = app
-        else:
-            self.cosmos_app = CosmosApp(bip44_to_list(path))
+        self.cosmos_app = app if app is not None else CosmosApp(bip44_to_list(path))
 
     def disconnect(self) -> None:
         self.cosmos_app.disconnect()
@@ -268,13 +265,13 @@ class Ledger:
         return self.cosmos_app.get_version()
 
     def sign(self, msg: bytes) -> bytes:
-        body, rem = remove_sequence(self.cosmos_app.sign_secp256k1(msg))
-        if bool(rem) is True:
+        data, remaining_data = remove_sequence(self.cosmos_app.sign_secp256k1(msg))
+        if remaining_data:
             raise UnexpectedDER("Unexpected remainder")
 
-        r, rem = remove_integer(body)
-        s, rem = remove_integer(rem)
-        if bool(rem) is True:
+        r, remaining_content = remove_integer(data)
+        s, remaining_content = remove_integer(remaining_content)
+        if remaining_content:
             raise UnexpectedDER("Unexpected remainder")
 
         return r.to_bytes(32, "big") + s.to_bytes(32, "big")
