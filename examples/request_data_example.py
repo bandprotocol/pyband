@@ -9,7 +9,7 @@ from google.protobuf.json_format import MessageToJson
 
 def main():
     # Step 1 Create a gRPC connection
-    grpc_url = "rpc-laozi-testnet2.bandchain.org:9090"
+    grpc_url = "laozi-testnet5.bandchain.org"
     c = Client(grpc_url, insecure=True)
 
     # Step 2 Convert a menmonic to private key, public key, and sender
