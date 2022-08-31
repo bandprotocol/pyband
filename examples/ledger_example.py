@@ -9,7 +9,7 @@ from google.protobuf.json_format import MessageToJson
 
 
 def main():
-    # Create the gRPC connectioj
+    # Create the gRPC connection
     grpc_url = "laozi-testnet5.bandchain.org"
     c = Client(grpc_url)
 
