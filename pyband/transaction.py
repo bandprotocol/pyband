@@ -1,14 +1,10 @@
 import json
 
 from typing import List, Tuple
-
 from google.protobuf import any_pb2, message, json_format
 from .proto.cosmos.base.v1beta1.coin_pb2 import Coin
 from .proto.cosmos.tx.v1beta1 import tx_pb2 as cosmos_tx_type
-
-# from .proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
 from .proto.cosmos.tx.signing.v1beta1.signing_pb2 import SignMode, SIGN_MODE_DIRECT
-
 from .client import Client
 from .constant import MAX_MEMO_CHARACTERS
 from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
