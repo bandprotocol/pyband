@@ -152,4 +152,4 @@ Here is the result after sending a block transaction
 
 ## 🧀 Notes
 
-For more examples, please see [`example`](/example.py) file by running a command `python example.py`.
+For more examples, please see [`example`](/examples/request_data_example.py).
