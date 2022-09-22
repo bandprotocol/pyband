@@ -1,8 +1,6 @@
 import re
+from typing import List
 
-from typing import List, Dict
-from google.protobuf.any_pb2 import Any as AnyProtobuf
-from google.protobuf.json_format import MessageToDict
 from .exceptions import NotBip44Error, IncorrectLengthError
 
 
@@ -36,21 +34,3 @@ def get_bip32_byte(derivation_path: List[int], harden_count: int) -> bytes:
 
 def split_packet(byte_message: bytes) -> List[bytes]:
     return [bytes(byte_message[i : i + 250]) for i in range(0, len(byte_message), 250)]
-
-
-def protobuf_to_json(protobuf: AnyProtobuf) -> Dict[str, str]:
-    protobuf_as_dict = dict(MessageToDict(protobuf, including_default_value_fields=True))
-
-    msg_type_as_list = protobuf_as_dict["@type"].split(".")
-
-    # Remove leading slash
-    msg_type_as_list = msg_type_as_list[0][1:]
-    protobuf_as_dict.pop("@type")
-
-    value = {re.sub(r"(?<!^)(?=[A-Z])", "_", field).lower(): value for field, value in protobuf_as_dict.items()}
-    msg_type = "{root}/{command}".format(
-        root=msg_type_as_list[0],
-        command=msg_type_as_list[-1].replace("Msg", ""),
-    ).replace("cosmos", "cosmos-sdk")
-
-    return {"type": msg_type, "value": value}
