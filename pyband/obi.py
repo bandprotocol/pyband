@@ -17,9 +17,6 @@ class PyObiSpec(object):
                 return impl(spec)
         raise SchemaError("Cannot parse spec: {}".format(spec))
 
-    def __init__(self, spec):
-        raise NotImplementedError()
-
     @classmethod
     def match_schema(cls, schema):
         raise NotImplementedError()
@@ -51,7 +48,7 @@ class PyObiInteger(PyObiSpec):
 
 
 class PyObiBool(PyObiSpec):
-    def __init__(self, spec="bool"):
+    def __init__(self):
         pass
 
     @classmethod
@@ -82,7 +79,7 @@ class PyObiArray(PyObiSpec):
             return False
         try:
             [spec, size] = schema[1:-1].rsplit(";", 1)
-        except:
+        except ValueError:
             return False
 
         if not size.isdigit():
@@ -172,7 +169,7 @@ class PyObiStruct(PyObiSpec):
 
 
 class PyObiString(PyObiSpec):
-    def __init__(self, spec="string"):
+    def __init__(self):
         pass
 
     @classmethod
@@ -188,7 +185,7 @@ class PyObiString(PyObiSpec):
 
 
 class PyObiBytes(PyObiSpec):
-    def __init__(self, spec="bytes"):
+    def __init__(self):
         pass
 
     @classmethod
