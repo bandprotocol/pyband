@@ -1,13 +1,11 @@
 from dataclasses import dataclass
 
 from ....messages.common import MessageWrapper
-from ....proto.oracle.v1 import MsgActivate as MsgActivateProto
 from ....proto.oracle.v1 import MsgCreateDataSource as MsgCreateDataSourceProto
 from ....proto.oracle.v1 import MsgCreateDataSource as MsgRequestDataProto
 from ....proto.oracle.v1 import MsgCreateOracleScript as MsgCreateOracleScriptProto
 from ....proto.oracle.v1 import MsgEditDataSource as MsgEditDataSourceProto
 from ....proto.oracle.v1 import MsgEditOracleScript as MsgEditOracleScriptProto
-from ....proto.oracle.v1 import MsgReportData as MsgReportDataProto
 
 try:
     from ....proto.cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
@@ -15,24 +13,14 @@ except ImportError as ie:
     raise ie
 
 
-class MsgReportData(MessageWrapper, MsgReportDataProto):
-    @property
-    def type_url(self):
-        return "oracle/MsgReportData"
-
-    @property
-    def legacy_url(self):
-        return "/oracle.v1.MsgReportData"
-
-
 class MsgRequestData(MessageWrapper, MsgRequestDataProto):
     @property
     def type_url(self):
-        return "oracle/MsgRequestData"
+        return "/oracle.v1.MsgRequestData"
 
     @property
     def legacy_url(self):
-        return "/oracle.v1.MsgRequestData"
+        return "oracle/Request"
 
 
 @dataclass
@@ -43,7 +31,7 @@ class MsgCreateDataSource(MessageWrapper, MsgCreateDataSourceProto):
 
     @property
     def legacy_url(self):
-        return "oracle/MsgCreateDataSource"
+        return "oracle/CreateDataSource"
 
 
 class MsgEditDataSource(MessageWrapper, MsgEditDataSourceProto):
@@ -53,7 +41,7 @@ class MsgEditDataSource(MessageWrapper, MsgEditDataSourceProto):
 
     @property
     def legacy_url(self):
-        return "oracle/MsgEditDataSource"
+        return "oracle/EditDataSource"
 
 
 class MsgCreateOracleScript(MessageWrapper, MsgCreateOracleScriptProto):
@@ -63,7 +51,7 @@ class MsgCreateOracleScript(MessageWrapper, MsgCreateOracleScriptProto):
 
     @property
     def type_url(self):
-        return "oracle/MsgCreateOracleScript"
+        return "oracle/CreateOracleScript"
 
 
 class MsgEditOracleScript(MessageWrapper, MsgEditOracleScriptProto):
@@ -73,14 +61,4 @@ class MsgEditOracleScript(MessageWrapper, MsgEditOracleScriptProto):
 
     @property
     def type_url(self):
-        return "oracle/MsgEditOracleScript"
-
-
-class MsgActivate(MessageWrapper, MsgActivateProto):
-    @property
-    def legacy_url(self):
-        return "/oracle.v1.MsgActivate"
-
-    @property
-    def type_url(self):
-        return "oracle/MsgActivate"
+        return "oracle/EditOracleScript"

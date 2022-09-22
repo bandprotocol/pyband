@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from betterproto import Message
+from betterproto import Message, Casing
 
 
 class MessageWrapper(Message):
@@ -18,4 +18,4 @@ class MessageWrapper(Message):
         return {"@type": self.type_url} | self.to_dict(include_default_values=True)
 
     def to_legacy_codec(self):
-        return {"type": self.legacy_url, "value": self.to_dict()}
+        return {"type": self.legacy_url, "value": self.to_dict(include_default_values=True, casing=Casing.SNAKE)}
