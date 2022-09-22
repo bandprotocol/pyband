@@ -1,1 +1,1 @@
-from .msgs import MsgBeginRedelegate, MsgCreateValidator, MsgDelegate, MsgUndelegate, MsgEditValidator
+from .msgs import MsgBeginRedelegate, MsgDelegate, MsgUndelegate
