@@ -1,19 +1,17 @@
 from dataclasses import dataclass
 
-from ....messages.common import MessageWrapper
+from ....messages.base import BaseMessageWrapper
+from ....proto.cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
 from ....proto.oracle.v1 import MsgCreateDataSource as MsgCreateDataSourceProto
 from ....proto.oracle.v1 import MsgCreateDataSource as MsgRequestDataProto
 from ....proto.oracle.v1 import MsgCreateOracleScript as MsgCreateOracleScriptProto
 from ....proto.oracle.v1 import MsgEditDataSource as MsgEditDataSourceProto
 from ....proto.oracle.v1 import MsgEditOracleScript as MsgEditOracleScriptProto
 
-try:
-    from ....proto.cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
-except ImportError as ie:
-    raise ie
+assert __cosmos_base_v1_beta1__
 
 
-class MsgRequestData(MessageWrapper, MsgRequestDataProto):
+class MsgRequestData(BaseMessageWrapper, MsgRequestDataProto):
     @property
     def type_url(self):
         return "/oracle.v1.MsgRequestData"

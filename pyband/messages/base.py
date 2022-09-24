@@ -3,7 +3,7 @@ from abc import abstractmethod
 from betterproto import Message, Casing
 
 
-class MessageWrapper(Message):
+class BaseMessageWrapper(Message):
     @property
     @abstractmethod
     def type_url(self):
