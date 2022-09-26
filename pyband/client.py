@@ -36,12 +36,8 @@ from .proto.oracle.v1 import QueryStub as OracleQueryStub
 
 
 class Client:
-    def __init__(self, grpc_endpoint: str, port: int, insecure: bool = False):
-        self.__channel = Channel(
-            host=grpc_endpoint,
-            port=port,
-            ssl=False if insecure else True,
-        )
+    def __init__(self, channel: Channel):
+        self.__channel = channel
         self.stub_oracle = OracleQueryStub(self.__channel)
         self.stub_cosmos_tendermint = TendermintServiceStub(self.__channel)
         self.stub_auth = AuthQueryStub(self.__channel)
@@ -53,6 +49,16 @@ class Client:
 
     def close(self) -> None:
         self.__channel.close()
+
+    @classmethod
+    def from_endpoint(cls, grpc_endpoint: str, port: int, insecure: bool = False):
+        return cls(
+            Channel(
+                host=grpc_endpoint,
+                port=port,
+                ssl=False if insecure else True,
+            )
+        )
 
     @staticmethod
     def __run_async(coroutine) -> Any:
@@ -98,7 +104,7 @@ class Client:
             account.pub_key = pub_key.parse(account.pub_key.value)
 
             return account
-        except GRPCError:
+        except Exception:
             return None
 
     def get_request_id_by_tx_hash(self, tx_hash: str) -> List[int]:
