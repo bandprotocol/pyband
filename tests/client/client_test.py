@@ -1,17 +1,26 @@
+import asyncio
+
+import grpclib.exceptions
 import pytest
-import grpc
+from betterproto.lib.google.protobuf import Any
+from dateutil import parser
+from grpclib.testing import ChannelFor
 
-# Servicers
-from pyband.proto.oracle.v1.query_pb2_grpc import QueryServicer as OracleServicerBase
-from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import QueryServicer as AuthServicerBase
-from pyband.proto.cosmos.tx.v1beta1.service_pb2_grpc import ServiceServicer as CosmosTxServicerBase
-from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2_grpc import ServiceServicer as TendermintServicerBase
-
-# Types
-from pyband.proto.oracle.v1.oracle_pb2 import DataSource, OracleScript
-from pyband.proto.cosmos.auth.v1beta1.auth_pb2 import BaseAccount
-from pyband.proto.cosmos.auth.v1beta1.query_pb2 import QueryAccountResponse
-from pyband.proto.oracle.v1.query_pb2 import (
+from pyband.client import Client
+from pyband.exceptions import NotFoundError, EmptyMsgError
+from pyband.proto.cosmos.auth.v1beta1 import BaseAccount
+from pyband.proto.cosmos.auth.v1beta1 import QueryAccountResponse
+from pyband.proto.cosmos.auth.v1beta1 import QueryBase as CosmosAuthServiceBase
+from pyband.proto.cosmos.base.abci.v1beta1 import TxResponse, AbciMessageLog, StringEvent, Attribute
+from pyband.proto.cosmos.base.tendermint.v1beta1 import GetLatestBlockResponse, GetLatestBlockRequest
+from pyband.proto.cosmos.base.tendermint.v1beta1 import ServiceBase as TendermintServiceBase
+from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
+from pyband.proto.cosmos.tx.v1beta1 import GetTxRequest, GetTxResponse, ModeInfoSingle
+from pyband.proto.cosmos.tx.v1beta1 import ServiceBase as CosmosTxServiceBase
+from pyband.proto.cosmos.tx.v1beta1 import Tx, TxBody, AuthInfo, SignerInfo, ModeInfo, Fee
+from pyband.proto.oracle.v1 import DataSource, OracleScript
+from pyband.proto.oracle.v1 import QueryBase as OracleQueryBase
+from pyband.proto.oracle.v1 import (
     QueryDataSourceRequest,
     QueryDataSourceResponse,
     QueryOracleScriptResponse,
@@ -24,44 +33,32 @@ from pyband.proto.oracle.v1.query_pb2 import (
     QueryRequestSearchRequest,
     QueryRequestSearchResponse,
 )
-
-from pyband.proto.oracle.v1.oracle_pb2 import Result, Report, Request, RawReport, RawRequest, IBCChannel, PriceResult
-
-from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2 import GetLatestBlockResponse
-
-from pyband.proto.tendermint.types.types_pb2 import (
-    BlockID,
+from pyband.proto.oracle.v1 import (
+    Result,
+    Report,
+    Request,
+    RawReport,
+    RawRequest,
+    IbcChannel,
+    PriceResult,
+    ResolveStatus,
+)
+from pyband.proto.tendermint.types import Block, BlockIdFlag
+from pyband.proto.tendermint.types import (
+    BlockId,
     PartSetHeader,
     Header,
     Data,
     Commit,
     CommitSig,
 )
-
-from pyband.proto.tendermint.version.types_pb2 import Consensus
-
-from pyband.proto.tendermint.types.block_pb2 import Block
-
-from pyband.proto.tendermint.types.evidence_pb2 import EvidenceList
-
-from pyband.proto.cosmos.tx.v1beta1.service_pb2 import GetTxRequest, GetTxResponse
-
-from pyband.proto.cosmos.tx.v1beta1.tx_pb2 import Tx, TxBody, AuthInfo, SignerInfo, ModeInfo, Fee
-
-from pyband.proto.cosmos.base.abci.v1beta1.abci_pb2 import TxResponse, ABCIMessageLog, StringEvent, Attribute
-
-from pyband.proto.cosmos.tx.signing.v1beta1.signing_pb2 import SIGN_MODE_DIRECT
-
-# Google
-from google.protobuf.timestamp_pb2 import Timestamp
-from google.protobuf.any_pb2 import Any
-
-from pyband.exceptions import NotFoundError, EmptyMsgError
+from pyband.proto.tendermint.types import EvidenceList
+from pyband.proto.tendermint.version import Consensus
 
 
-class OracleServicer(OracleServicerBase):
-    def DataSource(self, request: QueryDataSourceRequest, context) -> QueryDataSourceResponse:
-        if request.data_source_id == 1:
+class OracleService(OracleQueryBase):
+    async def data_source(self, query_data_source_request: QueryDataSourceRequest) -> QueryDataSourceResponse:
+        if query_data_source_request.data_source_id == 1:
             return QueryDataSourceResponse(
                 data_source=DataSource(
                     owner="band1jfdmjkxs3hvddsf4ef2wmsmte3s5llqhxqgcfe",
@@ -72,8 +69,8 @@ class OracleServicer(OracleServicerBase):
                 )
             )
 
-    def OracleScript(self, request: QueryOracleScriptResponse, context) -> QueryOracleScriptResponse:
-        if request.oracle_script_id == 1:
+    async def oracle_script(self, query_oracle_script_request: QueryOracleScriptResponse) -> QueryOracleScriptResponse:
+        if query_oracle_script_request.oracle_script_id == 1:
             return QueryOracleScriptResponse(
                 oracle_script=OracleScript(
                     owner="band1m5lq9u533qaya4q3nfyl6ulzqkpkhge9q8tpzs",
@@ -85,8 +82,8 @@ class OracleServicer(OracleServicerBase):
                 )
             )
 
-    def Request(self, request: QueryRequestRequest, context) -> QueryRequestResponse:
-        if request.request_id == 1:
+    async def request(self, query_request_request: QueryRequestRequest) -> QueryRequestResponse:
+        if query_request_request.request_id == 1:
             return QueryRequestResponse(
                 request=Request(
                     oracle_script_id=1,
@@ -103,22 +100,22 @@ class OracleServicer(OracleServicerBase):
                         RawRequest(external_id=2, data_source_id=2, calldata=b"QlRD"),
                         RawRequest(external_id=3, data_source_id=3, calldata=b"QlRD"),
                     ],
-                    ibc_channel=IBCChannel(
+                    ibc_channel=IbcChannel(
                         port_id="oracle",
                         channel_id="channel-2",
                     ),
                     execute_gas=300000,
                 ),
                 reports=[
-                    {
-                        "validator": "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
-                        "in_before_resolve": True,
-                        "raw_reports": [
+                    Report(
+                        validator="bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
+                        in_before_resolve=True,
+                        raw_reports=[
                             RawReport(external_id=1, exit_code=0, data=b"NTczMjcK"),
                             RawReport(external_id=2, exit_code=0, data=b"NTczMjcK"),
                             RawReport(external_id=3, exit_code=0, data=b"NTcyODYuMDE1Cg=="),
                         ],
-                    },
+                    ),
                 ],
                 result=Result(
                     client_id="from_pyband",
@@ -130,12 +127,12 @@ class OracleServicer(OracleServicerBase):
                     ans_count=2,
                     request_time=1620798812,
                     resolve_time=1620798814,
-                    resolve_status="RESOLVE_STATUS_SUCCESS",
+                    resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
                     result=b"AAAAAANqiDo=",
                 ),
             )
 
-    def Reporters(self, request: QueryReportersRequest, context) -> QueryReportersResponse:
+    async def reporters(self, query_reporters_request: QueryReportersRequest) -> QueryReportersResponse:
         return QueryReportersResponse(
             reporter=[
                 "band1yyv5jkqaukq0ajqn7vhkyhpff7h6e99ja7gvwg",
@@ -147,9 +144,9 @@ class OracleServicer(OracleServicerBase):
             ]
         )
 
-    def RequestPrice(self, request: QueryRequestPriceRequest, context):
+    async def request_price(self, query_request_price_request: QueryRequestPriceRequest):
         # Assume that price = 10 will return price not found error
-        if request.ask_count != 10:
+        if query_request_price_request.ask_count != 10:
             return QueryRequestPriceResponse(
                 price_results=[
                     PriceResult(
@@ -176,7 +173,7 @@ class OracleServicer(OracleServicerBase):
                 ]
             )
 
-    def RequestSearch(self, request: QueryRequestSearchRequest, context):
+    async def request_search(self, query_request_search_request: QueryRequestSearchRequest):
         return QueryRequestSearchResponse(
             request=QueryRequestResponse(
                 request=Request(
@@ -267,17 +264,17 @@ class OracleServicer(OracleServicerBase):
                     ans_count=12,
                     request_time=1625077316,
                     resolve_time=1625077324,
-                    resolve_status=1,
+                    resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
                     result=b"\000\000\000@\313\022\372/\200fpH\305\367\204\020h9\220\2621\336\276#\024m\323\322\271\213Q\331-\244\364\326\310\002\202o.\305&\300\345\177\312T\t\216\023{\213\311\035\300\350z\0246\337\316\326\220 x\270\333",
                 ),
             )
         )
 
 
-class CosmosTransactionServicer(CosmosTxServicerBase):
-    def GetTx(self, request: GetTxRequest, context) -> GetTxResponse:
+class CosmosTransactionService(CosmosTxServiceBase):
+    async def get_tx(self, get_tx_request: GetTxRequest) -> GetTxResponse:
         # Request id can come from request or report
-        if request.hash == "txhash":
+        if get_tx_request.hash == "txhash":
             return GetTxResponse(
                 tx=Tx(
                     body=TxBody(
@@ -295,7 +292,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                                     type_url="/cosmos.crypto.secp256k1.PubKey",
                                     value=b"\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
                                 ),
-                                mode_info=ModeInfo(single=ModeInfo.Single(mode=SIGN_MODE_DIRECT)),
+                                mode_info=ModeInfo(ModeInfoSingle(mode=SignMode.SIGN_MODE_DIRECT)),
                                 sequence=478,
                             )
                         ],
@@ -311,7 +308,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     data="0A090A0772657175657374",
                     raw_log="[{'events':[{'type':'message','attributes':[{'key':'action','value':'request'}]},{'type':'raw_request','attributes':[{'key':'data_source_id','value':'61'},{'key':'data_source_hash','value':'07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef'},{'key':'external_id','value':'6'},{'key':'calldata','value':'ETH BTC'},{'key':'data_source_id','value':'57'},{'key':'data_source_hash','value':'61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7'},{'key':'external_id','value':'0'},{'key':'calldata','value':'ETH BTC BAND'},{'key':'data_source_id','value':'62'},{'key':'data_source_hash','value':'107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289'},{'key':'external_id','value':'3'},{'key':'calldata','value':'ETH BTC BAND MIR UNI'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'5'},{'key':'calldata','value':'huobipro ETH BTC BAND'},{'key':'data_source_id','value':'59'},{'key':'data_source_hash','value':'5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d'},{'key':'external_id','value':'2'},{'key':'calldata','value':'ETH BTC BAND MIR UNI'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'4'},{'key':'calldata','value':'binance ETH BTC BAND MIR UNI'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'9'},{'key':'calldata','value':'bittrex ETH BTC'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'7'},{'key':'calldata','value':'kraken ETH BTC'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'8'},{'key':'calldata','value':'bitfinex ETH BTC'},{'key':'data_source_id','value':'58'},{'key':'data_source_hash','value':'7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461'},{'key':'external_id','value':'1'},{'key':'calldata','value':'ETH BTC BAND UNI'}]},{'type':'request','attributes':[{'key':'id','value':'154966'},{'key':'client_id','value':'from_bandd_2'},{'key':'oracle_script_id','value':'37'},{'key':'calldata','value':'0000000500000003455448000000034254430000000442414e44000000034d495200000003554e490000000000000064'},{'key':'ask_count','value':'16'},{'key':'min_count','value':'10'},{'key':'gas_used','value':'196024'},{'key':'validator','value':'bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc'},{'key':'validator','value':'bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv'},{'key':'validator','value':'bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg'},{'key':'validator','value':'bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus'},{'key':'validator','value':'bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq'},{'key':'validator','value':'bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62'},{'key':'validator','value':'bandvaloper1a570h9e3rtvfhm030ta5hvel7e7e4lh4pgv8wj'},{'key':'validator','value':'bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5'},{'key':'validator','value':'bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf'},{'key':'validator','value':'bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e'},{'key':'validator','value':'bandvaloper1u6skdqfp3dcmvqfx28ej8v9nadf6mmpq6sp52a'},{'key':'validator','value':'bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy'},{'key':'validator','value':'bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977'},{'key':'validator','value':'bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v'},{'key':'validator','value':'bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa'},{'key':'validator','value':'bandvaloper1dafxd4nacdry36tvsv6htaclkma4xhj6l9qrfv'}]}]}]",
                     logs=[
-                        ABCIMessageLog(
+                        AbciMessageLog(
                             events=[
                                 StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
                                 StringEvent(
@@ -345,7 +342,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     timestamp="2021-06-04T06:07:37Z",
                 ),
             )
-        elif request.hash == "txhashRequestMultiId":
+        elif get_tx_request.hash == "txhashRequestMultiId":
             return GetTxResponse(
                 tx=Tx(
                     body=TxBody(
@@ -363,7 +360,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                                     type_url="/cosmos.crypto.secp256k1.PubKey",
                                     value=b"\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
                                 ),
-                                mode_info=ModeInfo(single=ModeInfo.Single(mode=SIGN_MODE_DIRECT)),
+                                mode_info=ModeInfo(ModeInfoSingle(mode=SignMode.SIGN_MODE_DIRECT)),
                                 sequence=478,
                             )
                         ],
@@ -379,7 +376,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                     data="0A090A0772657175657374",
                     raw_log='[{"events":[{"type":"message","attributes":[{"key":"action","value":"request"}]},{"type":"raw_request","attributes":[{"key":"data_source_id","value":"61"},{"key":"data_source_hash","value":"07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef"},{"key":"external_id","value":"6"},{"key":"calldata","value":"ETH BTC"},{"key":"data_source_id","value":"57"},{"key":"data_source_hash","value":"61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7"},{"key":"external_id","value":"0"},{"key":"calldata","value":"ETH BTC BAND"},{"key":"data_source_id","value":"62"},{"key":"data_source_hash","value":"107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289"},{"key":"external_id","value":"3"},{"key":"calldata","value":"ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"5"},{"key":"calldata","value":"huobipro ETH BTC BAND"},{"key":"data_source_id","value":"59"},{"key":"data_source_hash","value":"5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d"},{"key":"external_id","value":"2"},{"key":"calldata","value":"ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"4"},{"key":"calldata","value":"binance ETH BTC BAND MIR UNI"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"9"},{"key":"calldata","value":"bittrex ETH BTC"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"7"},{"key":"calldata","value":"kraken ETH BTC"},{"key":"data_source_id","value":"60"},{"key":"data_source_hash","value":"2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac"},{"key":"external_id","value":"8"},{"key":"calldata","value":"bitfinex ETH BTC"},{"key":"data_source_id","value":"58"},{"key":"data_source_hash","value":"7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461"},{"key":"external_id","value":"1"},{"key":"calldata","value":"ETH BTC BAND UNI"}]},{"type":"request","attributes":[{"key":"id","value":"154966"},{"key":"client_id","value":"from_bandd_2"},{"key":"oracle_script_id","value":"37"},{"key":"calldata","value":"0000000500000003455448000000034254430000000442414e44000000034d495200000003554e490000000000000064"},{"key":"ask_count","value":"16"},{"key":"min_count","value":"10"},{"key":"gas_used","value":"196024"},{"key":"validator","value":"bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc"},{"key":"validator","value":"bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv"},{"key":"validator","value":"bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg"},{"key":"validator","value":"bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus"},{"key":"validator","value":"bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq"},{"key":"validator","value":"bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62"},{"key":"validator","value":"bandvaloper1a570h9e3rtvfhm030ta5hvel7e7e4lh4pgv8wj"},{"key":"validator","value":"bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5"},{"key":"validator","value":"bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf"},{"key":"validator","value":"bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e"},{"key":"validator","value":"bandvaloper1u6skdqfp3dcmvqfx28ej8v9nadf6mmpq6sp52a"},{"key":"validator","value":"bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy"},{"key":"validator","value":"bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977"},{"key":"validator","value":"bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v"},{"key":"validator","value":"bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa"},{"key":"validator","value":"bandvaloper1dafxd4nacdry36tvsv6htaclkma4xhj6l9qrfv"}]}]}]',
                     logs=[
-                        ABCIMessageLog(
+                        AbciMessageLog(
                             events=[
                                 StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
                                 StringEvent(
@@ -403,7 +400,7 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
                                 ),
                             ]
                         ),
-                        ABCIMessageLog(
+                        AbciMessageLog(
                             events=[
                                 StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
                                 StringEvent(
@@ -439,21 +436,20 @@ class CosmosTransactionServicer(CosmosTxServicerBase):
             )
 
 
-class AuthServicer(AuthServicerBase):
-    def Account(self, request, context) -> QueryAccountResponse:
-        if request.address == "noAccount":
+class AuthService(CosmosAuthServiceBase):
+    async def account(self, query_account_request) -> QueryAccountResponse:
+        if query_account_request.address == "noAccount":
             raise NotFoundError("Account not found")
         # Account exist
-        acc = BaseAccount(account_number=1)
-        any = Any()
-        any.Pack(acc)
-        return QueryAccountResponse(account=any)
+        base_acc = BaseAccount(account_number=1)
+        return QueryAccountResponse(account=Any(type_url="/cosmos.auth.v1beta1.BaseAccount", value=bytes(base_acc)))
 
 
-class TendermintServicer(TendermintServicerBase):
-    def GetLatestBlock(self, request, context) -> GetLatestBlockResponse:
+class TendermintService(TendermintServiceBase):
+    async def get_latest_block(self, get_latest_block_request: GetLatestBlockRequest) -> GetLatestBlockResponse:
+        print("test")
         return GetLatestBlockResponse(
-            block_id=BlockID(
+            block_id=BlockId(
                 hash=b"391E99908373F8590C928E0619956DA3D87EB654445DA4F25A185C9718561D53",
                 part_set_header=PartSetHeader(
                     total=1,
@@ -465,8 +461,8 @@ class TendermintServicer(TendermintServicerBase):
                     version=Consensus(block=10, app=0),
                     chain_id="bandchain",
                     height=1032007,
-                    time=Timestamp().FromJsonString("2020-11-05T09:15:18.445494105Z"),
-                    last_block_id=BlockID(
+                    time=parser.isoparse("2020-11-05T09:15:18.445494105Z"),
+                    last_block_id=BlockId(
                         hash=b"4BC01E257662B5F9337D615D06D5D19D8D79F7BA5A4022A85B4DC4ED3C59F7CA",
                         part_set_header=PartSetHeader(
                             total=1,
@@ -488,11 +484,11 @@ class TendermintServicer(TendermintServicerBase):
                         b"yAEoKBapCj5CcI40CAESDwAAAANCVEMAAAAAAAAAARgEIAMqC2Zyb21fcHliYW5kMhSQ78AMmxLrubEOPhhIwKK5oyk9oBIQCgoKBXViYW5kEgEwEMCEPRpqCibrWumHIQP+cIvaZlJP0sa86QaC44VVqFHgPSruT2KbBd6Q9R7ZvBJANbPqLRAgwwULWWwb5O2/eb6ddtDr65kRFgDcOTTGIqQS5Iz1NvHWHfkPKRoM8egErMsgE9YnuE+pAqoc/YvNfiIEVEVTVA=="
                     ]
                 ),
-                evidence=EvidenceList(evidence=None),
+                evidence=EvidenceList(evidence=[]),
                 last_commit=Commit(
                     height=1032006,
                     round=0,
-                    block_id=BlockID(
+                    block_id=BlockId(
                         hash=b"4BC01E257662B5F9337D615D06D5D19D8D79F7BA5A4022A85B4DC4ED3C59F7CA",
                         part_set_header=PartSetHeader(
                             total=1,
@@ -501,15 +497,15 @@ class TendermintServicer(TendermintServicerBase):
                     ),
                     signatures=[
                         CommitSig(
-                            block_id_flag=3,
+                            block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
                             validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
-                            timestamp=Timestamp().FromJsonString("2020-11-05T09:15:18.53815896Z"),
+                            timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                             signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
                         ),
                         CommitSig(
-                            block_id_flag=3,
+                            block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
                             validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
-                            timestamp=Timestamp().FromJsonString("2020-11-05T09:15:18.53815896Z"),
+                            timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                             signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
                         ),
                     ],
@@ -520,25 +516,13 @@ class TendermintServicer(TendermintServicerBase):
 
 @pytest.fixture(scope="module")
 def pyband_client(_grpc_server, grpc_addr):
-    from pyband.proto.oracle.v1.query_pb2_grpc import add_QueryServicer_to_server as add_oracle
-    from pyband.proto.cosmos.tx.v1beta1.service_pb2_grpc import add_ServiceServicer_to_server as add_cosmos_tx
-    from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import add_QueryServicer_to_server as add_auth
-    from pyband.proto.cosmos.base.tendermint.v1beta1.query_pb2_grpc import (
-        add_ServiceServicer_to_server as add_tendermint,
+    channel_for = ChannelFor(
+        services=[OracleService(), CosmosTransactionService(), AuthService(), TendermintService()]
     )
-
-    add_oracle(OracleServicer(), _grpc_server)
-    add_cosmos_tx(CosmosTransactionServicer(), _grpc_server)
-    add_auth(AuthServicer(), _grpc_server)
-    add_tendermint(TendermintServicer(), _grpc_server)
-
-    _grpc_server.add_insecure_port(grpc_addr)
-    _grpc_server.start()
-
-    from pyband.client import Client
-
-    yield Client(grpc_addr, insecure=True)
-    _grpc_server.stop(grace=None)
+    loop = asyncio.get_event_loop()
+    channel = loop.run_until_complete(channel_for.__aenter__())
+    yield Client(channel)
+    channel.close()
 
 
 def test_get_data_source_success(pyband_client):
@@ -554,7 +538,7 @@ def test_get_data_source_success(pyband_client):
 
 
 def test_get_data_source_invalid(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_data_source(0)
 
 
@@ -562,7 +546,7 @@ def test_get_data_source_invalid_input(pyband_client):
     with pytest.raises(TypeError):
         pyband_client.get_data_source("hi")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_data_source(-1)
 
 
@@ -580,7 +564,7 @@ def test_get_oracle_script_success(pyband_client):
 
 
 def test_get_oracle_script_invalid(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_oracle_script(0)
 
 
@@ -588,7 +572,7 @@ def test_get_oracle_script_invalid_input(pyband_client):
     with pytest.raises(TypeError):
         pyband_client.get_oracle_script("hi")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_oracle_script(-1)
 
 
@@ -610,22 +594,22 @@ def test_get_request_by_id_success(pyband_client):
                 RawRequest(external_id=2, data_source_id=2, calldata=b"QlRD"),
                 RawRequest(external_id=3, data_source_id=3, calldata=b"QlRD"),
             ],
-            ibc_channel=IBCChannel(
+            ibc_channel=IbcChannel(
                 port_id="oracle",
                 channel_id="channel-2",
             ),
             execute_gas=300000,
         ),
         reports=[
-            {
-                "validator": "bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
-                "in_before_resolve": True,
-                "raw_reports": [
+            Report(
+                validator="bandvaloper1j9vk75jjty02elhwqqjehaspfslaem8pr20qst",
+                in_before_resolve=True,
+                raw_reports=[
                     RawReport(external_id=1, exit_code=0, data=b"NTczMjcK"),
                     RawReport(external_id=2, exit_code=0, data=b"NTczMjcK"),
                     RawReport(external_id=3, exit_code=0, data=b"NTcyODYuMDE1Cg=="),
                 ],
-            },
+            )
         ],
         result=Result(
             client_id="from_pyband",
@@ -637,7 +621,7 @@ def test_get_request_by_id_success(pyband_client):
             ans_count=2,
             request_time=1620798812,
             resolve_time=1620798814,
-            resolve_status="RESOLVE_STATUS_SUCCESS",
+            resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
             result=b"AAAAAANqiDo=",
         ),
     )
@@ -648,17 +632,17 @@ def test_get_request_by_id_invalid_input(pyband_client):
     with pytest.raises(TypeError):
         pyband_client.get_request_by_id("hi")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_request_by_id(-1)
 
 
 def test_get_request_by_id_not_found(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_request_by_id(1234556)
 
 
 def test_get_request_by_id_invalid(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_request_by_id(0)
 
 
@@ -676,14 +660,14 @@ def test_get_reporters_success(pyband_client):
 
 
 def test_get_reporters_invalid_input(pyband_client):
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):
         pyband_client.get_reporters(1)
 
 
 def test_get_latest_block(pyband_client):
     latest_block = pyband_client.get_latest_block()
     mock_result = GetLatestBlockResponse(
-        block_id=BlockID(
+        block_id=BlockId(
             hash=b"391E99908373F8590C928E0619956DA3D87EB654445DA4F25A185C9718561D53",
             part_set_header=PartSetHeader(
                 total=1,
@@ -695,8 +679,8 @@ def test_get_latest_block(pyband_client):
                 version=Consensus(block=10, app=0),
                 chain_id="bandchain",
                 height=1032007,
-                time=Timestamp().FromJsonString("2020-11-05T09:15:18.445494105Z"),
-                last_block_id=BlockID(
+                time=parser.isoparse("2020-11-05T09:15:18.445494105Z"),
+                last_block_id=BlockId(
                     hash=b"4BC01E257662B5F9337D615D06D5D19D8D79F7BA5A4022A85B4DC4ED3C59F7CA",
                     part_set_header=PartSetHeader(
                         total=1,
@@ -718,11 +702,11 @@ def test_get_latest_block(pyband_client):
                     b"yAEoKBapCj5CcI40CAESDwAAAANCVEMAAAAAAAAAARgEIAMqC2Zyb21fcHliYW5kMhSQ78AMmxLrubEOPhhIwKK5oyk9oBIQCgoKBXViYW5kEgEwEMCEPRpqCibrWumHIQP+cIvaZlJP0sa86QaC44VVqFHgPSruT2KbBd6Q9R7ZvBJANbPqLRAgwwULWWwb5O2/eb6ddtDr65kRFgDcOTTGIqQS5Iz1NvHWHfkPKRoM8egErMsgE9YnuE+pAqoc/YvNfiIEVEVTVA=="
                 ]
             ),
-            evidence=EvidenceList(evidence=None),
+            evidence=EvidenceList(evidence=[]),
             last_commit=Commit(
                 height=1032006,
                 round=0,
-                block_id=BlockID(
+                block_id=BlockId(
                     hash=b"4BC01E257662B5F9337D615D06D5D19D8D79F7BA5A4022A85B4DC4ED3C59F7CA",
                     part_set_header=PartSetHeader(
                         total=1,
@@ -731,15 +715,15 @@ def test_get_latest_block(pyband_client):
                 ),
                 signatures=[
                     CommitSig(
-                        block_id_flag=3,
+                        block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
                         validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
-                        timestamp=Timestamp().FromJsonString("2020-11-05T09:15:18.53815896Z"),
+                        timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                         signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
                     ),
                     CommitSig(
-                        block_id_flag=3,
+                        block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
                         validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
-                        timestamp=Timestamp().FromJsonString("2020-11-05T09:15:18.53815896Z"),
+                        timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                         signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
                     ),
                 ],
@@ -756,22 +740,22 @@ def test_get_account_success(pyband_client):
 
 def test_get_account_not_exist(pyband_client):
     account = pyband_client.get_account("noAccount")
-    assert account == None
+    assert account is None
 
 
 def test_get_account_invalid_input(pyband_client):
     account = pyband_client.get_account(2)
-    assert account == None
+    assert account is None
 
 
 def test_get_req_id_by_tx_hash_success(pyband_client):
-    reqId = pyband_client.get_request_id_by_tx_hash("txhash")
-    assert reqId == [154966]
+    req_id = pyband_client.get_request_id_by_tx_hash("txhash")
+    assert req_id == [154966]
 
 
 def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
-    reqId = pyband_client.get_request_id_by_tx_hash(b"txhashRequestMultiId")
-    assert reqId == [111111, 222222]
+    req_id = pyband_client.get_request_id_by_tx_hash("txhashRequestMultiId")
+    assert req_id == [111111, 222222]
 
 
 def test_get_chain_id(pyband_client):
@@ -793,7 +777,7 @@ def test_get_reference_data_success(pyband_client):
 
 # Assume that this input price will return price not found error
 def test_get_reference_data_wrong_price(pyband_client):
-    with pytest.raises(grpc.RpcError):
+    with pytest.raises(grpclib.exceptions.GRPCError):
         pyband_client.get_reference_data(["ETH/USDT", "BTC/USDT"], 3, 10)
 
 
@@ -899,7 +883,7 @@ def test_get_latest_request_success(pyband_client):
                 ans_count=12,
                 request_time=1625077316,
                 resolve_time=1625077324,
-                resolve_status=1,
+                resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
                 result=b"\000\000\000@\313\022\372/\200fpH\305\367\204\020h9\220\2621\336\276#\024m\323\322\271\213Q\331-\244\364\326\310\002\202o.\305&\300\345\177\312T\t\216\023{\213\311\035\300\350z\0246\337\316\326\220 x\270\333",
             ),
         )

@@ -1,7 +1,7 @@
 import pytest
 import math
 
-from pyband.utils import is_bip44, bip44_to_list, get_bip32_byte, split_packet, NotBip44Error, IncorrectLengthError
+from pyband.utils import is_bip44, bip44_to_list, get_bip32_byte, split_packet, NotBip44Error
 
 
 @pytest.fixture

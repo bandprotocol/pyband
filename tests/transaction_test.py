@@ -1,18 +1,21 @@
-import pytest
-from google.protobuf.any_pb2 import Any
+import asyncio
 
+import pytest
+from betterproto.lib.google.protobuf import Any
+from grpclib.testing import ChannelFor
+
+from pyband import Client
 from pyband.exceptions import EmptyMsgError, UndefinedError, ValueTooLargeError
 from pyband.transaction import Transaction
 from pyband.wallet import PrivateKey
 
-from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
-from pyband.proto.cosmos.tx.v1beta1.tx_pb2 import Fee, SignDoc
-from pyband.proto.cosmos.auth.v1beta1.query_pb2 import QueryAccountRequest, QueryAccountResponse
-from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
+from pyband.proto.cosmos.auth.v1beta1 import BaseAccount
+from pyband.proto.cosmos.base.v1beta1 import Coin
+from pyband.proto.cosmos.tx.v1beta1 import SignDoc
+from pyband.proto.cosmos.auth.v1beta1 import QueryAccountRequest, QueryAccountResponse
+from pyband.messages.oracle.v1 import MsgRequestData
 
-# Servicers
-from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import QueryServicer as QueryServicerBase
-
+from pyband.proto.cosmos.auth.v1beta1 import QueryBase as CosmosAuthServiceBase
 
 MNEMONIC = "s"
 PRIVATE_KEY = PrivateKey.from_mnemonic(MNEMONIC)
@@ -21,8 +24,8 @@ ADDRESS = PUBLIC_KEY.to_address()
 SENDER = ADDRESS.to_acc_bech32()
 
 
-class QueryServicer(QueryServicerBase):
-    def Account(self, request: QueryAccountRequest, context):
+class AuthService(CosmosAuthServiceBase):
+    async def account(self, query_accounts_request: QueryAccountRequest):
         return QueryAccountResponse(
             account=Any(
                 type_url="/cosmos.auth.v1beta1.BaseAccount",
@@ -33,17 +36,11 @@ class QueryServicer(QueryServicerBase):
 
 @pytest.fixture(scope="module")
 def pyband_client(_grpc_server, grpc_addr):
-    from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import add_QueryServicer_to_server as add_cosmos_query
-
-    add_cosmos_query(QueryServicer(), _grpc_server)
-
-    _grpc_server.add_insecure_port(grpc_addr)
-    _grpc_server.start()
-
-    from pyband.client import Client
-
-    yield Client(grpc_addr, insecure=True)
-    _grpc_server.stop(grace=None)
+    channel_for = ChannelFor(services=[AuthService()])
+    loop = asyncio.get_event_loop()
+    channel = loop.run_until_complete(channel_for.__aenter__())
+    yield Client(channel)
+    channel.close()
 
 
 def test_get_sign_doc_success():

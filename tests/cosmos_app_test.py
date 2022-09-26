@@ -15,8 +15,8 @@ from mnemonic import Mnemonic
 from pyband.exceptions import *
 from pyband.utils import bip44_to_list
 from pyband.cosmos_app import CosmosApp, CommException
-from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
-from pyband.proto.oracle.v1.tx_pb2 import MsgCreateDataSource
+from pyband.proto.cosmos.base.v1beta1 import Coin
+from pyband.messages.oracle.v1 import MsgCreateDataSource
 from pyband.transaction import Transaction
 from pyband.wallet import Ledger, PrivateKey
 

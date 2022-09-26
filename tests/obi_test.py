@@ -51,32 +51,32 @@ def test_encode_decode_unsigned_integer_success():
 
 def test_encode_decode_unsigned_integer_fail():
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("u8").encode(2 ** 8)
+        PyObiInteger("u8").encode(2**8)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("u16").encode(2 ** 16)
+        PyObiInteger("u16").encode(2**16)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("u32").encode(2 ** 32)
+        PyObiInteger("u32").encode(2**32)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("u64").encode(2 ** 64)
+        PyObiInteger("u64").encode(2**64)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("u128").encode(2 ** 128)
+        PyObiInteger("u128").encode(2**128)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("u256").encode(2 ** 256)
+        PyObiInteger("u256").encode(2**256)
 
     assert str(e.value) == "int too big to convert"
 
@@ -92,12 +92,12 @@ def test_encode_decode_signed_integer():
         "000000000000000000000000000000000000000000000000000000000000002a"
     )
 
-    assert PyObiInteger("i8").encode(-(2 ** 7)) == bytes.fromhex("80")
-    assert PyObiInteger("i16").encode(-(2 ** 15)) == bytes.fromhex("8000")
-    assert PyObiInteger("i32").encode(-(2 ** 31)) == bytes.fromhex("80000000")
-    assert PyObiInteger("i64").encode(-(2 ** 63)) == bytes.fromhex("8000000000000000")
-    assert PyObiInteger("i128").encode(-(2 ** 127)) == bytes.fromhex("80000000000000000000000000000000")
-    assert PyObiInteger("i256").encode(-(2 ** 255)) == bytes.fromhex(
+    assert PyObiInteger("i8").encode(-(2**7)) == bytes.fromhex("80")
+    assert PyObiInteger("i16").encode(-(2**15)) == bytes.fromhex("8000")
+    assert PyObiInteger("i32").encode(-(2**31)) == bytes.fromhex("80000000")
+    assert PyObiInteger("i64").encode(-(2**63)) == bytes.fromhex("8000000000000000")
+    assert PyObiInteger("i128").encode(-(2**127)) == bytes.fromhex("80000000000000000000000000000000")
+    assert PyObiInteger("i256").encode(-(2**255)) == bytes.fromhex(
         "8000000000000000000000000000000000000000000000000000000000000000"
     )
 
@@ -114,47 +114,47 @@ def test_encode_decode_signed_integer():
         bytes.fromhex("000000000000000000000000000000000000000000000000000000000000002a")
     ) == (42, b"")
 
-    assert PyObiInteger("i8").decode(bytes.fromhex("80")) == (-(2 ** 7), b"")
-    assert PyObiInteger("i16").decode(bytes.fromhex("8000")) == (-(2 ** 15), b"")
-    assert PyObiInteger("i32").decode(bytes.fromhex("80000000")) == (-(2 ** 31), b"")
-    assert PyObiInteger("i64").decode(bytes.fromhex("8000000000000000")) == (-(2 ** 63), b"")
+    assert PyObiInteger("i8").decode(bytes.fromhex("80")) == (-(2**7), b"")
+    assert PyObiInteger("i16").decode(bytes.fromhex("8000")) == (-(2**15), b"")
+    assert PyObiInteger("i32").decode(bytes.fromhex("80000000")) == (-(2**31), b"")
+    assert PyObiInteger("i64").decode(bytes.fromhex("8000000000000000")) == (-(2**63), b"")
     assert PyObiInteger("i128").decode(bytes.fromhex("80000000000000000000000000000000")) == (
-        -(2 ** 127),
+        -(2**127),
         b"",
     )
     assert PyObiInteger("i256").decode(
         bytes.fromhex("8000000000000000000000000000000000000000000000000000000000000000")
-    ) == (-(2 ** 255), b"")
+    ) == (-(2**255), b"")
 
 
 def test_encode_decode_signed_integer_fail():
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("i8").encode(2 ** 8)
+        PyObiInteger("i8").encode(2**8)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("i16").encode(2 ** 16)
+        PyObiInteger("i16").encode(2**16)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("i32").encode(2 ** 32)
+        PyObiInteger("i32").encode(2**32)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("i64").encode(2 ** 64)
+        PyObiInteger("i64").encode(2**64)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("i128").encode(2 ** 128)
+        PyObiInteger("i128").encode(2**128)
 
     assert str(e.value) == "int too big to convert"
 
     with pytest.raises(OverflowError) as e:
-        PyObiInteger("i256").encode(2 ** 256)
+        PyObiInteger("i256").encode(2**256)
 
     assert str(e.value) == "int too big to convert"
 
@@ -183,6 +183,7 @@ def test_encode_decode_bytes():
 def test_encode_decode_array():
     # encode
     # bool
+    print(PyObiArray("[bool;0]").encode([]))
     assert PyObiArray("[bool;0]").encode([]) == bytes.fromhex("")
     assert PyObiArray("[bool;1]").encode([False]) == bytes.fromhex("00")
     assert PyObiArray("[bool;5]").encode([True, False, True, False, True]) == bytes.fromhex("0100010001")
