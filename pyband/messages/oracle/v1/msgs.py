@@ -22,7 +22,7 @@ class MsgRequestData(BaseMessageWrapper, MsgRequestDataProto):
 
 
 @dataclass
-class MsgCreateDataSource(MessageWrapper, MsgCreateDataSourceProto):
+class MsgCreateDataSource(BaseMessageWrapper, MsgCreateDataSourceProto):
     @property
     def type_url(self):
         return "/oracle.v1.MsgCreateDataSource"
@@ -32,7 +32,7 @@ class MsgCreateDataSource(MessageWrapper, MsgCreateDataSourceProto):
         return "oracle/CreateDataSource"
 
 
-class MsgEditDataSource(MessageWrapper, MsgEditDataSourceProto):
+class MsgEditDataSource(BaseMessageWrapper, MsgEditDataSourceProto):
     @property
     def type_url(self):
         return "/oracle.v1.MsgEditDataSource"
@@ -42,7 +42,7 @@ class MsgEditDataSource(MessageWrapper, MsgEditDataSourceProto):
         return "oracle/EditDataSource"
 
 
-class MsgCreateOracleScript(MessageWrapper, MsgCreateOracleScriptProto):
+class MsgCreateOracleScript(BaseMessageWrapper, MsgCreateOracleScriptProto):
     @property
     def legacy_url(self):
         return "/oracle.v1.MsgCreateOracleScript"
@@ -52,7 +52,7 @@ class MsgCreateOracleScript(MessageWrapper, MsgCreateOracleScriptProto):
         return "oracle/CreateOracleScript"
 
 
-class MsgEditOracleScript(MessageWrapper, MsgEditOracleScriptProto):
+class MsgEditOracleScript(BaseMessageWrapper, MsgEditOracleScriptProto):
     @property
     def legacy_url(self):
         return "/oracle.v1.MsgEditOracleScript"

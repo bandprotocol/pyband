@@ -22,7 +22,7 @@ class MsgSend(BaseMessageWrapper, MsgSendProto):
 
 
 @dataclass
-class MsgMultiSend(MessageWrapper, MsgMultiSendProto):
+class MsgMultiSend(BaseMessageWrapper, MsgMultiSendProto):
     @property
     def type_url(self):
         return "/cosmos.bank.v1beta1.MsgMultiSend"

@@ -4,9 +4,9 @@ from typing import List, Tuple, Iterable
 from betterproto.lib.google.protobuf import Any as AnyProto
 
 from .client import Client
-from .constant import MAX_MEMO_CHARACTERS
+from .constants import MAX_MEMO_CHARACTERS
 from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
-from .messages.common import MessageWrapper
+from .messages.base import BaseMessageWrapper
 from .proto.cosmos.base.v1beta1 import Coin
 from .proto.cosmos.tx.signing.v1beta1 import SignMode
 from .proto.cosmos.tx.v1beta1 import Fee, TxBody, ModeInfo, SignerInfo, AuthInfo, SignDoc, TxRaw, ModeInfoSingle
@@ -16,7 +16,7 @@ from .wallet import PublicKey
 class Transaction:
     def __init__(
         self,
-        msgs: List[MessageWrapper] = None,
+        msgs: List[BaseMessageWrapper] = None,
         account_num: int = None,
         sequence: int = None,
         chain_id: str = None,
@@ -33,10 +33,10 @@ class Transaction:
         self.memo = memo
 
     @staticmethod
-    def __convert_msgs(msgs: Iterable[MessageWrapper]) -> List[AnyProto]:
+    def __convert_msgs(msgs: Iterable[BaseMessageWrapper]) -> List[AnyProto]:
         return [AnyProto(type_url=msg.type_url, value=bytes(msg)) for msg in msgs]
 
-    def with_messages(self, *msgs: MessageWrapper) -> "Transaction":
+    def with_messages(self, *msgs: BaseMessageWrapper) -> "Transaction":
         self.msgs.extend(msgs)
         return self
 

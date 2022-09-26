@@ -25,7 +25,7 @@ class MsgBeginRedelegate(BaseMessageWrapper, MsgBeginRedelegateProto):
 
 
 @dataclass
-class MsgDelegate(MessageWrapper, MsgDelegateProto):
+class MsgDelegate(BaseMessageWrapper, MsgDelegateProto):
     @property
     def type_url(self):
         return "/cosmos.staking.v1beta1.MsgDelegate"
@@ -36,7 +36,7 @@ class MsgDelegate(MessageWrapper, MsgDelegateProto):
 
 
 @dataclass
-class MsgUndelegate(MessageWrapper, MsgUndelegateProto):
+class MsgUndelegate(BaseMessageWrapper, MsgUndelegateProto):
     @property
     def type_url(self):
         return "/cosmos.staking.v1beta1.MsgUndelegate"
