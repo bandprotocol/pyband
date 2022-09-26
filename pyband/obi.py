@@ -1,5 +1,4 @@
 from typing import Any, Tuple
-
 from .exceptions import SchemaError, DecodeError
 
 
@@ -16,6 +15,9 @@ class PyObiSpec(object):
             if impl.match_schema(spec):
                 return impl(spec)
         raise SchemaError("Cannot parse spec: {}".format(spec))
+
+    def __init__(self, spec):
+        raise NotImplementedError()
 
     @classmethod
     def match_schema(cls, schema):
@@ -48,7 +50,7 @@ class PyObiInteger(PyObiSpec):
 
 
 class PyObiBool(PyObiSpec):
-    def __init__(self):
+    def __init__(self, spec="bool"):
         pass
 
     @classmethod
@@ -79,7 +81,7 @@ class PyObiArray(PyObiSpec):
             return False
         try:
             [spec, size] = schema[1:-1].rsplit(";", 1)
-        except ValueError:
+        except:
             return False
 
         if not size.isdigit():
@@ -169,7 +171,7 @@ class PyObiStruct(PyObiSpec):
 
 
 class PyObiString(PyObiSpec):
-    def __init__(self):
+    def __init__(self, spec="string"):
         pass
 
     @classmethod
@@ -185,7 +187,7 @@ class PyObiString(PyObiSpec):
 
 
 class PyObiBytes(PyObiSpec):
-    def __init__(self):
+    def __init__(self, spec="bytes"):
         pass
 
     @classmethod
