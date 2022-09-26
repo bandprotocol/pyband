@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from ....messages.base import BaseMessageWrapper
 from ....proto.cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
 from ....proto.oracle.v1 import MsgCreateDataSource as MsgCreateDataSourceProto
-from ....proto.oracle.v1 import MsgCreateDataSource as MsgRequestDataProto
 from ....proto.oracle.v1 import MsgCreateOracleScript as MsgCreateOracleScriptProto
 from ....proto.oracle.v1 import MsgEditDataSource as MsgEditDataSourceProto
 from ....proto.oracle.v1 import MsgEditOracleScript as MsgEditOracleScriptProto
+from ....proto.oracle.v1 import MsgRequestData as MsgRequestDataProto
 
 assert __cosmos_base_v1_beta1__
 

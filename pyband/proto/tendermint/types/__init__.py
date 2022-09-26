@@ -18,7 +18,7 @@ from .. import (
 
 
 class BlockIdFlag(betterproto.Enum):
-    """BlockIdFlag indicates which BlcokID the signature is for"""
+    """BlockIdFlag indicates which BlockID the signature is for"""
 
     BLOCK_ID_FLAG_UNKNOWN = 0
     BLOCK_ID_FLAG_ABSENT = 1
