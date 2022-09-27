@@ -515,7 +515,7 @@ class TendermintService(TendermintServiceBase):
 
 
 @pytest.fixture(scope="module")
-def pyband_client(_grpc_server, grpc_addr):
+def pyband_client():
     channel_for = ChannelFor(
         services=[OracleService(), CosmosTransactionService(), AuthService(), TendermintService()]
     )

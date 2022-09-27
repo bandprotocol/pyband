@@ -16,7 +16,15 @@ setuptools.setup(
     author_email="dev@bandprotocol.com",
     url="https://github.com/bandprotocol/bandchain",
     keywords=["BAND", "BLOCKCHAIN", "ORACLE"],
-    install_requires=["bech32==1.2.0", "bip32==0.0.8", "ecdsa==0.15", "mnemonic==0.19", "betterproto==2.0.0b5"],
+    install_requires=[
+        "bech32==1.2.0",
+        "bip32==0.0.8",
+        "ecdsa==0.15",
+        "mnemonic==0.19",
+        "betterproto==2.0.0b5",
+        "python_dateutil==2.8.2",
+        "ledgerblue==0.1.42",
+    ],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",

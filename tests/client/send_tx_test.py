@@ -76,7 +76,7 @@ class CosmosTransactionService(CosmosTxServiceBase):
 
 
 @pytest.fixture(scope="module")
-def pyband_client(_grpc_server, grpc_addr):
+def pyband_client():
     channel_for = ChannelFor(services=[CosmosTransactionService()])
     loop = asyncio.get_event_loop()
     channel = loop.run_until_complete(channel_for.__aenter__())
