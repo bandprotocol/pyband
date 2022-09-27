@@ -2,15 +2,14 @@ import os
 
 from pyband import Client, Transaction, PrivateKey
 
-from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
-from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
-from google.protobuf.json_format import MessageToJson
+from pyband.proto.cosmos.base.v1beta1 import Coin
+from pyband.messages.oracle.v1 import MsgRequestData
 
 
 def main():
     # Step 1 Create a gRPC connection
     grpc_url = "laozi-testnet5.bandchain.org"
-    c = Client(grpc_url, insecure=True)
+    c = Client.from_endpoint(grpc_url, 443)
 
     # Step 2 Convert a menmonic to private key, public key, and sender
     MNEMONIC = os.getenv("MNEMONIC")
@@ -26,7 +25,7 @@ def main():
         ask_count=4,
         min_count=3,
         client_id="BandProtocol",
-        fee_limit=[Coin(amount="100", denom="uband")],
+        fee_limit=[Coin(amount="112", denom="uband")],
         prepare_gas=50000,
         execute_gas=200000,
         sender=sender,
@@ -60,7 +59,7 @@ def main():
     tx_block = c.send_tx_block_mode(tx_raw_bytes)
 
     # Converting to JSON for readability
-    print(MessageToJson(tx_block))
+    print(tx_block.to_json(indent=4))
 
 
 if __name__ == "__main__":
