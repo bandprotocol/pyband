@@ -3,7 +3,6 @@ import time
 from typing import List, Optional, Any
 
 from grpclib.client import Channel
-from grpclib.exceptions import GRPCError
 
 from .data import ReferencePrice, ReferencePriceUpdated
 from .exceptions import NotFoundError, EmptyMsgError
@@ -56,7 +55,7 @@ class Client:
             Channel(
                 host=grpc_endpoint,
                 port=port,
-                ssl=False if insecure else True,
+                ssl=False if not insecure else True,
             )
         )
 

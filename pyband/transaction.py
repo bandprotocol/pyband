@@ -45,12 +45,11 @@ class Transaction:
             raise EmptyMsgError("messsage is empty, please use with_messages at least 1 message")
 
         account = client.get_account(sender)
-        if account is not None:
-            self.account_num = account.account_number
-            self.sequence = account.sequence
-            return self
-        else:
+        if account is None:
             raise NotFoundError("Account doesn't exist")
+        self.account_num = account.account_number
+        self.sequence = account.sequence
+        return self
 
     def with_account_num(self, account_num: int) -> "Transaction":
         self.account_num = account_num
@@ -118,7 +117,7 @@ class Transaction:
             account_number=self.account_num,
         )
 
-    def get_sign_message(self) -> bytes:
+    def get_sign_message_for_legacy_codec(self) -> bytes:
         msg = {
             "account_number": str(self.account_num),
             "chain_id": self.chain_id,

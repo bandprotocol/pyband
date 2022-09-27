@@ -49,7 +49,7 @@ def main():
     )
 
     # Sign the transaction using the ledger
-    signature = ledger.sign(txn.get_sign_message())
+    signature = ledger.sign(txn.get_sign_message_for_legacy_codec())
     tx_raw_bytes = txn.get_tx_data(signature, public_key, SignMode.SIGN_MODE_LEGACY_AMINO_JSON)
 
     # Broadcast the transaction

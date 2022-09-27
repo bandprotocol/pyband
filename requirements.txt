@@ -1,9 +1,0 @@
-bech32==1.2.0
-betterproto==2.0.0b5
-bip32==0.0.8
-ecdsa==0.15
-grpclib==0.4.3
-ledgerblue==0.1.42
-mnemonic==0.19
-pytest==6.0.1
-python_dateutil==2.8.2

@@ -3,9 +3,9 @@ from typing import Tuple, Optional
 
 from bech32 import bech32_encode, bech32_decode, convertbits
 from bip32 import BIP32
-from ecdsa.keys import SigningKey, VerifyingKey, BadSignatureError
 from ecdsa.curves import SECP256k1
 from ecdsa.der import remove_sequence, remove_integer, UnexpectedDER
+from ecdsa.keys import SigningKey, VerifyingKey, BadSignatureError
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
 
