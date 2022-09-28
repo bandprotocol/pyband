@@ -2,6 +2,7 @@ import asyncio
 
 import grpclib.exceptions
 import pytest
+import pytest_asyncio
 from betterproto.lib.google.protobuf import Any
 from dateutil import parser
 from grpclib.testing import ChannelFor
@@ -447,7 +448,6 @@ class AuthService(CosmosAuthServiceBase):
 
 class TendermintService(TendermintServiceBase):
     async def get_latest_block(self, get_latest_block_request: GetLatestBlockRequest) -> GetLatestBlockResponse:
-        print("test")
         return GetLatestBlockResponse(
             block_id=BlockId(
                 hash=b"391E99908373F8590C928E0619956DA3D87EB654445DA4F25A185C9718561D53",
@@ -514,19 +514,28 @@ class TendermintService(TendermintServiceBase):
         )
 
 
-@pytest.fixture(scope="module")
-def pyband_client():
+@pytest_asyncio.fixture(scope="module")
+async def pyband_client():
     channel_for = ChannelFor(
         services=[OracleService(), CosmosTransactionService(), AuthService(), TendermintService()]
     )
-    loop = asyncio.get_event_loop()
-    channel = loop.run_until_complete(channel_for.__aenter__())
+    channel = await channel_for.__aenter__()
     yield Client(channel)
     channel.close()
 
 
-def test_get_data_source_success(pyband_client):
-    data_source = pyband_client.get_data_source(1)
+@pytest.fixture(scope="module")
+def event_loop():
+    """Change event_loop fixture to module level."""
+    policy = asyncio.get_event_loop_policy()
+    loop = policy.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest.mark.asyncio
+async def test_get_data_source_success(pyband_client):
+    data_source = await pyband_client.get_data_source(1)
     mock_result = DataSource(
         owner="band1jfdmjkxs3hvddsf4ef2wmsmte3s5llqhxqgcfe",
         name="DS1",
@@ -537,21 +546,24 @@ def test_get_data_source_success(pyband_client):
     assert data_source == mock_result
 
 
-def test_get_data_source_invalid(pyband_client):
+@pytest.mark.asyncio
+async def test_get_data_source_invalid(pyband_client):
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_data_source(0)
+        await pyband_client.get_data_source(0)
 
 
-def test_get_data_source_invalid_input(pyband_client):
+@pytest.mark.asyncio
+async def test_get_data_source_invalid_input(pyband_client):
     with pytest.raises(TypeError):
-        pyband_client.get_data_source("hi")
+        await pyband_client.get_data_source("hi")
 
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_data_source(-1)
+        await pyband_client.get_data_source(-1)
 
 
-def test_get_oracle_script_success(pyband_client):
-    oracle_script = pyband_client.get_oracle_script(1)
+@pytest.mark.asyncio
+async def test_get_oracle_script_success(pyband_client):
+    oracle_script = await pyband_client.get_oracle_script(1)
     mock_result = OracleScript(
         owner="band1m5lq9u533qaya4q3nfyl6ulzqkpkhge9q8tpzs",
         name="Cryptocurrency Price in USD",
@@ -563,21 +575,24 @@ def test_get_oracle_script_success(pyband_client):
     assert oracle_script == mock_result
 
 
-def test_get_oracle_script_invalid(pyband_client):
+@pytest.mark.asyncio
+async def test_get_oracle_script_invalid(pyband_client):
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_oracle_script(0)
+        await pyband_client.get_oracle_script(0)
 
 
-def test_get_oracle_script_invalid_input(pyband_client):
+@pytest.mark.asyncio
+async def test_get_oracle_script_invalid_input(pyband_client):
     with pytest.raises(TypeError):
-        pyband_client.get_oracle_script("hi")
+        await pyband_client.get_oracle_script("hi")
 
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_oracle_script(-1)
+        await pyband_client.get_oracle_script(-1)
 
 
-def test_get_request_by_id_success(pyband_client):
-    response = pyband_client.get_request_by_id(1)
+@pytest.mark.asyncio
+async def test_get_request_by_id_success(pyband_client):
+    response = await pyband_client.get_request_by_id(1)
     mock_result = QueryRequestResponse(
         request=Request(
             oracle_script_id=1,
@@ -628,26 +643,30 @@ def test_get_request_by_id_success(pyband_client):
     assert response == mock_result
 
 
-def test_get_request_by_id_invalid_input(pyband_client):
+@pytest.mark.asyncio
+async def test_get_request_by_id_invalid_input(pyband_client):
     with pytest.raises(TypeError):
-        pyband_client.get_request_by_id("hi")
+        await pyband_client.get_request_by_id("hi")
 
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_request_by_id(-1)
+        await pyband_client.get_request_by_id(-1)
 
 
-def test_get_request_by_id_not_found(pyband_client):
+@pytest.mark.asyncio
+async def test_get_request_by_id_not_found(pyband_client):
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_request_by_id(1234556)
+        await pyband_client.get_request_by_id(1234556)
 
 
-def test_get_request_by_id_invalid(pyband_client):
+@pytest.mark.asyncio
+async def test_get_request_by_id_invalid(pyband_client):
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_request_by_id(0)
+        await pyband_client.get_request_by_id(0)
 
 
-def test_get_reporters_success(pyband_client):
-    reporters = pyband_client.get_reporters("validator")
+@pytest.mark.asyncio
+async def test_get_reporters_success(pyband_client):
+    reporters = await pyband_client.get_reporters("validator")
     mock_result = [
         "band1yyv5jkqaukq0ajqn7vhkyhpff7h6e99ja7gvwg",
         "band19nf0sqnjycnvpexlxs6hjz9qrhhlhsu9pdty0r",
@@ -659,13 +678,15 @@ def test_get_reporters_success(pyband_client):
     assert reporters == mock_result
 
 
-def test_get_reporters_invalid_input(pyband_client):
+@pytest.mark.asyncio
+async def test_get_reporters_invalid_input(pyband_client):
     with pytest.raises(AttributeError):
-        pyband_client.get_reporters(1)
+        await pyband_client.get_reporters(1)
 
 
-def test_get_latest_block(pyband_client):
-    latest_block = pyband_client.get_latest_block()
+@pytest.mark.asyncio
+async def test_get_latest_block(pyband_client):
+    latest_block = await pyband_client.get_latest_block()
     mock_result = GetLatestBlockResponse(
         block_id=BlockId(
             hash=b"391E99908373F8590C928E0619956DA3D87EB654445DA4F25A185C9718561D53",
@@ -733,38 +754,45 @@ def test_get_latest_block(pyband_client):
     assert latest_block == mock_result
 
 
-def test_get_account_success(pyband_client):
-    account = pyband_client.get_account("xxx")
+@pytest.mark.asyncio
+async def test_get_account_success(pyband_client):
+    account = await pyband_client.get_account("xxx")
     assert account.account_number == 1
 
 
-def test_get_account_not_exist(pyband_client):
-    account = pyband_client.get_account("noAccount")
-    assert account is None
+@pytest.mark.asyncio
+async def test_get_account_not_exist(pyband_client):
+    with pytest.raises(Exception):
+        await pyband_client.get_account("noAccount")
 
 
-def test_get_account_invalid_input(pyband_client):
-    account = pyband_client.get_account(2)
-    assert account is None
+@pytest.mark.asyncio
+async def test_get_account_invalid_input(pyband_client):
+    with pytest.raises(Exception):
+        await pyband_client.get_account(2)
 
 
-def test_get_req_id_by_tx_hash_success(pyband_client):
-    req_id = pyband_client.get_request_id_by_tx_hash("txhash")
+@pytest.mark.asyncio
+async def test_get_req_id_by_tx_hash_success(pyband_client):
+    req_id = await pyband_client.get_request_id_by_tx_hash("txhash")
     assert req_id == [154966]
 
 
-def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
-    req_id = pyband_client.get_request_id_by_tx_hash("txhashRequestMultiId")
+@pytest.mark.asyncio
+async def test_get_req_id_by_tx_hash_invalid_input(pyband_client):
+    req_id = await pyband_client.get_request_id_by_tx_hash("txhashRequestMultiId")
     assert req_id == [111111, 222222]
 
 
-def test_get_chain_id(pyband_client):
-    chain_id = pyband_client.get_chain_id()
+@pytest.mark.asyncio
+async def test_get_chain_id(pyband_client):
+    chain_id = await pyband_client.get_chain_id()
     assert chain_id == "bandchain"
 
 
-def test_get_reference_data_success(pyband_client):
-    [reference_data1, reference_data2] = pyband_client.get_reference_data(["ETH/USD", "BTC/USDT"], 3, 4)
+@pytest.mark.asyncio
+async def test_get_reference_data_success(pyband_client):
+    [reference_data1, reference_data2] = await pyband_client.get_reference_data(["ETH/USD", "BTC/USDT"], 3, 4)
     assert reference_data1.pair == "ETH/USD"
     assert reference_data2.pair == "BTC/USDT"
     assert reference_data1.rate == 2317.61
@@ -775,19 +803,21 @@ def test_get_reference_data_success(pyband_client):
     assert type(reference_data2.updated_at.quote) == int
 
 
-# Assume that this input price will return price not found error
-def test_get_reference_data_wrong_price(pyband_client):
+@pytest.mark.asyncio
+async def test_get_reference_data_wrong_price(pyband_client):
     with pytest.raises(grpclib.exceptions.GRPCError):
-        pyband_client.get_reference_data(["ETH/USDT", "BTC/USDT"], 3, 10)
+        await pyband_client.get_reference_data(["ETH/USDT", "BTC/USDT"], 3, 10)
 
 
-def test_get_reference_data_empty_paires(pyband_client):
+@pytest.mark.asyncio
+async def test_get_reference_data_empty_paires(pyband_client):
     with pytest.raises(EmptyMsgError, match="Pairs are required"):
-        pyband_client.get_reference_data([], 3, 4)
+        await pyband_client.get_reference_data([], 3, 4)
 
 
-def test_get_latest_request_success(pyband_client):
-    latest_request = pyband_client.get_latest_request(
+@pytest.mark.asyncio
+async def test_get_latest_request_success(pyband_client):
+    latest_request = await pyband_client.get_latest_request(
         47,
         "0000004042444531353733354544464132314538433434383438363643383635313737443133453838433542443042303136434233463538333536313331383942323633000000002375a053",
         11,

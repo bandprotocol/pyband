@@ -1,10 +1,10 @@
-from pyband.wallet import Ledger
+import asyncio
 
 from pyband import Client, Transaction
-
-from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.messages.oracle.v1 import MsgEditDataSource
+from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
+from pyband.wallet import Ledger
 
 
 def main():
@@ -30,12 +30,12 @@ def main():
         sender=sender,
     )
 
-    account = c.get_account(sender)
+    account = await c.get_account(sender)
     account_num = account.account_number
     sequence = account.sequence
 
     fee = [Coin(amount="0", denom="uband")]
-    chain_id = c.get_chain_id()
+    chain_id = await c.get_chain_id()
 
     # Construct the transaction
     txn = (
@@ -53,11 +53,11 @@ def main():
     tx_raw_bytes = txn.get_tx_data(signature, public_key, SignMode.SIGN_MODE_LEGACY_AMINO_JSON)
 
     # Broadcast the transaction
-    tx_block = c.send_tx_block_mode(tx_raw_bytes)
+    tx_block = await c.send_tx_block_mode(tx_raw_bytes)
 
     # Convert to JSON for readability
     print(tx_block.to_json(indent=4))
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

@@ -5,7 +5,7 @@ from betterproto.lib.google.protobuf import Any as AnyProto
 
 from .client import Client
 from .constants import MAX_MEMO_CHARACTERS
-from .exceptions import EmptyMsgError, NotFoundError, UndefinedError, ValueTooLargeError
+from .exceptions import EmptyMsgError, UndefinedError, ValueTooLargeError
 from .messages.base import BaseMessageWrapper
 from .proto.cosmos.base.v1beta1 import Coin
 from .proto.cosmos.tx.signing.v1beta1 import SignMode
@@ -40,13 +40,11 @@ class Transaction:
         self.msgs.extend(msgs)
         return self
 
-    def with_sender(self, client: Client, sender: str) -> "Transaction":
+    async def with_sender(self, client: Client, sender: str) -> "Transaction":
         if len(self.msgs) == 0:
             raise EmptyMsgError("messsage is empty, please use with_messages at least 1 message")
 
-        account = client.get_account(sender)
-        if account is None:
-            raise NotFoundError("Account doesn't exist")
+        account = await client.get_account(sender)
         self.account_num = account.account_number
         self.sequence = account.sequence
         return self
