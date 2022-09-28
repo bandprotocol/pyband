@@ -144,8 +144,9 @@ async def test_send_tx_sync_mode_invalid_input(pyband_client):
 # Block mode: wait for tx to be committed to a block
 @pytest.mark.asyncio
 async def test_send_tx_block_mode_success(pyband_client):
-    tx_response = pyband_client.send_tx_block_mode(b"block_success")
-    mock_result = block_mode_success_result
+    tx_response = await pyband_client.send_tx_block_mode(b"block_success")
+    mock_result = block_mode_success_result.tx_response
+    assert tx_response == mock_result
 
 
 @pytest.mark.asyncio
