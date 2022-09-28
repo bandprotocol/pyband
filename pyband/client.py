@@ -55,7 +55,7 @@ class Client:
             Channel(
                 host=grpc_endpoint,
                 port=port,
-                ssl=False if not insecure else True,
+                ssl=not insecure,
             )
         )
 
