@@ -7,7 +7,7 @@ from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
 from pyband.wallet import Ledger
 
 
-def main():
+async def main():
     # Create the gRPC connection
     grpc_url = "laozi-testnet5.bandchain.org"
     c = Client.from_endpoint(grpc_url, 443)
