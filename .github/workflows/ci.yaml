@@ -1,5 +1,5 @@
 name: PyBand Workflow
-on: [push, pull_request]
+on: pull_request
 
 jobs:
   pyband-test:
@@ -12,6 +12,19 @@ jobs:
     steps:
       - name: Code Checkout
         uses: actions/checkout@v2
+
+      - name: Cache Poetry cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-cache-${{ runner.os }}-${{ matrix.python-version }}
+
+      # virtualenv cache should depends on OS, Python version and `poetry.lock` (and optionally workflow files).
+      - name: Cache Packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.local
+          key: poetry-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
