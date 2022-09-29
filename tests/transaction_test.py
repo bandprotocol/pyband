@@ -1,18 +1,19 @@
-import pytest
-from google.protobuf.any_pb2 import Any
+import asyncio
 
+import pytest
+import pytest_asyncio
+from betterproto.lib.google.protobuf import Any
+from grpclib.testing import ChannelFor
+
+from pyband import Client
 from pyband.exceptions import EmptyMsgError, UndefinedError, ValueTooLargeError
+from pyband.messages.oracle.v1 import MsgRequestData
+from pyband.proto.cosmos.auth.v1beta1 import QueryAccountRequest, QueryAccountResponse
+from pyband.proto.cosmos.auth.v1beta1 import QueryBase as CosmosAuthServiceBase
+from pyband.proto.cosmos.base.v1beta1 import Coin
+from pyband.proto.cosmos.tx.v1beta1 import SignDoc
 from pyband.transaction import Transaction
 from pyband.wallet import PrivateKey
-
-from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
-from pyband.proto.cosmos.tx.v1beta1.tx_pb2 import Fee, SignDoc
-from pyband.proto.cosmos.auth.v1beta1.query_pb2 import QueryAccountRequest, QueryAccountResponse
-from pyband.proto.oracle.v1.tx_pb2 import MsgRequestData
-
-# Servicers
-from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import QueryServicer as QueryServicerBase
-
 
 MNEMONIC = "s"
 PRIVATE_KEY = PrivateKey.from_mnemonic(MNEMONIC)
@@ -21,8 +22,8 @@ ADDRESS = PUBLIC_KEY.to_address()
 SENDER = ADDRESS.to_acc_bech32()
 
 
-class QueryServicer(QueryServicerBase):
-    def Account(self, request: QueryAccountRequest, context):
+class AuthService(CosmosAuthServiceBase):
+    async def account(self, query_accounts_request: QueryAccountRequest):
         return QueryAccountResponse(
             account=Any(
                 type_url="/cosmos.auth.v1beta1.BaseAccount",
@@ -31,19 +32,21 @@ class QueryServicer(QueryServicerBase):
         )
 
 
+@pytest_asyncio.fixture(scope="module")
+async def pyband_client():
+    channel_for = ChannelFor(services=[AuthService()])
+    channel = await channel_for.__aenter__()
+    yield Client(channel)
+    channel.close()
+
+
 @pytest.fixture(scope="module")
-def pyband_client(_grpc_server, grpc_addr):
-    from pyband.proto.cosmos.auth.v1beta1.query_pb2_grpc import add_QueryServicer_to_server as add_cosmos_query
-
-    add_cosmos_query(QueryServicer(), _grpc_server)
-
-    _grpc_server.add_insecure_port(grpc_addr)
-    _grpc_server.start()
-
-    from pyband.client import Client
-
-    yield Client(grpc_addr, insecure=True)
-    _grpc_server.stop(grace=None)
+def event_loop():
+    """Change event_loop fixture to module level."""
+    policy = asyncio.get_event_loop_policy()
+    loop = policy.new_event_loop()
+    yield loop
+    loop.close()
 
 
 def test_get_sign_doc_success():
@@ -90,7 +93,8 @@ def test_get_sign_doc_no_public_key_success():
     )
 
 
-def test_get_sign_data_with_sender_success(pyband_client):
+@pytest.mark.asyncio
+async def test_get_sign_data_with_sender_success(pyband_client):
     msg = MsgRequestData(
         oracle_script_id=1,
         calldata=bytes.fromhex("000000034254430000000000000001"),
@@ -104,14 +108,9 @@ def test_get_sign_data_with_sender_success(pyband_client):
     )
     fee = [Coin(amount="0", denom="uband")]
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
-        .with_chain_id("bandchain")
-        .with_gas(50000)
-        .with_fee(fee)
-    )
+    t = Transaction().with_messages(msg).with_chain_id("bandchain").with_gas(50000).with_fee(fee)
+    await t.with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
+
     assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\204\001\n\031/oracle.v1.MsgRequestData\022g\010\001\022\017\000\000\000\003BTC\000\000\000\000\000\000\000\001\030\004 \003*\013from_pyband2\014\n\005uband\022\0031008\260\352\001@\320\206\003J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
         auth_info_bytes=b"\nP\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\376p\213\332fRO\322\306\274\351\006\202\343\205U\250Q\340=*\356Ob\233\005\336\220\365\036\331\274\022\004\n\002\010\001\030\010\022\020\n\n\n\005uband\022\0010\020\320\206\003",
@@ -120,9 +119,10 @@ def test_get_sign_data_with_sender_success(pyband_client):
     )
 
 
-def test_create_transaction_with_sender_fail(pyband_client):
+@pytest.mark.asyncio
+async def test_create_transaction_with_sender_fail(pyband_client):
     with pytest.raises(EmptyMsgError, match="messsage is empty, please use with_messages at least 1 message"):
-        t = Transaction().with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
+        await Transaction().with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
 
 
 def test_get_sign_doc_msg_empty():

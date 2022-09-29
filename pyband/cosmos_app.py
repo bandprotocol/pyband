@@ -1,7 +1,9 @@
 from dataclasses import dataclass, fields
 from typing import Optional, NoReturn, List
+
 from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
+
 from pyband.exceptions import CosmosAppError
 from pyband.utils import get_bip32_byte, split_packet
 

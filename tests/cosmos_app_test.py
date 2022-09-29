@@ -1,25 +1,24 @@
-import json
 import pytest
-import random
-import math
 import hashlib
+import random
 import string
 
-from ecdsa import SigningKey, SECP256k1
-from ecdsa.util import sigencode_string_canonize
-from ecdsa.der import encode_sequence, encode_integer
-from bip32 import BIP32
+import math
+import pytest
 from bech32 import bech32_encode, convertbits
+from bip32 import BIP32
+from ecdsa import SigningKey, SECP256k1
+from ecdsa.der import encode_sequence, encode_integer
+from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
 
-from pyband.exceptions import *
-from pyband.utils import bip44_to_list
 from pyband.cosmos_app import CosmosApp, CommException
-from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
-from pyband.proto.oracle.v1.tx_pb2 import MsgCreateDataSource
+from pyband.exceptions import *
+from pyband.messages.oracle.v1 import MsgCreateDataSource
+from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.transaction import Transaction
+from pyband.utils import bip44_to_list
 from pyband.wallet import Ledger, PrivateKey
-
 
 MOCK_MNEMONIC = "coach pond canoe lake solution empty vacuum term pave toe burst top violin purpose umbrella color disease thrive diamond found track need filter wait"
 

@@ -1,17 +1,16 @@
-from pyband.wallet import Ledger
+import asyncio
 
 from pyband import Client, Transaction
+from pyband.messages.oracle.v1 import MsgEditDataSource
+from pyband.proto.cosmos.base.v1beta1 import Coin
+from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
+from pyband.wallet import Ledger
 
-from pyband.proto.cosmos.base.v1beta1.coin_pb2 import Coin
-from pyband.proto.oracle.v1.tx_pb2 import MsgEditDataSource
-from pyband.proto.cosmos.tx.signing.v1beta1 import signing_pb2 as tx_sign
-from google.protobuf.json_format import MessageToJson
 
-
-def main():
+async def main():
     # Create the gRPC connection
     grpc_url = "laozi-testnet5.bandchain.org"
-    c = Client(grpc_url)
+    c = Client.from_endpoint(grpc_url, 443)
 
     # Get the public key and sender from the ledger
     ledger = Ledger()
@@ -31,12 +30,12 @@ def main():
         sender=sender,
     )
 
-    account = c.get_account(sender)
+    account = await c.get_account(sender)
     account_num = account.account_number
     sequence = account.sequence
 
     fee = [Coin(amount="0", denom="uband")]
-    chain_id = c.get_chain_id()
+    chain_id = await c.get_chain_id()
 
     # Construct the transaction
     txn = (
@@ -50,15 +49,15 @@ def main():
     )
 
     # Sign the transaction using the ledger
-    signature = ledger.sign(txn.get_sign_message())
-    tx_raw_bytes = txn.get_tx_data(signature, public_key, tx_sign.SIGN_MODE_LEGACY_AMINO_JSON)
+    signature = ledger.sign(txn.get_sign_message_for_legacy_codec())
+    tx_raw_bytes = txn.get_tx_data(signature, public_key, SignMode.SIGN_MODE_LEGACY_AMINO_JSON)
 
     # Broadcast the transaction
-    tx_block = c.send_tx_block_mode(tx_raw_bytes)
+    tx_block = await c.send_tx_block_mode(tx_raw_bytes)
 
     # Convert to JSON for readability
-    print(MessageToJson(tx_block))
+    print(tx_block.to_json(indent=4))
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
