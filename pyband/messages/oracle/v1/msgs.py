@@ -44,19 +44,19 @@ class MsgEditDataSource(BaseMessageWrapper, MsgEditDataSourceProto):
 
 class MsgCreateOracleScript(BaseMessageWrapper, MsgCreateOracleScriptProto):
     @property
-    def legacy_url(self):
+    def type_url(self):
         return "/oracle.v1.MsgCreateOracleScript"
 
     @property
-    def type_url(self):
+    def legacy_url(self):
         return "oracle/CreateOracleScript"
 
 
 class MsgEditOracleScript(BaseMessageWrapper, MsgEditOracleScriptProto):
     @property
-    def legacy_url(self):
+    def type_url(self):
         return "/oracle.v1.MsgEditOracleScript"
 
     @property
-    def type_url(self):
+    def legacy_url(self):
         return "oracle/EditOracleScript"
