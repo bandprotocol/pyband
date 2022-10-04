@@ -52,7 +52,7 @@ async def main():
 
     # Step 5 Sign a transaction by using private key
     sign_doc = txn.get_sign_doc(public_key)
-    signature = private_key.sign(sign_doc.SerializeToString())
+    signature = private_key.sign(bytes(sign_doc))
     tx_raw_bytes = txn.get_tx_data(signature, public_key)
 
     # Step 6 Broadcast a transaction
