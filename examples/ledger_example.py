@@ -1,10 +1,9 @@
 import asyncio
 
-from pyband import Client, Transaction
+from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgEditDataSource
 from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
-from pyband.wallet import Ledger
 
 
 async def main():
@@ -13,10 +12,8 @@ async def main():
     c = Client.from_endpoint(grpc_url, 443)
 
     # Get the public key and sender from the ledger
-    ledger = Ledger()
-    public_key = ledger.get_public_key()
-    sender_addr = public_key.to_address()
-    sender = sender_addr.to_acc_bech32()
+    wallet = Wallet.from_ledger()
+    sender = wallet.public_key.to_address().to_acc_bech32()
 
     # Prepare the transaction's properties
     edit_ds_msg = MsgEditDataSource(
@@ -48,12 +45,8 @@ async def main():
         .with_fee(fee)
     )
 
-    # Sign the transaction using the ledger
-    signature = ledger.sign(txn.get_sign_message_for_legacy_codec())
-    tx_raw_bytes = txn.get_tx_data(signature, public_key, SignMode.SIGN_MODE_LEGACY_AMINO_JSON)
-
-    # Broadcast the transaction
-    tx_block = await c.send_tx_block_mode(tx_raw_bytes)
+    # Sign and broadcast a transaction
+    tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
 
     # Convert to JSON for readability
     print(tx_block.to_json(indent=4))

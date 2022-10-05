@@ -1,6 +1,7 @@
 from dataclasses import dataclass, fields
-from typing import Optional, NoReturn, List
+from typing import Optional, List
 
+from ledgerblue.Dongle import Dongle
 from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 
@@ -73,9 +74,12 @@ class CosmosApp:
         derivation_path: The derivation path of the account to interact with.
     """
 
-    def __init__(self, derivation_path: List[int]):
-        self.dongle = getDongle()
+    def __init__(self, derivation_path: List[int], *, dongle: Optional[Dongle]):
+        self.dongle = getDongle() if dongle is None else dongle
         self.derivation_path = derivation_path
+
+    def __del__(self):
+        self.disconnect()
 
     def disconnect(self) -> None:
         """Disconnects the ledger connection."""

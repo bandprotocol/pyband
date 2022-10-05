@@ -10,7 +10,7 @@ from .messages.base import BaseMessageWrapper
 from .proto.cosmos.base.v1beta1 import Coin
 from .proto.cosmos.tx.signing.v1beta1 import SignMode
 from .proto.cosmos.tx.v1beta1 import Fee, TxBody, ModeInfo, SignerInfo, AuthInfo, SignDoc, TxRaw, ModeInfoSingle
-from .wallet import PublicKey
+from .wallet.public_key import PublicKey
 
 
 class Transaction:

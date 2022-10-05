@@ -23,9 +23,9 @@ def test_private_key_from_mnemonic():
 
 
 def test_private_key_generate():
-    mnemonic, privkey = PrivateKey.generate("m/44'/494'/0'/0/5")
+    mnemonic, private_key = PrivateKey.generate("m/44'/494'/0'/0/5")
 
-    assert PrivateKey.from_mnemonic(mnemonic, "m/44'/494'/0'/0/5").to_hex() == privkey.to_hex()
+    assert PrivateKey.from_mnemonic(mnemonic, "m/44'/494'/0'/0/5").to_hex() == private_key.to_hex()
 
 
 def test_private_key_from_hex():
@@ -36,13 +36,13 @@ def test_private_key_from_hex():
 
 
 def test_private_key_to_public_key():
-    pub_key = PrivateKey.from_mnemonic(TEST_MNEMONIC).to_public_key()
-    assert pub_key.to_hex() == "0351e98e1be097250f2ff4188c0aace0a716e69a992cd77f9dfe436b3e8b34280d"
+    public_key = PrivateKey.from_mnemonic(TEST_MNEMONIC).to_public_key()
+    assert public_key.to_hex() == "0351e98e1be097250f2ff4188c0aace0a716e69a992cd77f9dfe436b3e8b34280d"
 
 
 def test_private_key_sign():
-    priv_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
-    sig = priv_key.sign(b"test msg")
+    private_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
+    sig = private_key.sign(b"test msg")
 
     assert (
         sig.hex()
@@ -66,18 +66,18 @@ def test_public_key_from_bech32():
 
 
 def test_public_key_to_bech32():
-    priv_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
+    private_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
 
-    assert priv_key.to_public_key().to_acc_bech32() == TEST_ACC_PUBKEY
-    assert priv_key.to_public_key().to_val_bech32() == TEST_VAL_PUBKEY
-    assert priv_key.to_public_key().to_cons_bech32() == TEST_CONS_PUBKEY
+    assert private_key.to_public_key().to_acc_bech32() == TEST_ACC_PUBKEY
+    assert private_key.to_public_key().to_val_bech32() == TEST_VAL_PUBKEY
+    assert private_key.to_public_key().to_cons_bech32() == TEST_CONS_PUBKEY
 
 
 def test_public_key_verify():
-    priv_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
-    sig = priv_key.sign(b"test msg")
+    private_key = PrivateKey.from_mnemonic(TEST_MNEMONIC)
+    sig = private_key.sign(b"test msg")
 
-    pub_key = priv_key.to_public_key()
+    pub_key = private_key.to_public_key()
     assert pub_key.verify(b"test msg", sig) == True
     # Invalid message
     assert pub_key.verify(b"another msg", sig) == False

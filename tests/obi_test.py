@@ -1,5 +1,7 @@
 import pytest
-from pyband.obi import *
+
+from pyband.exceptions import DecodeError
+from pyband.obi import PyObi, PyObiInteger, PyObiArray, PyObiString, PyObiBool, PyObiVector, PyObiStruct, PyObiBytes
 
 
 def test_encode_decode_bool_success():
@@ -183,7 +185,6 @@ def test_encode_decode_bytes():
 def test_encode_decode_array():
     # encode
     # bool
-    print(PyObiArray("[bool;0]").encode([]))
     assert PyObiArray("[bool;0]").encode([]) == bytes.fromhex("")
     assert PyObiArray("[bool;1]").encode([False]) == bytes.fromhex("00")
     assert PyObiArray("[bool;5]").encode([True, False, True, False, True]) == bytes.fromhex("0100010001")
