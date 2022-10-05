@@ -21,7 +21,6 @@ class MsgRequestData(BaseMessageWrapper, MsgRequestDataProto):
         return "oracle/Request"
 
 
-@dataclass
 class MsgCreateDataSource(BaseMessageWrapper, MsgCreateDataSourceProto):
     @property
     def type_url(self):

@@ -9,7 +9,6 @@ assert __base_v1_beta1__
 assert __base_query_v1_beta1__
 
 
-@dataclass
 class MsgVote(BaseMessageWrapper, MsgVoteProto):
     @property
     def type_url(self):
