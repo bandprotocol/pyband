@@ -66,10 +66,28 @@ class Transaction:
         return self
 
     def with_gas(self, gas: int) -> "Transaction":
+        """Sets Transaction's gas.
+
+        Args:
+            gas: Gas
+
+        Returns:
+            A Transaction instance.
+        """
+
         self.fee.gas_limit = gas
         return self
 
     def with_memo(self, memo: str) -> "Transaction":
+        """Sets Transaction's memo.
+
+        Args:
+            memo: Memo with a maximum length of 256.
+
+        Returns:
+            A Transaction instance.
+        """
+
         if len(memo) > MAX_MEMO_CHARACTERS:
             raise ValueTooLargeError("memo is too large")
         self.memo = memo
@@ -94,6 +112,15 @@ class Transaction:
         return bytes(body), bytes(auth_info)
 
     def get_sign_doc(self, public_key: PublicKey = None) -> SignDoc:
+        """Returns the sign data from Transaction.
+
+        Args:
+            public_key: A PublicKey instance.
+
+        Returns:
+            A SignDoc instance containing the transaction detail.
+        """
+
         if len(self.msgs) == 0:
             raise EmptyMsgError("message is empty")
 
@@ -116,6 +143,12 @@ class Transaction:
         )
 
     def get_sign_message_for_legacy_codec(self) -> bytes:
+        """Returns the transaction encoded in Cosmos's legacy format.
+
+        Returns:
+            Legacy transaction as byte.
+        """
+
         msg = {
             "account_number": str(self.account_num),
             "chain_id": self.chain_id,
@@ -132,6 +165,17 @@ class Transaction:
     def get_tx_data(
         self, signature: bytes, public_key: PublicKey = None, sign_mode: SignMode = SignMode.SIGN_MODE_DIRECT
     ) -> bytes:
+        """Returns the transaction as a byte.
+
+        Args:
+            signature: Signature from get_sign_doc().
+            public_key: A public key instance.
+            sign_mode: SignMode.
+
+        Returns:
+            Transaction as byte.
+        """
+
         body_bytes, auth_info_bytes = self.__generate_info(public_key, sign_mode)
         tx_raw = TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
         return bytes(tx_raw)

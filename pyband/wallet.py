@@ -27,42 +27,45 @@ DEFAULT_LEDGER_DERIVATION_PATH = "m/44'/118'/0'/0/0"
 
 
 class PrivateKey:
-    """
-    Class for wrapping SigningKey that is used for signature creation and public key derivation.
+    """Class for wrapping SigningKey, used to sign messages and derive the associated public key.
 
-    :ivar signing_key: the ecdsa SigningKey instance
-    :vartype signing_key: ecdsa.SigningKey
+    Attributes:
+        signing_key: The ecdsa SigningKey instance.
     """
 
     def __init__(self, _error_do_not_use_init_directly=None) -> None:
         """Unsupported, please use from_mnemonic to initialize."""
+
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PrivateKey.from_mnemonic() to construct me")
         self.signing_key: Optional[SigningKey] = None
 
     @classmethod
     def generate(cls, path=DEFAULT_DERIVATION_PATH) -> Tuple[str, "PrivateKey"]:
-        """
-        Generate new private key with random mnemonic phrase
+        """Generates a new private key with a derivation path and random mnemonic phrase.
 
-        :param path: the HD path that follows the BIP32 standard
+        Args:
+            path: The derivation path, if omitted, defaults to Band's default HD prefix 494 with all other indexes being zeroes.
 
-        :return: A tuple of mnemonic phrase and PrivateKey instance
+        Returns:
+            A tuple containing the mnemonic phrase and the PrivateKey instance.
         """
+
         phrase = Mnemonic(language="english").generate(strength=256)
         return phrase, cls.from_mnemonic(phrase, path)
 
     @classmethod
     def from_mnemonic(cls, words: str, path=DEFAULT_DERIVATION_PATH) -> "PrivateKey":
-        """
-        Create a PrivateKey instance from a given mnemonic phrase and a HD derivation path.
-        If path is not given, default to Band's HD prefix 494 and all other indexes being zeroes.
+        """Create a PrivateKey instance from a given mnemonic phrase and derivation path.
 
-        :param words: the mnemonic phrase for recover private key
-        :param path: the HD path that follows the BIP32 standard
+        Args:
+            words: the mnemonic phrase for recover private key.
+            path: The derivation path, if omitted, defaults to Band's default HD prefix 494 with all other indexes being zeroes.
 
-        :return: Initialized PrivateKey object
+        Returns:
+            A PrivateKey instance.
         """
+
         seed = Mnemonic("english").to_seed(words)
         self = cls(_error_do_not_use_init_directly=True)
         self.signing_key = SigningKey.from_string(
@@ -72,48 +75,62 @@ class PrivateKey:
 
     @classmethod
     def from_hex(cls, priv: str) -> "PrivateKey":
+        """Create a PrivateKey instance from a hex representation of the signing key.
+
+        Args:
+            priv: A hex representation of the signing key.
+
+        Returns:
+            A PrivateKey instance.
+        """
+
         self = cls(_error_do_not_use_init_directly=True)
         self.signing_key = SigningKey.from_string(bytes.fromhex(priv), curve=SECP256k1, hashfunc=hashlib.sha256)
         return self
 
     def to_hex(self) -> str:
+        """Returns a hex representation of the signing key.
+
+        Returns:
+            A hex representation of signing key.
         """
-        Return a hex representation of signing key.
-        """
+
         return self.signing_key.to_string().hex()
 
     def to_public_key(self) -> "PublicKey":
-        """
-        Return the PublicKey associated with this private key.
+        """Gets the associated PublicKey.
 
-        :return: a PublicKey that can be used to verify the signatures made with this PrivateKey
+        Returns:
+            A PublicKey instance associated with the object's PrivateKey.
         """
+
         public_key = PublicKey(_error_do_not_use_init_directly=True)
         public_key.verify_key = self.signing_key.get_verifying_key()
         return public_key
 
     def sign(self, msg: bytes) -> bytes:
-        """
-        Sign the given message using the edcsa sign_deterministic function.
+        """Sign the given message using the edcsa sign_deterministic function.
 
-        :param msg: the message that will be hashed and signed
+        Args:
+            msg: Message to be signed and hashed.
 
-        :return: a signature of this private key over the given message
+        Returns:
+            A signature of this private key over the given message.
         """
+
         return self.signing_key.sign_deterministic(msg, hashfunc=hashlib.sha256, sigencode=sigencode_string_canonize)
 
 
 class PublicKey:
-    """
-    Class for wrapping VerifyKey using for signature verification. Adding method to encode/decode
-    to Bech32 format.
+    """Class for wrapping VerifyKey used for signature verification. Contains methods to encode or decode Bech32.
 
-    :ivar verify_key: the ecdsa VerifyingKey instance
-    :vartype verify_key: ecdsa.VerifyingKey
+    Attributes:
+        verify_key: the ecdsa VerifyingKey instance
     """
 
     def __init__(self, _error_do_not_use_init_directly=None) -> None:
         """Unsupported, please do not contruct it directly."""
+
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PublicKey's factory methods to construct me")
         self.verify_key: Optional[VerifyingKey] = None
@@ -131,29 +148,74 @@ class PublicKey:
 
     @classmethod
     def from_acc_bech32(cls, bech: str) -> "PublicKey":
+        """Creates a PublicKey from a bech32 string with an account public key prefix.
+
+        Args:
+            bech: Bech32 string with an account public key prefix.
+
+        Returns:
+            A PublicKey instance.
+        """
+
         return cls._from_bech32(bech, BECH32_PUBKEY_ACC_PREFIX)
 
     @classmethod
     def from_val_bech32(cls, bech: str) -> "PublicKey":
+        """Creates a PublicKey from a bech32 string with a validator public key prefix.
+
+        Args:
+            bech: Bech32 string with a validator public key prefix.
+
+        Returns:
+            A PublicKey instance.
+        """
+
         return cls._from_bech32(bech, BECH32_PUBKEY_VAL_PREFIX)
 
     @classmethod
     def from_cons_bech32(cls, bech: str) -> "PublicKey":
+        """Creates a PublicKey from a bech32 string with a validator consensus public key prefix.
+
+        Args:
+            bech: Bech32 string with a validator consensus public key prefix.
+
+        Returns:
+            A PublicKey instance.
+        """
+
         return cls._from_bech32(bech, BECH32_PUBKEY_CONS_PREFIX)
 
     @classmethod
     def from_hex(cls, pub: bytes) -> "PublicKey":
+        """Creates a PublicKey from a hex representation of the verifying key.
+
+        Args:
+            pub: A hex representation of the verifying key.
+
+        Returns:
+            A PublicKey instance.
+        """
+
         self = cls(_error_do_not_use_init_directly=True)
         self.verify_key = VerifyingKey.from_string(pub, curve=SECP256k1, hashfunc=hashlib.sha256)
         return self
 
     def to_hex(self) -> str:
+        """Returns a hex representation of the verifying key.
+
+        Returns:
+            A hex representation of verified key.
         """
-        Return a hex representation of verified key.
-        """
+
         return self.verify_key.to_string("compressed").hex()
 
     def to_public_key_proto(self) -> PubKeyProto:
+        """Returns a public key of type protobuf.
+
+        Returns:
+            A PubKeyProto instance.
+        """
+
         return PubKeyProto(key=self.verify_key.to_string("compressed"))
 
     def _to_bech32(self, prefix: str) -> str:
@@ -167,32 +229,56 @@ class PublicKey:
         return bech32_encode(prefix, five_bit_r)
 
     def to_acc_bech32(self) -> str:
-        """Return bech32-encoded with account public key prefix"""
+        """Returns a bech32 string with an account public key prefix.
+
+        Returns:
+            A bech32 address as a string.
+        """
+
         return self._to_bech32(BECH32_PUBKEY_ACC_PREFIX)
 
     def to_val_bech32(self) -> str:
-        """Return bech32-encoded with validator public key prefix"""
+        """Returns a bech32 string with a validator public key prefix.
+
+        Returns:
+            A bech32 address as a string.
+        """
+
         return self._to_bech32(BECH32_PUBKEY_VAL_PREFIX)
 
     def to_cons_bech32(self) -> str:
-        """Return bech32-encoded with validator consensus public key prefix"""
+        """Returns a bech32 string with a validator consensus public key prefix.
+
+        Returns:
+            A bech32 address as a string.
+        """
+
         return self._to_bech32(BECH32_PUBKEY_CONS_PREFIX)
 
     def to_address(self) -> "Address":
-        """Return address instance from this public key"""
+        """Return address instance from this public key.
+
+        Returns:
+            An Address instance.
+        """
+
         hash = hashlib.new("sha256", self.verify_key.to_string("compressed")).digest()
         return Address(hashlib.new("ripemd160", hash).digest())
 
     def verify(self, msg: bytes, sig: bytes) -> bool:
-        """
-        Verify a signature made from the given message.
+        """Verify a signature made from the given message.
 
-        :param msg: data signed by the `signature`, will be hashed using sha256 function
-        :param sig: encoding of the signature
+        Args:
+            msg: Data signed by the signature.
+            sig: The encoded signature.
 
-        :raises BadSignatureError: if the signature is invalid or malformed
-        :return: True if the verification was successful
+        Raises:
+            BadSignatureError: If the signature is invalid or malformed.
+
+        Returns:
+            True if the verification was successful, false otherwise.
         """
+
         try:
             return self.verify_key.verify(sig, msg, hashfunc=hashlib.sha256)
         except BadSignatureError:
@@ -200,6 +286,12 @@ class PublicKey:
 
 
 class Address:
+    """Class for wrapping address. Contains methods to encode or decode Bech32.
+
+    Attributes:
+        verify_key: the ecdsa VerifyingKey instance
+    """
+
     def __init__(self, addr: bytes) -> None:
         self.addr = addr
 
@@ -220,17 +312,41 @@ class Address:
 
     @classmethod
     def from_acc_bech32(cls, bech: str) -> "Address":
-        """Create an address instance from a bech32-encoded account address"""
+        """Creates an address instance from a bech32 account address.
+
+        Args:
+            bech: Bech32 account address.
+
+        Returns:
+            An Address instance.
+        """
+
         return cls._from_bech32(bech, BECH32_ADDR_ACC_PREFIX)
 
     @classmethod
     def from_val_bech32(cls, bech: str) -> "Address":
-        """Create an address instance from a bech32-encoded validator address"""
+        """Creates an address instance from a bech32 validator address.
+
+        Args:
+            bech: Bech32 validator address.
+
+        Returns:
+            An Address instance.
+        """
+
         return cls._from_bech32(bech, BECH32_ADDR_VAL_PREFIX)
 
     @classmethod
     def from_cons_bech32(cls, bech: str) -> "Address":
-        """Create an address instance from a bech32-encoded consensus address"""
+        """Creates an address instance from a bech32 validator consensus address.
+
+        Args:
+            bech: Bech32 validator consensus address.
+
+        Returns:
+            An Address instance.
+        """
+
         return cls._from_bech32(bech, BECH32_ADDR_CONS_PREFIX)
 
     def _to_bech32(self, prefix: str) -> str:
@@ -239,33 +355,78 @@ class Address:
         return bech32_encode(prefix, five_bit_r)
 
     def to_acc_bech32(self) -> str:
-        """Return a bech32-encoded account address"""
+        """Returns a bech32 account address.
+
+        Returns:
+            A bech32 address as a string.
+        """
+
         return self._to_bech32(BECH32_ADDR_ACC_PREFIX)
 
     def to_val_bech32(self) -> str:
-        """Return a bech32-encoded validator address"""
+        """Returns a bech32 validator address.
+
+        Returns:
+            A bech32 address as a string.
+        """
+
         return self._to_bech32(BECH32_ADDR_VAL_PREFIX)
 
     def to_cons_bech32(self) -> str:
-        """Return a bech32-encoded with consensus address"""
+        """Returns a bech32 validator consensus address.
+
+        Returns:
+            A bech32 address as a string.
+        """
+
         return self._to_bech32(BECH32_ADDR_CONS_PREFIX)
 
     def to_hex(self) -> str:
-        """Return a hex representation of address"""
+        """Returns a hex representation of the addres.
+
+        Returns:
+            A hex representation of address.
+        """
+
         return self.addr.hex()
 
 
 class Ledger:
+    """Class to interact with a Ledger
+
+    Attributes:
+        cosmos_app: The connected CosmosApp
+    """
+
     def __init__(self, app=None, path=DEFAULT_LEDGER_DERIVATION_PATH):
+        """Inits Ledger."""
+
         self.cosmos_app = app if app is not None else CosmosApp(bip44_to_list(path))
 
     def disconnect(self) -> None:
+        """Disconnects Ledger."""
+
         self.cosmos_app.disconnect()
 
     def app_info(self) -> AppVersion:
+        """Gets Ledger app version.
+
+        Returns:
+            AppVersion.
+        """
+
         return self.cosmos_app.get_version()
 
     def sign(self, msg: bytes) -> bytes:
+        """Uses Ledger to sign a given message.
+
+        Args:
+            msg: Message as byte.
+
+        Returns:
+            Signed message signature.
+        """
+
         data, remaining_data = remove_sequence(self.cosmos_app.sign_secp256k1(msg))
         if remaining_data:
             raise UnexpectedDER("Unexpected remainder")
@@ -278,7 +439,22 @@ class Ledger:
         return r.to_bytes(32, "big") + s.to_bytes(32, "big")
 
     def get_public_key(self) -> PublicKey:
+        """Gets the public key associated with the Ledger.
+
+        Returns:
+            A PublicKey instance.
+        """
+
         return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).public_key)
 
     def get_address(self, prefix=BECH32_ADDR_ACC_PREFIX) -> Address:
+        """Gets the address associated with the Ledger.
+
+        Args:
+            prefix: The Bech32 address prefix.
+
+        Returns:
+            An Address instance.
+        """
+
         return Address.from_acc_bech32(self.cosmos_app.ins_get_addr_secp256k1(prefix).address.decode())
