@@ -45,7 +45,7 @@ class PrivateKey:
         """Create a PrivateKey instance from a given mnemonic phrase and derivation path.
 
         Args:
-            words: the mnemonic phrase for recover private key.
+            words: The mnemonic phrase.
             path: The derivation path, if omitted, defaults to Band's default HD prefix 494 with all other indexes being zeroes.
 
         Returns:

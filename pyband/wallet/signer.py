@@ -16,31 +16,31 @@ class Signer:
 
     @abstractmethod
     def get_public_key(self) -> PublicKey:
-        """
+        """Gets public key associated with the signer.
 
         Returns:
-
+            A PublicKey instance.
         """
         pass
 
     @abstractmethod
     def get_address(self) -> Address:
-        """
+        """Gets address associated with the signer.
 
         Returns:
-
+            An Address instance.
         """
         pass
 
     @abstractmethod
     def sign(self, msg: bytes) -> bytes:
-        """
+        """Signs a message with the signer.
 
         Args:
-            msg:
+            msg: The message to sign in bytes.
 
         Returns:
-
+            Signature in bytes.
         """
         pass
 

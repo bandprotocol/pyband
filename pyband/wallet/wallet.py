@@ -19,39 +19,39 @@ class Wallet:
 
     @classmethod
     def from_mnemonic(cls, mnemonic: str, *, path: str = DEFAULT_DERIVATION_PATH):
-        """
+        """Creates a Wallet instance from a mnemonic phrase and derivation path.
 
         Args:
-            mnemonic:
-            path:
+            mnemonic: The mnemonic phrase.
+            path: The derviation path. If omitted, defaults to Band's default HD prefix.
 
         Returns:
-
+            A Wallet instance.
         """
         return cls(PrivateKeySigner(PrivateKey.from_mnemonic(mnemonic, path)), SignMode.SIGN_MODE_DIRECT)
 
     @classmethod
     def from_private_key(cls, private_key: str):
-        """
+        """Creates a Wallet instance from a hexadecimal private key.
 
         Args:
-            private_key:
+            private_key: A private key representated as a hexadecimal.
 
         Returns:
-
+            A Wallet instance.
         """
         return cls(PrivateKeySigner(PrivateKey.from_hex(private_key)), SignMode.SIGN_MODE_DIRECT)
 
     @classmethod
     def from_ledger(cls, *, path: str = DEFAULT_LEDGER_DERIVATION_PATH, app: CosmosApp):
-        """
+        """Creates a Wallet instance from a connected Ledger.
 
         Args:
-            path:
-            app:
+            path: The derviation path. If omitted, defaults to Cosmos's default HD prefix.
+            app: A CosmosApp instance.
 
         Returns:
-
+            A Wallet instance.
         """
         return cls(
             LedgerSigner(path=path, app=app if app is not None else CosmosApp(bip44_to_list(path))),
@@ -77,13 +77,13 @@ class Wallet:
         return self._signer.address
 
     def sign_and_build(self, tx: Transaction) -> bytes:
-        """
+        """Signs and builds a broadcastable transaction.
 
         Args:
-            tx:
+            tx: A transaction instance to create a broadcastable transaction from.
 
         Returns:
-
+            A transaction as bytes.
         """
         if self._sign_mode == SignMode.SIGN_MODE_LEGACY_AMINO_JSON:
             sign_msg = tx.get_sign_message_for_legacy_codec()
