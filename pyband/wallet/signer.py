@@ -47,8 +47,8 @@ class Signer:
 
 class PrivateKeySigner(Signer):
     def __init__(self, private_key: PrivateKey):
-        super().__init__()
         self.private_key = private_key
+        super().__init__()
 
     def get_public_key(self) -> PublicKey:
         return self.private_key.to_public_key()
@@ -62,8 +62,8 @@ class PrivateKeySigner(Signer):
 
 class LedgerSigner(Signer):
     def __init__(self, path: str, app: CosmosApp):
-        super().__init__()
         self.cosmos_app = app if app is not None else CosmosApp(bip44_to_list(path))
+        super().__init__()
 
     def get_public_key(self) -> PublicKey:
         return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1("band", False).public_key)
