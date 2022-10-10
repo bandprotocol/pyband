@@ -1,8 +1,7 @@
 import asyncio
 import os
 
-from pyband import Client, Transaction
-from pyband import Wallet
+from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgRequestData
 from pyband.proto.cosmos.base.v1beta1 import Coin
 

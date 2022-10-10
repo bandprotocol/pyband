@@ -22,7 +22,7 @@ class PublicKey:
     """
 
     def __init__(self, _error_do_not_use_init_directly=None) -> None:
-        """Unsupported, please do not contruct it directly."""
+        """Unsupported, please do not construct it directly."""
 
         if not _error_do_not_use_init_directly:
             raise TypeError("Please use PublicKey's factory methods to construct me")

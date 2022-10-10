@@ -23,7 +23,7 @@ class Wallet:
 
         Args:
             mnemonic: The mnemonic phrase.
-            path: The derviation path. If omitted, defaults to Band's default HD prefix.
+            path: The derivation path. If omitted, defaults to Band's default HD prefix.
 
         Returns:
             A Wallet instance.
@@ -35,7 +35,7 @@ class Wallet:
         """Creates a Wallet instance from a hexadecimal private key.
 
         Args:
-            private_key: A private key representated as a hexadecimal.
+            private_key: A private key represented as a hexadecimal.
 
         Returns:
             A Wallet instance.
@@ -47,7 +47,7 @@ class Wallet:
         """Creates a Wallet instance from a connected Ledger.
 
         Args:
-            path: The derviation path. If omitted, defaults to Cosmos's default HD prefix.
+            path: The derivation path. If omitted, defaults to Cosmos's default HD prefix.
             app: A CosmosApp instance.
 
         Returns:
@@ -69,7 +69,7 @@ class Wallet:
 
     @property
     def address(self) -> Address:
-        """Gets the address assocaited with this wallet
+        """Gets the address associated with this wallet
 
         Returns:
             An Address instance

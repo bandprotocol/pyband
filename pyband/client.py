@@ -1,5 +1,5 @@
 import time
-from typing import List, Optional
+from typing import List
 
 from grpclib.client import Channel
 
@@ -49,19 +49,19 @@ class Client:
         self.__channel.close()
 
     @classmethod
-    def from_endpoint(cls, grpc_endpoint: str, port: int, insecure: bool = False):
+    def from_endpoint(cls, grpc_endpoint: str, port: int, ssl: bool = True):
         """Creates a client instance from a given endpoint and port.
 
         Args:
             grpc_endpoint: The GRPC endpoint to connect too.
             port: The endpoint port.
-            insecure: If true, SSL context is used.
+            ssl: If true, SSL context is used.
 
         Returns:
             A Client instance.
         """
 
-        return cls(Channel(host=grpc_endpoint, port=port, ssl=not insecure))
+        return cls(Channel(host=grpc_endpoint, port=port, ssl=ssl))
 
     async def get_data_source(self, id: int) -> DataSource:
         """Gets a data source's details.
@@ -124,7 +124,7 @@ class Client:
 
         return await self.stub_cosmos_tendermint.get_latest_block(GetLatestBlockRequest())
 
-    async def get_account(self, address: str) -> Optional[BaseAccount]:
+    async def get_account(self, address: str) -> BaseAccount:
         """Gets the account details of a specified address.
 
         Args:

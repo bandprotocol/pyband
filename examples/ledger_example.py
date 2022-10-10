@@ -3,7 +3,6 @@ import asyncio
 from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgEditDataSource
 from pyband.proto.cosmos.base.v1beta1 import Coin
-from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
 
 
 async def main():

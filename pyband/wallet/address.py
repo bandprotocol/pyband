@@ -105,7 +105,7 @@ class Address:
         return self._to_bech32(BECH32_ADDR_CONS_PREFIX)
 
     def to_hex(self) -> str:
-        """Returns a hex representation of the addres.
+        """Returns a hex representation of the address.
 
         Returns:
             A hex representation of address.
