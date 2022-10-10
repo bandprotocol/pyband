@@ -1,29 +1,25 @@
 import asyncio
+import os
 
 from pyband import Client, Transaction, Wallet
-from pyband.messages.oracle.v1 import MsgEditDataSource
+from pyband.messages.cosmos.bank.v1beta1 import MsgSend
 from pyband.proto.cosmos.base.v1beta1 import Coin
 
 
 async def main():
-    # Create the gRPC connection
+    # Create a GRPC connection
     grpc_url = "laozi-testnet6.bandchain.org"
     c = Client.from_endpoint(grpc_url, 443)
 
-    # Get the public key and sender from the ledger
-    wallet = Wallet.from_ledger()
+    # Convert a mnemonic to a wallet
+    wallet = Wallet.from_mnemonic(os.getenv("MNEMONIC"))
     sender = wallet.public_key.to_address().to_acc_bech32()
 
-    # Prepare the transaction's properties
-    edit_ds_msg = MsgEditDataSource(
-        data_source_id=426,
-        name="[do-not-modify]",
-        description="edited v2",
-        executable="[do-not-modify]".encode(),
-        fee=[],
-        treasury=sender,
-        owner=sender,
-        sender=sender,
+    # Prepare a transaction's properties
+    msg_send = MsgSend(
+        from_address=sender,
+        to_address="band19ajhdg6maw0ja0a7qd9sq7nm4ym9f4wjg8r96w",
+        amount=[Coin(amount="1000000", denom="uband")],
     )
 
     account = await c.get_account(sender)
@@ -33,21 +29,22 @@ async def main():
     fee = [Coin(amount="50000", denom="uband")]
     chain_id = await c.get_chain_id()
 
-    # Construct the transaction
+    # Step 4 Construct a transaction
     txn = (
         Transaction()
-        .with_messages(edit_ds_msg)
+        .with_messages(msg_send)
         .with_sequence(sequence)
         .with_account_num(account_num)
         .with_chain_id(chain_id)
-        .with_gas(1000000)
+        .with_gas(2000000)
         .with_fee(fee)
+        .with_memo("")
     )
 
     # Sign and broadcast a transaction
     tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
 
-    # Convert to JSON for readability
+    # Converting to JSON for readability
     print(tx_block.to_json(indent=4))
 
 

@@ -8,7 +8,7 @@ from pyband.proto.cosmos.base.v1beta1 import Coin
 
 async def main():
     # Create a GRPC connection
-    grpc_url = "laozi-testnet5.bandchain.org"
+    grpc_url = "laozi-testnet6.bandchain.org"
     c = Client.from_endpoint(grpc_url, 443)
 
     # Convert a mnemonic to a wallet
@@ -32,7 +32,7 @@ async def main():
     account_num = account.account_number
     sequence = account.sequence
 
-    fee = [Coin(amount="0", denom="uband")]
+    fee = [Coin(amount="50000", denom="uband")]
     chain_id = await c.get_chain_id()
 
     # Step 4 Construct a transaction
