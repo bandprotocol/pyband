@@ -146,15 +146,18 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "grpclib"
-version = "0.4.1"
+version = "0.4.3"
 description = "Pure-Python gRPC implementation for asyncio"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 h2 = ">=3.1.0,<5"
 multidict = "*"
+
+[package.extras]
+protobuf = ["protobuf (>=3.15.0)"]
 
 [[package]]
 name = "h2"
@@ -501,7 +504,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "327405e18c826890fbec1434b628787f047acb16758b3626274c54df5957a216"
+content-hash = "2db01711424278511dc5516e80bc88ee59676e9cc655be056036b2445e498857"
 
 [metadata.files]
 asn1crypto = [
@@ -647,7 +650,7 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 grpclib = [
-    {file = "grpclib-0.4.1.tar.gz", hash = "sha256:8c0021cd038634c268249e4cd168d9f3570e66ceceec1c9416094b788ebc8372"},
+    {file = "grpclib-0.4.3.tar.gz", hash = "sha256:eadf2002fc5a25158b707c0338a6c0b96dd7fbdc6df66f7e515e7f041d56a940"},
 ]
 h2 = [
     {file = "h2-4.1.0-py3-none-any.whl", hash = "sha256:03a46bcf682256c95b5fd9e9a99c1323584c3eec6440d379b9903d709476bc6d"},

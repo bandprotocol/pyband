@@ -21,7 +21,6 @@ from .proto.oracle.v1 import (
     QueryRequestRequest,
     QueryRequestResponse,
     QueryReportersRequest,
-    QueryReportersResponse,
     QueryRequestPriceRequest,
     QueryRequestSearchRequest,
     QueryRequestSearchResponse,
@@ -159,8 +158,8 @@ class Client:
 
         tx = await self.stub_tx.get_tx(GetTxRequest(hash=tx_hash))
         request_ids = []
-        for tx in tx.tx_response.logs:
-            request_event = [event for event in tx.events if event.type == "request" or event.type == "report"]
+        for log in tx.tx_response.logs:
+            request_event = [event for event in log.events if event.type == "request" or event.type == "report"]
             if len(request_event) == 1:
                 attrs = request_event[0].attributes
                 attr_id = [attr for attr in attrs if attr.key == "id"]
