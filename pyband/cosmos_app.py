@@ -74,7 +74,7 @@ class CosmosApp:
         derivation_path: The derivation path of the account to interact with.
     """
 
-    def __init__(self, derivation_path: List[int], *, dongle: Optional[Dongle]):
+    def __init__(self, derivation_path: List[int], *, dongle: Optional[Dongle] = None):
         self.dongle = getDongle() if dongle is None else dongle
         self.derivation_path = derivation_path
 
