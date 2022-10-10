@@ -146,6 +146,8 @@ if __name__ == "__main__":
 
 Shown below is the expected result after sending the transaction in block mode:
 
+<results>
+
 ```json
 {
     "height": "43368",
@@ -1305,6 +1307,8 @@ Shown below is the expected result after sending the transaction in block mode:
     ]
 }
 ```
+
+</results>
 
 ## 🧀 Notes
 
