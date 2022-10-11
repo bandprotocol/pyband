@@ -58,7 +58,7 @@ class Wallet:
             SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
         )
 
-    def public_key(self) -> PublicKey:
+    def get_public_key(self) -> PublicKey:
         """Gets the public key associated with this wallet
 
         Returns:
@@ -67,7 +67,7 @@ class Wallet:
 
         return self._signer.get_public_key()
 
-    def address(self) -> Address:
+    def get_address(self) -> Address:
         """Gets the address associated with this wallet
 
         Returns:
