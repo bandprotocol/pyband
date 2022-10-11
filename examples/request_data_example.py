@@ -1,24 +1,21 @@
 import asyncio
 import os
 
-from pyband import Client, Transaction, PrivateKey
+from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgRequestData
 from pyband.proto.cosmos.base.v1beta1 import Coin
 
 
 async def main():
-    # Step 1 Create a gRPC connection
-    grpc_url = "laozi-testnet5.bandchain.org"
+    # Create a GRPC connection
+    grpc_url = "laozi-testnet6.bandchain.org"
     c = Client.from_endpoint(grpc_url, 443)
 
-    # Step 2 Convert a menmonic to private key, public key, and sender
-    MNEMONIC = os.getenv("MNEMONIC")
-    private_key = PrivateKey.from_mnemonic(MNEMONIC)
-    public_key = private_key.to_public_key()
-    sender_addr = public_key.to_address()
-    sender = sender_addr.to_acc_bech32()
+    # Convert a mnemonic to a wallet
+    wallet = Wallet.from_mnemonic(os.getenv("MNEMONIC"))
+    sender = wallet.public_key.to_address().to_acc_bech32()
 
-    # Step 3 Prepare a transaction's properties
+    # Prepare a transaction's properties
     request_msg = MsgRequestData(
         oracle_script_id=37,
         calldata=bytes.fromhex("0000000200000003425443000000034554480000000000000064"),
@@ -35,7 +32,7 @@ async def main():
     account_num = account.account_number
     sequence = account.sequence
 
-    fee = [Coin(amount="0", denom="uband")]
+    fee = [Coin(amount="50000", denom="uband")]
     chain_id = await c.get_chain_id()
 
     # Step 4 Construct a transaction
@@ -50,13 +47,8 @@ async def main():
         .with_memo("")
     )
 
-    # Step 5 Sign a transaction by using private key
-    sign_doc = txn.get_sign_doc(public_key)
-    signature = private_key.sign(bytes(sign_doc))
-    tx_raw_bytes = txn.get_tx_data(signature, public_key)
-
-    # Step 6 Broadcast a transaction
-    tx_block = await c.send_tx_block_mode(tx_raw_bytes)
+    # Sign and broadcast a transaction
+    tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
 
     # Converting to JSON for readability
     print(tx_block.to_json(indent=4))

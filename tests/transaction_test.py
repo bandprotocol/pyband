@@ -121,7 +121,7 @@ async def test_get_sign_data_with_sender_success(pyband_client):
 
 @pytest.mark.asyncio
 async def test_create_transaction_with_sender_fail(pyband_client):
-    with pytest.raises(EmptyMsgError, match="messsage is empty, please use with_messages at least 1 message"):
+    with pytest.raises(EmptyMsgError, match="message is empty, please use with_messages at least 1 message"):
         await Transaction().with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
 
 

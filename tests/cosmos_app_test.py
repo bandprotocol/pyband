@@ -1,4 +1,3 @@
-import pytest
 import hashlib
 import random
 import string
@@ -7,24 +6,26 @@ import math
 import pytest
 from bech32 import bech32_encode, convertbits
 from bip32 import BIP32
-from ecdsa import SigningKey, SECP256k1
-from ecdsa.der import encode_sequence, encode_integer
+from ecdsa.curves import SECP256k1
+from ecdsa.der import encode_sequence, encode_integer, remove_sequence, remove_integer
+from ecdsa.keys import SigningKey
 from ecdsa.util import sigencode_string_canonize
+from ledgerblue.Dongle import Dongle
 from mnemonic import Mnemonic
 
+from pyband import PrivateKey
 from pyband.cosmos_app import CosmosApp, CommException
 from pyband.exceptions import *
 from pyband.messages.oracle.v1 import MsgCreateDataSource
 from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.transaction import Transaction
 from pyband.utils import bip44_to_list
-from pyband.wallet import Ledger, PrivateKey
 
 MOCK_MNEMONIC = "coach pond canoe lake solution empty vacuum term pave toe burst top violin purpose umbrella color disease thrive diamond found track need filter wait"
 
 
-class MockDongle:
-    def __init__(self, mnemonic):
+class MockDongle(Dongle):
+    def __init__(self):
         self.mnemonic = MOCK_MNEMONIC
         self._packet_cache = None
 
@@ -64,8 +65,6 @@ class MockDongle:
 
     @staticmethod
     def __path_from_data(data: bytes, harden_count: int):
-        # hrp_len = data[0]
-        # bip32_byte = data[hrp_len + 1 :]
         path = "m/"
         for i in range(0, math.ceil(len(data) / 4)):
             if i < harden_count:
@@ -132,12 +131,6 @@ class MockDongle:
             raise CommException(LEDGER_RETURN_CODES.get("0x6400", "UNKNOWN"), sw=0x6400)
 
 
-class MockCosmosApp(CosmosApp):
-    def __init__(self, derivation_path: str):
-        self.dongle = MockDongle(derivation_path)
-        self.derivation_path = bip44_to_list(derivation_path)
-
-
 @pytest.fixture()
 def valid_derivation_path():
     return "m/44'/118'/0'/0/0"
@@ -145,15 +138,7 @@ def valid_derivation_path():
 
 @pytest.fixture()
 def mock_cosmos_app(valid_derivation_path):
-    return MockCosmosApp(valid_derivation_path)
-
-
-@pytest.fixture()
-def mock_ledger(mock_cosmos_app):
-    return Ledger(
-        app=mock_cosmos_app,
-        path=mock_cosmos_app.derivation_path,
-    )
+    return CosmosApp(bip44_to_list(valid_derivation_path), dongle=MockDongle())
 
 
 @pytest.fixture()
@@ -185,8 +170,8 @@ def mock_message():
     return txn
 
 
-def test_get_version(mock_ledger):
-    resp = mock_ledger.app_info()
+def test_get_version(mock_cosmos_app):
+    resp = mock_cosmos_app.get_version()
 
     assert resp.cla == 0
     assert resp.major == 2
@@ -194,28 +179,30 @@ def test_get_version(mock_ledger):
     assert resp.patch == 0
 
 
-def test_ins_get_public_key(mock_private_key, mock_ledger):
+def test_ins_get_public_key(mock_private_key, mock_cosmos_app):
+    comparison_public_key = mock_private_key.to_public_key().to_hex()
+
+    ledger_public_key = mock_cosmos_app.ins_get_addr_secp256k1("band").public_key.hex()
+
+    assert ledger_public_key == comparison_public_key
+
+
+def test_ins_get_addr(mock_private_key, mock_cosmos_app):
     comparison_public_key = mock_private_key.to_public_key()
+    comparison_addr = comparison_public_key.to_address().to_acc_bech32()
 
-    resp = mock_ledger.get_public_key()
+    ledger_addr = mock_cosmos_app.ins_get_addr_secp256k1("band").address.decode()
 
-    assert resp.verify_key == comparison_public_key.verify_key
-
-
-def test_ins_get_addr(mock_private_key, mock_ledger):
-    comparison_public_key = mock_private_key.to_public_key()
-    comparison_addr = comparison_public_key.to_address()
-
-    resp = mock_ledger.get_address()
-
-    assert resp.addr == comparison_addr.addr
+    assert ledger_addr == comparison_addr
 
 
-def test_sign_secp256k1(mock_private_key, mock_ledger, mock_message):
-    mock_public_key = mock_private_key.to_public_key()
-    mock_sign_doc = mock_message.get_sign_doc(mock_public_key).SerializeToString()
-    comparison_signed_msg = mock_private_key.sign(mock_sign_doc)
+def test_sign_secp256k1(mock_private_key, mock_cosmos_app, mock_message):
+    sign_doc = bytes(mock_message.get_sign_doc())
 
-    resp = mock_ledger.sign(mock_sign_doc)
+    comparison_signed_msg = mock_private_key.sign(sign_doc)
 
-    assert comparison_signed_msg == resp
+    data, remaining_data = remove_sequence(mock_cosmos_app.sign_secp256k1(sign_doc))
+    r, c = remove_integer(data)
+    s, _ = remove_integer(c)
+
+    assert comparison_signed_msg == r.to_bytes(32, "big") + s.to_bytes(32, "big")

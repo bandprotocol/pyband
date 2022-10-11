@@ -13,7 +13,6 @@ assert __base_query_v1_beta1__
 assert ___tendermint_types__
 
 
-@dataclass
 class MsgBeginRedelegate(BaseMessageWrapper, MsgBeginRedelegateProto):
     @property
     def type_url(self):
@@ -24,7 +23,6 @@ class MsgBeginRedelegate(BaseMessageWrapper, MsgBeginRedelegateProto):
         return "cosmos-sdk/MsgBeginRedelegate"
 
 
-@dataclass
 class MsgDelegate(BaseMessageWrapper, MsgDelegateProto):
     @property
     def type_url(self):
@@ -35,7 +33,6 @@ class MsgDelegate(BaseMessageWrapper, MsgDelegateProto):
         return "cosmos-sdk/MsgDelegate"
 
 
-@dataclass
 class MsgUndelegate(BaseMessageWrapper, MsgUndelegateProto):
     @property
     def type_url(self):
