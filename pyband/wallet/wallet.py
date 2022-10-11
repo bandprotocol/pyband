@@ -15,7 +15,7 @@ class Wallet:
         self._sign_mode = sign_mode
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: str, *, path: str = DEFAULT_DERIVATION_PATH):
+    def from_mnemonic(cls, mnemonic: str, path: str = DEFAULT_DERIVATION_PATH):
         """Creates a Wallet instance from a mnemonic phrase and derivation path.
 
         Args:
@@ -40,7 +40,7 @@ class Wallet:
         return cls(PrivateKeySigner(PrivateKey.from_hex(private_key)), SignMode.SIGN_MODE_DIRECT)
 
     @classmethod
-    def from_ledger(cls, *, path: str = DEFAULT_LEDGER_DERIVATION_PATH, app: CosmosApp = None):
+    def from_ledger(cls, path: str = DEFAULT_LEDGER_DERIVATION_PATH, *, app: CosmosApp = None):
         """Creates a Wallet instance from a connected Ledger.
 
         Args:
