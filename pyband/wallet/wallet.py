@@ -25,6 +25,7 @@ class Wallet:
         Returns:
             A Wallet instance.
         """
+
         return cls(PrivateKeySigner(PrivateKey.from_mnemonic(mnemonic, path)), SignMode.SIGN_MODE_DIRECT)
 
     @classmethod
@@ -37,6 +38,7 @@ class Wallet:
         Returns:
             A Wallet instance.
         """
+
         return cls(PrivateKeySigner(PrivateKey.from_hex(private_key)), SignMode.SIGN_MODE_DIRECT)
 
     @classmethod
@@ -50,28 +52,29 @@ class Wallet:
         Returns:
             A Wallet instance.
         """
+
         return cls(
             LedgerSigner(path=path, app=app if app is not None else CosmosApp(bip44_to_list(path))),
             SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
         )
 
-    @property
     def public_key(self) -> PublicKey:
         """Gets the public key associated with this wallet
 
         Returns:
             A PublicKey instance
         """
-        return self._signer.public_key
 
-    @property
+        return self._signer.get_public_key()
+
     def address(self) -> Address:
         """Gets the address associated with this wallet
 
         Returns:
             An Address instance
         """
-        return self._signer.address
+
+        return self._signer.get_address()
 
     def sign_and_build(self, tx: Transaction) -> bytes:
         """Signs and builds a broadcastable transaction.
@@ -82,10 +85,11 @@ class Wallet:
         Returns:
             A transaction as bytes.
         """
+
         if self._sign_mode == SignMode.SIGN_MODE_LEGACY_AMINO_JSON:
             sign_msg = tx.get_sign_message_for_legacy_codec()
         else:
-            sign_msg = tx.get_sign_doc(self.public_key)
+            sign_msg = tx.get_sign_doc(self.public_key())
 
         signature = self._signer.sign(bytes(sign_msg))
-        return tx.get_tx_data(signature, self.public_key)
+        return tx.get_tx_data(signature, self.public_key())

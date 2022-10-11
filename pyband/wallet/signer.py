@@ -11,10 +11,6 @@ from ..utils import bip44_to_list
 
 
 class Signer:
-    def __init__(self):
-        self.public_key = self.get_public_key()
-        self.address = self.get_address()
-
     @abstractmethod
     def get_public_key(self) -> PublicKey:
         """Gets public key associated with the signer.
@@ -22,6 +18,7 @@ class Signer:
         Returns:
             A PublicKey instance.
         """
+
         pass
 
     @abstractmethod
@@ -31,6 +28,7 @@ class Signer:
         Returns:
             An Address instance.
         """
+
         pass
 
     @abstractmethod
@@ -43,19 +41,19 @@ class Signer:
         Returns:
             Signature in bytes.
         """
+
         pass
 
 
 class PrivateKeySigner(Signer):
     def __init__(self, private_key: PrivateKey):
         self.private_key = private_key
-        super().__init__()
 
     def get_public_key(self) -> PublicKey:
         return self.private_key.to_public_key()
 
     def get_address(self) -> Address:
-        return self.public_key.to_address()
+        return self.private_key.to_public_key().to_address()
 
     def sign(self, msg: bytes) -> bytes:
         return self.private_key.sign(bytes(msg))
@@ -64,13 +62,14 @@ class PrivateKeySigner(Signer):
 class LedgerSigner(Signer):
     def __init__(self, path: str, app: CosmosApp):
         self.cosmos_app = app if app is not None else CosmosApp(bip44_to_list(path))
-        super().__init__()
 
-    def get_public_key(self, prefix: str = BECH32_ADDR_ACC_PREFIX) -> PublicKey:
-        return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1(prefix, False).public_key)
+    def get_public_key(self) -> PublicKey:
+        return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).public_key)
 
-    def get_address(self, prefix: str = BECH32_ADDR_ACC_PREFIX) -> Address:
-        return Address.from_acc_bech32(self.cosmos_app.ins_get_addr_secp256k1(prefix).address.decode())
+    def get_address(self) -> Address:
+        return Address.from_acc_bech32(
+            self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).address.decode()
+        )
 
     def sign(self, msg: bytes) -> bytes:
         data, remaining_data = remove_sequence(self.cosmos_app.sign_secp256k1(msg))
