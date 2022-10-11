@@ -28,10 +28,6 @@ This library is available on [PyPI](https://pypi.org/project/pyband/)
 pip install pyband
 ```
 
-## Compatible
-
-Band 2.3.0, Cosmos-SDK 0.44.0, IBC-go 1.1.0
-
 ## 💎 Example Usage
 
 The example below shows how this library can be used to get the result of the latest request for the price of any
