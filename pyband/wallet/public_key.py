@@ -6,12 +6,9 @@ from ecdsa.curves import SECP256k1
 from ecdsa.keys import VerifyingKey, BadSignatureError
 
 from .address import Address
+from .constants import BECH32_PUBKEY_ACC_PREFIX, BECH32_PUBKEY_VAL_PREFIX, BECH32_PUBKEY_CONS_PREFIX
 from ..exceptions import DecodeError
 from ..proto.cosmos.crypto.secp256k1 import PubKey as PubKeyProto
-
-BECH32_PUBKEY_ACC_PREFIX = "bandpub"
-BECH32_PUBKEY_VAL_PREFIX = "bandvaloperpub"
-BECH32_PUBKEY_CONS_PREFIX = "bandvalconspub"
 
 
 class PublicKey:

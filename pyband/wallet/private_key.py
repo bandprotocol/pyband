@@ -7,9 +7,8 @@ from ecdsa.keys import SigningKey
 from ecdsa.util import sigencode_string_canonize
 from mnemonic import Mnemonic
 
+from .constants import DEFAULT_DERIVATION_PATH
 from .public_key import PublicKey
-
-DEFAULT_DERIVATION_PATH = "m/44'/494'/0'/0/0"
 
 
 class PrivateKey:

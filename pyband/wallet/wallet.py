@@ -1,15 +1,12 @@
 from .address import Address
+from .constants import DEFAULT_DERIVATION_PATH, DEFAULT_LEDGER_DERIVATION_PATH
 from .private_key import PrivateKey
-
 from .public_key import PublicKey
 from .signer import Signer, PrivateKeySigner, LedgerSigner
 from ..cosmos_app import CosmosApp
 from ..proto.cosmos.tx.signing.v1beta1 import SignMode
 from ..transaction import Transaction
 from ..utils import bip44_to_list
-
-DEFAULT_DERIVATION_PATH = "m/44'/494'/0'/0/0"
-DEFAULT_LEDGER_DERIVATION_PATH = "m/44'/118'/0'/0/0"
 
 
 class Wallet:

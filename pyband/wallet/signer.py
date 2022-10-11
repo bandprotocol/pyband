@@ -3,6 +3,7 @@ from abc import abstractmethod
 from ecdsa.der import remove_sequence, UnexpectedDER, remove_integer
 
 from .address import Address
+from .constants import BECH32_ADDR_ACC_PREFIX
 from .private_key import PrivateKey
 from .public_key import PublicKey
 from ..cosmos_app import CosmosApp
@@ -66,10 +67,10 @@ class LedgerSigner(Signer):
         super().__init__()
 
     def get_public_key(self) -> PublicKey:
-        return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1("band", False).public_key)
+        return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).public_key)
 
     def get_address(self) -> Address:
-        return Address.from_acc_bech32(self.cosmos_app.ins_get_addr_secp256k1("band").address.decode())
+        return Address.from_acc_bech32(self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX).address.decode())
 
     def sign(self, msg: bytes) -> bytes:
         data, remaining_data = remove_sequence(self.cosmos_app.sign_secp256k1(msg))

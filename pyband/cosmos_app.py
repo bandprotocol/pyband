@@ -5,8 +5,8 @@ from ledgerblue.Dongle import Dongle
 from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 
-from pyband.exceptions import CosmosAppError
-from pyband.utils import get_bip32_byte, split_packet
+from .exceptions import CosmosAppError
+from .utils import get_bip32_byte, split_packet
 
 
 @dataclass

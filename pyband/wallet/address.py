@@ -1,11 +1,7 @@
 from bech32 import bech32_encode, bech32_decode, convertbits
 
-from pyband.exceptions import ConvertError, DecodeError
-
-
-BECH32_ADDR_ACC_PREFIX = "band"
-BECH32_ADDR_VAL_PREFIX = "bandvaloper"
-BECH32_ADDR_CONS_PREFIX = "bandvalcons"
+from .constants import BECH32_ADDR_ACC_PREFIX, BECH32_ADDR_CONS_PREFIX, BECH32_ADDR_VAL_PREFIX
+from ..exceptions import ConvertError, DecodeError
 
 
 class Address:
