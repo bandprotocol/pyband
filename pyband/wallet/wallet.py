@@ -89,7 +89,7 @@ class Wallet:
         if self._sign_mode == SignMode.SIGN_MODE_LEGACY_AMINO_JSON:
             sign_msg = tx.get_sign_message_for_legacy_codec()
         else:
-            sign_msg = tx.get_sign_doc(self.public_key())
+            sign_msg = tx.get_sign_doc(self.get_public_key())
 
         signature = self._signer.sign(bytes(sign_msg))
-        return tx.get_tx_data(signature, self.public_key())
+        return tx.get_tx_data(signature, self.get_public_key())

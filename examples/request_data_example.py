@@ -13,7 +13,7 @@ async def main():
 
     # Convert a mnemonic to a wallet
     wallet = Wallet.from_mnemonic(os.getenv("MNEMONIC"))
-    sender = wallet.public_key.to_address().to_acc_bech32()
+    sender = wallet.get_address().to_acc_bech32()
 
     # Prepare a transaction's properties
     request_msg = MsgRequestData(
