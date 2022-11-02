@@ -93,4 +93,4 @@ class Wallet:
             sign_msg = tx.get_sign_doc(public_key)
 
         signature = self._signer.sign(bytes(sign_msg))
-        return tx.get_tx_data(signature, public_key)
+        return tx.get_tx_data(signature, public_key, sign_mode=self._sign_mode)
