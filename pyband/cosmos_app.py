@@ -84,7 +84,10 @@ class CosmosApp:
     def disconnect(self) -> None:
         """Disconnects the ledger connection."""
 
-        self.dongle.close()
+        try:
+            self.dongle.close()
+        except AttributeError:
+            pass
 
     def get_version(self) -> AppVersion:
         """Gets the app version.
