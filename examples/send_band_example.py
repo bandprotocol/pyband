@@ -26,7 +26,6 @@ async def main():
     account_num = account.account_number
     sequence = account.sequence
 
-    fee = [Coin(amount="50000", denom="uband")]
     chain_id = await c.get_chain_id()
 
     # Step 4 Construct a transaction
@@ -36,8 +35,8 @@ async def main():
         .with_sequence(sequence)
         .with_account_num(account_num)
         .with_chain_id(chain_id)
-        .with_gas(2000000)
-        .with_fee(fee)
+        .with_gas_limit(100000)
+        .with_gas_price(0.0025)
         .with_memo("")
     )
 

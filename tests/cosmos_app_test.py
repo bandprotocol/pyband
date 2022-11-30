@@ -164,8 +164,8 @@ def mock_message():
         .with_sequence(0)
         .with_account_num(0)
         .with_chain_id("random_chain_id")
-        .with_gas(50000)
-        .with_fee([Coin(amount="50000", denom="uband")])
+        .with_gas_limit(50000)
+        .with_gas_price(0.0025)
     )
     return txn
 
