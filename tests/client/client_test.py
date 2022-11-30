@@ -919,3 +919,47 @@ async def test_get_latest_request_success(pyband_client):
         )
     )
     assert latest_request == mock_result
+
+
+@pytest.mark.asyncio
+async def test_get_tx_resp(pyband_client):
+    tx_resp = await pyband_client.get_tx_response("txhash")
+    assert tx_resp == TxResponse(
+        height=686917,
+        txhash="AFC6BDDC7E7041B1AC21C26E25A52550689D148BE9A0D8E797E45DD753BF7FB3",
+        data="0A090A0772657175657374",
+        raw_log="[{'events':[{'type':'message','attributes':[{'key':'action','value':'request'}]},{'type':'raw_request','attributes':[{'key':'data_source_id','value':'61'},{'key':'data_source_hash','value':'07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef'},{'key':'external_id','value':'6'},{'key':'calldata','value':'ETH BTC'},{'key':'data_source_id','value':'57'},{'key':'data_source_hash','value':'61b369daa5c0918020a52165f6c7662d5b9c1eee915025cb3d2b9947a26e48c7'},{'key':'external_id','value':'0'},{'key':'calldata','value':'ETH BTC BAND'},{'key':'data_source_id','value':'62'},{'key':'data_source_hash','value':'107048da9dbf7960c79fb20e0585e080bb9be07d42a1ce09c5479bbada8d0289'},{'key':'external_id','value':'3'},{'key':'calldata','value':'ETH BTC BAND MIR UNI'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'5'},{'key':'calldata','value':'huobipro ETH BTC BAND'},{'key':'data_source_id','value':'59'},{'key':'data_source_hash','value':'5c011454981c473af3bf6ef93c76b36bfb6cc0ce5310a70a1ba569de3fc0c15d'},{'key':'external_id','value':'2'},{'key':'calldata','value':'ETH BTC BAND MIR UNI'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'4'},{'key':'calldata','value':'binance ETH BTC BAND MIR UNI'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'9'},{'key':'calldata','value':'bittrex ETH BTC'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'7'},{'key':'calldata','value':'kraken ETH BTC'},{'key':'data_source_id','value':'60'},{'key':'data_source_hash','value':'2e588de76a58338125022bc42b460072300aebbcc4acaf55f91755c1c1799bac'},{'key':'external_id','value':'8'},{'key':'calldata','value':'bitfinex ETH BTC'},{'key':'data_source_id','value':'58'},{'key':'data_source_hash','value':'7e6759fade717a06fb643392bfde837bfc3437da2ded54feed706e6cd35de461'},{'key':'external_id','value':'1'},{'key':'calldata','value':'ETH BTC BAND UNI'}]},{'type':'request','attributes':[{'key':'id','value':'154966'},{'key':'client_id','value':'from_bandd_2'},{'key':'oracle_script_id','value':'37'},{'key':'calldata','value':'0000000500000003455448000000034254430000000442414e44000000034d495200000003554e490000000000000064'},{'key':'ask_count','value':'16'},{'key':'min_count','value':'10'},{'key':'gas_used','value':'196024'},{'key':'validator','value':'bandvaloper18tjynh8v0kvf9lmjenx02fgltxk0c6jmm2wcjc'},{'key':'validator','value':'bandvaloper1h52l9shahsdzrduwtjt9exc349sehx4s2zydrv'},{'key':'validator','value':'bandvaloper1t0x8dv4frjnrnl0geegf9l5hrj9wa7qwmjrrwg'},{'key':'validator','value':'bandvaloper1kfj48adjsnrgu83lau6wc646q2uf65rf84tzus'},{'key':'validator','value':'bandvaloper1g4tfgzuxtnfzpnc7drk83n6r6ghkmzwsc7eglq'},{'key':'validator','value':'bandvaloper1w46umthap3cmvqarrznauy25mdhqu45tv8hq62'},{'key':'validator','value':'bandvaloper1a570h9e3rtvfhm030ta5hvel7e7e4lh4pgv8wj'},{'key':'validator','value':'bandvaloper12dzdxtd2mtnc37nfutwmj0lv8lsfgn6um0e5q5'},{'key':'validator','value':'bandvaloper19j74weeme5ehvmfnduz5swkxysz4twg92swxaf'},{'key':'validator','value':'bandvaloper1qudzmeu5yr7ryaq9spfpurptvlv4mxehe8x86e'},{'key':'validator','value':'bandvaloper1u6skdqfp3dcmvqfx28ej8v9nadf6mmpq6sp52a'},{'key':'validator','value':'bandvaloper106e65xpz88s5xvnlp5lqx98th9zvpptu7uj7zy'},{'key':'validator','value':'bandvaloper1u3c40nglllu4upuddlz6l59afq7uuz7lq6z977'},{'key':'validator','value':'bandvaloper1d0kcwzukkjl2w2nty3xerqpy3ypdrph67hxx4v'},{'key':'validator','value':'bandvaloper1nlepx7xg53fsy6vslrss6adtmtl8a33kusv7fa'},{'key':'validator','value':'bandvaloper1dafxd4nacdry36tvsv6htaclkma4xhj6l9qrfv'}]}]}]",
+        logs=[
+            AbciMessageLog(
+                events=[
+                    StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                    StringEvent(
+                        type="raw_request",
+                        attributes=[
+                            Attribute(key="data_source_id", value="61"),
+                            Attribute(
+                                key="data_source_hash",
+                                value="07be7bd61667327aae10b7a13a542c7dfba31b8f4c52b0b60bf9c7b11b1a72ef",
+                            ),
+                            Attribute(key="external_id", value="6"),
+                        ],
+                    ),
+                    StringEvent(
+                        type="report",
+                        attributes=[
+                            Attribute(key="id", value="154966"),
+                            Attribute(key="client_id", value="from_bandd_2"),
+                            Attribute(key="oracle_script_id", value="37"),
+                        ],
+                    ),
+                ]
+            )
+        ],
+        gas_wanted=2000000,
+        gas_used=1059525,
+        tx=Any(
+            type_url="/cosmos.tx.v1beta1.Tx",
+            value=b'\n\x9b\x01\n\x98\x01\n\x19/oracle.v1.MsgRequestData\x12{\x08%\x120\x00\x00\x00\x05\x00\x00\x00\x03ETH\x00\x00\x00\x03BTC\x00\x00\x00\x04BAND\x00\x00\x00\x03MIR\x00\x00\x00\x03UNI\x00\x00\x00\x00\x00\x00\x00d\x18\x10 \n*\x0cfrom_bandd_28\xd0\x86\x03@\xe0\xa7\x12J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\x12Y\nQ\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\x8c\x89\xad\xa3\xb4\x8e\xc5\xf3,\xf8\xda\x8cC\xee\x12yM?9\x87B?\xf9\x88\x02\xd5\xfc\xf6\xeeC\x11\x93\x12\x04\n\x02\x08\x01\x18\xde\x03\x12\x04\x10\x80\x89z\x1a@4\xd9\xce\xf3\xa1L\xe2\x8f\x81L"\xc9\x02\x1e\xd4E\x0e3\xffL\xb1\xb3Q\xbf\xdb\xaa\x8d\x85\xd3,5L8D\xacQ\xfe\xca\xcc\xb1\xa3\x10\x8c\x8b\xd5\xce\xcc\x96rw\x7fY\x16&E\r\xe4\xca\n\xd1~\xd5\x15\xe0',
+        ),
+        timestamp="2021-06-04T06:07:37Z",
+    )
