@@ -46,8 +46,6 @@ async def main():
         .with_memo("")
     )
 
-    print(txn.fee)
-
     # Sign and broadcast a transaction
     tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
 

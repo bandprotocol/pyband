@@ -1,5 +1,5 @@
 import time
-from typing import List, Optional
+from typing import List
 
 from grpclib.client import Channel
 
@@ -11,7 +11,7 @@ from .proto.cosmos.base.abci.v1beta1 import TxResponse
 from .proto.cosmos.base.tendermint.v1beta1 import GetLatestBlockRequest, GetLatestBlockResponse
 from .proto.cosmos.base.tendermint.v1beta1 import ServiceStub as TendermintServiceStub
 from .proto.cosmos.crypto.secp256k1 import PubKey
-from .proto.cosmos.tx.v1beta1 import GetTxRequest, BroadcastTxRequest, BroadcastMode, SimulateRequest
+from .proto.cosmos.tx.v1beta1 import GetTxRequest, BroadcastTxRequest, BroadcastMode, SimulateRequest, SimulateResponse
 from .proto.cosmos.tx.v1beta1 import ServiceStub as TxServiceStub
 from .proto.oracle.v1 import (
     DataSource,
@@ -320,13 +320,13 @@ class Client:
         resp = await self.stub_tx.get_tx(GetTxRequest(hash=tx_hash))
         return resp.tx_response
 
-    async def simulate_tx(self, tx_bytes: bytes):
+    async def simulate_tx(self, tx_bytes: bytes) -> SimulateResponse:
         """Simulates a transaction from the tx_bytes.
 
         Args:
             tx_bytes: A signed transaction in raw bytes.
 
         Returns:
-
+            The simulated response.
         """
         return await self.stub_tx.simulate(SimulateRequest(tx_bytes=tx_bytes))
