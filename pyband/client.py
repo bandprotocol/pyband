@@ -11,7 +11,7 @@ from .proto.cosmos.base.abci.v1beta1 import TxResponse
 from .proto.cosmos.base.tendermint.v1beta1 import GetLatestBlockRequest, GetLatestBlockResponse
 from .proto.cosmos.base.tendermint.v1beta1 import ServiceStub as TendermintServiceStub
 from .proto.cosmos.crypto.secp256k1 import PubKey
-from .proto.cosmos.tx.v1beta1 import GetTxRequest, BroadcastTxRequest, BroadcastMode
+from .proto.cosmos.tx.v1beta1 import GetTxRequest, BroadcastTxRequest, BroadcastMode, SimulateRequest, SimulateResponse
 from .proto.cosmos.tx.v1beta1 import ServiceStub as TxServiceStub
 from .proto.oracle.v1 import (
     DataSource,
@@ -103,7 +103,7 @@ class Client:
         return resp
 
     async def get_reporters(self, validator: str) -> List[str]:
-        """Gets a list of reporters associated with a given validator;
+        """Gets a list of reporters associated with a given validator.
 
         Args:
             validator: The validator's address.
@@ -170,54 +170,54 @@ class Client:
             raise NotFoundError("Request Id is not found")
         return request_ids
 
-    async def send_tx_sync_mode(self, tx_byte: bytes) -> TxResponse:
+    async def send_tx_sync_mode(self, tx_bytes: bytes) -> TxResponse:
         """Sends a transaction in sync mode.
 
         Sends a transaction and waits until the transaction has passed the CheckTx phase.
 
         Args:
-            tx_byte: A signed transaction in raw bytes.
+            tx_bytes: A signed transaction in raw bytes.
 
         Returns:
             The transaction response.
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_byte, mode=BroadcastMode.BROADCAST_MODE_SYNC)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_SYNC)
         )
         return resp.tx_response
 
-    async def send_tx_async_mode(self, tx_byte: bytes) -> TxResponse:
+    async def send_tx_async_mode(self, tx_bytes: bytes) -> TxResponse:
         """Sends a transaction in async mode.
 
         Sends a transaction and returns the response immediately, without waiting for the transaction process.
 
         Args:
-            tx_byte: A signed transaction in raw bytes.
+            tx_bytes: A signed transaction in raw bytes.
 
         Returns:
             The transaction response.
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_byte, mode=BroadcastMode.BROADCAST_MODE_ASYNC)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_ASYNC)
         )
         return resp.tx_response
 
-    async def send_tx_block_mode(self, tx_byte: bytes) -> TxResponse:
+    async def send_tx_block_mode(self, tx_bytes: bytes) -> TxResponse:
         """Sends a transaction in block mode.
 
         Sends a transaction and waits until the transaction has been committed to a block before returning the response.
 
         Args:
-            tx_byte: A signed transaction in raw bytes.
+            tx_bytes: A signed transaction in raw bytes.
 
         Returns:
             The transaction response.
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_byte, mode=BroadcastMode.BROADCAST_MODE_BLOCK)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_BLOCK)
         )
         return resp.tx_response
 
@@ -302,9 +302,31 @@ class Client:
         Returns:
             The request details.
         """
-        resp = await self.stub_oracle.request_search(
+        return await self.stub_oracle.request_search(
             QueryRequestSearchRequest(
                 oracle_script_id=oid, calldata=calldata, ask_count=ask_count, min_count=min_count
             )
         )
-        return resp
+
+    async def get_tx_response(self, tx_hash: str) -> TxResponse:
+        """Gets the tx response from a tx hash.
+
+        Args:
+            tx_hash: The transaction hash to retrieve the tx response of.
+
+        Returns:
+            The tx response.
+        """
+        resp = await self.stub_tx.get_tx(GetTxRequest(hash=tx_hash))
+        return resp.tx_response
+
+    async def simulate_tx(self, tx_bytes: bytes) -> SimulateResponse:
+        """Simulates a transaction from the tx_bytes.
+
+        Args:
+            tx_bytes: A signed transaction in raw bytes.
+
+        Returns:
+            The simulated response.
+        """
+        return await self.stub_tx.simulate(SimulateRequest(tx_bytes=tx_bytes))

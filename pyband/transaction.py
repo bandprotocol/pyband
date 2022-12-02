@@ -1,4 +1,5 @@
 import json
+from math import ceil
 from typing import List, Tuple, Iterable
 
 from betterproto.lib.google.protobuf import Any as AnyProto
@@ -20,16 +21,16 @@ class Transaction:
         account_num: int = None,
         sequence: int = None,
         chain_id: str = None,
-        fee: List[Coin] = None,
-        gas: int = 200000,
+        gas_price: float = 0.0025,
+        gas_limit: int = 200000,
         memo: str = "",
     ):
         self.msgs = msgs if msgs is not None else []
         self.account_num = account_num
         self.sequence = sequence
         self.chain_id = chain_id
-        self.fee = Fee(amount=fee, gas_limit=gas)
-        self.gas = gas
+        self.gas_limit = gas_limit
+        self.gas_price = gas_price
         self.memo = memo
 
     @staticmethod
@@ -61,21 +62,29 @@ class Transaction:
         self.chain_id = chain_id
         return self
 
-    def with_fee(self, fee: List[Coin]) -> "Transaction":
-        self.fee = Fee(amount=fee, gas_limit=self.fee.gas_limit)
-        return self
-
-    def with_gas(self, gas: int) -> "Transaction":
+    def with_gas_limit(self, gas_limit: int) -> "Transaction":
         """Sets Transaction's gas.
 
         Args:
-            gas: Gas
+            gas_limit: Gas limit
 
         Returns:
             A Transaction instance.
         """
 
-        self.fee.gas_limit = gas
+        self.gas_limit = gas_limit
+        return self
+
+    def with_gas_price(self, gas_price: float) -> "Transaction":
+        """Sets Transaction's gas price.
+
+        Args:
+            gas_price: Gas price
+
+        Returns:
+            A Transaction instance.
+        """
+        self.gas_price = gas_price
         return self
 
     def with_memo(self, memo: str) -> "Transaction":
@@ -92,6 +101,12 @@ class Transaction:
             raise ValueTooLargeError("memo is too large")
         self.memo = memo
         return self
+
+    @property
+    def fee(self):
+        return Fee(
+            amount=[Coin(amount=str(ceil(self.gas_limit * self.gas_price)), denom="uband")], gas_limit=self.gas_limit
+        )
 
     def __generate_info(self, public_key: PublicKey, sign_mode: SignMode) -> Tuple[bytes, bytes]:
         body = TxBody(
