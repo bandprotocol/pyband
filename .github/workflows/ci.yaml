@@ -10,10 +10,11 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
     steps:
-      - name: Install OpenSSL
+      - name: Install OpenSSL with ripemd160 support
         run: |
           sudo apt-get update
           sudo apt-get install -y libssl-dev
+          sudo ln -s /usr/lib/x86_64-linux-gnu/openssl-1.0.0/engines/libcrypto.so /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0
 
       - name: Code Checkout
         uses: actions/checkout@v3
