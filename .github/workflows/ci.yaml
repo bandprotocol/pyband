@@ -10,6 +10,11 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
     steps:
+      - name: Install OpenSSL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev
+
       - name: Code Checkout
         uses: actions/checkout@v3
 
