@@ -518,24 +518,42 @@ files = [
 
 [[package]]
 name = "ledgerblue"
-version = "0.1.42"
+version = "0.1.45"
 description = "Python library to communicate with Ledger Blue/Nano S"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "ledgerblue-0.1.42.tar.gz", hash = "sha256:50daae7ad675b022cef53e69e5bde34d2bbee76c6e7395ddc8734ab2fbcf75c9"},
+    {file = "ledgerblue-0.1.45.tar.gz", hash = "sha256:c0d4c8b0b9dc270274f748e05349f2c827d7238e7c244ab4bd78bd2b5ed21a30"},
 ]
 
 [package.dependencies]
 ecpy = ">=0.9.0"
 future = "*"
 hidapi = ">=0.7.99"
+nfcpy = ">=1.0.4"
 pillow = ">=3.4.0"
 protobuf = ">=2.6.1"
 pycryptodomex = ">=3.6.1"
 python-u2flib-host = ">=3.0.2"
 websocket_client = ">=0.56.0"
+
+[package.extras]
+smartcard = ["python-pyscard (>=1.6.12)"]
+
+[[package]]
+name = "libusb1"
+version = "3.0.0"
+description = "Pure-python wrapper for libusb-1.0"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "libusb1-3.0.0-py3-none-any.whl", hash = "sha256:0e652b04cbe85ec8e74f9ee82b49f861fb14b5320ae51399387ad2601ccc0500"},
+    {file = "libusb1-3.0.0-py3-none-win32.whl", hash = "sha256:083f75e5d15cb5e2159e64c308c5317284eae926a820d6dce53a9505d18be3b2"},
+    {file = "libusb1-3.0.0-py3-none-win_amd64.whl", hash = "sha256:6f6bb010632ada35c661d17a65e135077beef0fbb2434d5ffdb3a4a911fd9490"},
+    {file = "libusb1-3.0.0.tar.gz", hash = "sha256:5792a9defee40f15d330a40d9b1800545c32e47ba7fc66b6f28f133c9fcc8538"},
+]
 
 [[package]]
 name = "mnemonic"
@@ -632,6 +650,36 @@ files = [
     {file = "multidict-6.0.4-cp39-cp39-win_amd64.whl", hash = "sha256:33029f5734336aa0d4c0384525da0387ef89148dc7191aae00ca5fb23d7aafc2"},
     {file = "multidict-6.0.4.tar.gz", hash = "sha256:3666906492efb76453c0e7b97f2cf459b0682e7402c0489a95484965dbc1da49"},
 ]
+
+[[package]]
+name = "ndeflib"
+version = "0.3.3"
+description = "NFC Data Exchange Format decoder and encoder."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "ndeflib-0.3.3-py2.py3-none-any.whl", hash = "sha256:c634b1af2ab454754f0fdbe1debd38247ed7bdaf94587359b857726f3ee7decb"},
+    {file = "ndeflib-0.3.3.tar.gz", hash = "sha256:1d56828558b9b16f2822a4051824346347b66adf5320ea86070748b6f2454a88"},
+]
+
+[[package]]
+name = "nfcpy"
+version = "1.0.4"
+description = "Python module for Near Field Communication."
+category = "main"
+optional = false
+python-versions = ">=2.6"
+files = [
+    {file = "nfcpy-1.0.4-py3-none-any.whl", hash = "sha256:c1f3ecdd9755f9af46e89a945ed490354d089d5b19422e307159e256ff8c1b3d"},
+    {file = "nfcpy-1.0.4.tar.gz", hash = "sha256:e5bd08d0119e1d9e95d05215f838b07b44d03b651adddc523cc1a38892b8af6b"},
+]
+
+[package.dependencies]
+libusb1 = "*"
+ndeflib = "*"
+pydes = "*"
+pyserial = "*"
 
 [[package]]
 name = "packaging"
@@ -846,6 +894,32 @@ files = [
 ]
 
 [[package]]
+name = "pydes"
+version = "2.0.1"
+description = "Pure python implementation of DES and TRIPLE DES encryption algorithm"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyDes-2.0.1.tar.gz", hash = "sha256:e2ab8e21d2b83e90d90dbfdcb6fb8ac0000b813238b7ecaede04f8435c389012"},
+]
+
+[[package]]
+name = "pyserial"
+version = "3.5"
+description = "Python Serial Port Extension"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},
+    {file = "pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb"},
+]
+
+[package.extras]
+cp2110 = ["hidapi"]
+
+[[package]]
 name = "pytest"
 version = "7.1.3"
 description = "pytest: simple powerful testing with Python"
@@ -1050,4 +1124,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "2db01711424278511dc5516e80bc88ee59676e9cc655be056036b2445e498857"
+content-hash = "2e919242ea1a1329fd81a7a7b6e76f91d257561a9a40c0cc66f45167f866ef34"
