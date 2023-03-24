@@ -17,7 +17,7 @@ license = "MIT"
 name = "pyband"
 readme = "README.md"
 repository = "https://github.com/bandprotocol/pyband"
-version = "0.3.4"
+version = "0.3.5"
 
 [tool.poetry.dependencies]
 bech32 = "1.2.0"
