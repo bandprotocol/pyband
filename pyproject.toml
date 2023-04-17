@@ -22,13 +22,13 @@ version = "0.3.5"
 [tool.poetry.dependencies]
 bech32 = "1.2.0"
 betterproto = "2.0.0b5"
-bip32 = "0.0.8"
 ecdsa = "0.15"
 grpclib = "0.4.3"
 ledgerblue = "^0.1.45"
 mnemonic = "0.19"
 python = "^3.7"
 python-dateutil = "2.8.2"
+bip32 = "^3.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "7.1.3"
