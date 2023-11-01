@@ -47,7 +47,7 @@ class MsgGrantAllowance(betterproto.Message):
     """
 
     allowance: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(3)
-    """allowance can be any of basic and filtered fee allowance."""
+    """allowance can be any of basic, periodic, allowed fee allowance."""
 
 
 @dataclass(eq=False, repr=False)
@@ -91,15 +91,15 @@ class MsgRevokeAllowanceResponse(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class BasicAllowance(betterproto.Message):
     """
-    BasicAllowance implements Allowance with a one-time grant of tokens that
+    BasicAllowance implements Allowance with a one-time grant of coins that
     optionally expires. The grantee can use up to SpendLimit to cover fees.
     """
 
     spend_limit: List["__base_v1_beta1__.Coin"] = betterproto.message_field(1)
     """
-    spend_limit specifies the maximum amount of tokens that can be spent by
-    this allowance and will be updated as tokens are spent. If it is empty,
-    there is no spend limit and any amount of coins can be spent.
+    spend_limit specifies the maximum amount of coins that can be spent by this
+    allowance and will be updated as coins are spent. If it is empty, there is
+    no spend limit and any amount of coins can be spent.
     """
 
     expiration: datetime = betterproto.message_field(2)
@@ -149,7 +149,7 @@ class AllowedMsgAllowance(betterproto.Message):
     """
 
     allowance: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(1)
-    """allowance can be any of basic and filtered fee allowance."""
+    """allowance can be any of basic and periodic fee allowance."""
 
     allowed_messages: List[str] = betterproto.string_field(2)
     """
@@ -173,7 +173,7 @@ class Grant(betterproto.Message):
     """
 
     allowance: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(3)
-    """allowance can be any of basic and filtered fee allowance."""
+    """allowance can be any of basic, periodic, allowed fee allowance."""
 
 
 @dataclass(eq=False, repr=False)
@@ -236,7 +236,7 @@ class QueryAllowancesResponse(betterproto.Message):
 class QueryAllowancesByGranterRequest(betterproto.Message):
     """
     QueryAllowancesByGranterRequest is the request type for the
-    Query/AllowancesByGranter RPC method.
+    Query/AllowancesByGranter RPC method. Since: cosmos-sdk 0.46
     """
 
     granter: str = betterproto.string_field(1)
@@ -248,7 +248,7 @@ class QueryAllowancesByGranterRequest(betterproto.Message):
 class QueryAllowancesByGranterResponse(betterproto.Message):
     """
     QueryAllowancesByGranterResponse is the response type for the
-    Query/AllowancesByGranter RPC method.
+    Query/AllowancesByGranter RPC method. Since: cosmos-sdk 0.46
     """
 
     allowances: List["Grant"] = betterproto.message_field(1)
@@ -357,10 +357,14 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-    async def grant_allowance(self, msg_grant_allowance: "MsgGrantAllowance") -> "MsgGrantAllowanceResponse":
+    async def grant_allowance(
+        self, msg_grant_allowance: "MsgGrantAllowance"
+    ) -> "MsgGrantAllowanceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def revoke_allowance(self, msg_revoke_allowance: "MsgRevokeAllowance") -> "MsgRevokeAllowanceResponse":
+    async def revoke_allowance(
+        self, msg_revoke_allowance: "MsgRevokeAllowance"
+    ) -> "MsgRevokeAllowanceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_grant_allowance(
@@ -397,10 +401,14 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-    async def allowance(self, query_allowance_request: "QueryAllowanceRequest") -> "QueryAllowanceResponse":
+    async def allowance(
+        self, query_allowance_request: "QueryAllowanceRequest"
+    ) -> "QueryAllowanceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def allowances(self, query_allowances_request: "QueryAllowancesRequest") -> "QueryAllowancesResponse":
+    async def allowances(
+        self, query_allowances_request: "QueryAllowancesRequest"
+    ) -> "QueryAllowancesResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def allowances_by_granter(

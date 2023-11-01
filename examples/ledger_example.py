@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgEditDataSource
@@ -44,10 +45,13 @@ async def main():
     )
 
     # Sign and broadcast a transaction
-    tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
+    tx = await c.send_tx_sync_mode(wallet.sign_and_build(txn))
+    print(tx.to_json(indent=4))
 
-    # Convert to JSON for readability
-    print(tx_block.to_json(indent=4))
+    # Wait for transaction is included
+    time.sleep(4)
+    tx_response = await c.get_tx_response(tx.txhash)
+    print(tx_response.to_json(indent=4))
 
 
 if __name__ == "__main__":

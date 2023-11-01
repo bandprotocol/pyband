@@ -45,8 +45,11 @@ class Client:
 
     def close(self) -> None:
         """Closes the connection."""
-
+        
         self.__channel.close()
+
+    def get_channel(self) -> Channel:
+        return self.__channel
 
     @classmethod
     def from_endpoint(cls, grpc_endpoint: str, port: int, ssl: bool = True):
@@ -201,23 +204,6 @@ class Client:
 
         resp = await self.stub_tx.broadcast_tx(
             BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_ASYNC)
-        )
-        return resp.tx_response
-
-    async def send_tx_block_mode(self, tx_bytes: bytes) -> TxResponse:
-        """Sends a transaction in block mode.
-
-        Sends a transaction and waits until the transaction has been committed to a block before returning the response.
-
-        Args:
-            tx_bytes: A signed transaction in raw bytes.
-
-        Returns:
-            The transaction response.
-        """
-
-        resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_BLOCK)
         )
         return resp.tx_response
 
