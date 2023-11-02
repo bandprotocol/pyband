@@ -1,5 +1,4 @@
 import asyncio
-import time
 
 from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgEditDataSource
