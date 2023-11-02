@@ -45,7 +45,6 @@ class Client:
 
     def close(self) -> None:
         """Closes the connection."""
-        
         self.__channel.close()
 
     def get_channel(self) -> Channel:
@@ -206,6 +205,35 @@ class Client:
             BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_ASYNC)
         )
         return resp.tx_response
+
+    async def send_tx_block_mode(self, tx_bytes: bytes, timeout: int = 5, pull_interval: int = 1) -> TxResponse:
+        """Sends a transaction in block mode.
+        Sends a transaction and waits until the transaction has been committed to a block before returning the response.
+        Args:
+            tx_bytes: A signed transaction in raw bytes.
+        Returns:
+            The transaction response.
+        """
+
+        resp = await self.stub_tx.broadcast_tx(
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_SYNC)
+        )
+        if resp.tx_response.code != 0:
+            return resp.tx_response
+
+        tx_hash = resp.tx_response.txhash
+        while True:
+            timeout -= pull_interval
+            time.sleep(pull_interval)
+
+            try:
+                tx_response = await self.get_tx_response(tx_hash)
+                break
+            except Exception as e:
+                if timeout < 0:
+                    raise e
+
+        return tx_response
 
     async def get_chain_id(self) -> str:
         """Gets the chain ID.
