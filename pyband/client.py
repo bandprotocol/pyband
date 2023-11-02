@@ -47,7 +47,8 @@ class Client:
         """Closes the connection."""
         self.__channel.close()
 
-    def get_channel(self) -> Channel:
+    @property
+    def channel(self) -> Channel:
         return self.__channel
 
     @classmethod
