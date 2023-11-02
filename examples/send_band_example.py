@@ -1,6 +1,5 @@
 import asyncio
 import os
-import time
 
 from pyband import Client, Transaction, Wallet
 from pyband.messages.cosmos.bank.v1beta1 import MsgSend

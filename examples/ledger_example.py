@@ -47,7 +47,7 @@ async def main():
     # Sign and broadcast a transaction
     tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
 
-    # Converting to JSON for readability
+    # Convert to JSON for readability
     print(tx_block.to_json(indent=4))
 
 

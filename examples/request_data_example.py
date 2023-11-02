@@ -1,6 +1,5 @@
 import asyncio
 import os
-import time
 
 from pyband import Client, Transaction, Wallet
 from pyband.messages.oracle.v1 import MsgRequestData
