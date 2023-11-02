@@ -207,7 +207,7 @@ class Client:
         )
         return resp.tx_response
 
-    async def send_tx_block_mode(self, tx_bytes: bytes, timeout: int = 5, pull_interval: int = 1) -> TxResponse:
+    async def send_tx_block_mode(self, tx_bytes: bytes, timeout: int = 30, poll_interval: int = 1) -> TxResponse:
         """Sends a transaction in block mode.
         Sends a transaction and waits until the transaction has been committed to a block before returning the response.
         Args:
@@ -223,18 +223,17 @@ class Client:
             return resp.tx_response
 
         tx_hash = resp.tx_response.txhash
+        wait = 0
         while True:
-            timeout -= pull_interval
-            time.sleep(pull_interval)
+            wait += poll_interval
+            time.sleep(poll_interval)
 
             try:
                 tx_response = await self.get_tx_response(tx_hash)
-                break
-            except Exception as e:
-                if timeout < 0:
-                    raise e
-
-        return tx_response
+                return tx_response
+            except Exception:
+                if wait > timeout:
+                    raise
 
     async def get_chain_id(self) -> str:
         """Gets the chain ID.
