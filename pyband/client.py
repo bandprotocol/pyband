@@ -223,17 +223,15 @@ class Client:
             return resp.tx_response
 
         tx_hash = resp.tx_response.txhash
-        wait = 0
+        start_time = time.time()
         while True:
-            wait += poll_interval
-            time.sleep(poll_interval)
-
             try:
                 tx_response = await self.get_tx_response(tx_hash)
                 return tx_response
             except Exception:
-                if wait > timeout:
+                if time.time() - start_time >= timeout:
                     raise
+                time.sleep(poll_interval)
 
     async def get_chain_id(self) -> str:
         """Gets the chain ID.
