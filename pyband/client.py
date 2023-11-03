@@ -207,8 +207,8 @@ class Client:
         )
         return resp.tx_response
 
-    async def send_tx_block_mode(self, tx_bytes: bytes, timeout: int = 30, poll_interval: int = 1) -> TxResponse:
-        """Sends a transaction in block mode.
+    async def send_tx_and_wait(self, tx_bytes: bytes, timeout: int = 30, poll_interval: int = 1) -> TxResponse:
+        """Sends a transaction in sync mode and wait for result.
         Sends a transaction and waits until the transaction has been committed to a block before returning the response.
         Args:
             tx_bytes: A signed transaction in raw bytes.

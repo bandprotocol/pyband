@@ -152,15 +152,15 @@ async def test_send_tx_sync_mode_invalid_input(pyband_client):
 
 # Block mode: wait for tx to be committed to a block
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_success(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_success")
+async def test_send_tx_and_wait_success(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_success")
     mock_result = block_mode_success_result.tx_response
     assert tx_response == mock_result
 
 
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_out_of_gas(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_out_of_gas")
+async def test_send_tx_and_wait_out_of_gas(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_out_of_gas")
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             height=1284491,
@@ -177,8 +177,8 @@ async def test_send_tx_block_mode_out_of_gas(pyband_client):
 
 # Fail if code != 0
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_fail(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_fail")
+async def test_send_tx_and_wait_fail(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_fail")
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="CC06ABAE35591E6668451D9B05D04A0E0C4257A582E4D714975363260A092233",
@@ -194,8 +194,8 @@ async def test_send_tx_block_mode_fail(pyband_client):
 
 # Fail if code != 0, invalid bytes code = 2
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_invalid_bytes(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_fail_wrong_bytes")
+async def test_send_tx_and_wait_invalid_bytes(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_fail_wrong_bytes")
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="7CA12506E88CF8B814E20848B229460F91FC0370C44A7C4FEE786960CE30C36D",
@@ -209,9 +209,9 @@ async def test_send_tx_block_mode_invalid_bytes(pyband_client):
 
 
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_invalid_input(pyband_client):
+async def test_send_tx_and_wait_invalid_input(pyband_client):
     with pytest.raises(TypeError):
-        await pyband_client.send_tx_block_mode(1)
+        await pyband_client.send_tx_and_wait(1)
 
 
 block_mode_success_result = GetTxResponse(
