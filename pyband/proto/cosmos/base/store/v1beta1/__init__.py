@@ -2,9 +2,12 @@
 # sources: cosmos/base/store/v1beta1/commit_info.proto, cosmos/base/store/v1beta1/listening.proto
 # plugin: python-betterproto
 from dataclasses import dataclass
+from datetime import datetime
 from typing import List
 
 import betterproto
+
+from .....tendermint import abci as ____tendermint_abci__
 
 
 @dataclass(eq=False, repr=False)
@@ -16,6 +19,7 @@ class CommitInfo(betterproto.Message):
 
     version: int = betterproto.int64_field(1)
     store_infos: List["StoreInfo"] = betterproto.message_field(2)
+    timestamp: datetime = betterproto.message_field(3)
 
 
 @dataclass(eq=False, repr=False)
@@ -32,7 +36,7 @@ class StoreInfo(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class CommitId(betterproto.Message):
     """
-    CommitID defines the committment information when a specific store is
+    CommitID defines the commitment information when a specific store is
     committed.
     """
 
@@ -53,3 +57,36 @@ class StoreKvPair(betterproto.Message):
     delete: bool = betterproto.bool_field(2)
     key: bytes = betterproto.bytes_field(3)
     value: bytes = betterproto.bytes_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class BlockMetadata(betterproto.Message):
+    """
+    BlockMetadata contains all the abci event data of a block the file streamer
+    dump them into files together with the state changes.
+    """
+
+    request_begin_block: "____tendermint_abci__.RequestBeginBlock" = (
+        betterproto.message_field(1)
+    )
+    response_begin_block: "____tendermint_abci__.ResponseBeginBlock" = (
+        betterproto.message_field(2)
+    )
+    deliver_txs: List["BlockMetadataDeliverTx"] = betterproto.message_field(3)
+    request_end_block: "____tendermint_abci__.RequestEndBlock" = (
+        betterproto.message_field(4)
+    )
+    response_end_block: "____tendermint_abci__.ResponseEndBlock" = (
+        betterproto.message_field(5)
+    )
+    response_commit: "____tendermint_abci__.ResponseCommit" = betterproto.message_field(
+        6
+    )
+
+
+@dataclass(eq=False, repr=False)
+class BlockMetadataDeliverTx(betterproto.Message):
+    """DeliverTx encapulate deliver tx request and response."""
+
+    request: "____tendermint_abci__.RequestDeliverTx" = betterproto.message_field(1)
+    response: "____tendermint_abci__.ResponseDeliverTx" = betterproto.message_field(2)

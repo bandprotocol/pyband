@@ -27,20 +27,6 @@ if TYPE_CHECKING:
 
 
 @dataclass(eq=False, repr=False)
-class MsgUnjail(betterproto.Message):
-    """MsgUnjail defines the Msg/Unjail request type"""
-
-    validator_addr: str = betterproto.string_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class MsgUnjailResponse(betterproto.Message):
-    """MsgUnjailResponse defines the Msg/Unjail response type"""
-
-    pass
-
-
-@dataclass(eq=False, repr=False)
 class ValidatorSigningInfo(betterproto.Message):
     """
     ValidatorSigningInfo defines a validator's signing info for monitoring
@@ -87,6 +73,50 @@ class Params(betterproto.Message):
     downtime_jail_duration: timedelta = betterproto.message_field(3)
     slash_fraction_double_sign: bytes = betterproto.bytes_field(4)
     slash_fraction_downtime: bytes = betterproto.bytes_field(5)
+
+
+@dataclass(eq=False, repr=False)
+class MsgUnjail(betterproto.Message):
+    """MsgUnjail defines the Msg/Unjail request type"""
+
+    validator_addr: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class MsgUnjailResponse(betterproto.Message):
+    """MsgUnjailResponse defines the Msg/Unjail response type"""
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateParams(betterproto.Message):
+    """
+    MsgUpdateParams is the Msg/UpdateParams request type. Since: cosmos-sdk
+    0.47
+    """
+
+    authority: str = betterproto.string_field(1)
+    """
+    authority is the address that controls the module (defaults to x/gov unless
+    overwritten).
+    """
+
+    params: "Params" = betterproto.message_field(2)
+    """
+    params defines the x/slashing parameters to update. NOTE: All parameters
+    must be supplied.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateParamsResponse(betterproto.Message):
+    """
+    MsgUpdateParamsResponse defines the response structure for executing a
+    MsgUpdateParams message. Since: cosmos-sdk 0.47
+    """
+
+    pass
 
 
 @dataclass(eq=False, repr=False)
@@ -157,7 +187,7 @@ class GenesisState(betterproto.Message):
     """GenesisState defines the slashing module's genesis state."""
 
     params: "Params" = betterproto.message_field(1)
-    """params defines all the paramaters of related to deposit."""
+    """params defines all the parameters of the module."""
 
     signing_infos: List["SigningInfo"] = betterproto.message_field(2)
     """
@@ -228,6 +258,23 @@ class MsgStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def update_params(
+        self,
+        msg_update_params: "MsgUpdateParams",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MsgUpdateParamsResponse":
+        return await self._unary_unary(
+            "/cosmos.slashing.v1beta1.Msg/UpdateParams",
+            msg_update_params,
+            MsgUpdateParamsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
 
 class QueryStub(betterproto.ServiceStub):
     async def params(
@@ -286,9 +333,23 @@ class MsgBase(ServiceBase):
     async def unjail(self, msg_unjail: "MsgUnjail") -> "MsgUnjailResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_unjail(self, stream: "grpclib.server.Stream[MsgUnjail, MsgUnjailResponse]") -> None:
+    async def update_params(
+        self, msg_update_params: "MsgUpdateParams"
+    ) -> "MsgUpdateParamsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def __rpc_unjail(
+        self, stream: "grpclib.server.Stream[MsgUnjail, MsgUnjailResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.unjail(request)
+        await stream.send_message(response)
+
+    async def __rpc_update_params(
+        self, stream: "grpclib.server.Stream[MsgUpdateParams, MsgUpdateParamsResponse]"
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.update_params(request)
         await stream.send_message(response)
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
@@ -299,14 +360,24 @@ class MsgBase(ServiceBase):
                 MsgUnjail,
                 MsgUnjailResponse,
             ),
+            "/cosmos.slashing.v1beta1.Msg/UpdateParams": grpclib.const.Handler(
+                self.__rpc_update_params,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MsgUpdateParams,
+                MsgUpdateParamsResponse,
+            ),
         }
 
 
 class QueryBase(ServiceBase):
-    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
+    async def params(
+        self, query_params_request: "QueryParamsRequest"
+    ) -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def signing_info(self, query_signing_info_request: "QuerySigningInfoRequest") -> "QuerySigningInfoResponse":
+    async def signing_info(
+        self, query_signing_info_request: "QuerySigningInfoRequest"
+    ) -> "QuerySigningInfoResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def signing_infos(
@@ -314,7 +385,9 @@ class QueryBase(ServiceBase):
     ) -> "QuerySigningInfosResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
+    async def __rpc_params(
+        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)

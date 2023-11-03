@@ -18,7 +18,10 @@ import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....tendermint import types as ___tendermint_types__
+from ....tendermint import (
+    abci as ___tendermint_abci__,
+    types as ___tendermint_types__,
+)
 from ...base import v1beta1 as __base_v1_beta1__
 from ...base.query import v1beta1 as __base_query_v1_beta1__
 
@@ -43,6 +46,19 @@ class BondStatus(betterproto.Enum):
 
     BOND_STATUS_BONDED = 3
     """BONDED defines a validator that is bonded."""
+
+
+class Infraction(betterproto.Enum):
+    """Infraction indicates the infraction a validator commited."""
+
+    INFRACTION_UNSPECIFIED = 0
+    """UNSPECIFIED defines an empty infraction."""
+
+    INFRACTION_DOUBLE_SIGN = 1
+    """DOUBLE_SIGN defines a validator that double-signs a block."""
+
+    INFRACTION_DOWNTIME = 2
+    """DOWNTIME defines a validator that missed signing too many blocks."""
 
 
 class AuthorizationType(betterproto.Enum):
@@ -165,7 +181,9 @@ class Validator(betterproto.Message):
     encoded in JSON.
     """
 
-    consensus_pubkey: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(2)
+    consensus_pubkey: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(
+        2
+    )
     """
     consensus_pubkey is the consensus public key of the validator, as a
     Protobuf Any.
@@ -209,7 +227,19 @@ class Validator(betterproto.Message):
     min_self_delegation: str = betterproto.string_field(11)
     """
     min_self_delegation is the validator's self declared minimum self
-    delegation.
+    delegation. Since: cosmos-sdk 0.46
+    """
+
+    unbonding_on_hold_ref_count: int = betterproto.int64_field(12)
+    """
+    strictly positive if this validator's unbonding has been stopped by
+    external modules
+    """
+
+    unbonding_ids: List[int] = betterproto.uint64_field(13)
+    """
+    list of unbonding ids, each uniquely identifing an unbonding of this
+    validator
     """
 
 
@@ -317,6 +347,15 @@ class UnbondingDelegationEntry(betterproto.Message):
     balance: str = betterproto.string_field(4)
     """balance defines the tokens to receive at completion."""
 
+    unbonding_id: int = betterproto.uint64_field(5)
+    """Incrementing id that uniquely identifies this entry"""
+
+    unbonding_on_hold_ref_count: int = betterproto.int64_field(6)
+    """
+    Strictly positive if this entry's unbonding has been stopped by external
+    modules
+    """
+
 
 @dataclass(eq=False, repr=False)
 class RedelegationEntry(betterproto.Message):
@@ -341,6 +380,15 @@ class RedelegationEntry(betterproto.Message):
     """
     shares_dst is the amount of destination-validator shares created by
     redelegation.
+    """
+
+    unbonding_id: int = betterproto.uint64_field(5)
+    """Incrementing id that uniquely identifies this entry"""
+
+    unbonding_on_hold_ref_count: int = betterproto.int64_field(6)
+    """
+    Strictly positive if this entry's unbonding has been stopped by external
+    modules
     """
 
 
@@ -373,7 +421,7 @@ class Redelegation(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class Params(betterproto.Message):
-    """Params defines the parameters for the staking module."""
+    """Params defines the parameters for the x/staking module."""
 
     unbonding_time: timedelta = betterproto.message_field(1)
     """unbonding_time is the time duration of unbonding."""
@@ -392,6 +440,12 @@ class Params(betterproto.Message):
 
     bond_denom: str = betterproto.string_field(5)
     """bond_denom defines the bondable coin denomination."""
+
+    min_commission_rate: str = betterproto.string_field(6)
+    """
+    min_commission_rate is the chain-wide minimum commission rate that a
+    validator can charge their delegators
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -438,6 +492,17 @@ class Pool(betterproto.Message):
 
     not_bonded_tokens: str = betterproto.string_field(1)
     bonded_tokens: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class ValidatorUpdates(betterproto.Message):
+    """
+    ValidatorUpdates defines an array of abci.ValidatorUpdate objects. TODO:
+    explore moving this to proto/cosmos/base to separate modules from
+    tendermint dependence
+    """
+
+    updates: List["___tendermint_abci__.ValidatorUpdate"] = betterproto.message_field(1)
 
 
 @dataclass(eq=False, repr=False)
@@ -552,6 +617,61 @@ class MsgUndelegateResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class MsgCancelUnbondingDelegation(betterproto.Message):
+    """
+    MsgCancelUnbondingDelegation defines the SDK message for performing a
+    cancel unbonding delegation for delegator Since: cosmos-sdk 0.46
+    """
+
+    delegator_address: str = betterproto.string_field(1)
+    validator_address: str = betterproto.string_field(2)
+    amount: "__base_v1_beta1__.Coin" = betterproto.message_field(3)
+    """
+    amount is always less than or equal to unbonding delegation entry balance
+    """
+
+    creation_height: int = betterproto.int64_field(4)
+    """creation_height is the height which the unbonding took place."""
+
+
+@dataclass(eq=False, repr=False)
+class MsgCancelUnbondingDelegationResponse(betterproto.Message):
+    """MsgCancelUnbondingDelegationResponse Since: cosmos-sdk 0.46"""
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateParams(betterproto.Message):
+    """
+    MsgUpdateParams is the Msg/UpdateParams request type. Since: cosmos-sdk
+    0.47
+    """
+
+    authority: str = betterproto.string_field(1)
+    """
+    authority is the address that controls the module (defaults to x/gov unless
+    overwritten).
+    """
+
+    params: "Params" = betterproto.message_field(2)
+    """
+    params defines the x/staking parameters to update. NOTE: All parameters
+    must be supplied.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateParamsResponse(betterproto.Message):
+    """
+    MsgUpdateParamsResponse defines the response structure for executing a
+    MsgUpdateParams message. Since: cosmos-sdk 0.47
+    """
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
 class QueryValidatorsRequest(betterproto.Message):
     """
     QueryValidatorsRequest is request type for Query/Validators RPC method.
@@ -595,7 +715,7 @@ class QueryValidatorResponse(betterproto.Message):
     """
 
     validator: "Validator" = betterproto.message_field(1)
-    """validator defines the the validator info."""
+    """validator defines the validator info."""
 
 
 @dataclass(eq=False, repr=False)
@@ -809,7 +929,7 @@ class QueryDelegatorValidatorsResponse(betterproto.Message):
     """
 
     validators: List["Validator"] = betterproto.message_field(1)
-    """validators defines the the validators' info of a delegator."""
+    """validators defines the validators' info of a delegator."""
 
     pagination: "__base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines the pagination in the response."""
@@ -837,7 +957,7 @@ class QueryDelegatorValidatorResponse(betterproto.Message):
     """
 
     validator: "Validator" = betterproto.message_field(1)
-    """validator defines the the validator info."""
+    """validator defines the validator info."""
 
 
 @dataclass(eq=False, repr=False)
@@ -908,13 +1028,17 @@ class StakeAuthorization(betterproto.Message):
     can be delegated.
     """
 
-    allow_list: "StakeAuthorizationValidators" = betterproto.message_field(2, group="validators")
+    allow_list: "StakeAuthorizationValidators" = betterproto.message_field(
+        2, group="validators"
+    )
     """
     allow_list specifies list of validator addresses to whom grantee can
     delegate tokens on behalf of granter's account.
     """
 
-    deny_list: "StakeAuthorizationValidators" = betterproto.message_field(3, group="validators")
+    deny_list: "StakeAuthorizationValidators" = betterproto.message_field(
+        3, group="validators"
+    )
     """
     deny_list specifies list of validator addresses to whom grantee can not
     delegate tokens.
@@ -936,7 +1060,7 @@ class GenesisState(betterproto.Message):
     """GenesisState defines the staking module's genesis state."""
 
     params: "Params" = betterproto.message_field(1)
-    """params defines all the paramaters of related to deposit."""
+    """params defines all the parameters of related to deposit."""
 
     last_total_power: bytes = betterproto.bytes_field(2)
     """
@@ -1059,6 +1183,40 @@ class MsgStub(betterproto.ServiceStub):
             "/cosmos.staking.v1beta1.Msg/Undelegate",
             msg_undelegate,
             MsgUndelegateResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def cancel_unbonding_delegation(
+        self,
+        msg_cancel_unbonding_delegation: "MsgCancelUnbondingDelegation",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MsgCancelUnbondingDelegationResponse":
+        return await self._unary_unary(
+            "/cosmos.staking.v1beta1.Msg/CancelUnbondingDelegation",
+            msg_cancel_unbonding_delegation,
+            MsgCancelUnbondingDelegationResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def update_params(
+        self,
+        msg_update_params: "MsgUpdateParams",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MsgUpdateParamsResponse":
+        return await self._unary_unary(
+            "/cosmos.staking.v1beta1.Msg/UpdateParams",
+            msg_update_params,
+            MsgUpdateParamsResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
@@ -1306,19 +1464,37 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-    async def create_validator(self, msg_create_validator: "MsgCreateValidator") -> "MsgCreateValidatorResponse":
+    async def create_validator(
+        self, msg_create_validator: "MsgCreateValidator"
+    ) -> "MsgCreateValidatorResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def edit_validator(self, msg_edit_validator: "MsgEditValidator") -> "MsgEditValidatorResponse":
+    async def edit_validator(
+        self, msg_edit_validator: "MsgEditValidator"
+    ) -> "MsgEditValidatorResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delegate(self, msg_delegate: "MsgDelegate") -> "MsgDelegateResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def begin_redelegate(self, msg_begin_redelegate: "MsgBeginRedelegate") -> "MsgBeginRedelegateResponse":
+    async def begin_redelegate(
+        self, msg_begin_redelegate: "MsgBeginRedelegate"
+    ) -> "MsgBeginRedelegateResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def undelegate(self, msg_undelegate: "MsgUndelegate") -> "MsgUndelegateResponse":
+    async def undelegate(
+        self, msg_undelegate: "MsgUndelegate"
+    ) -> "MsgUndelegateResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def cancel_unbonding_delegation(
+        self, msg_cancel_unbonding_delegation: "MsgCancelUnbondingDelegation"
+    ) -> "MsgCancelUnbondingDelegationResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def update_params(
+        self, msg_update_params: "MsgUpdateParams"
+    ) -> "MsgUpdateParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_create_validator(
@@ -1337,7 +1513,9 @@ class MsgBase(ServiceBase):
         response = await self.edit_validator(request)
         await stream.send_message(response)
 
-    async def __rpc_delegate(self, stream: "grpclib.server.Stream[MsgDelegate, MsgDelegateResponse]") -> None:
+    async def __rpc_delegate(
+        self, stream: "grpclib.server.Stream[MsgDelegate, MsgDelegateResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.delegate(request)
         await stream.send_message(response)
@@ -1350,9 +1528,26 @@ class MsgBase(ServiceBase):
         response = await self.begin_redelegate(request)
         await stream.send_message(response)
 
-    async def __rpc_undelegate(self, stream: "grpclib.server.Stream[MsgUndelegate, MsgUndelegateResponse]") -> None:
+    async def __rpc_undelegate(
+        self, stream: "grpclib.server.Stream[MsgUndelegate, MsgUndelegateResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.undelegate(request)
+        await stream.send_message(response)
+
+    async def __rpc_cancel_unbonding_delegation(
+        self,
+        stream: "grpclib.server.Stream[MsgCancelUnbondingDelegation, MsgCancelUnbondingDelegationResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.cancel_unbonding_delegation(request)
+        await stream.send_message(response)
+
+    async def __rpc_update_params(
+        self, stream: "grpclib.server.Stream[MsgUpdateParams, MsgUpdateParamsResponse]"
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.update_params(request)
         await stream.send_message(response)
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
@@ -1387,14 +1582,30 @@ class MsgBase(ServiceBase):
                 MsgUndelegate,
                 MsgUndelegateResponse,
             ),
+            "/cosmos.staking.v1beta1.Msg/CancelUnbondingDelegation": grpclib.const.Handler(
+                self.__rpc_cancel_unbonding_delegation,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MsgCancelUnbondingDelegation,
+                MsgCancelUnbondingDelegationResponse,
+            ),
+            "/cosmos.staking.v1beta1.Msg/UpdateParams": grpclib.const.Handler(
+                self.__rpc_update_params,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MsgUpdateParams,
+                MsgUpdateParamsResponse,
+            ),
         }
 
 
 class QueryBase(ServiceBase):
-    async def validators(self, query_validators_request: "QueryValidatorsRequest") -> "QueryValidatorsResponse":
+    async def validators(
+        self, query_validators_request: "QueryValidatorsRequest"
+    ) -> "QueryValidatorsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def validator(self, query_validator_request: "QueryValidatorRequest") -> "QueryValidatorResponse":
+    async def validator(
+        self, query_validator_request: "QueryValidatorRequest"
+    ) -> "QueryValidatorResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def validator_delegations(
@@ -1408,7 +1619,9 @@ class QueryBase(ServiceBase):
     ) -> "QueryValidatorUnbondingDelegationsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delegation(self, query_delegation_request: "QueryDelegationRequest") -> "QueryDelegationResponse":
+    async def delegation(
+        self, query_delegation_request: "QueryDelegationRequest"
+    ) -> "QueryDelegationResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def unbonding_delegation(
@@ -1450,7 +1663,9 @@ class QueryBase(ServiceBase):
     async def pool(self, query_pool_request: "QueryPoolRequest") -> "QueryPoolResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
+    async def params(
+        self, query_params_request: "QueryParamsRequest"
+    ) -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_validators(
@@ -1549,12 +1764,16 @@ class QueryBase(ServiceBase):
         response = await self.historical_info(request)
         await stream.send_message(response)
 
-    async def __rpc_pool(self, stream: "grpclib.server.Stream[QueryPoolRequest, QueryPoolResponse]") -> None:
+    async def __rpc_pool(
+        self, stream: "grpclib.server.Stream[QueryPoolRequest, QueryPoolResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.pool(request)
         await stream.send_message(response)
 
-    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
+    async def __rpc_params(
+        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)

@@ -206,6 +206,18 @@ class Request(betterproto.Message):
     execute_gas: int = betterproto.uint64_field(10)
     """ExecuteGas is amount of gas to reserve for executing"""
 
+    tss_group_id: int = betterproto.uint64_field(11)
+    """
+    GroupID is ID of the group that assign for sign the result data on tss
+    module.
+    """
+
+    requester: str = betterproto.string_field(12)
+    """request is the address of requester"""
+
+    fee_limit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(13)
+    """fee_limit is the fee left for paying fee in this request."""
+
 
 @dataclass(eq=False, repr=False)
 class Report(betterproto.Message):
@@ -277,6 +289,12 @@ class OracleRequestPacketData(betterproto.Message):
 
     execute_gas: int = betterproto.uint64_field(8)
     """ExecuteGas is amount of gas to reserve for executing"""
+
+    tss_group_id: int = betterproto.uint64_field(9)
+    """
+    TSSGroupID is ID of the group that assign for sign the result data on tss
+    module.
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -403,6 +421,20 @@ class Result(betterproto.Message):
 
     result: bytes = betterproto.bytes_field(11)
     """Result is the final aggregated value only available if status if OK."""
+
+
+@dataclass(eq=False, repr=False)
+class SigningResult(betterproto.Message):
+    """SigningResult encodes a result of signing of request"""
+
+    signing_id: int = betterproto.uint64_field(1)
+    """signing_id is the id of the signing"""
+
+    error_codespace: str = betterproto.string_field(2)
+    """error_codespace is the codespace of the error"""
+
+    error_code: int = betterproto.uint64_field(3)
+    """error_code is the code in the codespace of the error"""
 
 
 @dataclass(eq=False, repr=False)
@@ -592,6 +624,17 @@ class PriceResult(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class OracleResultRequestingSignature(betterproto.Message):
+    """
+    OracleResultRequestingSignature defines a request id to request TSS
+    signature from the oracle result.
+    """
+
+    request_id: int = betterproto.uint64_field(1)
+    """RequestID is BandChain's unique identifier for this oracle request."""
+
+
+@dataclass(eq=False, repr=False)
 class MsgRequestData(betterproto.Message):
     """MsgRequestData is a message for sending a data oracle request."""
 
@@ -629,6 +672,12 @@ class MsgRequestData(betterproto.Message):
 
     sender: str = betterproto.string_field(9)
     """Sender is an account address of message sender."""
+
+    tss_group_id: int = betterproto.uint64_field(10)
+    """
+    TSSGroupID is ID of the group that assign for sign the result data on tss
+    module.
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -894,6 +943,33 @@ class MsgActivateResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class MsgUpdateParams(betterproto.Message):
+    """
+    MsgUpdateParams is the Msg/UpdateParams request type. Since: cosmos-sdk
+    0.47
+    """
+
+    authority: str = betterproto.string_field(1)
+    """authority is the address of the governance account."""
+
+    params: "Params" = betterproto.message_field(2)
+    """
+    params defines the x/oracle parameters to update. NOTE: All parameters must
+    be supplied.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateParamsResponse(betterproto.Message):
+    """
+    MsgUpdateParamsResponse defines the response structure for executing a
+    MsgUpdateParams message. Since: cosmos-sdk 0.47
+    """
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
 class QueryCountsRequest(betterproto.Message):
     """QueryCountsRequest is request type for the Query/Count RPC method."""
 
@@ -1007,6 +1083,9 @@ class QueryRequestResponse(betterproto.Message):
 
     result: "Result" = betterproto.message_field(3)
     """Result is a final form of result data"""
+
+    signing: "SigningResult" = betterproto.message_field(4)
+    """Signing is the signing detail in the TSS module."""
 
 
 @dataclass(eq=False, repr=False)
@@ -1277,15 +1356,15 @@ class GenesisState(betterproto.Message):
     """GenesisState defines the oracle module's genesis state."""
 
     params: "Params" = betterproto.message_field(1)
-    """Params defines all the paramaters of the module."""
+    """Params defines all the parameters of the module."""
 
     data_sources: List["DataSource"] = betterproto.message_field(2)
-    """DataSources are data sources to be installed during genesis phase"""
+    """DataSources are data sources to be installed during genesis phase."""
 
     oracle_scripts: List["OracleScript"] = betterproto.message_field(3)
     """
     OracleScripts are list of oracle scripts to be installed during genesis
-    phase
+    phase.
     """
 
 
@@ -1404,6 +1483,23 @@ class MsgStub(betterproto.ServiceStub):
             "/oracle.v1.Msg/Activate",
             msg_activate,
             MsgActivateResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def update_params(
+        self,
+        msg_update_params: "MsgUpdateParams",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MsgUpdateParamsResponse":
+        return await self._unary_unary(
+            "/oracle.v1.Msg/UpdateParams",
+            msg_update_params,
+            MsgUpdateParamsResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
@@ -1651,16 +1747,24 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-    async def request_data(self, msg_request_data: "MsgRequestData") -> "MsgRequestDataResponse":
+    async def request_data(
+        self, msg_request_data: "MsgRequestData"
+    ) -> "MsgRequestDataResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def report_data(self, msg_report_data: "MsgReportData") -> "MsgReportDataResponse":
+    async def report_data(
+        self, msg_report_data: "MsgReportData"
+    ) -> "MsgReportDataResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def create_data_source(self, msg_create_data_source: "MsgCreateDataSource") -> "MsgCreateDataSourceResponse":
+    async def create_data_source(
+        self, msg_create_data_source: "MsgCreateDataSource"
+    ) -> "MsgCreateDataSourceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def edit_data_source(self, msg_edit_data_source: "MsgEditDataSource") -> "MsgEditDataSourceResponse":
+    async def edit_data_source(
+        self, msg_edit_data_source: "MsgEditDataSource"
+    ) -> "MsgEditDataSourceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def create_oracle_script(
@@ -1668,10 +1772,17 @@ class MsgBase(ServiceBase):
     ) -> "MsgCreateOracleScriptResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def edit_oracle_script(self, msg_edit_oracle_script: "MsgEditOracleScript") -> "MsgEditOracleScriptResponse":
+    async def edit_oracle_script(
+        self, msg_edit_oracle_script: "MsgEditOracleScript"
+    ) -> "MsgEditOracleScriptResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def activate(self, msg_activate: "MsgActivate") -> "MsgActivateResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def update_params(
+        self, msg_update_params: "MsgUpdateParams"
+    ) -> "MsgUpdateParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_request_data(
@@ -1681,7 +1792,9 @@ class MsgBase(ServiceBase):
         response = await self.request_data(request)
         await stream.send_message(response)
 
-    async def __rpc_report_data(self, stream: "grpclib.server.Stream[MsgReportData, MsgReportDataResponse]") -> None:
+    async def __rpc_report_data(
+        self, stream: "grpclib.server.Stream[MsgReportData, MsgReportDataResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.report_data(request)
         await stream.send_message(response)
@@ -1718,9 +1831,18 @@ class MsgBase(ServiceBase):
         response = await self.edit_oracle_script(request)
         await stream.send_message(response)
 
-    async def __rpc_activate(self, stream: "grpclib.server.Stream[MsgActivate, MsgActivateResponse]") -> None:
+    async def __rpc_activate(
+        self, stream: "grpclib.server.Stream[MsgActivate, MsgActivateResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.activate(request)
+        await stream.send_message(response)
+
+    async def __rpc_update_params(
+        self, stream: "grpclib.server.Stream[MsgUpdateParams, MsgUpdateParamsResponse]"
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.update_params(request)
         await stream.send_message(response)
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
@@ -1767,17 +1889,27 @@ class MsgBase(ServiceBase):
                 MsgActivate,
                 MsgActivateResponse,
             ),
+            "/oracle.v1.Msg/UpdateParams": grpclib.const.Handler(
+                self.__rpc_update_params,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MsgUpdateParams,
+                MsgUpdateParamsResponse,
+            ),
         }
 
 
 class QueryBase(ServiceBase):
-    async def counts(self, query_counts_request: "QueryCountsRequest") -> "QueryCountsResponse":
+    async def counts(
+        self, query_counts_request: "QueryCountsRequest"
+    ) -> "QueryCountsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def data(self, query_data_request: "QueryDataRequest") -> "QueryDataResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def data_source(self, query_data_source_request: "QueryDataSourceRequest") -> "QueryDataSourceResponse":
+    async def data_source(
+        self, query_data_source_request: "QueryDataSourceRequest"
+    ) -> "QueryDataSourceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def oracle_script(
@@ -1785,7 +1917,9 @@ class QueryBase(ServiceBase):
     ) -> "QueryOracleScriptResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def request(self, query_request_request: "QueryRequestRequest") -> "QueryRequestResponse":
+    async def request(
+        self, query_request_request: "QueryRequestRequest"
+    ) -> "QueryRequestResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def pending_requests(
@@ -1793,13 +1927,19 @@ class QueryBase(ServiceBase):
     ) -> "QueryPendingRequestsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def validator(self, query_validator_request: "QueryValidatorRequest") -> "QueryValidatorResponse":
+    async def validator(
+        self, query_validator_request: "QueryValidatorRequest"
+    ) -> "QueryValidatorResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def is_reporter(self, query_is_reporter_request: "QueryIsReporterRequest") -> "QueryIsReporterResponse":
+    async def is_reporter(
+        self, query_is_reporter_request: "QueryIsReporterRequest"
+    ) -> "QueryIsReporterResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def reporters(self, query_reporters_request: "QueryReportersRequest") -> "QueryReportersResponse":
+    async def reporters(
+        self, query_reporters_request: "QueryReportersRequest"
+    ) -> "QueryReportersResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def active_validators(
@@ -1807,7 +1947,9 @@ class QueryBase(ServiceBase):
     ) -> "QueryActiveValidatorsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
+    async def params(
+        self, query_params_request: "QueryParamsRequest"
+    ) -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def request_search(
@@ -1825,12 +1967,16 @@ class QueryBase(ServiceBase):
     ) -> "QueryRequestVerificationResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_counts(self, stream: "grpclib.server.Stream[QueryCountsRequest, QueryCountsResponse]") -> None:
+    async def __rpc_counts(
+        self, stream: "grpclib.server.Stream[QueryCountsRequest, QueryCountsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.counts(request)
         await stream.send_message(response)
 
-    async def __rpc_data(self, stream: "grpclib.server.Stream[QueryDataRequest, QueryDataResponse]") -> None:
+    async def __rpc_data(
+        self, stream: "grpclib.server.Stream[QueryDataRequest, QueryDataResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.data(request)
         await stream.send_message(response)
@@ -1851,7 +1997,9 @@ class QueryBase(ServiceBase):
         response = await self.oracle_script(request)
         await stream.send_message(response)
 
-    async def __rpc_request(self, stream: "grpclib.server.Stream[QueryRequestRequest, QueryRequestResponse]") -> None:
+    async def __rpc_request(
+        self, stream: "grpclib.server.Stream[QueryRequestRequest, QueryRequestResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.request(request)
         await stream.send_message(response)
@@ -1896,7 +2044,9 @@ class QueryBase(ServiceBase):
         response = await self.active_validators(request)
         await stream.send_message(response)
 
-    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
+    async def __rpc_params(
+        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)

@@ -18,7 +18,7 @@ from .. import (
 
 
 class BlockIdFlag(betterproto.Enum):
-    """BlockIdFlag indicates which BlockID the signature is for"""
+    """BlockIdFlag indicates which BlcokID the signature is for"""
 
     BLOCK_ID_FLAG_UNKNOWN = 0
     BLOCK_ID_FLAG_ABSENT = 1
@@ -36,6 +36,84 @@ class SignedMsgType(betterproto.Enum):
     SIGNED_MSG_TYPE_PRECOMMIT = 2
     SIGNED_MSG_TYPE_PROPOSAL = 32
     """Proposals"""
+
+
+@dataclass(eq=False, repr=False)
+class ConsensusParams(betterproto.Message):
+    """
+    ConsensusParams contains consensus critical parameters that determine the
+    validity of blocks.
+    """
+
+    block: "BlockParams" = betterproto.message_field(1)
+    evidence: "EvidenceParams" = betterproto.message_field(2)
+    validator: "ValidatorParams" = betterproto.message_field(3)
+    version: "VersionParams" = betterproto.message_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class BlockParams(betterproto.Message):
+    """BlockParams contains limits on the block size."""
+
+    max_bytes: int = betterproto.int64_field(1)
+    """Max block size, in bytes. Note: must be greater than 0"""
+
+    max_gas: int = betterproto.int64_field(2)
+    """Max gas per block. Note: must be greater or equal to -1"""
+
+
+@dataclass(eq=False, repr=False)
+class EvidenceParams(betterproto.Message):
+    """EvidenceParams determine how we handle evidence of malfeasance."""
+
+    max_age_num_blocks: int = betterproto.int64_field(1)
+    """
+    Max age of evidence, in blocks. The basic formula for calculating this is:
+    MaxAgeDuration / {average block time}.
+    """
+
+    max_age_duration: timedelta = betterproto.message_field(2)
+    """
+    Max age of evidence, in time. It should correspond with an app's "unbonding
+    period" or other similar mechanism for handling [Nothing-At-Stake
+    attacks](https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ#what-is-
+    the-nothing-at-stake-problem-and-how-can-it-be-fixed).
+    """
+
+    max_bytes: int = betterproto.int64_field(3)
+    """
+    This sets the maximum size of total evidence in bytes that can be committed
+    in a single block. and should fall comfortably under the max block bytes.
+    Default is 1048576 or 1MB
+    """
+
+
+@dataclass(eq=False, repr=False)
+class ValidatorParams(betterproto.Message):
+    """
+    ValidatorParams restrict the public key types validators can use. NOTE:
+    uses ABCI pubkey naming, not Amino names.
+    """
+
+    pub_key_types: List[str] = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class VersionParams(betterproto.Message):
+    """VersionParams contains the ABCI application version."""
+
+    app: int = betterproto.uint64_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class HashedParams(betterproto.Message):
+    """
+    HashedParams is a subset of ConsensusParams. It is hashed into the
+    Header.ConsensusHash.
+    """
+
+    block_max_bytes: int = betterproto.int64_field(1)
+    block_max_gas: int = betterproto.int64_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -84,7 +162,7 @@ class BlockId(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class Header(betterproto.Message):
-    """Header defines the structure of a Tendermint block header."""
+    """Header defines the structure of a block header."""
 
     version: "_version__.Consensus" = betterproto.message_field(1)
     """basic block info"""
@@ -208,94 +286,13 @@ class TxProof(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class ConsensusParams(betterproto.Message):
-    """
-    ConsensusParams contains consensus critical parameters that determine the
-    validity of blocks.
-    """
-
-    block: "BlockParams" = betterproto.message_field(1)
-    evidence: "EvidenceParams" = betterproto.message_field(2)
-    validator: "ValidatorParams" = betterproto.message_field(3)
-    version: "VersionParams" = betterproto.message_field(4)
-
-
-@dataclass(eq=False, repr=False)
-class BlockParams(betterproto.Message):
-    """BlockParams contains limits on the block size."""
-
-    max_bytes: int = betterproto.int64_field(1)
-    """Max block size, in bytes. Note: must be greater than 0"""
-
-    max_gas: int = betterproto.int64_field(2)
-    """Max gas per block. Note: must be greater or equal to -1"""
-
-    time_iota_ms: int = betterproto.int64_field(3)
-    """
-    Minimum time increment between consecutive blocks (in milliseconds) If the
-    block header timestamp is ahead of the system clock, decrease this value.
-    Not exposed to the application.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class EvidenceParams(betterproto.Message):
-    """EvidenceParams determine how we handle evidence of malfeasance."""
-
-    max_age_num_blocks: int = betterproto.int64_field(1)
-    """
-    Max age of evidence, in blocks. The basic formula for calculating this is:
-    MaxAgeDuration / {average block time}.
-    """
-
-    max_age_duration: timedelta = betterproto.message_field(2)
-    """
-    Max age of evidence, in time. It should correspond with an app's "unbonding
-    period" or other similar mechanism for handling [Nothing-At-Stake
-    attacks](https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ#what-is-
-    the-nothing-at-stake-problem-and-how-can-it-be-fixed).
-    """
-
-    max_bytes: int = betterproto.int64_field(3)
-    """
-    This sets the maximum size of total evidence in bytes that can be committed
-    in a single block. and should fall comfortably under the max block bytes.
-    Default is 1048576 or 1MB
-    """
-
-
-@dataclass(eq=False, repr=False)
-class ValidatorParams(betterproto.Message):
-    """
-    ValidatorParams restrict the public key types validators can use. NOTE:
-    uses ABCI pubkey naming, not Amino names.
-    """
-
-    pub_key_types: List[str] = betterproto.string_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class VersionParams(betterproto.Message):
-    """VersionParams contains the ABCI application version."""
-
-    app_version: int = betterproto.uint64_field(1)
-
-
-@dataclass(eq=False, repr=False)
-class HashedParams(betterproto.Message):
-    """
-    HashedParams is a subset of ConsensusParams. It is hashed into the
-    Header.ConsensusHash.
-    """
-
-    block_max_bytes: int = betterproto.int64_field(1)
-    block_max_gas: int = betterproto.int64_field(2)
-
-
-@dataclass(eq=False, repr=False)
 class Evidence(betterproto.Message):
-    duplicate_vote_evidence: "DuplicateVoteEvidence" = betterproto.message_field(1, group="sum")
-    light_client_attack_evidence: "LightClientAttackEvidence" = betterproto.message_field(2, group="sum")
+    duplicate_vote_evidence: "DuplicateVoteEvidence" = betterproto.message_field(
+        1, group="sum"
+    )
+    light_client_attack_evidence: "LightClientAttackEvidence" = (
+        betterproto.message_field(2, group="sum")
+    )
 
 
 @dataclass(eq=False, repr=False)

@@ -46,20 +46,32 @@ class Grant(betterproto.Message):
 
     authorization: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(1)
     expiration: datetime = betterproto.message_field(2)
+    """
+    time when the grant will expire and will be pruned. If null, then the grant
+    doesn't have a time expiration (other conditions  in `authorization` may
+    apply to invalidate the grant)
+    """
 
 
 @dataclass(eq=False, repr=False)
 class GrantAuthorization(betterproto.Message):
     """
     GrantAuthorization extends a grant with both the addresses of the grantee
-    and granter. It is used in genesis.proto and query.proto Since: cosmos-sdk
-    0.45.2
+    and granter. It is used in genesis.proto and query.proto
     """
 
     granter: str = betterproto.string_field(1)
     grantee: str = betterproto.string_field(2)
     authorization: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(3)
     expiration: datetime = betterproto.message_field(4)
+
+
+@dataclass(eq=False, repr=False)
+class GrantQueueItem(betterproto.Message):
+    """GrantQueueItem contains the list of TypeURL of a sdk.Msg."""
+
+    msg_type_urls: List[str] = betterproto.string_field(1)
+    """msg_type_urls contains the list of TypeURL of a sdk.Msg."""
 
 
 @dataclass(eq=False, repr=False)
@@ -92,9 +104,8 @@ class MsgExec(betterproto.Message):
     grantee: str = betterproto.string_field(1)
     msgs: List["betterproto_lib_google_protobuf.Any"] = betterproto.message_field(2)
     """
-    Authorization Msg requests to execute. Each msg must implement
-    Authorization interface The x/authz will try to find a grant matching
-    (msg.signers[0], grantee, MsgTypeURL(msg)) triple and validate it.
+    Execute Msg. The x/authz will try to find a grant matching (msg.signers[0],
+    grantee, MsgTypeURL(msg)) triple and validate it.
     """
 
 
@@ -359,17 +370,23 @@ class MsgBase(ServiceBase):
     async def revoke(self, msg_revoke: "MsgRevoke") -> "MsgRevokeResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_grant(self, stream: "grpclib.server.Stream[MsgGrant, MsgGrantResponse]") -> None:
+    async def __rpc_grant(
+        self, stream: "grpclib.server.Stream[MsgGrant, MsgGrantResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.grant(request)
         await stream.send_message(response)
 
-    async def __rpc_exec(self, stream: "grpclib.server.Stream[MsgExec, MsgExecResponse]") -> None:
+    async def __rpc_exec(
+        self, stream: "grpclib.server.Stream[MsgExec, MsgExecResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.exec(request)
         await stream.send_message(response)
 
-    async def __rpc_revoke(self, stream: "grpclib.server.Stream[MsgRevoke, MsgRevokeResponse]") -> None:
+    async def __rpc_revoke(
+        self, stream: "grpclib.server.Stream[MsgRevoke, MsgRevokeResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.revoke(request)
         await stream.send_message(response)
@@ -398,7 +415,9 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-    async def grants(self, query_grants_request: "QueryGrantsRequest") -> "QueryGrantsResponse":
+    async def grants(
+        self, query_grants_request: "QueryGrantsRequest"
+    ) -> "QueryGrantsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def granter_grants(
@@ -411,7 +430,9 @@ class QueryBase(ServiceBase):
     ) -> "QueryGranteeGrantsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_grants(self, stream: "grpclib.server.Stream[QueryGrantsRequest, QueryGrantsResponse]") -> None:
+    async def __rpc_grants(
+        self, stream: "grpclib.server.Stream[QueryGrantsRequest, QueryGrantsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.grants(request)
         await stream.send_message(response)

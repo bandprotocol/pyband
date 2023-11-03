@@ -6,12 +6,16 @@ from grpclib.testing import ChannelFor
 
 from pyband import Client
 from pyband.proto.cosmos.base.abci.v1beta1 import TxResponse, AbciMessageLog, StringEvent, Attribute
-from pyband.proto.cosmos.tx.v1beta1 import BroadcastTxRequest, BroadcastTxResponse
+from pyband.proto.cosmos.tx.v1beta1 import BroadcastTxRequest, BroadcastTxResponse, GetTxRequest, GetTxResponse
 from pyband.proto.cosmos.tx.v1beta1 import ServiceBase as CosmosTxServiceBase
 
 
 # Note: Success, if code = 0
 class CosmosTransactionService(CosmosTxServiceBase):
+    async def get_tx(self, get_tx_request: GetTxRequest) -> GetTxResponse:
+        if get_tx_request.hash == "767353B21A770E7D02E71BDCDD75AB5AB3F60E86CB4633A1BE49BEECA8A8CE4E":
+            return block_mode_success_result
+
     async def broadcast_tx(self, broadcast_tx_request: BroadcastTxRequest) -> BroadcastTxResponse:
         if broadcast_tx_request.tx_bytes == b"async_any_hash":
             return BroadcastTxResponse(
@@ -36,7 +40,12 @@ class CosmosTransactionService(CosmosTxServiceBase):
                 )
             )
         elif broadcast_tx_request.tx_bytes == b"block_success":
-            return block_mode_success_result
+            return BroadcastTxResponse(
+                tx_response=TxResponse(
+                    txhash="767353B21A770E7D02E71BDCDD75AB5AB3F60E86CB4633A1BE49BEECA8A8CE4E",
+                    raw_log="[]",
+                )
+            )
         elif broadcast_tx_request.tx_bytes == b"block_out_of_gas":
             return BroadcastTxResponse(
                 tx_response=TxResponse(
@@ -143,15 +152,15 @@ async def test_send_tx_sync_mode_invalid_input(pyband_client):
 
 # Block mode: wait for tx to be committed to a block
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_success(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_success")
+async def test_send_tx_and_wait_success(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_success")
     mock_result = block_mode_success_result.tx_response
     assert tx_response == mock_result
 
 
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_out_of_gas(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_out_of_gas")
+async def test_send_tx_and_wait_out_of_gas(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_out_of_gas")
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             height=1284491,
@@ -168,8 +177,8 @@ async def test_send_tx_block_mode_out_of_gas(pyband_client):
 
 # Fail if code != 0
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_fail(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_fail")
+async def test_send_tx_and_wait_fail(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_fail")
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="CC06ABAE35591E6668451D9B05D04A0E0C4257A582E4D714975363260A092233",
@@ -185,8 +194,8 @@ async def test_send_tx_block_mode_fail(pyband_client):
 
 # Fail if code != 0, invalid bytes code = 2
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_invalid_bytes(pyband_client):
-    tx_response = await pyband_client.send_tx_block_mode(b"block_fail_wrong_bytes")
+async def test_send_tx_and_wait_invalid_bytes(pyband_client):
+    tx_response = await pyband_client.send_tx_and_wait(b"block_fail_wrong_bytes")
     mock_result = BroadcastTxResponse(
         tx_response=TxResponse(
             txhash="7CA12506E88CF8B814E20848B229460F91FC0370C44A7C4FEE786960CE30C36D",
@@ -200,12 +209,12 @@ async def test_send_tx_block_mode_invalid_bytes(pyband_client):
 
 
 @pytest.mark.asyncio
-async def test_send_tx_block_mode_invalid_input(pyband_client):
+async def test_send_tx_and_wait_invalid_input(pyband_client):
     with pytest.raises(TypeError):
-        await pyband_client.send_tx_block_mode(1)
+        await pyband_client.send_tx_and_wait(1)
 
 
-block_mode_success_result = BroadcastTxResponse(
+block_mode_success_result = GetTxResponse(
     tx_response=TxResponse(
         height=1285934,
         txhash="767353B21A770E7D02E71BDCDD75AB5AB3F60E86CB4633A1BE49BEECA8A8CE4E",

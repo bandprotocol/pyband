@@ -1,4 +1,5 @@
 import time
+import asyncio
 from typing import List
 
 from grpclib.client import Channel
@@ -45,8 +46,11 @@ class Client:
 
     def close(self) -> None:
         """Closes the connection."""
-
         self.__channel.close()
+
+    @property
+    def channel(self) -> Channel:
+        return self.__channel
 
     @classmethod
     def from_endpoint(cls, grpc_endpoint: str, port: int, ssl: bool = True):
@@ -204,22 +208,30 @@ class Client:
         )
         return resp.tx_response
 
-    async def send_tx_block_mode(self, tx_bytes: bytes) -> TxResponse:
-        """Sends a transaction in block mode.
-
+    async def send_tx_and_wait(self, tx_bytes: bytes, timeout: int = 30, poll_interval: int = 1) -> TxResponse:
+        """Sends a transaction in sync mode and wait for result.
         Sends a transaction and waits until the transaction has been committed to a block before returning the response.
-
         Args:
             tx_bytes: A signed transaction in raw bytes.
-
         Returns:
             The transaction response.
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_BLOCK)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_SYNC)
         )
-        return resp.tx_response
+        if resp.tx_response.code != 0:
+            return resp.tx_response
+
+        tx_hash = resp.tx_response.txhash
+        start_time = time.time()
+        while True:
+            try:
+                return await self.get_tx_response(tx_hash)
+            except Exception:
+                if time.time() - start_time >= timeout:
+                    raise
+                await asyncio.sleep(poll_interval)
 
     async def get_chain_id(self) -> str:
         """Gets the chain ID.
