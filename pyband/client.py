@@ -1,4 +1,5 @@
 import time
+import asyncio
 from typing import List
 
 from grpclib.client import Channel
@@ -226,12 +227,11 @@ class Client:
         start_time = time.time()
         while True:
             try:
-                tx_response = await self.get_tx_response(tx_hash)
-                return tx_response
+                return await self.get_tx_response(tx_hash)
             except Exception:
                 if time.time() - start_time >= timeout:
                     raise
-                time.sleep(poll_interval)
+                await asyncio.sleep(poll_interval)
 
     async def get_chain_id(self) -> str:
         """Gets the chain ID.

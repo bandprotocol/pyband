@@ -124,10 +124,10 @@ async def main():
     )
 
     # Sign and broadcast a transaction
-    tx_block = await c.send_tx_and_wait(wallet.sign_and_build(txn))
+    tx = await c.send_tx_and_wait(wallet.sign_and_build(txn))
 
     # Converting to JSON for readability
-    print(tx_block.to_json(indent=4))
+    print(tx.to_json(indent=4))
 
 
 if __name__ == "__main__":
