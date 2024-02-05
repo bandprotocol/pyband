@@ -2,6 +2,7 @@ import hashlib
 from typing import Optional
 
 from bech32 import bech32_decode, convertbits, bech32_encode
+from Crypto.Hash import RIPEMD160
 from ecdsa.curves import SECP256k1
 from ecdsa.keys import VerifyingKey, BadSignatureError
 
@@ -153,7 +154,7 @@ class PublicKey:
         """
 
         hash = hashlib.new("sha256", self.verify_key.to_string("compressed")).digest()
-        return Address(hashlib.new("ripemd160", hash).digest())
+        return Address(RIPEMD160.new(hash).digest())
 
     def verify(self, msg: bytes, sig: bytes) -> bool:
         """Verify a signature made from the given message.

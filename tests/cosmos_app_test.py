@@ -6,6 +6,7 @@ import math
 import pytest
 from bech32 import bech32_encode, convertbits
 from bip32 import BIP32
+from Crypto.Hash import RIPEMD160
 from ecdsa.curves import SECP256k1
 from ecdsa.der import encode_sequence, encode_integer, remove_sequence, remove_integer
 from ecdsa.keys import SigningKey
@@ -88,7 +89,7 @@ class MockDongle(Dongle):
         )
 
         verifying_key = signing_key.get_verifying_key()
-        addr = hashlib.new("ripemd160", hashlib.new("sha256", verifying_key.to_string("compressed")).digest()).digest()
+        addr = RIPEMD160.new(hashlib.new("sha256", verifying_key.to_string("compressed")).digest()).digest()
         five_bit_r = convertbits(addr, 8, 5)
         return verifying_key.to_string("compressed") + bytes(bech32_encode("band", five_bit_r), "utf-8")
 
