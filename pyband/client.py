@@ -5,15 +5,28 @@ from grpclib.client import Channel
 
 from .data import ReferencePrice, ReferencePriceUpdated
 from .exceptions import NotFoundError, EmptyMsgError
-from .proto.cosmos.auth.v1beta1 import BaseAccount, QueryAccountRequest
+from .proto.cosmos.auth.v1beta1 import (
+    BaseAccount,
+    QueryAccountRequest,
+    QueryAccountInfoRequest,
+)
 from .proto.cosmos.auth.v1beta1 import QueryStub as AuthQueryStub
 from .proto.cosmos.base.abci.v1beta1 import TxResponse
-from .proto.cosmos.base.tendermint.v1beta1 import GetLatestBlockRequest, GetLatestBlockResponse
+from .proto.cosmos.base.tendermint.v1beta1 import (
+    GetLatestBlockRequest,
+    GetLatestBlockResponse,
+)
 from .proto.cosmos.base.tendermint.v1beta1 import ServiceStub as TendermintServiceStub
 from .proto.cosmos.crypto.secp256k1 import PubKey
-from .proto.cosmos.tx.v1beta1 import GetTxRequest, BroadcastTxRequest, BroadcastMode, SimulateRequest, SimulateResponse
+from .proto.cosmos.tx.v1beta1 import (
+    GetTxRequest,
+    BroadcastTxRequest,
+    BroadcastMode,
+    SimulateRequest,
+    SimulateResponse,
+)
 from .proto.cosmos.tx.v1beta1 import ServiceStub as TxServiceStub
-from .proto.oracle.v1 import (
+from .proto.band.oracle.v1 import (
     DataSource,
     OracleScript,
     QueryDataSourceRequest,
@@ -25,8 +38,8 @@ from .proto.oracle.v1 import (
     QueryRequestSearchRequest,
     QueryRequestSearchResponse,
 )
-from .proto.oracle.v1 import MsgStub as OracleMsgStub
-from .proto.oracle.v1 import QueryStub as OracleQueryStub
+from .proto.band.oracle.v1 import MsgStub as OracleMsgStub
+from .proto.band.oracle.v1 import QueryStub as OracleQueryStub
 
 
 class Client:
@@ -46,7 +59,10 @@ class Client:
     def close(self) -> None:
         """Closes the connection."""
 
-        self.__channel.close()
+        try:
+            self.__channel.close()
+        except Exception:
+            pass
 
     @classmethod
     def from_endpoint(cls, grpc_endpoint: str, port: int, ssl: bool = True):
@@ -73,7 +89,9 @@ class Client:
             The data source details.
         """
 
-        resp = await self.stub_oracle.data_source(QueryDataSourceRequest(data_source_id=id))
+        resp = await self.stub_oracle.data_source(
+            QueryDataSourceRequest(data_source_id=id)
+        )
         return resp.data_source
 
     async def get_oracle_script(self, id: int) -> OracleScript:
@@ -86,7 +104,9 @@ class Client:
             The oracle script details.
         """
 
-        resp = await self.stub_oracle.oracle_script(QueryOracleScriptRequest(oracle_script_id=id))
+        resp = await self.stub_oracle.oracle_script(
+            QueryOracleScriptRequest(oracle_script_id=id)
+        )
         return resp.oracle_script
 
     async def get_request_by_id(self, id: int) -> QueryRequestResponse:
@@ -112,7 +132,9 @@ class Client:
             A list of reporter addresses.
         """
 
-        resp = await self.stub_oracle.reporters(QueryReportersRequest(validator_address=validator))
+        resp = await self.stub_oracle.reporters(
+            QueryReportersRequest(validator_address=validator)
+        )
         return resp.reporter
 
     async def get_latest_block(self) -> GetLatestBlockResponse:
@@ -122,7 +144,9 @@ class Client:
             The details of the latest block.
         """
 
-        return await self.stub_cosmos_tendermint.get_latest_block(GetLatestBlockRequest())
+        return await self.stub_cosmos_tendermint.get_latest_block(
+            GetLatestBlockRequest()
+        )
 
     async def get_account(self, address: str) -> BaseAccount:
         """Gets the account details of a specified address.
@@ -135,16 +159,12 @@ class Client:
         """
 
         try:
-            resp = await self.stub_auth.account(QueryAccountRequest(address=address))
-            account = BaseAccount()
-            pub_key = PubKey()
-
-            account.parse(resp.account.value)
-            account.pub_key = pub_key.parse(account.pub_key.value)
+            resp = await self.stub_auth.account_info(
+                QueryAccountInfoRequest(address=address)
+            )
+            return resp.info
         except Exception as e:
             raise e
-
-        return account
 
     async def get_request_id_by_tx_hash(self, tx_hash: str) -> List[int]:
         """Gets the request ID of a given transaction hash.
@@ -159,7 +179,11 @@ class Client:
         tx = await self.stub_tx.get_tx(GetTxRequest(hash=tx_hash))
         request_ids = []
         for log in tx.tx_response.logs:
-            request_event = [event for event in log.events if event.type == "request" or event.type == "report"]
+            request_event = [
+                event
+                for event in log.events
+                if event.type == "request" or event.type == "report"
+            ]
             if len(request_event) == 1:
                 attrs = request_event[0].attributes
                 attr_id = [attr for attr in attrs if attr.key == "id"]
@@ -183,7 +207,7 @@ class Client:
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_SYNC)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.SYNC)
         )
         return resp.tx_response
 
@@ -200,7 +224,7 @@ class Client:
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_ASYNC)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.ASYNC)
         )
         return resp.tx_response
 
@@ -217,7 +241,7 @@ class Client:
         """
 
         resp = await self.stub_tx.broadcast_tx(
-            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BROADCAST_MODE_BLOCK)
+            BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.BLOCK)
         )
         return resp.tx_response
 
@@ -231,7 +255,9 @@ class Client:
         latest_block = await self.get_latest_block()
         return latest_block.block.header.chain_id
 
-    async def get_reference_data(self, pairs: List[str], min_count: int, ask_count: int) -> List[ReferencePrice]:
+    async def get_reference_data(
+        self, pairs: List[str], min_count: int, ask_count: int
+    ) -> List[ReferencePrice]:
         """Gets the rates of the given cryptocurrency pairs.
 
         Args:
@@ -246,7 +272,9 @@ class Client:
         if len(pairs) == 0:
             raise EmptyMsgError("Pairs are required")
 
-        symbols = set([symbol for pair in pairs for symbol in pair.split("/") if symbol != "USD"])
+        symbols = set(
+            [symbol for pair in pairs for symbol in pair.split("/") if symbol != "USD"]
+        )
 
         price_data = await self.stub_oracle.request_price(
             QueryRequestPriceRequest(
@@ -275,8 +303,12 @@ class Client:
         for pair in pairs:
             base_symbol, quote_symbol = pair.split("/")
 
-            quote_rate = int(symbol_dict[base_symbol]["px"]) / int(symbol_dict[base_symbol]["multiplier"])
-            base_rate = int(symbol_dict[quote_symbol]["px"]) / int(symbol_dict[quote_symbol]["multiplier"])
+            quote_rate = int(symbol_dict[base_symbol]["px"]) / int(
+                symbol_dict[base_symbol]["multiplier"]
+            )
+            base_rate = int(symbol_dict[quote_symbol]["px"]) / int(
+                symbol_dict[quote_symbol]["multiplier"]
+            )
             rate = quote_rate / base_rate
 
             rate_updated_at = ReferencePriceUpdated(
@@ -304,7 +336,10 @@ class Client:
         """
         return await self.stub_oracle.request_search(
             QueryRequestSearchRequest(
-                oracle_script_id=oid, calldata=calldata, ask_count=ask_count, min_count=min_count
+                oracle_script_id=oid,
+                calldata=calldata,
+                ask_count=ask_count,
+                min_count=min_count,
             )
         )
 

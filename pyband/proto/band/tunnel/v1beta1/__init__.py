@@ -16,8 +16,8 @@ import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base import v1beta1 as ___cosmos_base_v1_beta1__
-from ....cosmos.base.query import v1beta1 as ___cosmos_base_query_v1_beta1__
+from ....cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
+from ....cosmos.base.query import v1beta1 as __cosmos_base_query_v1_beta1__
 from ...feeds import v1beta1 as __feeds_v1_beta1__
 
 
@@ -46,7 +46,7 @@ class Params(betterproto.Message):
     Params is the data structure that keeps the parameters of the module.
     """
 
-    min_deposit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(1)
+    min_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(1)
     """min_deposit is the minimum deposit required to create a tunnel."""
 
     min_interval: int = betterproto.uint64_field(2)
@@ -484,7 +484,7 @@ class QueryTunnelsRequest(betterproto.Message):
     status_filter: "TunnelStatusFilter" = betterproto.enum_field(1)
     """status_filter is a flag to filter tunnels by status."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(2)
     )
     """pagination defines an optional pagination for the request."""
@@ -499,7 +499,7 @@ class QueryTunnelsResponse(betterproto.Message):
     tunnels: List["Tunnel"] = betterproto.message_field(1)
     """Tunnels is a list of tunnels."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines an optional pagination for the response."""
@@ -534,7 +534,7 @@ class QueryDepositsRequest(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to query deposits."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(2)
     )
     """pagination defines an optional pagination for the request."""
@@ -549,7 +549,7 @@ class QueryDepositsResponse(betterproto.Message):
     deposits: List["Deposit"] = betterproto.message_field(1)
     """deposits is a list of deposits."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines an optional pagination for the response."""
@@ -589,7 +589,7 @@ class QueryPacketsRequest(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to query packets."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(2)
     )
     """pagination defines an optional pagination for the request."""
@@ -604,7 +604,7 @@ class QueryPacketsResponse(betterproto.Message):
     packets: List["Packet"] = betterproto.message_field(1)
     """packets is a list of packets."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines an optional pagination for the response."""

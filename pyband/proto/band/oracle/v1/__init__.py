@@ -16,7 +16,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base import v1beta1 as ___cosmos_base_v1_beta1__
+from ....cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
 
 
 if TYPE_CHECKING:
@@ -88,7 +88,7 @@ class DataSource(betterproto.Message):
     Treasury is the account address who receive data source fee from requester.
     """
 
-    fee: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
+    fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
     """
     Fee is the data source fee per ask_count that data provider will receive
      from requester.
@@ -228,13 +228,13 @@ class Request(betterproto.Message):
     execute_gas: int = betterproto.uint64_field(10)
     """ExecuteGas is amount of gas to reserve for executing"""
 
-    tss_encoder: "Encoder" = betterproto.enum_field(11)
+    tss_encoder: Encoder = betterproto.enum_field(11)
     """TSSEncoder is the mode of encoding oracle result signature order."""
 
     requester: str = betterproto.string_field(12)
     """Requester is the address of person who requests the data."""
 
-    fee_limit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(13)
+    fee_limit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(13)
     """FeeLimit is the maximum tokens that will be paid for this request."""
 
 
@@ -297,7 +297,7 @@ class OracleRequestPacketData(betterproto.Message):
      cost of liveness.
     """
 
-    fee_limit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
+    fee_limit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
     """
     FeeLimit is the maximum tokens that will be paid to all data source
      providers.
@@ -309,7 +309,7 @@ class OracleRequestPacketData(betterproto.Message):
     execute_gas: int = betterproto.uint64_field(8)
     """ExecuteGas is amount of gas to reserve for executing"""
 
-    tss_encoder: "Encoder" = betterproto.enum_field(9)
+    tss_encoder: Encoder = betterproto.enum_field(9)
     """TSSEncoder is the mode of encoding oracle result signature order."""
 
 
@@ -647,7 +647,7 @@ class OracleResultSignatureOrder(betterproto.Message):
     request_id: int = betterproto.uint64_field(1)
     """RequestID is oracle's unique identifier for this oracle request."""
 
-    encoder: "Encoder" = betterproto.enum_field(3)
+    encoder: Encoder = betterproto.enum_field(2)
     """encoder is the mode of encoding oracle result signature order."""
 
 
@@ -675,7 +675,7 @@ class MsgRequestData(betterproto.Message):
     ClientID is the client-provided unique identifier to track the request.
     """
 
-    fee_limit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
+    fee_limit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
     """
     FeeLimit is the maximum tokens that will be paid to all data source
      providers.
@@ -690,7 +690,7 @@ class MsgRequestData(betterproto.Message):
     sender: str = betterproto.string_field(9)
     """Sender is an account address of message sender."""
 
-    tss_encoder: "Encoder" = betterproto.enum_field(10)
+    tss_encoder: Encoder = betterproto.enum_field(10)
     """TSSEncoder is the mode of encoding oracle result signature order."""
 
 
@@ -746,7 +746,7 @@ class MsgCreateDataSource(betterproto.Message):
      validators upon execution.
     """
 
-    fee: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(4)
+    fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(4)
     """
     Fee is the data source fee per ask_count that data provider will receive
      from requester.
@@ -800,7 +800,7 @@ class MsgEditDataSource(betterproto.Message):
      execution.
     """
 
-    fee: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(5)
+    fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(5)
     """
     Fee is the data source fee per ask_count that data provider will receive
      from requester.

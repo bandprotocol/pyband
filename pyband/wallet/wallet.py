@@ -26,7 +26,9 @@ class Wallet:
             A Wallet instance.
         """
 
-        return cls(PrivateKeySigner(PrivateKey.from_mnemonic(mnemonic, path)), SignMode.SIGN_MODE_DIRECT)
+        return cls(
+            PrivateKeySigner(PrivateKey.from_mnemonic(mnemonic, path)), SignMode.DIRECT
+        )
 
     @classmethod
     def from_private_key(cls, private_key: str):
@@ -39,10 +41,12 @@ class Wallet:
             A Wallet instance.
         """
 
-        return cls(PrivateKeySigner(PrivateKey.from_hex(private_key)), SignMode.SIGN_MODE_DIRECT)
+        return cls(PrivateKeySigner(PrivateKey.from_hex(private_key)), SignMode.DIRECT)
 
     @classmethod
-    def from_ledger(cls, path: str = DEFAULT_LEDGER_DERIVATION_PATH, *, app: CosmosApp = None):
+    def from_ledger(
+        cls, path: str = DEFAULT_LEDGER_DERIVATION_PATH, *, app: CosmosApp = None
+    ):
         """Creates a Wallet instance from a connected Ledger.
 
         Args:
@@ -54,8 +58,11 @@ class Wallet:
         """
 
         return cls(
-            LedgerSigner(path=path, app=app if app is not None else CosmosApp(bip44_to_list(path))),
-            SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
+            LedgerSigner(
+                path=path,
+                app=app if app is not None else CosmosApp(bip44_to_list(path)),
+            ),
+            SignMode.LEGACY_AMINO_JSON,
         )
 
     def get_public_key(self) -> PublicKey:
@@ -87,7 +94,7 @@ class Wallet:
         """
         public_key = self.get_public_key()
 
-        if self._sign_mode == SignMode.SIGN_MODE_LEGACY_AMINO_JSON:
+        if self._sign_mode == SignMode.LEGACY_AMINO_JSON:
             sign_msg = tx.get_sign_message_for_legacy_codec()
         else:
             sign_msg = tx.get_sign_doc(public_key)

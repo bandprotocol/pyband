@@ -10,7 +10,16 @@ from .exceptions import EmptyMsgError, UndefinedError, ValueTooLargeError
 from .messages.base import BaseMessageWrapper
 from .proto.cosmos.base.v1beta1 import Coin
 from .proto.cosmos.tx.signing.v1beta1 import SignMode
-from .proto.cosmos.tx.v1beta1 import Fee, TxBody, ModeInfo, SignerInfo, AuthInfo, SignDoc, TxRaw, ModeInfoSingle
+from .proto.cosmos.tx.v1beta1 import (
+    Fee,
+    TxBody,
+    ModeInfo,
+    SignerInfo,
+    AuthInfo,
+    SignDoc,
+    TxRaw,
+    ModeInfoSingle,
+)
 from .wallet.public_key import PublicKey
 
 
@@ -43,7 +52,9 @@ class Transaction:
 
     async def with_sender(self, client: Client, sender: str) -> "Transaction":
         if len(self.msgs) == 0:
-            raise EmptyMsgError("message is empty, please use with_messages at least 1 message")
+            raise EmptyMsgError(
+                "message is empty, please use with_messages at least 1 message"
+            )
 
         account = await client.get_account(sender)
         self.account_num = account.account_number
@@ -105,10 +116,15 @@ class Transaction:
     @property
     def fee(self):
         return Fee(
-            amount=[Coin(amount=str(ceil(self.gas_limit * self.gas_price)), denom="uband")], gas_limit=self.gas_limit
+            amount=[
+                Coin(amount=str(ceil(self.gas_limit * self.gas_price)), denom="uband")
+            ],
+            gas_limit=self.gas_limit,
         )
 
-    def __generate_info(self, public_key: PublicKey, sign_mode: SignMode) -> Tuple[bytes, bytes]:
+    def __generate_info(
+        self, public_key: PublicKey, sign_mode: SignMode
+    ) -> Tuple[bytes, bytes]:
         body = TxBody(
             messages=self.__convert_msgs(self.msgs),
             memo=self.memo,
@@ -117,8 +133,12 @@ class Transaction:
         mode_info = ModeInfo(ModeInfoSingle(mode=sign_mode))
         if public_key is not None:
             pub_key_proto = public_key.to_public_key_proto()
-            any_public_key = AnyProto(type_url="/cosmos.crypto.secp256k1.PubKey", value=bytes(pub_key_proto))
-            signer_info = SignerInfo(mode_info=mode_info, sequence=self.sequence, public_key=any_public_key)
+            any_public_key = AnyProto(
+                type_url="/cosmos.crypto.secp256k1.PubKey", value=bytes(pub_key_proto)
+            )
+            signer_info = SignerInfo(
+                mode_info=mode_info, sequence=self.sequence, public_key=any_public_key
+            )
         else:
             signer_info = SignerInfo(mode_info=mode_info, sequence=self.sequence)
 
@@ -148,7 +168,7 @@ class Transaction:
         if self.chain_id is None:
             raise UndefinedError("chain_id should be defined")
 
-        body_bytes, auth_info_bytes = self.__generate_info(public_key, SignMode.SIGN_MODE_DIRECT)
+        body_bytes, auth_info_bytes = self.__generate_info(public_key, SignMode.DIRECT)
 
         return SignDoc(
             body_bytes=body_bytes,
@@ -178,7 +198,10 @@ class Transaction:
         return json.dumps(msg, separators=(",", ":"), sort_keys=True).encode("utf-8")
 
     def get_tx_data(
-        self, signature: bytes, public_key: PublicKey = None, sign_mode: SignMode = SignMode.SIGN_MODE_DIRECT
+        self,
+        signature: bytes,
+        public_key: PublicKey = None,
+        sign_mode: SignMode = SignMode.DIRECT,
     ) -> bytes:
         """Returns the transaction as a byte.
 
@@ -192,5 +215,9 @@ class Transaction:
         """
 
         body_bytes, auth_info_bytes = self.__generate_info(public_key, sign_mode)
-        tx_raw = TxRaw(body_bytes=body_bytes, auth_info_bytes=auth_info_bytes, signatures=[signature])
+        tx_raw = TxRaw(
+            body_bytes=body_bytes,
+            auth_info_bytes=auth_info_bytes,
+            signatures=[signature],
+        )
         return bytes(tx_raw)

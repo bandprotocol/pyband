@@ -12,16 +12,33 @@ from pyband.exceptions import NotFoundError, EmptyMsgError
 from pyband.proto.cosmos.auth.v1beta1 import BaseAccount
 from pyband.proto.cosmos.auth.v1beta1 import QueryAccountResponse
 from pyband.proto.cosmos.auth.v1beta1 import QueryBase as CosmosAuthServiceBase
-from pyband.proto.cosmos.base.abci.v1beta1 import TxResponse, AbciMessageLog, StringEvent, Attribute
-from pyband.proto.cosmos.base.tendermint.v1beta1 import GetLatestBlockResponse, GetLatestBlockRequest
-from pyband.proto.cosmos.base.tendermint.v1beta1 import ServiceBase as TendermintServiceBase
+from pyband.proto.cosmos.base.abci.v1beta1 import (
+    TxResponse,
+    AbciMessageLog,
+    StringEvent,
+    Attribute,
+)
+from pyband.proto.cosmos.base.tendermint.v1beta1 import (
+    GetLatestBlockResponse,
+    GetLatestBlockRequest,
+)
+from pyband.proto.cosmos.base.tendermint.v1beta1 import (
+    ServiceBase as TendermintServiceBase,
+)
 from pyband.proto.cosmos.tx.signing.v1beta1 import SignMode
 from pyband.proto.cosmos.tx.v1beta1 import GetTxRequest, GetTxResponse, ModeInfoSingle
 from pyband.proto.cosmos.tx.v1beta1 import ServiceBase as CosmosTxServiceBase
-from pyband.proto.cosmos.tx.v1beta1 import Tx, TxBody, AuthInfo, SignerInfo, ModeInfo, Fee
-from pyband.proto.oracle.v1 import DataSource, OracleScript
-from pyband.proto.oracle.v1 import QueryBase as OracleQueryBase
-from pyband.proto.oracle.v1 import (
+from pyband.proto.cosmos.tx.v1beta1 import (
+    Tx,
+    TxBody,
+    AuthInfo,
+    SignerInfo,
+    ModeInfo,
+    Fee,
+)
+from pyband.proto.band.oracle.v1 import DataSource, OracleScript
+from pyband.proto.band.oracle.v1 import QueryBase as OracleQueryBase
+from pyband.proto.band.oracle.v1 import (
     QueryDataSourceRequest,
     QueryDataSourceResponse,
     QueryOracleScriptResponse,
@@ -34,7 +51,7 @@ from pyband.proto.oracle.v1 import (
     QueryRequestSearchRequest,
     QueryRequestSearchResponse,
 )
-from pyband.proto.oracle.v1 import (
+from pyband.proto.band.oracle.v1 import (
     Result,
     Report,
     Request,
@@ -58,7 +75,9 @@ from pyband.proto.tendermint.version import Consensus
 
 
 class OracleService(OracleQueryBase):
-    async def data_source(self, query_data_source_request: QueryDataSourceRequest) -> QueryDataSourceResponse:
+    async def data_source(
+        self, query_data_source_request: QueryDataSourceRequest
+    ) -> QueryDataSourceResponse:
         if query_data_source_request.data_source_id == 1:
             return QueryDataSourceResponse(
                 data_source=DataSource(
@@ -70,7 +89,9 @@ class OracleService(OracleQueryBase):
                 )
             )
 
-    async def oracle_script(self, query_oracle_script_request: QueryOracleScriptResponse) -> QueryOracleScriptResponse:
+    async def oracle_script(
+        self, query_oracle_script_request: QueryOracleScriptResponse
+    ) -> QueryOracleScriptResponse:
         if query_oracle_script_request.oracle_script_id == 1:
             return QueryOracleScriptResponse(
                 oracle_script=OracleScript(
@@ -83,7 +104,9 @@ class OracleService(OracleQueryBase):
                 )
             )
 
-    async def request(self, query_request_request: QueryRequestRequest) -> QueryRequestResponse:
+    async def request(
+        self, query_request_request: QueryRequestRequest
+    ) -> QueryRequestResponse:
         if query_request_request.request_id == 1:
             return QueryRequestResponse(
                 request=Request(
@@ -114,7 +137,9 @@ class OracleService(OracleQueryBase):
                         raw_reports=[
                             RawReport(external_id=1, exit_code=0, data=b"NTczMjcK"),
                             RawReport(external_id=2, exit_code=0, data=b"NTczMjcK"),
-                            RawReport(external_id=3, exit_code=0, data=b"NTcyODYuMDE1Cg=="),
+                            RawReport(
+                                external_id=3, exit_code=0, data=b"NTcyODYuMDE1Cg=="
+                            ),
                         ],
                     ),
                 ],
@@ -128,12 +153,14 @@ class OracleService(OracleQueryBase):
                     ans_count=2,
                     request_time=1620798812,
                     resolve_time=1620798814,
-                    resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
+                    resolve_status=ResolveStatus.SUCCESS,
                     result=b"AAAAAANqiDo=",
                 ),
             )
 
-    async def reporters(self, query_reporters_request: QueryReportersRequest) -> QueryReportersResponse:
+    async def reporters(
+        self, query_reporters_request: QueryReportersRequest
+    ) -> QueryReportersResponse:
         return QueryReportersResponse(
             reporter=[
                 "band1yyv5jkqaukq0ajqn7vhkyhpff7h6e99ja7gvwg",
@@ -145,7 +172,9 @@ class OracleService(OracleQueryBase):
             ]
         )
 
-    async def request_price(self, query_request_price_request: QueryRequestPriceRequest):
+    async def request_price(
+        self, query_request_price_request: QueryRequestPriceRequest
+    ):
         # Assume that price = 10 will return price not found error
         if query_request_price_request.ask_count != 10:
             return QueryRequestPriceResponse(
@@ -174,7 +203,9 @@ class OracleService(OracleQueryBase):
                 ]
             )
 
-    async def request_search(self, query_request_search_request: QueryRequestSearchRequest):
+    async def request_search(
+        self, query_request_search_request: QueryRequestSearchRequest
+    ):
         return QueryRequestSearchResponse(
             request=QueryRequestResponse(
                 request=Request(
@@ -265,7 +296,7 @@ class OracleService(OracleQueryBase):
                     ans_count=12,
                     request_time=1625077316,
                     resolve_time=1625077324,
-                    resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
+                    resolve_status=ResolveStatus.SUCCESS,
                     result=b"\000\000\000@\313\022\372/\200fpH\305\367\204\020h9\220\2621\336\276#\024m\323\322\271\213Q\331-\244\364\326\310\002\202o.\305&\300\345\177\312T\t\216\023{\213\311\035\300\350z\0246\337\316\326\220 x\270\333",
                 ),
             )
@@ -293,7 +324,9 @@ class CosmosTransactionService(CosmosTxServiceBase):
                                     type_url="/cosmos.crypto.secp256k1.PubKey",
                                     value=b"\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
                                 ),
-                                mode_info=ModeInfo(ModeInfoSingle(mode=SignMode.SIGN_MODE_DIRECT)),
+                                mode_info=ModeInfo(
+                                    ModeInfoSingle(mode=SignMode.DIRECT)
+                                ),
                                 sequence=478,
                             )
                         ],
@@ -311,7 +344,12 @@ class CosmosTransactionService(CosmosTxServiceBase):
                     logs=[
                         AbciMessageLog(
                             events=[
-                                StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                                StringEvent(
+                                    type="message",
+                                    attributes=[
+                                        Attribute(key="action", value="request")
+                                    ],
+                                ),
                                 StringEvent(
                                     type="raw_request",
                                     attributes=[
@@ -327,7 +365,9 @@ class CosmosTransactionService(CosmosTxServiceBase):
                                     type="report",
                                     attributes=[
                                         Attribute(key="id", value="154966"),
-                                        Attribute(key="client_id", value="from_bandd_2"),
+                                        Attribute(
+                                            key="client_id", value="from_bandd_2"
+                                        ),
                                         Attribute(key="oracle_script_id", value="37"),
                                     ],
                                 ),
@@ -361,7 +401,9 @@ class CosmosTransactionService(CosmosTxServiceBase):
                                     type_url="/cosmos.crypto.secp256k1.PubKey",
                                     value=b"\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
                                 ),
-                                mode_info=ModeInfo(ModeInfoSingle(mode=SignMode.SIGN_MODE_DIRECT)),
+                                mode_info=ModeInfo(
+                                    ModeInfoSingle(mode=SignMode.DIRECT)
+                                ),
                                 sequence=478,
                             )
                         ],
@@ -379,7 +421,12 @@ class CosmosTransactionService(CosmosTxServiceBase):
                     logs=[
                         AbciMessageLog(
                             events=[
-                                StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                                StringEvent(
+                                    type="message",
+                                    attributes=[
+                                        Attribute(key="action", value="request")
+                                    ],
+                                ),
                                 StringEvent(
                                     type="raw_request",
                                     attributes=[
@@ -395,7 +442,9 @@ class CosmosTransactionService(CosmosTxServiceBase):
                                     type="request",
                                     attributes=[
                                         Attribute(key="id", value="111111"),
-                                        Attribute(key="client_id", value="from_bandd_2"),
+                                        Attribute(
+                                            key="client_id", value="from_bandd_2"
+                                        ),
                                         Attribute(key="oracle_script_id", value="37"),
                                     ],
                                 ),
@@ -403,7 +452,12 @@ class CosmosTransactionService(CosmosTxServiceBase):
                         ),
                         AbciMessageLog(
                             events=[
-                                StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                                StringEvent(
+                                    type="message",
+                                    attributes=[
+                                        Attribute(key="action", value="request")
+                                    ],
+                                ),
                                 StringEvent(
                                     type="raw_request",
                                     attributes=[
@@ -419,7 +473,9 @@ class CosmosTransactionService(CosmosTxServiceBase):
                                     type="request",
                                     attributes=[
                                         Attribute(key="id", value="222222"),
-                                        Attribute(key="client_id", value="from_bandd_2"),
+                                        Attribute(
+                                            key="client_id", value="from_bandd_2"
+                                        ),
                                         Attribute(key="oracle_script_id", value="37"),
                                     ],
                                 ),
@@ -443,11 +499,17 @@ class AuthService(CosmosAuthServiceBase):
             raise NotFoundError("Account not found")
         # Account exist
         base_acc = BaseAccount(account_number=1)
-        return QueryAccountResponse(account=Any(type_url="/cosmos.auth.v1beta1.BaseAccount", value=bytes(base_acc)))
+        return QueryAccountResponse(
+            account=Any(
+                type_url="/cosmos.auth.v1beta1.BaseAccount", value=bytes(base_acc)
+            )
+        )
 
 
 class TendermintService(TendermintServiceBase):
-    async def get_latest_block(self, get_latest_block_request: GetLatestBlockRequest) -> GetLatestBlockResponse:
+    async def get_latest_block(
+        self, get_latest_block_request: GetLatestBlockRequest
+    ) -> GetLatestBlockResponse:
         return GetLatestBlockResponse(
             block_id=BlockId(
                 hash=b"391E99908373F8590C928E0619956DA3D87EB654445DA4F25A185C9718561D53",
@@ -497,13 +559,13 @@ class TendermintService(TendermintServiceBase):
                     ),
                     signatures=[
                         CommitSig(
-                            block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
+                            block_id_flag=BlockIdFlag.NIL,
                             validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
                             timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                             signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
                         ),
                         CommitSig(
-                            block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
+                            block_id_flag=BlockIdFlag.NIL,
                             validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
                             timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                             signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
@@ -517,7 +579,12 @@ class TendermintService(TendermintServiceBase):
 @pytest_asyncio.fixture(scope="module")
 async def pyband_client():
     channel_for = ChannelFor(
-        services=[OracleService(), CosmosTransactionService(), AuthService(), TendermintService()]
+        services=[
+            OracleService(),
+            CosmosTransactionService(),
+            AuthService(),
+            TendermintService(),
+        ]
     )
     channel = await channel_for.__aenter__()
     yield Client(channel)
@@ -636,7 +703,7 @@ async def test_get_request_by_id_success(pyband_client):
             ans_count=2,
             request_time=1620798812,
             resolve_time=1620798814,
-            resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
+            resolve_status=ResolveStatus.SUCCESS,
             result=b"AAAAAANqiDo=",
         ),
     )
@@ -736,13 +803,13 @@ async def test_get_latest_block(pyband_client):
                 ),
                 signatures=[
                     CommitSig(
-                        block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
+                        block_id_flag=BlockIdFlag.NIL,
                         validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
                         timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                         signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
                     ),
                     CommitSig(
-                        block_id_flag=BlockIdFlag.BLOCK_ID_FLAG_NIL,
+                        block_id_flag=BlockIdFlag.NIL,
                         validator_address=b"5179B0BB203248E03D2A1342896133B5C58E1E44",
                         timestamp=parser.isoparse("2020-11-05T09:15:18.53815896Z"),
                         signature=b"TZY24CKwZOE8wqfE0NM3qzkQ7qCpCrGEHNZdf8n31L4otZzbKGfOL05kGtBsGkTnZkVv7aJmrJ7XbvIzv0SREQ==",
@@ -792,7 +859,9 @@ async def test_get_chain_id(pyband_client):
 
 @pytest.mark.asyncio
 async def test_get_reference_data_success(pyband_client):
-    [reference_data1, reference_data2] = await pyband_client.get_reference_data(["ETH/USD", "BTC/USDT"], 3, 4)
+    [reference_data1, reference_data2] = await pyband_client.get_reference_data(
+        ["ETH/USD", "BTC/USDT"], 3, 4
+    )
     assert reference_data1.pair == "ETH/USD"
     assert reference_data2.pair == "BTC/USDT"
     assert reference_data1.rate == 2317.61
@@ -913,7 +982,7 @@ async def test_get_latest_request_success(pyband_client):
                 ans_count=12,
                 request_time=1625077316,
                 resolve_time=1625077324,
-                resolve_status=ResolveStatus.RESOLVE_STATUS_SUCCESS,
+                resolve_status=ResolveStatus.SUCCESS,
                 result=b"\000\000\000@\313\022\372/\200fpH\305\367\204\020h9\220\2621\336\276#\024m\323\322\271\213Q\331-\244\364\326\310\002\202o.\305&\300\345\177\312T\t\216\023{\213\311\035\300\350z\0246\337\316\326\220 x\270\333",
             ),
         )
@@ -932,7 +1001,10 @@ async def test_get_tx_resp(pyband_client):
         logs=[
             AbciMessageLog(
                 events=[
-                    StringEvent(type="message", attributes=[Attribute(key="action", value="request")]),
+                    StringEvent(
+                        type="message",
+                        attributes=[Attribute(key="action", value="request")],
+                    ),
                     StringEvent(
                         type="raw_request",
                         attributes=[

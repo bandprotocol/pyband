@@ -15,7 +15,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....oracle import v1 as ___oracle_v1__
+from ....oracle import v1 as __oracle_v1__
 
 
 if TYPE_CHECKING:
@@ -146,7 +146,7 @@ class CountProof(betterproto.Message):
 class OracleDataProof(betterproto.Message):
     """OracleDataProof contains result, version and merkle paths"""
 
-    result: "___oracle_v1__.Result" = betterproto.message_field(1)
+    result: "__oracle_v1__.Result" = betterproto.message_field(1)
     version: int = betterproto.uint64_field(2)
     merkle_paths: List["IavlMerklePath"] = betterproto.message_field(3)
 

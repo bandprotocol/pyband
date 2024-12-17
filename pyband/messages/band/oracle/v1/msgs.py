@@ -1,12 +1,12 @@
-from dataclasses import dataclass
+import dataclasses
 
-from ....messages.base import BaseMessageWrapper
-from ....proto.cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
-from ....proto.oracle.v1 import MsgCreateDataSource as MsgCreateDataSourceProto
-from ....proto.oracle.v1 import MsgCreateOracleScript as MsgCreateOracleScriptProto
-from ....proto.oracle.v1 import MsgEditDataSource as MsgEditDataSourceProto
-from ....proto.oracle.v1 import MsgEditOracleScript as MsgEditOracleScriptProto
-from ....proto.oracle.v1 import MsgRequestData as MsgRequestDataProto
+from ....base import BaseMessageWrapper
+from .....proto.cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
+from .....proto.band.oracle.v1 import MsgCreateDataSource as MsgCreateDataSourceProto
+from .....proto.band.oracle.v1 import MsgCreateOracleScript as MsgCreateOracleScriptProto
+from .....proto.band.oracle.v1 import MsgEditDataSource as MsgEditDataSourceProto
+from .....proto.band.oracle.v1 import MsgEditOracleScript as MsgEditOracleScriptProto
+from .....proto.band.oracle.v1 import MsgRequestData as MsgRequestDataProto
 
 assert __cosmos_base_v1_beta1__
 
@@ -14,17 +14,18 @@ assert __cosmos_base_v1_beta1__
 class MsgRequestData(BaseMessageWrapper, MsgRequestDataProto):
     @property
     def type_url(self):
-        return "/oracle.v1.MsgRequestData"
+        return "/band.oracle.v1.MsgRequestData"
 
     @property
     def legacy_url(self):
         return "oracle/Request"
 
 
+@dataclasses.dataclass
 class MsgCreateDataSource(BaseMessageWrapper, MsgCreateDataSourceProto):
     @property
     def type_url(self):
-        return "/oracle.v1.MsgCreateDataSource"
+        return "/band.oracle.v1.MsgCreateDataSource"
 
     @property
     def legacy_url(self):
@@ -34,7 +35,7 @@ class MsgCreateDataSource(BaseMessageWrapper, MsgCreateDataSourceProto):
 class MsgEditDataSource(BaseMessageWrapper, MsgEditDataSourceProto):
     @property
     def type_url(self):
-        return "/oracle.v1.MsgEditDataSource"
+        return "/band.oracle.v1.MsgEditDataSource"
 
     @property
     def legacy_url(self):
@@ -44,7 +45,7 @@ class MsgEditDataSource(BaseMessageWrapper, MsgEditDataSourceProto):
 class MsgCreateOracleScript(BaseMessageWrapper, MsgCreateOracleScriptProto):
     @property
     def type_url(self):
-        return "/oracle.v1.MsgCreateOracleScript"
+        return "/band.oracle.v1.MsgCreateOracleScript"
 
     @property
     def legacy_url(self):
@@ -54,7 +55,7 @@ class MsgCreateOracleScript(BaseMessageWrapper, MsgCreateOracleScriptProto):
 class MsgEditOracleScript(BaseMessageWrapper, MsgEditOracleScriptProto):
     @property
     def type_url(self):
-        return "/oracle.v1.MsgEditOracleScript"
+        return "/band.oracle.v1.MsgEditOracleScript"
 
     @property
     def legacy_url(self):
