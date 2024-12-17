@@ -9,8 +9,11 @@ from grpclib.testing import ChannelFor
 
 from pyband.client import Client
 from pyband.exceptions import NotFoundError, EmptyMsgError
-from pyband.proto.cosmos.auth.v1beta1 import BaseAccount
-from pyband.proto.cosmos.auth.v1beta1 import QueryAccountResponse
+from pyband.proto.cosmos.auth.v1beta1 import (
+    BaseAccount,
+    QueryAccountInfoRequest,
+    QueryAccountInfoResponse,
+)
 from pyband.proto.cosmos.auth.v1beta1 import QueryBase as CosmosAuthServiceBase
 from pyband.proto.cosmos.base.abci.v1beta1 import (
     TxResponse,
@@ -494,16 +497,22 @@ class CosmosTransactionService(CosmosTxServiceBase):
 
 
 class AuthService(CosmosAuthServiceBase):
-    async def account(self, query_account_request) -> QueryAccountResponse:
+    async def account_info(
+        self, query_account_request: QueryAccountInfoRequest
+    ) -> QueryAccountInfoResponse:
         if query_account_request.address == "noAccount":
             raise NotFoundError("Account not found")
-        # Account exist
-        base_acc = BaseAccount(account_number=1)
-        return QueryAccountResponse(
-            account=Any(
-                type_url="/cosmos.auth.v1beta1.BaseAccount", value=bytes(base_acc)
-            )
+
+        base_account = BaseAccount(
+            address="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
+            pub_key=Any(
+                type_url="/cosmos.crypto.secp256k1.PubKey",
+                value=b"\n\021\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
+            ),
+            account_number=1,
+            sequence=0,
         )
+        return QueryAccountInfoResponse(info=base_account)
 
 
 class TendermintService(TendermintServiceBase):
@@ -823,7 +832,9 @@ async def test_get_latest_block(pyband_client):
 
 @pytest.mark.asyncio
 async def test_get_account_success(pyband_client):
-    account = await pyband_client.get_account("xxx")
+    account = await pyband_client.get_account(
+        "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"
+    )
     assert account.account_number == 1
 
 

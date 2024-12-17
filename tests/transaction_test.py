@@ -8,7 +8,11 @@ from grpclib.testing import ChannelFor
 from pyband import Client
 from pyband.exceptions import EmptyMsgError, UndefinedError, ValueTooLargeError
 from pyband.messages.band.oracle.v1 import MsgRequestData
-from pyband.proto.cosmos.auth.v1beta1 import QueryAccountRequest, QueryAccountResponse
+from pyband.proto.cosmos.auth.v1beta1 import (
+    BaseAccount,
+    QueryAccountInfoResponse,
+    QueryAccountInfoRequest,
+)
 from pyband.proto.cosmos.auth.v1beta1 import QueryBase as CosmosAuthServiceBase
 from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.proto.cosmos.tx.v1beta1 import SignDoc
@@ -23,13 +27,17 @@ SENDER = ADDRESS.to_acc_bech32()
 
 
 class AuthService(CosmosAuthServiceBase):
-    async def account(self, query_accounts_request: QueryAccountRequest):
-        return QueryAccountResponse(
-            account=Any(
-                type_url="/cosmos.auth.v1beta1.BaseAccount",
-                value=b"\n+band1z2hwz2vn6ardpjzgfx2k3wh2zglknwavhw3v2r\022F\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\002\243\357\354\271\2712\330H\300F\342suhP\357^!\007\244&\365\t\314\274\312\034~\240\004A\341\030h \010",
-            )
+    async def account_info(self, query_accounts_request: QueryAccountInfoRequest):
+        base_account = BaseAccount(
+            address="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
+            pub_key=Any(
+                type_url="/cosmos.crypto.secp256k1.PubKey",
+                value=b"\n\021\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223",
+            ),
+            account_number=1,
+            sequence=0,
         )
+        return QueryAccountInfoResponse(info=base_account)
 
 
 @pytest_asyncio.fixture(scope="module")
@@ -118,7 +126,6 @@ async def test_get_sign_data_with_sender_success(pyband_client):
         execute_gas=50000,
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
-    fee = [Coin(amount="0", denom="uband")]
 
     t = (
         Transaction()
@@ -130,9 +137,9 @@ async def test_get_sign_data_with_sender_success(pyband_client):
 
     assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\x89\x01\n\x1e/band.oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
-        auth_info_bytes=b"\nP\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\xfep\x8b\xdafRO\xd2\xc6\xbc\xe9\x06\x82\xe3\x85U\xa8Q\xe0=*\xeeOb\x9b\x05\xde\x90\xf5\x1e\xd9\xbc\x12\x04\n\x02\x08\x01\x18\x08\x12\x12\n\x0c\n\x05uband\x12\x03125\x10\xd0\x86\x03",
+        auth_info_bytes=b"\nN\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\xfep\x8b\xdafRO\xd2\xc6\xbc\xe9\x06\x82\xe3\x85U\xa8Q\xe0=*\xeeOb\x9b\x05\xde\x90\xf5\x1e\xd9\xbc\x12\x04\n\x02\x08\x01\x12\x12\n\x0c\n\x05uband\x12\x03125\x10\xd0\x86\x03",
         chain_id="bandchain",
-        account_number=104,
+        account_number=1,
     )
 
 
