@@ -96,8 +96,10 @@ class Wallet:
 
         if self._sign_mode == SignMode.LEGACY_AMINO_JSON:
             sign_msg = tx.get_sign_message_for_legacy_codec()
-        else:
+        elif self._sign_mode == SignMode.DIRECT:
             sign_msg = tx.get_sign_doc(public_key)
+        else:
+            raise NotImplementedError(f"Sign mode {self._sign_mode} is not supported")
 
         signature = self._signer.sign(bytes(sign_msg))
         return tx.get_tx_data(signature, public_key, sign_mode=self._sign_mode)

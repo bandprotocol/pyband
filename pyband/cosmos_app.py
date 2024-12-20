@@ -6,6 +6,7 @@ from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 
 from .exceptions import CosmosAppError
+from .proto.cosmos.tx.signing.v1beta1 import SignMode
 from .utils import get_bip32_byte, split_packet
 
 
@@ -52,7 +53,9 @@ class AppVersion(CosmosAppResults):
         self.patch = patch
 
     def __repr__(self):
-        return "AppVersion(cla={}, major={}, minor={}, patch={})".format(*self.__iter__())
+        return "AppVersion(cla={}, major={}, minor={}, patch={})".format(
+            *self.__iter__()
+        )
 
 
 class SepcAddr(CosmosAppResults):
@@ -181,7 +184,8 @@ class CosmosApp:
                 INS=b"\x02",
                 P1=payload_desc,
                 P2=b"\x00",
-                data=packet,
+                L=len(packet).to_bytes(1, "big"),
+                data=bytes(packet),
             )
             try:
                 resp = self.dongle.exchange(command.get_message())

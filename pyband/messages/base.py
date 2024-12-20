@@ -20,5 +20,5 @@ class BaseMessageWrapper(Message):
     def to_legacy_codec(self):
         return {
             "type": self.legacy_url,
-            "value": self.to_dict(include_default_values=True, casing=Casing.SNAKE),
+            "value": self.to_dict(include_default_values=False, casing=Casing.SNAKE),
         }
