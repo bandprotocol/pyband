@@ -6,7 +6,6 @@ from ledgerblue.comm import getDongle
 from ledgerblue.commException import CommException
 
 from .exceptions import CosmosAppError
-from .proto.cosmos.tx.signing.v1beta1 import SignMode
 from .utils import get_bip32_byte, split_packet
 
 

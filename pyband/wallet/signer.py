@@ -7,7 +7,6 @@ from .constants import BECH32_ADDR_ACC_PREFIX
 from .private_key import PrivateKey
 from .public_key import PublicKey
 from ..cosmos_app import CosmosApp
-from ..proto.cosmos.tx.signing.v1beta1 import SignMode
 from ..utils import bip44_to_list
 
 

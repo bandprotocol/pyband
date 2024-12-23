@@ -7,7 +7,6 @@ from .data import ReferencePrice, ReferencePriceUpdated
 from .exceptions import NotFoundError, EmptyMsgError
 from .proto.cosmos.auth.v1beta1 import (
     BaseAccount,
-    QueryAccountRequest,
     QueryAccountInfoRequest,
 )
 from .proto.cosmos.auth.v1beta1 import QueryStub as AuthQueryStub
@@ -17,7 +16,6 @@ from .proto.cosmos.base.tendermint.v1beta1 import (
     GetLatestBlockResponse,
 )
 from .proto.cosmos.base.tendermint.v1beta1 import ServiceStub as TendermintServiceStub
-from .proto.cosmos.crypto.secp256k1 import PubKey
 from .proto.cosmos.tx.v1beta1 import (
     GetTxRequest,
     BroadcastTxRequest,
