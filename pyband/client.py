@@ -395,7 +395,7 @@ class Client:
         resp = await self.tx_service_stub.get_tx(GetTxRequest(hash=tx_hash))
         return resp.tx_response
 
-    async def get_current_feeds(self) -> QueryCurrentFeedsResponse :
+    async def get_current_feeds(self) -> QueryCurrentFeedsResponse:
         """Gets the current feeds.
 
         Returns:
@@ -426,7 +426,9 @@ class Client:
             The prices of the specified feeds.
         """
 
-        return await self.feeds_query_stub.prices(QueryPricesRequest(signal_ids=signal_ids))
+        return await self.feeds_query_stub.prices(
+            QueryPricesRequest(signal_ids=signal_ids)
+        )
 
     async def simulate_tx(self, tx_bytes: bytes) -> SimulateResponse:
         """Simulates a transaction from the tx_bytes.
