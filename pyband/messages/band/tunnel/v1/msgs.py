@@ -2,8 +2,8 @@ from pyband.messages.base import BaseMessageWrapper
 from pyband.proto.band.tunnel.v1beta1 import (
     MsgCreateTunnel as MsgCreateTunnelProto,
     MsgUpdateAndResetTunnel as MsgUpdateAndResetTunnelProto,
-    MsgActivate as MsgActivateTunnelProto,
-    MsgDeactivate as MsgDeactivateTunnelProto,
+    MsgActivate as MsgActivateProto,
+    MsgDeactivate as MsgDeactivateProto,
     MsgTriggerTunnel as MsgTriggerTunnelProto,
     MsgDepositToTunnel as MsgDepositToTunnelProto,
     MsgWithdrawFromTunnel as MsgWithdrawFromTunnelProto,
@@ -30,7 +30,7 @@ class MsgUpdateAndResetTunnel(BaseMessageWrapper, MsgUpdateAndResetTunnelProto):
         return "tunnel/MsgUpdateAndResetTunnel"
 
 
-class MsgActivateTunnel(BaseMessageWrapper, MsgActivateTunnelProto):
+class MsgActivate(BaseMessageWrapper, MsgActivateProto):
     @property
     def type_url(self):
         return "/band.tunnel.v1.MsgActivate"
@@ -40,7 +40,7 @@ class MsgActivateTunnel(BaseMessageWrapper, MsgActivateTunnelProto):
         return "tunnel/MsgActivate"
 
 
-class MsgDeactivateTunnel(BaseMessageWrapper, MsgDeactivateTunnelProto):
+class MsgDeactivate(BaseMessageWrapper, MsgDeactivateProto):
     @property
     def type_url(self):
         return "/band.tunnel.v1.MsgDeactivate"

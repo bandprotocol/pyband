@@ -24,7 +24,27 @@ from .proto.cosmos.tx.v1beta1 import (
     SimulateResponse,
 )
 from .proto.cosmos.tx.v1beta1 import ServiceStub as TxServiceStub
+from .proto.band.bandtss.v1beta1 import (
+    MsgStub as BandTssMsgStub,
+    QueryStub as BandTssQueryStub,
+)
+from .proto.band.feeds.v1beta1 import (
+    MsgStub as FeedsMsgStub,
+    QueryStub as FeedsQueryStub,
+    QueryCurrentFeedsRequest,
+    QueryCurrentFeedsResponse,
+    QueryPriceRequest,
+    QueryPriceResponse,
+    QueryPricesRequest,
+    QueryPricesResponse,
+)
+from .proto.band.globalfee.v1beta1 import (
+    MsgStub as GlobalFeeMsgStub,
+    QueryStub as GlobalFeeQueryStub,
+)
 from .proto.band.oracle.v1 import (
+    MsgStub as OracleMsgStub,
+    QueryStub as OracleQueryStub,
     DataSource,
     OracleScript,
     QueryDataSourceRequest,
@@ -36,8 +56,18 @@ from .proto.band.oracle.v1 import (
     QueryRequestSearchRequest,
     QueryRequestSearchResponse,
 )
-from .proto.band.oracle.v1 import MsgStub as OracleMsgStub
-from .proto.band.oracle.v1 import QueryStub as OracleQueryStub
+from .proto.band.restake.v1beta1 import (
+    MsgStub as RestakeMsgStub,
+    QueryStub as RestakeQueryStub,
+)
+from .proto.band.tss.v1beta1 import (
+    MsgStub as TssMsgStub,
+    QueryStub as TssQueryStub,
+)
+from .proto.band.tunnel.v1beta1 import (
+    MsgStub as TunnelMsgStub,
+    QueryStub as TunnelQueryStub,
+)
 
 
 class Client:
@@ -45,11 +75,39 @@ class Client:
 
     def __init__(self, channel: Channel):
         self.__channel = channel
-        self.stub_oracle = OracleQueryStub(self.__channel)
-        self.stub_cosmos_tendermint = TendermintServiceStub(self.__channel)
-        self.stub_auth = AuthQueryStub(self.__channel)
-        self.stub_tx = TxServiceStub(self.__channel)
-        self.stub_oracle_tx = OracleMsgStub(self.__channel)
+
+        # band.bandtss
+        self.band_tss_query_stub = BandTssQueryStub(self.__channel)
+        self.band_tss_msg_stub = BandTssMsgStub(self.__channel)
+
+        # band.feeds
+        self.feeds_query_stub = FeedsQueryStub(self.__channel)
+        self.feeds_msg_stub = FeedsMsgStub(self.__channel)
+
+        # band.global_fee
+        self.global_fee_query_stub = GlobalFeeQueryStub(self.__channel)
+        self.global_fee_msg_stub = GlobalFeeMsgStub(self.__channel)
+
+        # band.oracle
+        self.oracle_query_stub = OracleQueryStub(self.__channel)
+        self.oracle_msg_stub = OracleMsgStub(self.__channel)
+
+        # band.restake
+        self.restake_query_stub = RestakeQueryStub(self.__channel)
+        self.restake_msg_stub = RestakeMsgStub(self.__channel)
+
+        # band.tss
+        self.tss_query_stub = TssQueryStub(self.__channel)
+        self.tss_msg_stub = TssMsgStub(self.__channel)
+
+        # band.tunnel
+        self.tunnel_query_stub = TunnelQueryStub(self.__channel)
+        self.tunnel_msg_stub = TunnelMsgStub(self.__channel)
+
+        # cosmos
+        self.tendermint_service_stub = TendermintServiceStub(self.__channel)
+        self.auth_query_stub = AuthQueryStub(self.__channel)
+        self.tx_service_stub = TxServiceStub(self.__channel)
 
     def __del__(self) -> None:
         self.close()
@@ -87,7 +145,7 @@ class Client:
             The data source details.
         """
 
-        resp = await self.stub_oracle.data_source(
+        resp = await self.oracle_query_stub.data_source(
             QueryDataSourceRequest(data_source_id=id)
         )
         return resp.data_source
@@ -102,7 +160,7 @@ class Client:
             The oracle script details.
         """
 
-        resp = await self.stub_oracle.oracle_script(
+        resp = await self.oracle_query_stub.oracle_script(
             QueryOracleScriptRequest(oracle_script_id=id)
         )
         return resp.oracle_script
@@ -117,7 +175,7 @@ class Client:
             The request details.
         """
 
-        resp = await self.stub_oracle.request(QueryRequestRequest(request_id=id))
+        resp = await self.oracle_query_stub.request(QueryRequestRequest(request_id=id))
         return resp
 
     async def get_reporters(self, validator: str) -> List[str]:
@@ -130,7 +188,7 @@ class Client:
             A list of reporter addresses.
         """
 
-        resp = await self.stub_oracle.reporters(
+        resp = await self.oracle_query_stub.reporters(
             QueryReportersRequest(validator_address=validator)
         )
         return resp.reporter
@@ -142,7 +200,7 @@ class Client:
             The details of the latest block.
         """
 
-        return await self.stub_cosmos_tendermint.get_latest_block(
+        return await self.tendermint_service_stub.get_latest_block(
             GetLatestBlockRequest()
         )
 
@@ -157,13 +215,14 @@ class Client:
         """
 
         try:
-            resp = await self.stub_auth.account_info(
+            resp = await self.auth_query_stub.account_info(
                 QueryAccountInfoRequest(address=address)
             )
             return resp.info
         except Exception as e:
             raise e
 
+    # TODO: this doesn't work anymore
     async def get_request_id_by_tx_hash(self, tx_hash: str) -> List[int]:
         """Gets the request ID of a given transaction hash.
 
@@ -174,7 +233,7 @@ class Client:
             A list of request IDs.
         """
 
-        tx = await self.stub_tx.get_tx(GetTxRequest(hash=tx_hash))
+        tx = await self.tx_service_stub.get_tx(GetTxRequest(hash=tx_hash))
         request_ids = []
         for log in tx.tx_response.logs:
             request_event = [
@@ -204,7 +263,7 @@ class Client:
             The transaction response.
         """
 
-        resp = await self.stub_tx.broadcast_tx(
+        resp = await self.tx_service_stub.broadcast_tx(
             BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.SYNC)
         )
         return resp.tx_response
@@ -221,7 +280,7 @@ class Client:
             The transaction response.
         """
 
-        resp = await self.stub_tx.broadcast_tx(
+        resp = await self.tx_service_stub.broadcast_tx(
             BroadcastTxRequest(tx_bytes=tx_bytes, mode=BroadcastMode.ASYNC)
         )
         return resp.tx_response
@@ -257,7 +316,7 @@ class Client:
             [symbol for pair in pairs for symbol in pair.split("/") if symbol != "USD"]
         )
 
-        price_data = await self.stub_oracle.request_price(
+        price_data = await self.oracle_query_stub.request_price(
             QueryRequestPriceRequest(
                 symbols=list(symbols),
                 min_count=min_count,
@@ -315,7 +374,7 @@ class Client:
         Returns:
             The request details.
         """
-        return await self.stub_oracle.request_search(
+        return await self.oracle_query_stub.request_search(
             QueryRequestSearchRequest(
                 oracle_script_id=oid,
                 calldata=calldata,
@@ -333,8 +392,41 @@ class Client:
         Returns:
             The tx response.
         """
-        resp = await self.stub_tx.get_tx(GetTxRequest(hash=tx_hash))
+        resp = await self.tx_service_stub.get_tx(GetTxRequest(hash=tx_hash))
         return resp.tx_response
+
+    async def get_current_feeds(self) -> QueryCurrentFeedsResponse :
+        """Gets the current feeds.
+
+        Returns:
+            The current feeds.
+        """
+
+        return await self.feeds_query_stub.current_feeds(QueryCurrentFeedsRequest())
+
+    async def get_feed_price(self, signal_id: str) -> QueryPriceResponse:
+        """Gets the price of a signal id.
+
+        Args:
+            signal_id: The signal id to get the price of
+
+        Returns:
+            The price of the specified feed.
+        """
+
+        return await self.feeds_query_stub.price(QueryPriceRequest(signal_id=signal_id))
+
+    async def get_feed_prices(self, signal_ids: list[str]) -> QueryPricesResponse:
+        """Gets the prices the signal_ids.
+
+        Args:
+            signal_ids: A list of signal ids of which to get the price for
+
+        Returns:
+            The prices of the specified feeds.
+        """
+
+        return await self.feeds_query_stub.prices(QueryPricesRequest(signal_ids=signal_ids))
 
     async def simulate_tx(self, tx_bytes: bytes) -> SimulateResponse:
         """Simulates a transaction from the tx_bytes.
@@ -345,4 +437,4 @@ class Client:
         Returns:
             The simulated response.
         """
-        return await self.stub_tx.simulate(SimulateRequest(tx_bytes=tx_bytes))
+        return await self.tx_service_stub.simulate(SimulateRequest(tx_bytes=tx_bytes))
