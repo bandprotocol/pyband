@@ -416,7 +416,7 @@ class Client:
 
         return await self.feeds_query_stub.price(QueryPriceRequest(signal_id=signal_id))
 
-    async def get_feed_prices(self, signal_ids: list[str]) -> QueryPricesResponse:
+    async def get_feed_prices(self, signal_ids: List[str]) -> QueryPricesResponse:
         """Gets the prices the signal_ids.
 
         Args:
