@@ -222,7 +222,6 @@ class Client:
         except Exception as e:
             raise e
 
-    # TODO: this doesn't work anymore
     async def get_request_id_by_tx_hash(self, tx_hash: str) -> List[int]:
         """Gets the request ID of a given transaction hash.
 
@@ -235,6 +234,7 @@ class Client:
 
         tx = await self.tx_service_stub.get_tx(GetTxRequest(hash=tx_hash))
         request_ids = []
+        print(tx.tx_response.logs)
         for log in tx.tx_response.logs:
             request_event = [
                 event
