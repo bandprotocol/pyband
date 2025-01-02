@@ -10,8 +10,8 @@ import betterproto
 import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 
 from .....tendermint import (
-    abci as ____tendermint_abci__,
-    types as ____tendermint_types__,
+    abci as __tendermint_abci__,
+    types as __tendermint_types__,
 )
 
 
@@ -67,7 +67,7 @@ class TxResponse(betterproto.Message):
      it's genesis time.
     """
 
-    events: List["____tendermint_abci__.Event"] = betterproto.message_field(13)
+    events: List["__tendermint_abci__.Event"] = betterproto.message_field(13)
     """
     Events defines all the events emitted by processing a transaction. Note,
      these events include those emitted by processing all the messages and those
@@ -141,7 +141,7 @@ class Result(betterproto.Message):
     log: str = betterproto.string_field(2)
     """Log contains the log information from message or handler execution."""
 
-    events: List["____tendermint_abci__.Event"] = betterproto.message_field(3)
+    events: List["__tendermint_abci__.Event"] = betterproto.message_field(3)
     """
     Events contains a slice of Event objects that were emitted during message
      or handler execution.

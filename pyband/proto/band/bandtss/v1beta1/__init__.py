@@ -20,8 +20,8 @@ import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base import v1beta1 as ___cosmos_base_v1_beta1__
-from ....cosmos.base.query import v1beta1 as ___cosmos_base_query_v1_beta1__
+from ....cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
+from ....cosmos.base.query import v1beta1 as __cosmos_base_query_v1_beta1__
 from ...tss import v1beta1 as __tss_v1_beta1__
 
 
@@ -119,9 +119,7 @@ class Signing(betterproto.Message):
     id: int = betterproto.uint64_field(1)
     """id is the unique identifier of the bandtss signing."""
 
-    fee_per_signer: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
-        2
-    )
+    fee_per_signer: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
     """
     fee_per_signer is the tokens that will be paid per signer for this bandtss signing.
     """
@@ -234,9 +232,7 @@ class Params(betterproto.Message):
     max_transition_duration is the maximum duration that the transition process waits before execution.
     """
 
-    fee_per_signer: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
-        5
-    )
+    fee_per_signer: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(5)
     """fee_per_signer is the tokens that will be paid per signer."""
 
 
@@ -252,7 +248,7 @@ class MsgRequestSignature(betterproto.Message):
     memo: str = betterproto.string_field(2)
     """memo is the additional note of the message."""
 
-    fee_limit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(3)
+    fee_limit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(3)
     """fee_limit is the maximum tokens that will be paid for this request."""
 
     sender: str = betterproto.string_field(4)
@@ -403,7 +399,7 @@ class QueryMembersRequest(betterproto.Message):
      or the current group.
     """
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(3)
     )
     """pagination defines pagination settings for the request."""
@@ -420,7 +416,7 @@ class QueryMembersResponse(betterproto.Message):
     members are those individuals who correspond to the provided is_active status.
     """
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines the pagination in the response."""
@@ -536,9 +532,7 @@ class QuerySigningResponse(betterproto.Message):
     QuerySigningResponse is the response type for the Query/Signing RPC method.
     """
 
-    fee_per_signer: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
-        1
-    )
+    fee_per_signer: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(1)
     """
     fee_per_signer is the tokens that will be paid per signer for this bandtss signing.
     """

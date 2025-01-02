@@ -14,7 +14,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....tendermint import types as ___tendermint_types__
+from ....tendermint import types as __tendermint_types__
 
 
 if TYPE_CHECKING:
@@ -32,7 +32,7 @@ class MsgUpdateParams(betterproto.Message):
     authority is the address that controls the module (defaults to x/gov unless overwritten).
     """
 
-    block: "___tendermint_types__.BlockParams" = betterproto.message_field(2)
+    block: "__tendermint_types__.BlockParams" = betterproto.message_field(2)
     """
     params defines the x/consensus parameters to update.
      VersionsParams is not included in this Msg because it is tracked
@@ -41,9 +41,9 @@ class MsgUpdateParams(betterproto.Message):
      NOTE: All parameters must be supplied.
     """
 
-    evidence: "___tendermint_types__.EvidenceParams" = betterproto.message_field(3)
-    validator: "___tendermint_types__.ValidatorParams" = betterproto.message_field(4)
-    abci: "___tendermint_types__.AbciParams" = betterproto.message_field(5)
+    evidence: "__tendermint_types__.EvidenceParams" = betterproto.message_field(3)
+    validator: "__tendermint_types__.ValidatorParams" = betterproto.message_field(4)
+    abci: "__tendermint_types__.AbciParams" = betterproto.message_field(5)
     """Since: cosmos-sdk 0.50"""
 
 
@@ -72,7 +72,7 @@ class QueryParamsResponse(betterproto.Message):
     QueryParamsResponse defines the response type for querying x/consensus parameters.
     """
 
-    params: "___tendermint_types__.ConsensusParams" = betterproto.message_field(1)
+    params: "__tendermint_types__.ConsensusParams" = betterproto.message_field(1)
     """
     params are the tendermint consensus params stored in the consensus module.
      Please note that `params.version` is not populated in this response, it is

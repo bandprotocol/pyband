@@ -16,7 +16,7 @@ import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....tendermint import types as ___tendermint_types__
+from ....tendermint import types as __tendermint_types__
 from ...base import v1beta1 as __base_v1_beta1__
 from ...base.abci import v1beta1 as __base_abci_v1_beta1__
 from ...base.query import v1beta1 as __base_query_v1_beta1__
@@ -629,8 +629,8 @@ class GetBlockWithTxsResponse(betterproto.Message):
     txs: List["Tx"] = betterproto.message_field(1)
     """txs are the transactions in the block."""
 
-    block_id: "___tendermint_types__.BlockId" = betterproto.message_field(2)
-    block: "___tendermint_types__.Block" = betterproto.message_field(3)
+    block_id: "__tendermint_types__.BlockId" = betterproto.message_field(2)
+    block: "__tendermint_types__.Block" = betterproto.message_field(3)
     pagination: "__base_query_v1_beta1__.PageResponse" = betterproto.message_field(4)
     """pagination defines a pagination for the response."""
 
@@ -891,7 +891,6 @@ class ServiceStub(betterproto.ServiceStub):
 
 
 class ServiceBase(ServiceBase):
-
     async def simulate(self, simulate_request: "SimulateRequest") -> "SimulateResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 

@@ -9,7 +9,7 @@ from typing import List
 import betterproto
 import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 
-from ....crypto.multisig import v1beta1 as ___crypto_multisig_v1_beta1__
+from ....crypto.multisig import v1beta1 as __crypto_multisig_v1_beta1__
 
 
 class SignMode(betterproto.Enum):
@@ -130,7 +130,7 @@ class SignatureDescriptorDataSingle(betterproto.Message):
 class SignatureDescriptorDataMulti(betterproto.Message):
     """Multi is the signature data for a multisig public key"""
 
-    bitarray: "___crypto_multisig_v1_beta1__.CompactBitArray" = (
+    bitarray: "__crypto_multisig_v1_beta1__.CompactBitArray" = (
         betterproto.message_field(1)
     )
     """bitarray specifies which keys within the multisig are signing"""

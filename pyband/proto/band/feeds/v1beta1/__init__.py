@@ -15,7 +15,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base.query import v1beta1 as ___cosmos_base_query_v1_beta1__
+from ....cosmos.base.query import v1beta1 as __cosmos_base_query_v1_beta1__
 
 
 if TYPE_CHECKING:
@@ -279,7 +279,7 @@ class FeedsSignatureOrder(betterproto.Message):
     signal_ids: List[str] = betterproto.string_field(1)
     """signal_ids is the list of signal ids that require signatures."""
 
-    encoder: "Encoder" = betterproto.enum_field(2)
+    encoder: Encoder = betterproto.enum_field(2)
     """encoder is the mode of encoding feeds signature order."""
 
 
@@ -556,7 +556,7 @@ class QueryAllPricesRequest(betterproto.Message):
     QueryAllPricesRequest is the request type for the Query/AllPrices RPC method.
     """
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(1)
     )
     """pagination is the pagination for the request."""
@@ -571,7 +571,7 @@ class QueryAllPricesResponse(betterproto.Message):
     prices: List["Price"] = betterproto.message_field(1)
     """prices is a list of prices."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination is the pagination information in the response."""
@@ -607,7 +607,7 @@ class QuerySignalTotalPowersRequest(betterproto.Message):
     signal_ids: List[str] = betterproto.string_field(1)
     """signal_ids is a list of signal ids to query."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(2)
     )
     """pagination is the pagination for the request."""
@@ -622,7 +622,7 @@ class QuerySignalTotalPowersResponse(betterproto.Message):
     signal_total_powers: List["Signal"] = betterproto.message_field(1)
     """signal_total_powers is a list of signal-total-powers."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination is the pagination information in the response."""

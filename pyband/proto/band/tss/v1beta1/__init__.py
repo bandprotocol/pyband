@@ -16,7 +16,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base.query import v1beta1 as ___cosmos_base_query_v1_beta1__
+from ....cosmos.base.query import v1beta1 as __cosmos_base_query_v1_beta1__
 
 
 if TYPE_CHECKING:
@@ -844,7 +844,7 @@ class QueryGroupsRequest(betterproto.Message):
     QueryGroupsRequest is the request type for the Query/Groups RPC method
     """
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(1)
     )
     """pagination defines pagination settings for the request."""
@@ -859,7 +859,7 @@ class QueryGroupsResponse(betterproto.Message):
     groups: List["GroupResult"] = betterproto.message_field(1)
     """groups is the list of groups."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines an pagination for the response."""
@@ -915,7 +915,7 @@ class QueryDeRequest(betterproto.Message):
     address: str = betterproto.string_field(1)
     """address is the address for the request."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(2)
     )
     """pagination defines pagination settings for the request."""
@@ -928,7 +928,7 @@ class QueryDeResponse(betterproto.Message):
     des: List["De"] = betterproto.message_field(1)
     """des is a list of DEs."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines an pagination for the response."""
@@ -1000,7 +1000,7 @@ class QuerySigningsRequest(betterproto.Message):
     QuerySigningsRequest is the request type for the Query/Signings RPC method.
     """
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(1)
     )
     """pagination defines pagination settings for the request."""
@@ -1015,7 +1015,7 @@ class QuerySigningsResponse(betterproto.Message):
     signing_results: List["SigningResult"] = betterproto.message_field(1)
     """signing_results is a list of signing results."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines an pagination for the response."""

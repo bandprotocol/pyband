@@ -21,8 +21,8 @@ import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
 from ....tendermint import (
-    abci as ___tendermint_abci__,
-    types as ___tendermint_types__,
+    abci as __tendermint_abci__,
+    types as __tendermint_types__,
 )
 from ...base import v1beta1 as __base_v1_beta1__
 from ...base.query import v1beta1 as __base_query_v1_beta1__
@@ -105,7 +105,7 @@ class HistoricalInfo(betterproto.Message):
      (`n` is set by the staking module's `historical_entries` parameter).
     """
 
-    header: "___tendermint_types__.Header" = betterproto.message_field(1)
+    header: "__tendermint_types__.Header" = betterproto.message_field(1)
     valset: List["Validator"] = betterproto.message_field(2)
 
 
@@ -488,7 +488,7 @@ class ValidatorUpdates(betterproto.Message):
      TODO: explore moving this to proto/cosmos/base to separate modules from tendermint dependence
     """
 
-    updates: List["___tendermint_abci__.ValidatorUpdate"] = betterproto.message_field(1)
+    updates: List["__tendermint_abci__.ValidatorUpdate"] = betterproto.message_field(1)
 
 
 @dataclass(eq=False, repr=False)

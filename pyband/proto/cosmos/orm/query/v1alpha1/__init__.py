@@ -20,7 +20,7 @@ import betterproto.lib.google.protobuf as betterproto_lib_google_protobuf
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....base.query import v1beta1 as ___base_query_v1_beta1__
+from ....base.query import v1beta1 as __base_query_v1_beta1__
 
 
 if TYPE_CHECKING:

@@ -15,7 +15,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base import v1beta1 as ___cosmos_base_v1_beta1__
+from ....cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
 
 
 if TYPE_CHECKING:
@@ -36,7 +36,7 @@ class GenesisState(betterproto.Message):
 class Params(betterproto.Message):
     """Params defines the set of module parameters."""
 
-    minimum_gas_prices: List["___cosmos_base_v1_beta1__.DecCoin"] = (
+    minimum_gas_prices: List["__cosmos_base_v1_beta1__.DecCoin"] = (
         betterproto.message_field(1)
     )
     """

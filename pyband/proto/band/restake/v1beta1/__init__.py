@@ -15,8 +15,8 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from ....cosmos.base import v1beta1 as ___cosmos_base_v1_beta1__
-from ....cosmos.base.query import v1beta1 as ___cosmos_base_query_v1_beta1__
+from ....cosmos.base import v1beta1 as __cosmos_base_v1_beta1__
+from ....cosmos.base.query import v1beta1 as __cosmos_base_query_v1_beta1__
 
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ class Stake(betterproto.Message):
     staker_address: str = betterproto.string_field(1)
     """staker_address is the address that this stake belongs to."""
 
-    coins: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
+    coins: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
     """coins are the coins that the address has staked."""
 
 
@@ -109,7 +109,7 @@ class MsgStake(betterproto.Message):
     staker_address: str = betterproto.string_field(1)
     """staker_address is the address that will stake the coins."""
 
-    coins: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
+    coins: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
     """coins is the coins that will be staked."""
 
 
@@ -127,7 +127,7 @@ class MsgUnstake(betterproto.Message):
     staker_address: str = betterproto.string_field(1)
     """staker_address is the address that will unstake the coins."""
 
-    coins: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
+    coins: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
     """coins is the coins that will be unstaked."""
 
 
@@ -164,7 +164,7 @@ class QueryVaultsRequest(betterproto.Message):
     QueryVaultsRequest represents the request type for the Query/Vaults RPC method.
     """
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(1)
     )
     """pagination defines optional pagination parameters."""
@@ -179,7 +179,7 @@ class QueryVaultsResponse(betterproto.Message):
     vaults: List["Vault"] = betterproto.message_field(1)
     """vaults is a list of vaults."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines pagination parameters in the response."""
@@ -214,7 +214,7 @@ class QueryLocksRequest(betterproto.Message):
     staker_address: str = betterproto.string_field(1)
     """staker_address is the target address to query locks."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageRequest" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
         betterproto.message_field(2)
     )
     """pagination defines optional pagination parameters."""
@@ -229,7 +229,7 @@ class QueryLocksResponse(betterproto.Message):
     locks: List["LockResponse"] = betterproto.message_field(1)
     """locks is a list of locks of the staker."""
 
-    pagination: "___cosmos_base_query_v1_beta1__.PageResponse" = (
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
         betterproto.message_field(2)
     )
     """pagination defines pagination parameters in the response."""

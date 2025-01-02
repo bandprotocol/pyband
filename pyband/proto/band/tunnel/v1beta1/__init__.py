@@ -66,7 +66,7 @@ class Params(betterproto.Message):
     max_signals defines the maximum number of signals allowed per tunnel.
     """
 
-    base_packet_fee: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
+    base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
         7
     )
     """base_packet_fee is the base fee for each packet."""
@@ -96,7 +96,7 @@ class Tunnel(betterproto.Message):
     interval: int = betterproto.uint64_field(6)
     """interval is the interval for delivering the signal prices"""
 
-    total_deposit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(7)
+    total_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(7)
     """total_deposit is the total deposit on the tunnel."""
 
     is_active: bool = betterproto.bool_field(8)
@@ -129,7 +129,7 @@ class LatestPrices(betterproto.Message):
 class TotalFees(betterproto.Message):
     """TotalFees is the type for the total fees collected by the tunnel"""
 
-    total_base_packet_fee: List["___cosmos_base_v1_beta1__.Coin"] = (
+    total_base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = (
         betterproto.message_field(1)
     )
     """
@@ -155,10 +155,10 @@ class Packet(betterproto.Message):
     receipt represents the confirmation of the packet delivery to the destination via the specified route.
     """
 
-    base_fee: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(5)
+    base_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(5)
     """base_fee is the base fee of the packet"""
 
-    route_fee: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
+    route_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
     """route_fee is the route fee of the packet"""
 
     created_at: int = betterproto.int64_field(7)
@@ -177,7 +177,7 @@ class Deposit(betterproto.Message):
     depositor: str = betterproto.string_field(2)
     """depositor defines the deposit addresses from the proposals."""
 
-    amount: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(3)
+    amount: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(3)
     """amount to be deposited by depositor."""
 
 
@@ -231,7 +231,7 @@ class MsgCreateTunnel(betterproto.Message):
     route: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(3)
     """route is the route for delivering the signal prices"""
 
-    initial_deposit: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
+    initial_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
         4
     )
     """
@@ -252,10 +252,34 @@ class MsgCreateTunnelResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgUpdateAndResetTunnel(betterproto.Message):
+class MsgUpdateRoute(betterproto.Message):
     """
-    MsgUpdateAndResetTunnel is the transaction message to update a tunnel information
-     and reset the interval.
+    MsgUpdateRoute is the transaction message to update a route information of the tunnel.
+    """
+
+    tunnel_id: int = betterproto.uint64_field(1)
+    """tunnel_id is the ID of the tunnel to edit."""
+
+    route: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(2)
+    """route is the route for delivering the signal prices"""
+
+    creator: str = betterproto.string_field(3)
+    """creator is the address of the creator."""
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateRouteResponse(betterproto.Message):
+    """
+    MsgUpdateRouteResponse is the response type for the Msg/UpdateRoute RPC method.
+    """
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class MsgUpdateSignalsAndInterval(betterproto.Message):
+    """
+    MsgUpdateSignalsAndInterval is the transaction message to update signals and interval of the tunnel.
     """
 
     tunnel_id: int = betterproto.uint64_field(1)
@@ -272,9 +296,34 @@ class MsgUpdateAndResetTunnel(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgUpdateAndResetTunnelResponse(betterproto.Message):
+class MsgUpdateSignalsAndIntervalResponse(betterproto.Message):
     """
-    MsgUpdateAndResetTunnelResponse is the response type for the Msg/UpdateAndResetTunnel RPC method.
+    MsgUpdateSignalsAndIntervalResponse is the response type for the Msg/UpdateSignalsAndInterval RPC method.
+    """
+
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class MsgWithdrawFeePayerFunds(betterproto.Message):
+    """
+    MsgWithdrawFeePayerFunds is the transaction message to withdraw fee payer funds to creator.
+    """
+
+    tunnel_id: int = betterproto.uint64_field(1)
+    """tunnel_id is the ID of the tunnel to withdraw fee payer coins."""
+
+    amount: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
+    """amount is the coins to withdraw."""
+
+    creator: str = betterproto.string_field(3)
+    """creator is the address of the creator."""
+
+
+@dataclass(eq=False, repr=False)
+class MsgWithdrawFeePayerFundsResponse(betterproto.Message):
+    """
+    MsgWithdrawFeePayerFundsResponse is the response type for the Msg/WithdrawFeePayerFunds RPC method.
     """
 
     pass
@@ -351,7 +400,7 @@ class MsgDepositToTunnel(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id defines the unique id of the tunnel."""
 
-    amount: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
+    amount: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
     """amount to be deposited by depositor."""
 
     depositor: str = betterproto.string_field(3)
@@ -376,7 +425,7 @@ class MsgWithdrawFromTunnel(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id defines the unique id of the tunnel."""
 
-    amount: List["___cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
+    amount: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(2)
     """amount to be withdrawn by withdrawer."""
 
     withdrawer: str = betterproto.string_field(3)
@@ -440,7 +489,9 @@ class TssPacketReceipt(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class IbcRoute(betterproto.Message):
-    """IBCRoute is the type for an IBC route"""
+    """
+    IBCRoute represents a route for IBC packets and implements the RouteI interface.
+    """
 
     channel_id: str = betterproto.string_field(1)
     """channel_id is the IBC channel ID"""
@@ -709,18 +760,52 @@ class MsgStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
-    async def update_and_reset_tunnel(
+    async def update_route(
         self,
-        msg_update_and_reset_tunnel: "MsgUpdateAndResetTunnel",
+        msg_update_route: "MsgUpdateRoute",
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None
-    ) -> "MsgUpdateAndResetTunnelResponse":
+    ) -> "MsgUpdateRouteResponse":
         return await self._unary_unary(
-            "/band.tunnel.v1beta1.Msg/UpdateAndResetTunnel",
-            msg_update_and_reset_tunnel,
-            MsgUpdateAndResetTunnelResponse,
+            "/band.tunnel.v1beta1.Msg/UpdateRoute",
+            msg_update_route,
+            MsgUpdateRouteResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def update_signals_and_interval(
+        self,
+        msg_update_signals_and_interval: "MsgUpdateSignalsAndInterval",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MsgUpdateSignalsAndIntervalResponse":
+        return await self._unary_unary(
+            "/band.tunnel.v1beta1.Msg/UpdateSignalsAndInterval",
+            msg_update_signals_and_interval,
+            MsgUpdateSignalsAndIntervalResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def withdraw_fee_payer_funds(
+        self,
+        msg_withdraw_fee_payer_funds: "MsgWithdrawFeePayerFunds",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MsgWithdrawFeePayerFundsResponse":
+        return await self._unary_unary(
+            "/band.tunnel.v1beta1.Msg/WithdrawFeePayerFunds",
+            msg_withdraw_fee_payer_funds,
+            MsgWithdrawFeePayerFundsResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
@@ -974,9 +1059,19 @@ class MsgBase(ServiceBase):
     ) -> "MsgCreateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_and_reset_tunnel(
-        self, msg_update_and_reset_tunnel: "MsgUpdateAndResetTunnel"
-    ) -> "MsgUpdateAndResetTunnelResponse":
+    async def update_route(
+        self, msg_update_route: "MsgUpdateRoute"
+    ) -> "MsgUpdateRouteResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def update_signals_and_interval(
+        self, msg_update_signals_and_interval: "MsgUpdateSignalsAndInterval"
+    ) -> "MsgUpdateSignalsAndIntervalResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def withdraw_fee_payer_funds(
+        self, msg_withdraw_fee_payer_funds: "MsgWithdrawFeePayerFunds"
+    ) -> "MsgWithdrawFeePayerFundsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def activate(self, msg_activate: "MsgActivate") -> "MsgActivateResponse":
@@ -1014,12 +1109,27 @@ class MsgBase(ServiceBase):
         response = await self.create_tunnel(request)
         await stream.send_message(response)
 
-    async def __rpc_update_and_reset_tunnel(
-        self,
-        stream: "grpclib.server.Stream[MsgUpdateAndResetTunnel, MsgUpdateAndResetTunnelResponse]",
+    async def __rpc_update_route(
+        self, stream: "grpclib.server.Stream[MsgUpdateRoute, MsgUpdateRouteResponse]"
     ) -> None:
         request = await stream.recv_message()
-        response = await self.update_and_reset_tunnel(request)
+        response = await self.update_route(request)
+        await stream.send_message(response)
+
+    async def __rpc_update_signals_and_interval(
+        self,
+        stream: "grpclib.server.Stream[MsgUpdateSignalsAndInterval, MsgUpdateSignalsAndIntervalResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.update_signals_and_interval(request)
+        await stream.send_message(response)
+
+    async def __rpc_withdraw_fee_payer_funds(
+        self,
+        stream: "grpclib.server.Stream[MsgWithdrawFeePayerFunds, MsgWithdrawFeePayerFundsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.withdraw_fee_payer_funds(request)
         await stream.send_message(response)
 
     async def __rpc_activate(
@@ -1075,11 +1185,23 @@ class MsgBase(ServiceBase):
                 MsgCreateTunnel,
                 MsgCreateTunnelResponse,
             ),
-            "/band.tunnel.v1beta1.Msg/UpdateAndResetTunnel": grpclib.const.Handler(
-                self.__rpc_update_and_reset_tunnel,
+            "/band.tunnel.v1beta1.Msg/UpdateRoute": grpclib.const.Handler(
+                self.__rpc_update_route,
                 grpclib.const.Cardinality.UNARY_UNARY,
-                MsgUpdateAndResetTunnel,
-                MsgUpdateAndResetTunnelResponse,
+                MsgUpdateRoute,
+                MsgUpdateRouteResponse,
+            ),
+            "/band.tunnel.v1beta1.Msg/UpdateSignalsAndInterval": grpclib.const.Handler(
+                self.__rpc_update_signals_and_interval,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MsgUpdateSignalsAndInterval,
+                MsgUpdateSignalsAndIntervalResponse,
+            ),
+            "/band.tunnel.v1beta1.Msg/WithdrawFeePayerFunds": grpclib.const.Handler(
+                self.__rpc_withdraw_fee_payer_funds,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MsgWithdrawFeePayerFunds,
+                MsgWithdrawFeePayerFundsResponse,
             ),
             "/band.tunnel.v1beta1.Msg/Activate": grpclib.const.Handler(
                 self.__rpc_activate,

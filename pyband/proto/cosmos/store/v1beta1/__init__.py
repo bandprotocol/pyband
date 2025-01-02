@@ -9,7 +9,7 @@ from typing import List
 
 import betterproto
 
-from ....tendermint import abci as ___tendermint_abci__
+from ....tendermint import abci as __tendermint_abci__
 
 
 @dataclass(eq=False, repr=False)
@@ -35,13 +35,11 @@ class BlockMetadata(betterproto.Message):
      the file streamer dump them into files together with the state changes.
     """
 
-    response_commit: "___tendermint_abci__.ResponseCommit" = betterproto.message_field(
-        6
-    )
-    request_finalize_block: "___tendermint_abci__.RequestFinalizeBlock" = (
+    response_commit: "__tendermint_abci__.ResponseCommit" = betterproto.message_field(6)
+    request_finalize_block: "__tendermint_abci__.RequestFinalizeBlock" = (
         betterproto.message_field(7)
     )
-    response_finalize_block: "___tendermint_abci__.ResponseFinalizeBlock" = (
+    response_finalize_block: "__tendermint_abci__.ResponseFinalizeBlock" = (
         betterproto.message_field(8)
     )
 
