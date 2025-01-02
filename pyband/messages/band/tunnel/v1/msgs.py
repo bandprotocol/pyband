@@ -2,6 +2,7 @@ from pyband.messages.base import BaseMessageWrapper
 from pyband.proto.band.tunnel.v1beta1 import (
     MsgCreateTunnel as MsgCreateTunnelProto,
     MsgUpdateRoute as MsgUpdateRouteProto,
+    MsgUpdateSignalsAndInterval as MsgUpdateSignalsAndIntervalProto,
     MsgActivate as MsgActivateProto,
     MsgDeactivate as MsgDeactivateProto,
     MsgTriggerTunnel as MsgTriggerTunnelProto,
@@ -28,6 +29,16 @@ class MsgUpdateRoute(BaseMessageWrapper, MsgUpdateRouteProto):
     @property
     def legacy_url(self):
         return "tunnel/MsgUpdateRoute"
+
+
+class MsgUpdateSignalsAndInterval(BaseMessageWrapper, MsgUpdateSignalsAndIntervalProto):
+    @property
+    def type_url(self):
+        return "/band.tunnel.v1.MsgUpdateSignalsAndInterval"
+
+    @property
+    def legacy_url(self):
+        return "tunnel/MsgUpdateSignalsAndInterval"
 
 
 class MsgActivate(BaseMessageWrapper, MsgActivateProto):
