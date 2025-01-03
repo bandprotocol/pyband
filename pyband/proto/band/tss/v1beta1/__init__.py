@@ -735,7 +735,7 @@ class MsgSubmitDEsResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgResetDe(betterproto.Message):
+class MsgResetDE(betterproto.Message):
     """
     MsgResetDE is a message used to reset the DEs that being stored on chain.
     """
@@ -745,7 +745,7 @@ class MsgResetDe(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgResetDeResponse(betterproto.Message):
+class MsgResetDEResponse(betterproto.Message):
     """MsgResetDEResponse is response data for MsgResetDE message"""
 
     pass
@@ -844,9 +844,7 @@ class QueryGroupsRequest(betterproto.Message):
     QueryGroupsRequest is the request type for the Query/Groups RPC method
     """
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
-        betterproto.message_field(1)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(1)
     """pagination defines pagination settings for the request."""
 
 
@@ -859,9 +857,7 @@ class QueryGroupsResponse(betterproto.Message):
     groups: List["GroupResult"] = betterproto.message_field(1)
     """groups is the list of groups."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines an pagination for the response."""
 
 
@@ -915,9 +911,7 @@ class QueryDeRequest(betterproto.Message):
     address: str = betterproto.string_field(1)
     """address is the address for the request."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
     """pagination defines pagination settings for the request."""
 
 
@@ -928,9 +922,7 @@ class QueryDeResponse(betterproto.Message):
     des: List["De"] = betterproto.message_field(1)
     """des is a list of DEs."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines an pagination for the response."""
 
 
@@ -1000,9 +992,7 @@ class QuerySigningsRequest(betterproto.Message):
     QuerySigningsRequest is the request type for the Query/Signings RPC method.
     """
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
-        betterproto.message_field(1)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(1)
     """pagination defines pagination settings for the request."""
 
 
@@ -1015,9 +1005,7 @@ class QuerySigningsResponse(betterproto.Message):
     signing_results: List["SigningResult"] = betterproto.message_field(1)
     """signing_results is a list of signing results."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines an pagination for the response."""
 
 
@@ -1175,16 +1163,16 @@ class MsgStub(betterproto.ServiceStub):
 
     async def reset_de(
         self,
-        msg_reset_de: "MsgResetDe",
+        msg_reset_de: MsgResetDE,
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None
-    ) -> "MsgResetDeResponse":
+    ) -> MsgResetDEResponse:
         return await self._unary_unary(
             "/band.tss.v1beta1.Msg/ResetDE",
             msg_reset_de,
-            MsgResetDeResponse,
+            MsgResetDEResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
@@ -1415,15 +1403,10 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-
-    async def submit_dkg_round1(
-        self, msg_submit_dkg_round1: "MsgSubmitDkgRound1"
-    ) -> "MsgSubmitDkgRound1Response":
+    async def submit_dkg_round1(self, msg_submit_dkg_round1: "MsgSubmitDkgRound1") -> "MsgSubmitDkgRound1Response":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def submit_dkg_round2(
-        self, msg_submit_dkg_round2: "MsgSubmitDkgRound2"
-    ) -> "MsgSubmitDkgRound2Response":
+    async def submit_dkg_round2(self, msg_submit_dkg_round2: "MsgSubmitDkgRound2") -> "MsgSubmitDkgRound2Response":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def complain(self, msg_complain: "MsgComplain") -> "MsgComplainResponse":
@@ -1432,22 +1415,16 @@ class MsgBase(ServiceBase):
     async def confirm(self, msg_confirm: "MsgConfirm") -> "MsgConfirmResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def submit_d_es(
-        self, msg_submit_d_es: "MsgSubmitDEs"
-    ) -> "MsgSubmitDEsResponse":
+    async def submit_d_es(self, msg_submit_d_es: "MsgSubmitDEs") -> "MsgSubmitDEsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def reset_de(self, msg_reset_de: "MsgResetDe") -> "MsgResetDeResponse":
+    async def reset_de(self, msg_reset_de: MsgResetDE) -> MsgResetDEResponse:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def submit_signature(
-        self, msg_submit_signature: "MsgSubmitSignature"
-    ) -> "MsgSubmitSignatureResponse":
+    async def submit_signature(self, msg_submit_signature: "MsgSubmitSignature") -> "MsgSubmitSignatureResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_params(
-        self, msg_update_params: "MsgUpdateParams"
-    ) -> "MsgUpdateParamsResponse":
+    async def update_params(self, msg_update_params: "MsgUpdateParams") -> "MsgUpdateParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_submit_dkg_round1(
@@ -1466,30 +1443,22 @@ class MsgBase(ServiceBase):
         response = await self.submit_dkg_round2(request)
         await stream.send_message(response)
 
-    async def __rpc_complain(
-        self, stream: "grpclib.server.Stream[MsgComplain, MsgComplainResponse]"
-    ) -> None:
+    async def __rpc_complain(self, stream: "grpclib.server.Stream[MsgComplain, MsgComplainResponse]") -> None:
         request = await stream.recv_message()
         response = await self.complain(request)
         await stream.send_message(response)
 
-    async def __rpc_confirm(
-        self, stream: "grpclib.server.Stream[MsgConfirm, MsgConfirmResponse]"
-    ) -> None:
+    async def __rpc_confirm(self, stream: "grpclib.server.Stream[MsgConfirm, MsgConfirmResponse]") -> None:
         request = await stream.recv_message()
         response = await self.confirm(request)
         await stream.send_message(response)
 
-    async def __rpc_submit_d_es(
-        self, stream: "grpclib.server.Stream[MsgSubmitDEs, MsgSubmitDEsResponse]"
-    ) -> None:
+    async def __rpc_submit_d_es(self, stream: "grpclib.server.Stream[MsgSubmitDEs, MsgSubmitDEsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.submit_d_es(request)
         await stream.send_message(response)
 
-    async def __rpc_reset_de(
-        self, stream: "grpclib.server.Stream[MsgResetDe, MsgResetDeResponse]"
-    ) -> None:
+    async def __rpc_reset_de(self, stream: "grpclib.server.Stream[MsgResetDE, MsgResetDEResponse]") -> None:
         request = await stream.recv_message()
         response = await self.reset_de(request)
         await stream.send_message(response)
@@ -1544,8 +1513,8 @@ class MsgBase(ServiceBase):
             "/band.tss.v1beta1.Msg/ResetDE": grpclib.const.Handler(
                 self.__rpc_reset_de,
                 grpclib.const.Cardinality.UNARY_UNARY,
-                MsgResetDe,
-                MsgResetDeResponse,
+                MsgResetDE,
+                MsgResetDEResponse,
             ),
             "/band.tss.v1beta1.Msg/SubmitSignature": grpclib.const.Handler(
                 self.__rpc_submit_signature,
@@ -1563,30 +1532,19 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-
-    async def counts(
-        self, query_counts_request: "QueryCountsRequest"
-    ) -> "QueryCountsResponse":
+    async def counts(self, query_counts_request: "QueryCountsRequest") -> "QueryCountsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def groups(
-        self, query_groups_request: "QueryGroupsRequest"
-    ) -> "QueryGroupsResponse":
+    async def groups(self, query_groups_request: "QueryGroupsRequest") -> "QueryGroupsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def group(
-        self, query_group_request: "QueryGroupRequest"
-    ) -> "QueryGroupResponse":
+    async def group(self, query_group_request: "QueryGroupRequest") -> "QueryGroupResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def members(
-        self, query_members_request: "QueryMembersRequest"
-    ) -> "QueryMembersResponse":
+    async def members(self, query_members_request: "QueryMembersRequest") -> "QueryMembersResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def is_grantee(
-        self, query_is_grantee_request: "QueryIsGranteeRequest"
-    ) -> "QueryIsGranteeResponse":
+    async def is_grantee(self, query_is_grantee_request: "QueryIsGranteeRequest") -> "QueryIsGranteeResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def de(self, query_de_request: "QueryDeRequest") -> "QueryDeResponse":
@@ -1602,45 +1560,31 @@ class QueryBase(ServiceBase):
     ) -> "QueryPendingSigningsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def signing(
-        self, query_signing_request: "QuerySigningRequest"
-    ) -> "QuerySigningResponse":
+    async def signing(self, query_signing_request: "QuerySigningRequest") -> "QuerySigningResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def signings(
-        self, query_signings_request: "QuerySigningsRequest"
-    ) -> "QuerySigningsResponse":
+    async def signings(self, query_signings_request: "QuerySigningsRequest") -> "QuerySigningsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def params(
-        self, query_params_request: "QueryParamsRequest"
-    ) -> "QueryParamsResponse":
+    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_counts(
-        self, stream: "grpclib.server.Stream[QueryCountsRequest, QueryCountsResponse]"
-    ) -> None:
+    async def __rpc_counts(self, stream: "grpclib.server.Stream[QueryCountsRequest, QueryCountsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.counts(request)
         await stream.send_message(response)
 
-    async def __rpc_groups(
-        self, stream: "grpclib.server.Stream[QueryGroupsRequest, QueryGroupsResponse]"
-    ) -> None:
+    async def __rpc_groups(self, stream: "grpclib.server.Stream[QueryGroupsRequest, QueryGroupsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.groups(request)
         await stream.send_message(response)
 
-    async def __rpc_group(
-        self, stream: "grpclib.server.Stream[QueryGroupRequest, QueryGroupResponse]"
-    ) -> None:
+    async def __rpc_group(self, stream: "grpclib.server.Stream[QueryGroupRequest, QueryGroupResponse]") -> None:
         request = await stream.recv_message()
         response = await self.group(request)
         await stream.send_message(response)
 
-    async def __rpc_members(
-        self, stream: "grpclib.server.Stream[QueryMembersRequest, QueryMembersResponse]"
-    ) -> None:
+    async def __rpc_members(self, stream: "grpclib.server.Stream[QueryMembersRequest, QueryMembersResponse]") -> None:
         request = await stream.recv_message()
         response = await self.members(request)
         await stream.send_message(response)
@@ -1653,9 +1597,7 @@ class QueryBase(ServiceBase):
         response = await self.is_grantee(request)
         await stream.send_message(response)
 
-    async def __rpc_de(
-        self, stream: "grpclib.server.Stream[QueryDeRequest, QueryDeResponse]"
-    ) -> None:
+    async def __rpc_de(self, stream: "grpclib.server.Stream[QueryDeRequest, QueryDeResponse]") -> None:
         request = await stream.recv_message()
         response = await self.de(request)
         await stream.send_message(response)
@@ -1676,9 +1618,7 @@ class QueryBase(ServiceBase):
         response = await self.pending_signings(request)
         await stream.send_message(response)
 
-    async def __rpc_signing(
-        self, stream: "grpclib.server.Stream[QuerySigningRequest, QuerySigningResponse]"
-    ) -> None:
+    async def __rpc_signing(self, stream: "grpclib.server.Stream[QuerySigningRequest, QuerySigningResponse]") -> None:
         request = await stream.recv_message()
         response = await self.signing(request)
         await stream.send_message(response)
@@ -1691,9 +1631,7 @@ class QueryBase(ServiceBase):
         response = await self.signings(request)
         await stream.send_message(response)
 
-    async def __rpc_params(
-        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
-    ) -> None:
+    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)

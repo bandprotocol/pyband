@@ -5,7 +5,7 @@ from pyband.proto.band.tss.v1beta1 import (
     MsgComplain as MsgComplainProto,
     MsgConfirm as MsgConfirmProto,
     MsgSubmitDEs as MsgSubmitDEsProto,
-    MsgResetDe as MsgResetDeProto,
+    MsgResetDE as MsgResetDEProto,
     MsgSubmitSignature as MsgSubmitSignatureProto,
     MsgUpdateParams as MsgUpdateParamsProto,
 )
@@ -14,7 +14,7 @@ from pyband.proto.band.tss.v1beta1 import (
 class MsgSubmitDkgRound1(BaseMessageWrapper, MsgSubmitDkgRound1Proto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgSubmitDkgRound1"
+        return "/band.tss.v1beta1.MsgSubmitDkgRound1"
 
     @property
     def legacy_url(self):
@@ -24,7 +24,7 @@ class MsgSubmitDkgRound1(BaseMessageWrapper, MsgSubmitDkgRound1Proto):
 class MsgSubmitDkgRound2(BaseMessageWrapper, MsgSubmitDkgRound2Proto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgSubmitDkgRound2"
+        return "/band.tss.v1beta1.MsgSubmitDkgRound2"
 
     @property
     def legacy_url(self):
@@ -34,7 +34,7 @@ class MsgSubmitDkgRound2(BaseMessageWrapper, MsgSubmitDkgRound2Proto):
 class MsgComplain(BaseMessageWrapper, MsgComplainProto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgComplaint"
+        return "/band.tss.v1beta1.MsgComplaint"
 
     @property
     def legacy_url(self):
@@ -44,7 +44,7 @@ class MsgComplain(BaseMessageWrapper, MsgComplainProto):
 class MsgConfirm(BaseMessageWrapper, MsgConfirmProto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgConfirm"
+        return "/band.tss.v1beta1.MsgConfirm"
 
     @property
     def legacy_url(self):
@@ -54,17 +54,17 @@ class MsgConfirm(BaseMessageWrapper, MsgConfirmProto):
 class MsgSubmitDEs(BaseMessageWrapper, MsgSubmitDEsProto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgSubmitDEs"
+        return "/band.tss.v1beta1.MsgSubmitDEs"
 
     @property
     def legacy_url(self):
         return "tss/MsgSubmitDEs"
 
 
-class MsgResetDe(BaseMessageWrapper, MsgResetDeProto):
+class MsgResetDE(BaseMessageWrapper, MsgResetDEProto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgResetDe"
+        return "/band.tss.v1beta1.MsgResetDe"
 
     @property
     def legacy_url(self):
@@ -74,7 +74,7 @@ class MsgResetDe(BaseMessageWrapper, MsgResetDeProto):
 class MsgSubmitSignature(BaseMessageWrapper, MsgSubmitSignatureProto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgSubmitSignature"
+        return "/band.tss.v1beta1.MsgSubmitSignature"
 
     @property
     def legacy_url(self):
@@ -84,7 +84,7 @@ class MsgSubmitSignature(BaseMessageWrapper, MsgSubmitSignatureProto):
 class MsgUpdateParams(BaseMessageWrapper, MsgUpdateParamsProto):
     @property
     def type_url(self):
-        return "/band.tss.v1.MsgUpdateParams"
+        return "/band.tss.v1beta1.MsgUpdateParams"
 
     @property
     def legacy_url(self):

@@ -49,8 +49,8 @@ class ModuleDescriptor(betterproto.Message):
      migrate from a previous module version before attempting to update its
      config. It is assumed that modules can transitively migrate from earlier
      versions. For instance if v3 declares it can migrate from v2, and v2
-     declares it can migrate from v1, the framework knows how to migrate
-     from v1 to v3, assuming all 3 module versions are registered at runtime.
+     declares it can migrate from v1beta1, the framework knows how to migrate
+     from v1beta1 to v3, assuming all 3 module versions are registered at runtime.
     """
 
 
@@ -67,7 +67,7 @@ class PackageReference(betterproto.Message):
     """
     revision is the optional revision of the package that is being used.
      Protobuf packages used in Cosmos should generally have a major version
-     as the last part of the package name, ex. foo.bar.baz.v1.
+     as the last part of the package name, ex. foo.bar.baz.v1beta1.
      The revision of a package can be thought of as the minor version of a
      package which has additional backwards compatible definitions that weren't
      present in a previous version.
@@ -113,7 +113,7 @@ class MigrateFromInfo(betterproto.Message):
     module: str = betterproto.string_field(1)
     """
     module is the fully-qualified protobuf name of the module config object
-     for the previous module version, ex: "cosmos.group.module.v1.Module".
+     for the previous module version, ex: "cosmos.group.module.v1beta1.Module".
     """
 
 
@@ -150,11 +150,11 @@ class ModuleConfig(betterproto.Message):
      that persists between different versions of a module so that modules
      can be smoothly upgraded to new versions.
     
-     For example, for the module cosmos.bank.module.v1.Module, we may chose
+     For example, for the module cosmos.bank.module.v1beta1.Module, we may chose
      to simply name the module "bank" in the app. When we upgrade to
      cosmos.bank.module.v2.Module, the app-specific name "bank" stays the same
      and the framework knows that the v2 module should receive all the same state
-     that the v1 module had. Note: modules should provide info on which versions
+     that the v1beta1 module had. Note: modules should provide info on which versions
      they can migrate from in the ModuleDescriptor.can_migration_from field.
     """
 

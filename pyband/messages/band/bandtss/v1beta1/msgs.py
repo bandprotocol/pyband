@@ -11,7 +11,7 @@ from pyband.proto.band.bandtss.v1beta1 import (
 class MsgRequestSignature(BaseMessageWrapper, MsgRequestSignatureProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1.MsgRequestData"
+        return "/band.bandtss.v1beta1.MsgRequestData"
 
     @property
     def legacy_url(self):
@@ -21,7 +21,7 @@ class MsgRequestSignature(BaseMessageWrapper, MsgRequestSignatureProto):
 class MsgActivate(BaseMessageWrapper, MsgActivateProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1.MsgActivate"
+        return "/band.bandtss.v1beta1.MsgActivate"
 
     @property
     def legacy_url(self):
@@ -31,7 +31,7 @@ class MsgActivate(BaseMessageWrapper, MsgActivateProto):
 class MsgUpdateParams(BaseMessageWrapper, MsgUpdateParamsProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1.MsgUpdateParams"
+        return "/band.bandtss.v1beta1.MsgUpdateParams"
 
     @property
     def legacy_url(self):
@@ -41,7 +41,7 @@ class MsgUpdateParams(BaseMessageWrapper, MsgUpdateParamsProto):
 class MsgTransitionGroup(BaseMessageWrapper, MsgTransitionGroupProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1.MsgTransitionGroup"
+        return "/band.bandtss.v1beta1.MsgTransitionGroup"
 
     @property
     def legacy_url(self):
@@ -51,7 +51,7 @@ class MsgTransitionGroup(BaseMessageWrapper, MsgTransitionGroupProto):
 class MsgForceTransitionGroup(BaseMessageWrapper, MsgForceTransitionGroupProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1.MsgForceTransitionGroup"
+        return "/band.bandtss.v1beta1.MsgForceTransitionGroup"
 
     @property
     def legacy_url(self):

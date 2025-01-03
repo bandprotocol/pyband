@@ -315,7 +315,7 @@ class CosmosTransactionService(CosmosTxServiceBase):
                     body=TxBody(
                         messages=[
                             Any(
-                                type_url="/oracle.v1.MsgRequestData",
+                                type_url="/oracle.v1beta1.MsgRequestData",
                                 value=b"\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q",
                             )
                         ]
@@ -381,7 +381,7 @@ class CosmosTransactionService(CosmosTxServiceBase):
                     gas_used=1059525,
                     tx=Any(
                         type_url="/cosmos.tx.v1beta1.Tx",
-                        value=b'\n\233\001\n\230\001\n\031/oracle.v1.MsgRequestData\022{\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\022Y\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223\022\004\n\002\010\001\030\336\003\022\004\020\200\211z\032@4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340',
+                        value=b'\n\233\001\n\230\001\n\031/oracle.v1beta1.MsgRequestData\022{\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\022Y\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223\022\004\n\002\010\001\030\336\003\022\004\020\200\211z\032@4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340',
                     ),
                     timestamp="2021-06-04T06:07:37Z",
                 ),
@@ -392,7 +392,7 @@ class CosmosTransactionService(CosmosTxServiceBase):
                     body=TxBody(
                         messages=[
                             Any(
-                                type_url="/oracle.v1.MsgRequestData",
+                                type_url="/oracle.v1beta1.MsgRequestData",
                                 value=b"\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q",
                             )
                         ]
@@ -489,7 +489,7 @@ class CosmosTransactionService(CosmosTxServiceBase):
                     gas_used=1059525,
                     tx=Any(
                         type_url="/cosmos.tx.v1beta1.Tx",
-                        value=b'\n\233\001\n\230\001\n\031/oracle.v1.MsgRequestData\022{\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\022Y\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223\022\004\n\002\010\001\030\336\003\022\004\020\200\211z\032@4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340',
+                        value=b'\n\233\001\n\230\001\n\031/oracle.v1beta1.MsgRequestData\022{\010%\0220\000\000\000\005\000\000\000\003ETH\000\000\000\003BTC\000\000\000\004BAND\000\000\000\003MIR\000\000\000\003UNI\000\000\000\000\000\000\000d\030\020 \n*\014from_bandd_28\320\206\003@\340\247\022J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\022Y\nQ\nF\n\037/cosmos.crypto.secp256k1.PubKey\022#\n!\003\214\211\255\243\264\216\305\363,\370\332\214C\356\022yM?9\207B?\371\210\002\325\374\366\356C\021\223\022\004\n\002\010\001\030\336\003\022\004\020\200\211z\032@4\331\316\363\241L\342\217\201L"\311\002\036\324E\0163\377L\261\263Q\277\333\252\215\205\323,5L8D\254Q\376\312\314\261\243\020\214\213\325\316\314\226rw\177Y\026&E\r\344\312\n\321~\325\025\340',
                     ),
                     timestamp="2021-06-04T06:07:37Z",
                 ),
@@ -1042,7 +1042,7 @@ async def test_get_tx_resp(pyband_client):
         gas_used=1059525,
         tx=Any(
             type_url="/cosmos.tx.v1beta1.Tx",
-            value=b'\n\x9b\x01\n\x98\x01\n\x19/oracle.v1.MsgRequestData\x12{\x08%\x120\x00\x00\x00\x05\x00\x00\x00\x03ETH\x00\x00\x00\x03BTC\x00\x00\x00\x04BAND\x00\x00\x00\x03MIR\x00\x00\x00\x03UNI\x00\x00\x00\x00\x00\x00\x00d\x18\x10 \n*\x0cfrom_bandd_28\xd0\x86\x03@\xe0\xa7\x12J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\x12Y\nQ\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\x8c\x89\xad\xa3\xb4\x8e\xc5\xf3,\xf8\xda\x8cC\xee\x12yM?9\x87B?\xf9\x88\x02\xd5\xfc\xf6\xeeC\x11\x93\x12\x04\n\x02\x08\x01\x18\xde\x03\x12\x04\x10\x80\x89z\x1a@4\xd9\xce\xf3\xa1L\xe2\x8f\x81L"\xc9\x02\x1e\xd4E\x0e3\xffL\xb1\xb3Q\xbf\xdb\xaa\x8d\x85\xd3,5L8D\xacQ\xfe\xca\xcc\xb1\xa3\x10\x8c\x8b\xd5\xce\xcc\x96rw\x7fY\x16&E\r\xe4\xca\n\xd1~\xd5\x15\xe0',
+            value=b'\n\x9b\x01\n\x98\x01\n\x19/oracle.v1beta1.MsgRequestData\x12{\x08%\x120\x00\x00\x00\x05\x00\x00\x00\x03ETH\x00\x00\x00\x03BTC\x00\x00\x00\x04BAND\x00\x00\x00\x03MIR\x00\x00\x00\x03UNI\x00\x00\x00\x00\x00\x00\x00d\x18\x10 \n*\x0cfrom_bandd_28\xd0\x86\x03@\xe0\xa7\x12J+band1ky9tdhvr6669skylg02sv5ckvra84gn6vpfc8q\x12Y\nQ\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\x8c\x89\xad\xa3\xb4\x8e\xc5\xf3,\xf8\xda\x8cC\xee\x12yM?9\x87B?\xf9\x88\x02\xd5\xfc\xf6\xeeC\x11\x93\x12\x04\n\x02\x08\x01\x18\xde\x03\x12\x04\x10\x80\x89z\x1a@4\xd9\xce\xf3\xa1L\xe2\x8f\x81L"\xc9\x02\x1e\xd4E\x0e3\xffL\xb1\xb3Q\xbf\xdb\xaa\x8d\x85\xd3,5L8D\xacQ\xfe\xca\xcc\xb1\xa3\x10\x8c\x8b\xd5\xce\xcc\x96rw\x7fY\x16&E\r\xe4\xca\n\xd1~\xd5\x15\xe0',
         ),
         timestamp="2021-06-04T06:07:37Z",
     )

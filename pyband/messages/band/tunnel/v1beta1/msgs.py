@@ -14,7 +14,7 @@ from pyband.proto.band.tunnel.v1beta1 import (
 class MsgCreateTunnel(BaseMessageWrapper, MsgCreateTunnelProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgCreateTunnel"
+        return "/band.tunnel.v1beta1.MsgCreateTunnel"
 
     @property
     def legacy_url(self):
@@ -24,7 +24,7 @@ class MsgCreateTunnel(BaseMessageWrapper, MsgCreateTunnelProto):
 class MsgUpdateRoute(BaseMessageWrapper, MsgUpdateRouteProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgUpdateRoute"
+        return "/band.tunnel.v1beta1.MsgUpdateRoute"
 
     @property
     def legacy_url(self):
@@ -34,7 +34,7 @@ class MsgUpdateRoute(BaseMessageWrapper, MsgUpdateRouteProto):
 class MsgUpdateSignalsAndInterval(BaseMessageWrapper, MsgUpdateSignalsAndIntervalProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgUpdateSignalsAndInterval"
+        return "/band.tunnel.v1beta1.MsgUpdateSignalsAndInterval"
 
     @property
     def legacy_url(self):
@@ -44,7 +44,7 @@ class MsgUpdateSignalsAndInterval(BaseMessageWrapper, MsgUpdateSignalsAndInterva
 class MsgActivate(BaseMessageWrapper, MsgActivateProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgActivate"
+        return "/band.tunnel.v1beta1.MsgActivate"
 
     @property
     def legacy_url(self):
@@ -54,7 +54,7 @@ class MsgActivate(BaseMessageWrapper, MsgActivateProto):
 class MsgDeactivate(BaseMessageWrapper, MsgDeactivateProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgDeactivate"
+        return "/band.tunnel.v1beta1.MsgDeactivate"
 
     @property
     def legacy_url(self):
@@ -64,7 +64,7 @@ class MsgDeactivate(BaseMessageWrapper, MsgDeactivateProto):
 class MsgTriggerTunnel(BaseMessageWrapper, MsgTriggerTunnelProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgTriggerTunnel"
+        return "/band.tunnel.v1beta1.MsgTriggerTunnel"
 
     @property
     def legacy_url(self):
@@ -74,7 +74,7 @@ class MsgTriggerTunnel(BaseMessageWrapper, MsgTriggerTunnelProto):
 class MsgDepositToTunnel(BaseMessageWrapper, MsgDepositToTunnelProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgDepositToTunnel"
+        return "/band.tunnel.v1beta1.MsgDepositToTunnel"
 
     @property
     def legacy_url(self):
@@ -84,7 +84,7 @@ class MsgDepositToTunnel(BaseMessageWrapper, MsgDepositToTunnelProto):
 class MsgWithdrawFromTunnel(BaseMessageWrapper, MsgWithdrawFromTunnelProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1.MsgWithdrawFromTunnel"
+        return "/band.tunnel.v1beta1.MsgWithdrawFromTunnel"
 
     @property
     def legacy_url(self):

@@ -10,7 +10,7 @@ from pyband.proto.band.feeds.v1beta1 import (
 class MsgVote(BaseMessageWrapper, MsgVoteProto):
     @property
     def type_url(self):
-        return "/band.feeds.v1.MsgVote"
+        return "/band.feeds.v1beta1.MsgVote"
 
     @property
     def legacy_url(self):
@@ -20,7 +20,7 @@ class MsgVote(BaseMessageWrapper, MsgVoteProto):
 class MsgSubmitSignalPrices(BaseMessageWrapper, MsgSubmitSignalPricesProto):
     @property
     def type_url(self):
-        return "/band.feeds.v1.MsgSubmitSignalPrices"
+        return "/band.feeds.v1beta1.MsgSubmitSignalPrices"
 
     @property
     def legacy_url(self):
@@ -32,7 +32,7 @@ class MsgUpdateReferenceSourceConfig(
 ):
     @property
     def type_url(self):
-        return "/band.feeds.v1.MsgUpdateReferenceSourceConfig"
+        return "/band.feeds.v1beta1.MsgUpdateReferenceSourceConfig"
 
     @property
     def legacy_url(self):
@@ -42,7 +42,7 @@ class MsgUpdateReferenceSourceConfig(
 class MsgUpdateParams(BaseMessageWrapper, MsgUpdateParamsProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1.MsgUpdateParams"
+        return "/band.bandtss.v1beta1.MsgUpdateParams"
 
     @property
     def legacy_url(self):

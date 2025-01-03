@@ -70,13 +70,7 @@ def test_get_sign_doc_success():
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_sequence(30)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
         body_bytes=b"\n\x89\x01\n\x1e/band.oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
         auth_info_bytes=b"\nP\nF\n\x1f/cosmos.crypto.secp256k1.PubKey\x12#\n!\x03\xfep\x8b\xdafRO\xd2\xc6\xbc\xe9\x06\x82\xe3\x85U\xa8Q\xe0=*\xeeOb\x9b\x05\xde\x90\xf5\x1e\xd9\xbc\x12\x04\n\x02\x08\x01\x18\x1e\x12\x12\n\x0c\n\x05uband\x12\x03500\x10\xc0\x9a\x0c",
@@ -98,13 +92,7 @@ def test_get_sign_doc_no_public_key_success():
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_sequence(30)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     assert t.get_sign_doc() == SignDoc(
         body_bytes=b"\n\x89\x01\n\x1E/band.oracle.v1.MsgRequestData\x12g\x08\x01\x12\x0f\x00\x00\x00\x03BTC\x00\x00\x00\x00\x00\x00\x00\x01\x18\x04 \x03*\x0bfrom_pyband2\x0c\n\x05uband\x12\x031008\xb0\xea\x01@\xd0\x86\x03J+band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
         auth_info_bytes=b"\n\x08\x12\x04\n\x02\x08\x01\x18\x1e\x12\x12\n\x0c\n\x05uband\x12\x03500\x10\xc0\x9a\x0c",
@@ -127,12 +115,7 @@ async def test_get_sign_data_with_sender_success(pyband_client):
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_chain_id("bandchain")
-        .with_gas_limit(50000)
-    )
+    t = Transaction().with_messages(msg).with_chain_id("bandchain").with_gas_limit(50000)
     await t.with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
 
     assert t.get_sign_doc(PUBLIC_KEY) == SignDoc(
@@ -149,9 +132,7 @@ async def test_create_transaction_with_sender_fail(pyband_client):
         EmptyMsgError,
         match="message is empty, please use with_messages at least 1 message",
     ):
-        await Transaction().with_sender(
-            pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c"
-        )
+        await Transaction().with_sender(pyband_client, "band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c")
 
 
 def test_get_sign_doc_msg_empty():
@@ -191,12 +172,7 @@ def test_get_sign_doc_sequence_undefined():
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_chain_id("bandchain")
     with pytest.raises(UndefinedError, match="sequence should be defined"):
         t.get_sign_doc(PUBLIC_KEY)
 
@@ -233,13 +209,7 @@ def test_invalid_memo():
         sender="band13eznuehmqzd3r84fkxu8wklxl22r2qfmtlth8c",
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_sequence(30)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
     with pytest.raises(ValueTooLargeError, match="memo is too large"):
         t.with_memo(
             "This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world. This is the longest memo in the world.This is the longest memo in the world. This is the longest memo in the world.This is the longest memo in the world."
@@ -259,13 +229,7 @@ def test_get_tx_data_success():
         sender=SENDER,
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_sequence(30)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
 
     sign_doc = t.get_sign_doc(PUBLIC_KEY)
     signature = PRIVATE_KEY.sign(sign_doc.SerializeToString())
@@ -297,13 +261,7 @@ def test_get_tx_data_tx_raw_bytes_no_public_key_success():
         sender=SENDER,
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_sequence(30)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
 
     sign_doc = t.get_sign_doc(PUBLIC_KEY)
     signature = PRIVATE_KEY.sign(sign_doc.SerializeToString())
@@ -333,13 +291,7 @@ def test_get_tx_data_no_public_key_success():
         sender=SENDER,
     )
 
-    t = (
-        Transaction()
-        .with_messages(msg)
-        .with_account_num(100)
-        .with_sequence(30)
-        .with_chain_id("bandchain")
-    )
+    t = Transaction().with_messages(msg).with_account_num(100).with_sequence(30).with_chain_id("bandchain")
 
     sign_doc = t.get_sign_doc()
     signature = PRIVATE_KEY.sign(sign_doc.SerializeToString())

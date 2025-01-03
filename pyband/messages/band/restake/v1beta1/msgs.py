@@ -9,7 +9,7 @@ from pyband.proto.band.restake.v1beta1 import (
 class MsgStake(BaseMessageWrapper, MsgStakeProto):
     @property
     def type_url(self):
-        return "/band.restake.v1.MsgStake"
+        return "/band.restake.v1beta1.MsgStake"
 
     @property
     def legacy_url(self):
@@ -19,7 +19,7 @@ class MsgStake(BaseMessageWrapper, MsgStakeProto):
 class MsgUnstake(BaseMessageWrapper, MsgUnstakeProto):
     @property
     def type_url(self):
-        return "/band.restake.v1.MsgUnstake"
+        return "/band.restake.v1beta1.MsgUnstake"
 
     @property
     def legacy_url(self):
@@ -29,7 +29,7 @@ class MsgUnstake(BaseMessageWrapper, MsgUnstakeProto):
 class MsgUpdateParams(BaseMessageWrapper, MsgUpdateParamsProto):
     @property
     def type_url(self):
-        return "/band.restake.v1.MsgUpdateParams"
+        return "/band.restake.v1beta1.MsgUpdateParams"
 
     @property
     def legacy_url(self):
