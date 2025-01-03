@@ -64,11 +64,11 @@ class MsgSubmitDEs(BaseMessageWrapper, MsgSubmitDEsProto):
 class MsgResetDE(BaseMessageWrapper, MsgResetDEProto):
     @property
     def type_url(self):
-        return "/band.tss.v1beta1.MsgResetDe"
+        return "/band.tss.v1beta1.MsgResetDE"
 
     @property
     def legacy_url(self):
-        return "tss/MsgResetDe"
+        return "tss/MsgResetDE"
 
 
 class MsgSubmitSignature(BaseMessageWrapper, MsgSubmitSignatureProto):
