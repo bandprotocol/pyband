@@ -4,7 +4,7 @@ from .msgs import (
     MsgComplain,
     MsgConfirm,
     MsgSubmitDEs,
-    MsgResetDe,
+    MsgResetDE,
     MsgSubmitSignature,
     MsgUpdateParams,
 )
