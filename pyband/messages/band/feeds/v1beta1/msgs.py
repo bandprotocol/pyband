@@ -42,8 +42,8 @@ class MsgUpdateReferenceSourceConfig(
 class MsgUpdateParams(BaseMessageWrapper, MsgUpdateParamsProto):
     @property
     def type_url(self):
-        return "/band.bandtss.v1beta1.MsgUpdateParams"
+        return "/band.feeds.v1beta1.MsgUpdateParams"
 
     @property
     def legacy_url(self):
-        return "bandtss/MsgUpdateParams"
+        return "feeds/MsgUpdateParams"
