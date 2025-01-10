@@ -3,8 +3,8 @@ from pyband.proto.band.tunnel.v1beta1 import (
     MsgCreateTunnel as MsgCreateTunnelProto,
     MsgUpdateRoute as MsgUpdateRouteProto,
     MsgUpdateSignalsAndInterval as MsgUpdateSignalsAndIntervalProto,
-    MsgActivate as MsgActivateProto,
-    MsgDeactivate as MsgDeactivateProto,
+    MsgActivateTunnel as MsgActivateTunnelProto,
+    MsgDeactivateTunnel as MsgDeactivateTunnelProto,
     MsgTriggerTunnel as MsgTriggerTunnelProto,
     MsgDepositToTunnel as MsgDepositToTunnelProto,
     MsgWithdrawFromTunnel as MsgWithdrawFromTunnelProto,
@@ -41,24 +41,24 @@ class MsgUpdateSignalsAndInterval(BaseMessageWrapper, MsgUpdateSignalsAndInterva
         return "tunnel/MsgUpdateSignalsAndInterval"
 
 
-class MsgActivate(BaseMessageWrapper, MsgActivateProto):
+class MsgActivateTunnel(BaseMessageWrapper, MsgActivateTunnelProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1beta1.MsgActivate"
+        return "/band.tunnel.v1beta1.MsgActivateTunnel"
 
     @property
     def legacy_url(self):
-        return "tunnel/MsgActivate"
+        return "tunnel/MsgActivateTunnel"
 
 
-class MsgDeactivate(BaseMessageWrapper, MsgDeactivateProto):
+class MsgDeactivateTunnel(BaseMessageWrapper, MsgDeactivateTunnelProto):
     @property
     def type_url(self):
-        return "/band.tunnel.v1beta1.MsgDeactivate"
+        return "/band.tunnel.v1beta1.MsgDeactivateTunnel"
 
     @property
     def legacy_url(self):
-        return "tunnel/MsgDeactivate"
+        return "tunnel/MsgDeactivateTunnel"
 
 
 class MsgTriggerTunnel(BaseMessageWrapper, MsgTriggerTunnelProto):

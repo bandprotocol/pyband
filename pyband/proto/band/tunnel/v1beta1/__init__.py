@@ -66,9 +66,7 @@ class Params(betterproto.Message):
     max_signals defines the maximum number of signals allowed per tunnel.
     """
 
-    base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
-        7
-    )
+    base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(7)
     """base_packet_fee is the base fee for each packet."""
 
 
@@ -129,9 +127,7 @@ class LatestPrices(betterproto.Message):
 class TotalFees(betterproto.Message):
     """TotalFees is the type for the total fees collected by the tunnel"""
 
-    total_base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = (
-        betterproto.message_field(1)
-    )
+    total_base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(1)
     """
     total_base_packet_fee is the total base packet fee collected by the tunnel
     """
@@ -155,13 +151,7 @@ class Packet(betterproto.Message):
     receipt represents the confirmation of the packet delivery to the destination via the specified route.
     """
 
-    base_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(5)
-    """base_fee is the base fee of the packet"""
-
-    route_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(6)
-    """route_fee is the route fee of the packet"""
-
-    created_at: int = betterproto.int64_field(7)
+    created_at: int = betterproto.int64_field(5)
     """created_at is the timestamp when the packet is created"""
 
 
@@ -231,9 +221,7 @@ class MsgCreateTunnel(betterproto.Message):
     route: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(3)
     """route is the route for delivering the signal prices"""
 
-    initial_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
-        4
-    )
+    initial_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(4)
     """
     initial_deposit is the deposit value that must be paid at tunnel creation.
     """
@@ -330,8 +318,8 @@ class MsgWithdrawFeePayerFundsResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgActivate(betterproto.Message):
-    """Activate is the transaction message to activate a tunnel."""
+class MsgActivateTunnel(betterproto.Message):
+    """MsgActivateTunnel is the transaction message to activate a tunnel."""
 
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to activate."""
@@ -341,17 +329,19 @@ class MsgActivate(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgActivateResponse(betterproto.Message):
+class MsgActivateTunnelResponse(betterproto.Message):
     """
-    MsgActivateResponse is the response type for the Msg/Activate RPC method.
+    MsgActivateTunnelResponse is the response type for the Msg/Activate RPC method.
     """
 
     pass
 
 
 @dataclass(eq=False, repr=False)
-class MsgDeactivate(betterproto.Message):
-    """MsgDeactivate is the transaction message to deactivate a tunnel."""
+class MsgDeactivateTunnel(betterproto.Message):
+    """
+    MsgDeactivateTunnel is the transaction message to deactivate a tunnel.
+    """
 
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to deactivate."""
@@ -361,7 +351,7 @@ class MsgDeactivate(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MsgDeactivateResponse(betterproto.Message):
+class MsgDeactivateTunnelResponse(betterproto.Message):
     """
     MsgDeactivateTunnelResponse is the response type for the Msg/Deactivate RPC method.
     """
@@ -535,9 +525,7 @@ class QueryTunnelsRequest(betterproto.Message):
     status_filter: "TunnelStatusFilter" = betterproto.enum_field(1)
     """status_filter is a flag to filter tunnels by status."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
     """pagination defines an optional pagination for the request."""
 
 
@@ -550,9 +538,7 @@ class QueryTunnelsResponse(betterproto.Message):
     tunnels: List["Tunnel"] = betterproto.message_field(1)
     """Tunnels is a list of tunnels."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines an optional pagination for the response."""
 
 
@@ -585,9 +571,7 @@ class QueryDepositsRequest(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to query deposits."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
     """pagination defines an optional pagination for the request."""
 
 
@@ -600,9 +584,7 @@ class QueryDepositsResponse(betterproto.Message):
     deposits: List["Deposit"] = betterproto.message_field(1)
     """deposits is a list of deposits."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines an optional pagination for the response."""
 
 
@@ -640,9 +622,7 @@ class QueryPacketsRequest(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to query packets."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
     """pagination defines an optional pagination for the request."""
 
 
@@ -655,9 +635,7 @@ class QueryPacketsResponse(betterproto.Message):
     packets: List["Packet"] = betterproto.message_field(1)
     """packets is a list of packets."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
-        betterproto.message_field(2)
-    )
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
     """pagination defines an optional pagination for the response."""
 
 
@@ -811,35 +789,35 @@ class MsgStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
-    async def activate(
+    async def activate_tunnel(
         self,
-        msg_activate: "MsgActivate",
+        msg_activate_tunnel: "MsgActivateTunnel",
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None
-    ) -> "MsgActivateResponse":
+    ) -> "MsgActivateTunnelResponse":
         return await self._unary_unary(
-            "/band.tunnel.v1beta1.Msg/Activate",
-            msg_activate,
-            MsgActivateResponse,
+            "/band.tunnel.v1beta1.Msg/ActivateTunnel",
+            msg_activate_tunnel,
+            MsgActivateTunnelResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
         )
 
-    async def deactivate(
+    async def deactivate_tunnel(
         self,
-        msg_deactivate: "MsgDeactivate",
+        msg_deactivate_tunnel: "MsgDeactivateTunnel",
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None
-    ) -> "MsgDeactivateResponse":
+    ) -> "MsgDeactivateTunnelResponse":
         return await self._unary_unary(
-            "/band.tunnel.v1beta1.Msg/Deactivate",
-            msg_deactivate,
-            MsgDeactivateResponse,
+            "/band.tunnel.v1beta1.Msg/DeactivateTunnel",
+            msg_deactivate_tunnel,
+            MsgDeactivateTunnelResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
@@ -1053,15 +1031,10 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-
-    async def create_tunnel(
-        self, msg_create_tunnel: "MsgCreateTunnel"
-    ) -> "MsgCreateTunnelResponse":
+    async def create_tunnel(self, msg_create_tunnel: "MsgCreateTunnel") -> "MsgCreateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_route(
-        self, msg_update_route: "MsgUpdateRoute"
-    ) -> "MsgUpdateRouteResponse":
+    async def update_route(self, msg_update_route: "MsgUpdateRoute") -> "MsgUpdateRouteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def update_signals_and_interval(
@@ -1074,22 +1047,16 @@ class MsgBase(ServiceBase):
     ) -> "MsgWithdrawFeePayerFundsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def activate(self, msg_activate: "MsgActivate") -> "MsgActivateResponse":
+    async def activate_tunnel(self, msg_activate_tunnel: "MsgActivateTunnel") -> "MsgActivateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deactivate(
-        self, msg_deactivate: "MsgDeactivate"
-    ) -> "MsgDeactivateResponse":
+    async def deactivate_tunnel(self, msg_deactivate_tunnel: "MsgDeactivateTunnel") -> "MsgDeactivateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def trigger_tunnel(
-        self, msg_trigger_tunnel: "MsgTriggerTunnel"
-    ) -> "MsgTriggerTunnelResponse":
+    async def trigger_tunnel(self, msg_trigger_tunnel: "MsgTriggerTunnel") -> "MsgTriggerTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deposit_to_tunnel(
-        self, msg_deposit_to_tunnel: "MsgDepositToTunnel"
-    ) -> "MsgDepositToTunnelResponse":
+    async def deposit_to_tunnel(self, msg_deposit_to_tunnel: "MsgDepositToTunnel") -> "MsgDepositToTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def withdraw_from_tunnel(
@@ -1097,9 +1064,7 @@ class MsgBase(ServiceBase):
     ) -> "MsgWithdrawFromTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_params(
-        self, msg_update_params: "MsgUpdateParams"
-    ) -> "MsgUpdateParamsResponse":
+    async def update_params(self, msg_update_params: "MsgUpdateParams") -> "MsgUpdateParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_create_tunnel(
@@ -1132,18 +1097,20 @@ class MsgBase(ServiceBase):
         response = await self.withdraw_fee_payer_funds(request)
         await stream.send_message(response)
 
-    async def __rpc_activate(
-        self, stream: "grpclib.server.Stream[MsgActivate, MsgActivateResponse]"
+    async def __rpc_activate_tunnel(
+        self,
+        stream: "grpclib.server.Stream[MsgActivateTunnel, MsgActivateTunnelResponse]",
     ) -> None:
         request = await stream.recv_message()
-        response = await self.activate(request)
+        response = await self.activate_tunnel(request)
         await stream.send_message(response)
 
-    async def __rpc_deactivate(
-        self, stream: "grpclib.server.Stream[MsgDeactivate, MsgDeactivateResponse]"
+    async def __rpc_deactivate_tunnel(
+        self,
+        stream: "grpclib.server.Stream[MsgDeactivateTunnel, MsgDeactivateTunnelResponse]",
     ) -> None:
         request = await stream.recv_message()
-        response = await self.deactivate(request)
+        response = await self.deactivate_tunnel(request)
         await stream.send_message(response)
 
     async def __rpc_trigger_tunnel(
@@ -1203,17 +1170,17 @@ class MsgBase(ServiceBase):
                 MsgWithdrawFeePayerFunds,
                 MsgWithdrawFeePayerFundsResponse,
             ),
-            "/band.tunnel.v1beta1.Msg/Activate": grpclib.const.Handler(
-                self.__rpc_activate,
+            "/band.tunnel.v1beta1.Msg/ActivateTunnel": grpclib.const.Handler(
+                self.__rpc_activate_tunnel,
                 grpclib.const.Cardinality.UNARY_UNARY,
-                MsgActivate,
-                MsgActivateResponse,
+                MsgActivateTunnel,
+                MsgActivateTunnelResponse,
             ),
-            "/band.tunnel.v1beta1.Msg/Deactivate": grpclib.const.Handler(
-                self.__rpc_deactivate,
+            "/band.tunnel.v1beta1.Msg/DeactivateTunnel": grpclib.const.Handler(
+                self.__rpc_deactivate_tunnel,
                 grpclib.const.Cardinality.UNARY_UNARY,
-                MsgDeactivate,
-                MsgDeactivateResponse,
+                MsgDeactivateTunnel,
+                MsgDeactivateTunnelResponse,
             ),
             "/band.tunnel.v1beta1.Msg/TriggerTunnel": grpclib.const.Handler(
                 self.__rpc_trigger_tunnel,
@@ -1243,57 +1210,36 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-
-    async def tunnels(
-        self, query_tunnels_request: "QueryTunnelsRequest"
-    ) -> "QueryTunnelsResponse":
+    async def tunnels(self, query_tunnels_request: "QueryTunnelsRequest") -> "QueryTunnelsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def tunnel(
-        self, query_tunnel_request: "QueryTunnelRequest"
-    ) -> "QueryTunnelResponse":
+    async def tunnel(self, query_tunnel_request: "QueryTunnelRequest") -> "QueryTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deposits(
-        self, query_deposits_request: "QueryDepositsRequest"
-    ) -> "QueryDepositsResponse":
+    async def deposits(self, query_deposits_request: "QueryDepositsRequest") -> "QueryDepositsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deposit(
-        self, query_deposit_request: "QueryDepositRequest"
-    ) -> "QueryDepositResponse":
+    async def deposit(self, query_deposit_request: "QueryDepositRequest") -> "QueryDepositResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def packets(
-        self, query_packets_request: "QueryPacketsRequest"
-    ) -> "QueryPacketsResponse":
+    async def packets(self, query_packets_request: "QueryPacketsRequest") -> "QueryPacketsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def packet(
-        self, query_packet_request: "QueryPacketRequest"
-    ) -> "QueryPacketResponse":
+    async def packet(self, query_packet_request: "QueryPacketRequest") -> "QueryPacketResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def total_fees(
-        self, query_total_fees_request: "QueryTotalFeesRequest"
-    ) -> "QueryTotalFeesResponse":
+    async def total_fees(self, query_total_fees_request: "QueryTotalFeesRequest") -> "QueryTotalFeesResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def params(
-        self, query_params_request: "QueryParamsRequest"
-    ) -> "QueryParamsResponse":
+    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_tunnels(
-        self, stream: "grpclib.server.Stream[QueryTunnelsRequest, QueryTunnelsResponse]"
-    ) -> None:
+    async def __rpc_tunnels(self, stream: "grpclib.server.Stream[QueryTunnelsRequest, QueryTunnelsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.tunnels(request)
         await stream.send_message(response)
 
-    async def __rpc_tunnel(
-        self, stream: "grpclib.server.Stream[QueryTunnelRequest, QueryTunnelResponse]"
-    ) -> None:
+    async def __rpc_tunnel(self, stream: "grpclib.server.Stream[QueryTunnelRequest, QueryTunnelResponse]") -> None:
         request = await stream.recv_message()
         response = await self.tunnel(request)
         await stream.send_message(response)
@@ -1306,23 +1252,17 @@ class QueryBase(ServiceBase):
         response = await self.deposits(request)
         await stream.send_message(response)
 
-    async def __rpc_deposit(
-        self, stream: "grpclib.server.Stream[QueryDepositRequest, QueryDepositResponse]"
-    ) -> None:
+    async def __rpc_deposit(self, stream: "grpclib.server.Stream[QueryDepositRequest, QueryDepositResponse]") -> None:
         request = await stream.recv_message()
         response = await self.deposit(request)
         await stream.send_message(response)
 
-    async def __rpc_packets(
-        self, stream: "grpclib.server.Stream[QueryPacketsRequest, QueryPacketsResponse]"
-    ) -> None:
+    async def __rpc_packets(self, stream: "grpclib.server.Stream[QueryPacketsRequest, QueryPacketsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.packets(request)
         await stream.send_message(response)
 
-    async def __rpc_packet(
-        self, stream: "grpclib.server.Stream[QueryPacketRequest, QueryPacketResponse]"
-    ) -> None:
+    async def __rpc_packet(self, stream: "grpclib.server.Stream[QueryPacketRequest, QueryPacketResponse]") -> None:
         request = await stream.recv_message()
         response = await self.packet(request)
         await stream.send_message(response)
@@ -1335,9 +1275,7 @@ class QueryBase(ServiceBase):
         response = await self.total_fees(request)
         await stream.send_message(response)
 
-    async def __rpc_params(
-        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
-    ) -> None:
+    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)
