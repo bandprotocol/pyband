@@ -16,7 +16,7 @@ from mnemonic import Mnemonic
 from pyband import PrivateKey
 from pyband.cosmos_app import CosmosApp, CommException
 from pyband.exceptions import *
-from pyband.messages.oracle.v1 import MsgCreateDataSource
+from pyband.messages.band.oracle.v1 import MsgCreateDataSource
 from pyband.proto.cosmos.base.v1beta1 import Coin
 from pyband.transaction import Transaction
 from pyband.utils import bip44_to_list
@@ -82,15 +82,22 @@ class MockDongle(Dongle):
 
         seed = Mnemonic("english").to_seed(self.mnemonic)
         signing_key = SigningKey.from_string(
-            BIP32.from_seed(seed).get_privkey_from_path(self.__path_from_data(bip32_byte, 3)),
+            BIP32.from_seed(seed).get_privkey_from_path(
+                self.__path_from_data(bip32_byte, 3)
+            ),
             curve=SECP256k1,
             hashfunc=hashlib.sha256,
         )
 
         verifying_key = signing_key.get_verifying_key()
-        addr = hashlib.new("ripemd160", hashlib.new("sha256", verifying_key.to_string("compressed")).digest()).digest()
+        addr = hashlib.new(
+            "ripemd160",
+            hashlib.new("sha256", verifying_key.to_string("compressed")).digest(),
+        ).digest()
         five_bit_r = convertbits(addr, 8, 5)
-        return verifying_key.to_string("compressed") + bytes(bech32_encode("band", five_bit_r), "utf-8")
+        return verifying_key.to_string("compressed") + bytes(
+            bech32_encode("band", five_bit_r), "utf-8"
+        )
 
     def _sign_secp256k1(self, p1: int, data: bytes):
         if p1 == 0:
@@ -103,9 +110,9 @@ class MockDongle(Dongle):
             self.packet_cache.append(data)
 
             signing_key = SigningKey.from_string(
-                BIP32.from_seed(Mnemonic("english").to_seed(self.mnemonic)).get_privkey_from_path(
-                    self.__path_from_data(self.packet_cache[0], 3)
-                ),
+                BIP32.from_seed(
+                    Mnemonic("english").to_seed(self.mnemonic)
+                ).get_privkey_from_path(self.__path_from_data(self.packet_cache[0], 3)),
                 curve=SECP256k1,
                 hashfunc=hashlib.sha256,
             )
@@ -151,7 +158,9 @@ def mock_message():
     deploy_msg = MsgCreateDataSource(
         name="Hello World!",
         description="",
-        executable=bytes("".join(random.choice(string.ascii_letters) for i in range(200)), "utf-8"),
+        executable=bytes(
+            "".join(random.choice(string.ascii_letters) for i in range(200)), "utf-8"
+        ),
         fee=[Coin(amount="0", denom="uband")],
         treasury="band000000000000000000000000000000000000000",
         owner="band000000000000000000000000000000000000000",

@@ -1,9 +1,9 @@
-from dataclasses import dataclass
-
 from ....base import BaseMessageWrapper
 from .....proto.cosmos.base import v1beta1 as __base_v1_beta1__
 from .....proto.cosmos.base.query import v1beta1 as __base_query_v1_beta1__
-from .....proto.cosmos.staking.v1beta1 import MsgBeginRedelegate as MsgBeginRedelegateProto
+from .....proto.cosmos.staking.v1beta1 import (
+    MsgBeginRedelegate as MsgBeginRedelegateProto,
+)
 from .....proto.cosmos.staking.v1beta1 import MsgDelegate as MsgDelegateProto
 from .....proto.cosmos.staking.v1beta1 import MsgUndelegate as MsgUndelegateProto
 from .....proto.tendermint import types as ___tendermint_types__

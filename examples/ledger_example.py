@@ -1,7 +1,7 @@
 import asyncio
 
 from pyband import Client, Transaction, Wallet
-from pyband.messages.oracle.v1 import MsgEditDataSource
+from pyband.messages.band.oracle.v1 import MsgEditDataSource
 from pyband.proto.cosmos.base.v1beta1 import Coin
 
 
@@ -44,7 +44,7 @@ async def main():
     )
 
     # Sign and broadcast a transaction
-    tx_block = await c.send_tx_block_mode(wallet.sign_and_build(txn))
+    tx_block = await c.send_tx_sync_mode(wallet.sign_and_build(txn))
 
     # Convert to JSON for readability
     print(tx_block.to_json(indent=4))

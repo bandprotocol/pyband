@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 from ....base import BaseMessageWrapper
 from .....proto.cosmos.bank.v1beta1 import MsgMultiSend as MsgMultiSendProto
 from .....proto.cosmos.bank.v1beta1 import MsgSend as MsgSendProto

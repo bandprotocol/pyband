@@ -64,11 +64,17 @@ class LedgerSigner(Signer):
         self.cosmos_app = app if app is not None else CosmosApp(bip44_to_list(path))
 
     def get_public_key(self) -> PublicKey:
-        return PublicKey.from_hex(self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).public_key)
+        return PublicKey.from_hex(
+            self.cosmos_app.ins_get_addr_secp256k1(
+                BECH32_ADDR_ACC_PREFIX, False
+            ).public_key
+        )
 
     def get_address(self) -> Address:
         return Address.from_acc_bech32(
-            self.cosmos_app.ins_get_addr_secp256k1(BECH32_ADDR_ACC_PREFIX, False).address.decode()
+            self.cosmos_app.ins_get_addr_secp256k1(
+                BECH32_ADDR_ACC_PREFIX, False
+            ).address.decode()
         )
 
     def sign(self, msg: bytes) -> bytes:

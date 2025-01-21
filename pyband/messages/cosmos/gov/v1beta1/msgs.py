@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 from ....base import BaseMessageWrapper
 from .....proto.cosmos.base import v1beta1 as __base_v1_beta1__
 from .....proto.cosmos.base.query import v1beta1 as __base_query_v1_beta1__
