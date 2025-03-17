@@ -28,6 +28,12 @@ from .proto.band.bandtss.v1beta1 import (
     MsgStub as BandTssMsgStub,
     QueryStub as BandTssQueryStub,
 )
+from .proto.band.base.oracle.v1 import (
+    ServiceStub as OracleServiceStub,
+    ProofRequest,
+    ProofResponse,
+)
+
 from .proto.band.feeds.v1beta1 import (
     MsgStub as FeedsMsgStub,
     QueryStub as FeedsQueryStub,
@@ -79,6 +85,9 @@ class Client:
         # band.bandtss
         self.band_tss_query_stub = BandTssQueryStub(self.__channel)
         self.band_tss_msg_stub = BandTssMsgStub(self.__channel)
+
+        # band.base
+        self.band_oracle_service_stub = OracleServiceStub(self.__channel)
 
         # band.feeds
         self.feeds_query_stub = FeedsQueryStub(self.__channel)
@@ -429,6 +438,17 @@ class Client:
         return await self.feeds_query_stub.prices(
             QueryPricesRequest(signal_ids=signal_ids)
         )
+
+    async def get_proof(self, proof_request: ProofRequest) -> ProofResponse:
+        """Gets the proof for a request.
+
+        Args:
+            proof_request: The proof request.
+
+        Returns:
+            The proof response.
+        """
+        return await self.band_oracle_service_stub.proof(proof_request)
 
     async def simulate_tx(self, tx_bytes: bytes) -> SimulateResponse:
         """Simulates a transaction from the tx_bytes.
