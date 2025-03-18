@@ -1482,7 +1482,7 @@ requires-dist = [
     { name = "bip32", specifier = "==0.0.8" },
     { name = "ecdsa", specifier = "==0.19.0" },
     { name = "grpclib", specifier = "==0.4.3" },
-    { name = "ledgerblue", specifier = ">=0.1.54,<1.0.0" },
+    { name = "ledgerblue", specifier = "==0.1.54" },
     { name = "mnemonic", specifier = "==0.19" },
     { name = "python-dateutil", specifier = "==2.8.2" },
 ]
