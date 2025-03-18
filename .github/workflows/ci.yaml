@@ -13,7 +13,7 @@ jobs:
       - name: Run auto
         run: |
           sudo apt update
-          sudo apt install -y build-essential
+          sudo apt install -y python3-dev libsecp256k1-dev
       
       - name: Code Checkout
         uses: actions/checkout@v3
