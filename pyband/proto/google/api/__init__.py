@@ -66,7 +66,7 @@ class HttpRule(betterproto.Message):
          service Messaging {
            rpc GetMessage(GetMessageRequest) returns (Message) {
              option (google.api.http) = {
-                 get: "/v1beta1/{name=messages/*}"
+                 get: "/v1/{name=messages/*}"
              };
            }
          }
@@ -79,7 +79,7 @@ class HttpRule(betterproto.Message):
 
      This enables an HTTP REST to gRPC mapping as below:
 
-     - HTTP: `GET /v1beta1/messages/123456`
+     - HTTP: `GET /v1/messages/123456`
      - gRPC: `GetMessage(name: "messages/123456")`
 
      Any fields in the request message which are not bound by the path template
@@ -89,7 +89,7 @@ class HttpRule(betterproto.Message):
          service Messaging {
            rpc GetMessage(GetMessageRequest) returns (Message) {
              option (google.api.http) = {
-                 get:"/v1beta1/messages/{message_id}"
+                 get:"/v1/messages/{message_id}"
              };
            }
          }
@@ -104,7 +104,7 @@ class HttpRule(betterproto.Message):
 
      This enables a HTTP JSON to RPC mapping as below:
 
-     - HTTP: `GET /v1beta1/messages/123456?revision=2&sub.subfield=foo`
+     - HTTP: `GET /v1/messages/123456?revision=2&sub.subfield=foo`
      - gRPC: `GetMessage(message_id: "123456" revision: 2 sub:
      SubMessage(subfield: "foo"))`
 
@@ -122,7 +122,7 @@ class HttpRule(betterproto.Message):
          service Messaging {
            rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
              option (google.api.http) = {
-               patch: "/v1beta1/messages/{message_id}"
+               patch: "/v1/messages/{message_id}"
                body: "message"
              };
            }
@@ -136,7 +136,7 @@ class HttpRule(betterproto.Message):
      representation of the JSON in the request body is determined by
      protos JSON encoding:
 
-     - HTTP: `PATCH /v1beta1/messages/123456 { "text": "Hi!" }`
+     - HTTP: `PATCH /v1/messages/123456 { "text": "Hi!" }`
      - gRPC: `UpdateMessage(message_id: "123456" message { text: "Hi!" })`
 
      The special name `*` can be used in the body mapping to define that
@@ -147,7 +147,7 @@ class HttpRule(betterproto.Message):
          service Messaging {
            rpc UpdateMessage(Message) returns (Message) {
              option (google.api.http) = {
-               patch: "/v1beta1/messages/{message_id}"
+               patch: "/v1/messages/{message_id}"
                body: "*"
              };
            }
@@ -160,7 +160,7 @@ class HttpRule(betterproto.Message):
 
      The following HTTP JSON to RPC mapping is enabled:
 
-     - HTTP: `PATCH /v1beta1/messages/123456 { "text": "Hi!" }`
+     - HTTP: `PATCH /v1/messages/123456 { "text": "Hi!" }`
      - gRPC: `UpdateMessage(message_id: "123456" text: "Hi!")`
 
      Note that when using `*` in the body mapping, it is not possible to
@@ -175,9 +175,9 @@ class HttpRule(betterproto.Message):
          service Messaging {
            rpc GetMessage(GetMessageRequest) returns (Message) {
              option (google.api.http) = {
-               get: "/v1beta1/messages/{message_id}"
+               get: "/v1/messages/{message_id}"
                additional_bindings {
-                 get: "/v1beta1/users/{user_id}/messages/{message_id}"
+                 get: "/v1/users/{user_id}/messages/{message_id}"
                }
              };
            }
@@ -189,10 +189,10 @@ class HttpRule(betterproto.Message):
 
      This enables the following two alternative HTTP JSON to RPC mappings:
 
-     - HTTP: `GET /v1beta1/messages/123456`
+     - HTTP: `GET /v1/messages/123456`
      - gRPC: `GetMessage(message_id: "123456")`
 
-     - HTTP: `GET /v1beta1/users/me/messages/123456`
+     - HTTP: `GET /v1/users/me/messages/123456`
      - gRPC: `GetMessage(user_id: "me" message_id: "123456")`
 
      Rules for HTTP mapping
@@ -272,8 +272,8 @@ class HttpRule(betterproto.Message):
 
          http:
            rules:
-             - selector: example.v1beta1.Messaging.GetMessage
-               get: /v1beta1/messages/{message_id}/{sub.subfield}
+             - selector: example.v1.Messaging.GetMessage
+               get: /v1/messages/{message_id}/{sub.subfield}
 
      Special notes
 

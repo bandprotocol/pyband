@@ -18,9 +18,9 @@ import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
 from .....tendermint import (
-    p2p as ____tendermint_p2_p__,
-    types as ____tendermint_types__,
-    version as ____tendermint_version__,
+    p2p as __tendermint_p2_p__,
+    types as __tendermint_types__,
+    version as __tendermint_version__,
 )
 from ...query import v1beta1 as __query_v1_beta1__
 
@@ -39,22 +39,22 @@ class Block(betterproto.Message):
     """
 
     header: "Header" = betterproto.message_field(1)
-    data: "____tendermint_types__.Data" = betterproto.message_field(2)
-    evidence: "____tendermint_types__.EvidenceList" = betterproto.message_field(3)
-    last_commit: "____tendermint_types__.Commit" = betterproto.message_field(4)
+    data: "__tendermint_types__.Data" = betterproto.message_field(2)
+    evidence: "__tendermint_types__.EvidenceList" = betterproto.message_field(3)
+    last_commit: "__tendermint_types__.Commit" = betterproto.message_field(4)
 
 
 @dataclass(eq=False, repr=False)
 class Header(betterproto.Message):
     """Header defines the structure of a Tendermint block header."""
 
-    version: "____tendermint_version__.Consensus" = betterproto.message_field(1)
+    version: "__tendermint_version__.Consensus" = betterproto.message_field(1)
     """basic block info"""
 
     chain_id: str = betterproto.string_field(2)
     height: int = betterproto.int64_field(3)
     time: datetime = betterproto.message_field(4)
-    last_block_id: "____tendermint_types__.BlockId" = betterproto.message_field(5)
+    last_block_id: "__tendermint_types__.BlockId" = betterproto.message_field(5)
     """prev block info"""
 
     last_commit_hash: bytes = betterproto.bytes_field(6)
@@ -149,8 +149,8 @@ class GetBlockByHeightResponse(betterproto.Message):
     GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method.
     """
 
-    block_id: "____tendermint_types__.BlockId" = betterproto.message_field(1)
-    block: "____tendermint_types__.Block" = betterproto.message_field(2)
+    block_id: "__tendermint_types__.BlockId" = betterproto.message_field(1)
+    block: "__tendermint_types__.Block" = betterproto.message_field(2)
     """Deprecated: please use `sdk_block` instead"""
 
     sdk_block: "Block" = betterproto.message_field(3)
@@ -172,8 +172,8 @@ class GetLatestBlockResponse(betterproto.Message):
     GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method.
     """
 
-    block_id: "____tendermint_types__.BlockId" = betterproto.message_field(1)
-    block: "____tendermint_types__.Block" = betterproto.message_field(2)
+    block_id: "__tendermint_types__.BlockId" = betterproto.message_field(1)
+    block: "__tendermint_types__.Block" = betterproto.message_field(2)
     """Deprecated: please use `sdk_block` instead"""
 
     sdk_block: "Block" = betterproto.message_field(3)
@@ -213,7 +213,7 @@ class GetNodeInfoResponse(betterproto.Message):
     GetNodeInfoResponse is the response type for the Query/GetNodeInfo RPC method.
     """
 
-    default_node_info: "____tendermint_p2_p__.DefaultNodeInfo" = (
+    default_node_info: "__tendermint_p2_p__.DefaultNodeInfo" = (
         betterproto.message_field(1)
     )
     application_version: "VersionInfo" = betterproto.message_field(2)
@@ -313,7 +313,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetNodeInfoResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/GetNodeInfo",
@@ -330,7 +330,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetSyncingResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/GetSyncing",
@@ -347,7 +347,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetLatestBlockResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/GetLatestBlock",
@@ -364,7 +364,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetBlockByHeightResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/GetBlockByHeight",
@@ -381,7 +381,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetLatestValidatorSetResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/GetLatestValidatorSet",
@@ -398,7 +398,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetValidatorSetByHeightResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/GetValidatorSetByHeight",
@@ -415,7 +415,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AbciQueryResponse":
         return await self._unary_unary(
             "/cosmos.base.tendermint.v1beta1.Service/ABCIQuery",

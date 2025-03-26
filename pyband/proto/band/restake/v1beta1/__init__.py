@@ -304,7 +304,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgStakeResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Msg/Stake",
@@ -321,7 +321,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUnstakeResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Msg/Unstake",
@@ -338,7 +338,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Msg/UpdateParams",
@@ -357,7 +357,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryVaultsResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Query/Vaults",
@@ -374,7 +374,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryVaultResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Query/Vault",
@@ -391,7 +391,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryLocksResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Query/Locks",
@@ -408,7 +408,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryLockResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Query/Lock",
@@ -425,7 +425,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryStakeResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Query/Stake",
@@ -442,7 +442,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/band.restake.v1beta1.Query/Params",
@@ -455,7 +455,6 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-
     async def stake(self, msg_stake: "MsgStake") -> "MsgStakeResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
@@ -512,7 +511,6 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-
     async def vaults(
         self, query_vaults_request: "QueryVaultsRequest"
     ) -> "QueryVaultsResponse":

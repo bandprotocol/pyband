@@ -1123,7 +1123,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgCreateValidatorResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/CreateValidator",
@@ -1140,7 +1140,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgEditValidatorResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/EditValidator",
@@ -1157,7 +1157,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgDelegateResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/Delegate",
@@ -1174,7 +1174,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgBeginRedelegateResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/BeginRedelegate",
@@ -1191,7 +1191,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUndelegateResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/Undelegate",
@@ -1208,7 +1208,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgCancelUnbondingDelegationResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/CancelUnbondingDelegation",
@@ -1225,7 +1225,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Msg/UpdateParams",
@@ -1244,7 +1244,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidatorsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/Validators",
@@ -1261,7 +1261,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidatorResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/Validator",
@@ -1278,7 +1278,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidatorDelegationsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/ValidatorDelegations",
@@ -1295,7 +1295,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidatorUnbondingDelegationsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/ValidatorUnbondingDelegations",
@@ -1312,7 +1312,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDelegationResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/Delegation",
@@ -1329,7 +1329,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryUnbondingDelegationResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/UnbondingDelegation",
@@ -1346,7 +1346,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDelegatorDelegationsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/DelegatorDelegations",
@@ -1363,7 +1363,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDelegatorUnbondingDelegationsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/DelegatorUnbondingDelegations",
@@ -1380,7 +1380,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryRedelegationsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/Redelegations",
@@ -1397,7 +1397,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDelegatorValidatorsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/DelegatorValidators",
@@ -1414,7 +1414,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDelegatorValidatorResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/DelegatorValidator",
@@ -1431,7 +1431,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryHistoricalInfoResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/HistoricalInfo",
@@ -1448,7 +1448,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryPoolResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/Pool",
@@ -1465,7 +1465,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/cosmos.staking.v1beta1.Query/Params",
@@ -1478,7 +1478,6 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-
     async def create_validator(
         self, msg_create_validator: "MsgCreateValidator"
     ) -> "MsgCreateValidatorResponse":
@@ -1613,7 +1612,6 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-
     async def validators(
         self, query_validators_request: "QueryValidatorsRequest"
     ) -> "QueryValidatorsResponse":

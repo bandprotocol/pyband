@@ -15,7 +15,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
-from .....tendermint import abci as ____tendermint_abci__
+from .....tendermint import abci as __tendermint_abci__
 from ... import v1beta1 as __v1_beta1__
 
 
@@ -31,8 +31,8 @@ class ListenFinalizeBlockRequest(betterproto.Message):
     ListenEndBlockRequest is the request type for the ListenEndBlock RPC method
     """
 
-    req: "____tendermint_abci__.RequestFinalizeBlock" = betterproto.message_field(1)
-    res: "____tendermint_abci__.ResponseFinalizeBlock" = betterproto.message_field(2)
+    req: "__tendermint_abci__.RequestFinalizeBlock" = betterproto.message_field(1)
+    res: "__tendermint_abci__.ResponseFinalizeBlock" = betterproto.message_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -55,7 +55,7 @@ class ListenCommitRequest(betterproto.Message):
     explicitly pass in block height as ResponseCommit does not contain this info
     """
 
-    res: "____tendermint_abci__.ResponseCommit" = betterproto.message_field(2)
+    res: "__tendermint_abci__.ResponseCommit" = betterproto.message_field(2)
     change_set: List["__v1_beta1__.StoreKvPair"] = betterproto.message_field(3)
 
 
@@ -75,7 +75,7 @@ class AbciListenerServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ListenFinalizeBlockResponse":
         return await self._unary_unary(
             "/cosmos.store.streaming.abci.ABCIListenerService/ListenFinalizeBlock",
@@ -92,7 +92,7 @@ class AbciListenerServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ListenCommitResponse":
         return await self._unary_unary(
             "/cosmos.store.streaming.abci.ABCIListenerService/ListenCommit",
@@ -105,7 +105,6 @@ class AbciListenerServiceStub(betterproto.ServiceStub):
 
 
 class AbciListenerServiceBase(ServiceBase):
-
     async def listen_finalize_block(
         self, listen_finalize_block_request: "ListenFinalizeBlockRequest"
     ) -> "ListenFinalizeBlockResponse":

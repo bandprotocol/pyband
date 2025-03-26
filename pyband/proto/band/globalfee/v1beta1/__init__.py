@@ -103,7 +103,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/band.globalfee.v1beta1.Msg/UpdateParams",
@@ -122,7 +122,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/band.globalfee.v1beta1.Query/Params",
@@ -135,7 +135,6 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-
     async def update_params(
         self, msg_update_params: "MsgUpdateParams"
     ) -> "MsgUpdateParamsResponse":
@@ -160,7 +159,6 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-
     async def params(
         self, query_params_request: "QueryParamsRequest"
     ) -> "QueryParamsResponse":

@@ -61,7 +61,7 @@ class ModuleSchemaDescriptorFileEntry(betterproto.Message):
     """
     proto_file_name is the name of a file .proto in that contains
      table definitions. The .proto file must be in a package that the
-     module has referenced using cosmos.app.v1beta1.ModuleDescriptor.use_package.
+     module has referenced using cosmos.app.v1.ModuleDescriptor.use_package.
     """
 
     storage_type: "StorageType" = betterproto.enum_field(3)

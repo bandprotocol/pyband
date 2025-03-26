@@ -150,7 +150,7 @@ class CommunityPoolSpendProposal(betterproto.Message):
      Deprecated: Do not use. As of the Cosmos SDK release v0.47.x, there is no
      longer a need for an explicit CommunityPoolSpendProposal. To spend community
      pool funds, a simple MsgCommunityPoolSpend can be invoked from the x/gov
-     module via a v1beta1 governance proposal.
+     module via a v1 governance proposal.
     """
 
     title: str = betterproto.string_field(1)
