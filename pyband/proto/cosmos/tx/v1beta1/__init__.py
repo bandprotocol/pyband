@@ -742,7 +742,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "SimulateResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/Simulate",
@@ -759,7 +759,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetTxResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/GetTx",
@@ -776,7 +776,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "BroadcastTxResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/BroadcastTx",
@@ -793,7 +793,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetTxsEventResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/GetTxsEvent",
@@ -810,7 +810,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetBlockWithTxsResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/GetBlockWithTxs",
@@ -827,7 +827,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TxDecodeResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/TxDecode",
@@ -844,7 +844,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TxEncodeResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/TxEncode",
@@ -861,7 +861,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TxEncodeAminoResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/TxEncodeAmino",
@@ -878,7 +878,7 @@ class ServiceStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TxDecodeAminoResponse":
         return await self._unary_unary(
             "/cosmos.tx.v1beta1.Service/TxDecodeAmino",
@@ -891,6 +891,7 @@ class ServiceStub(betterproto.ServiceStub):
 
 
 class ServiceBase(ServiceBase):
+
     async def simulate(self, simulate_request: "SimulateRequest") -> "SimulateResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 

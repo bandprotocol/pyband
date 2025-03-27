@@ -85,7 +85,7 @@ class ListRequest(betterproto.Message):
     range: "ListRequestRange" = betterproto.message_field(4, group="query")
     """range defines a range query."""
 
-    pagination: "___base_query_v1_beta1__.PageRequest" = betterproto.message_field(5)
+    pagination: "__base_query_v1_beta1__.PageRequest" = betterproto.message_field(5)
     """pagination is the pagination request."""
 
 
@@ -127,7 +127,7 @@ class ListResponse(betterproto.Message):
     results: List["betterproto_lib_google_protobuf.Any"] = betterproto.message_field(1)
     """results are the results of the query."""
 
-    pagination: "___base_query_v1_beta1__.PageResponse" = betterproto.message_field(5)
+    pagination: "__base_query_v1_beta1__.PageResponse" = betterproto.message_field(5)
     """pagination is the pagination response."""
 
 
@@ -175,7 +175,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "GetResponse":
         return await self._unary_unary(
             "/cosmos.orm.query.v1alpha1.Query/Get",
@@ -192,7 +192,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ListResponse":
         return await self._unary_unary(
             "/cosmos.orm.query.v1alpha1.Query/List",
@@ -205,7 +205,6 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class QueryBase(ServiceBase):
-
     async def get(self, get_request: "GetRequest") -> "GetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 

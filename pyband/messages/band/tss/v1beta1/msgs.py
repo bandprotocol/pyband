@@ -5,7 +5,7 @@ from pyband.proto.band.tss.v1beta1 import (
     MsgComplain as MsgComplainProto,
     MsgConfirm as MsgConfirmProto,
     MsgSubmitDEs as MsgSubmitDEsProto,
-    MsgResetDE as MsgResetDEProto,
+    MsgResetDe as MsgResetDEProto,
     MsgSubmitSignature as MsgSubmitSignatureProto,
     MsgUpdateParams as MsgUpdateParamsProto,
 )

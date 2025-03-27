@@ -198,7 +198,7 @@ class GenesisState(betterproto.Message):
     """GenesisState defines the bandtss module's genesis state."""
 
     params: "Params" = betterproto.message_field(1)
-    """params defines all the paramiters of the module."""
+    """params defines all the parameters of the module."""
 
     members: List["Member"] = betterproto.message_field(2)
     """members is an array containing members information."""
@@ -598,7 +598,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgRequestSignatureResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Msg/RequestSignature",
@@ -615,7 +615,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgActivateResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Msg/Activate",
@@ -632,7 +632,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Msg/UpdateParams",
@@ -649,7 +649,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgTransitionGroupResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Msg/TransitionGroup",
@@ -666,7 +666,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgForceTransitionGroupResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Msg/ForceTransitionGroup",
@@ -685,7 +685,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryCountsResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/Counts",
@@ -702,7 +702,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryMembersResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/Members",
@@ -719,7 +719,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryMemberResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/Member",
@@ -736,7 +736,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryCurrentGroupResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/CurrentGroup",
@@ -753,7 +753,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryIncomingGroupResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/IncomingGroup",
@@ -770,7 +770,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QuerySigningResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/Signing",
@@ -787,7 +787,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryGroupTransitionResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/GroupTransition",
@@ -804,7 +804,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/band.bandtss.v1beta1.Query/Params",

@@ -35,7 +35,7 @@ class ResolveStatus(betterproto.Enum):
     """Success - the request has been resolved successfully with no errors."""
 
     FAILURE = 2
-    """Failure - an error occured during the request's resolve call."""
+    """Failure - an error occurred during the request's resolve call."""
 
     EXPIRED = 3
     """
@@ -647,7 +647,7 @@ class OracleResultSignatureOrder(betterproto.Message):
     request_id: int = betterproto.uint64_field(1)
     """RequestID is oracle's unique identifier for this oracle request."""
 
-    encoder: Encoder = betterproto.enum_field(3)
+    encoder: Encoder = betterproto.enum_field(2)
     """encoder is the mode of encoding oracle result signature order."""
 
 
@@ -1389,7 +1389,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgRequestDataResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/RequestData",
@@ -1406,7 +1406,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgReportDataResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/ReportData",
@@ -1423,7 +1423,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgCreateDataSourceResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/CreateDataSource",
@@ -1440,7 +1440,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgEditDataSourceResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/EditDataSource",
@@ -1457,7 +1457,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgCreateOracleScriptResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/CreateOracleScript",
@@ -1474,7 +1474,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgEditOracleScriptResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/EditOracleScript",
@@ -1491,7 +1491,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgActivateResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/Activate",
@@ -1508,7 +1508,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Msg/UpdateParams",
@@ -1527,7 +1527,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryCountsResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/Counts",
@@ -1544,7 +1544,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDataResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/Data",
@@ -1561,7 +1561,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDataSourceResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/DataSource",
@@ -1578,7 +1578,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryOracleScriptResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/OracleScript",
@@ -1595,7 +1595,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryRequestResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/Request",
@@ -1612,7 +1612,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryPendingRequestsResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/PendingRequests",
@@ -1629,7 +1629,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidatorResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/Validator",
@@ -1646,7 +1646,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryIsReporterResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/IsReporter",
@@ -1663,7 +1663,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryReportersResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/Reporters",
@@ -1680,7 +1680,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryActiveValidatorsResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/ActiveValidators",
@@ -1697,7 +1697,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/Params",
@@ -1714,7 +1714,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryRequestSearchResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/RequestSearch",
@@ -1731,7 +1731,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryRequestPriceResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/RequestPrice",
@@ -1748,7 +1748,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryRequestVerificationResponse":
         return await self._unary_unary(
             "/band.oracle.v1.Query/RequestVerification",
@@ -1761,16 +1761,25 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-    async def request_data(self, msg_request_data: "MsgRequestData") -> "MsgRequestDataResponse":
+
+    async def request_data(
+        self, msg_request_data: "MsgRequestData"
+    ) -> "MsgRequestDataResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def report_data(self, msg_report_data: "MsgReportData") -> "MsgReportDataResponse":
+    async def report_data(
+        self, msg_report_data: "MsgReportData"
+    ) -> "MsgReportDataResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def create_data_source(self, msg_create_data_source: "MsgCreateDataSource") -> "MsgCreateDataSourceResponse":
+    async def create_data_source(
+        self, msg_create_data_source: "MsgCreateDataSource"
+    ) -> "MsgCreateDataSourceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def edit_data_source(self, msg_edit_data_source: "MsgEditDataSource") -> "MsgEditDataSourceResponse":
+    async def edit_data_source(
+        self, msg_edit_data_source: "MsgEditDataSource"
+    ) -> "MsgEditDataSourceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def create_oracle_script(
@@ -1778,13 +1787,17 @@ class MsgBase(ServiceBase):
     ) -> "MsgCreateOracleScriptResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def edit_oracle_script(self, msg_edit_oracle_script: "MsgEditOracleScript") -> "MsgEditOracleScriptResponse":
+    async def edit_oracle_script(
+        self, msg_edit_oracle_script: "MsgEditOracleScript"
+    ) -> "MsgEditOracleScriptResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def activate(self, msg_activate: "MsgActivate") -> "MsgActivateResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_params(self, msg_update_params: "MsgUpdateParams") -> "MsgUpdateParamsResponse":
+    async def update_params(
+        self, msg_update_params: "MsgUpdateParams"
+    ) -> "MsgUpdateParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_request_data(
@@ -1794,7 +1807,9 @@ class MsgBase(ServiceBase):
         response = await self.request_data(request)
         await stream.send_message(response)
 
-    async def __rpc_report_data(self, stream: "grpclib.server.Stream[MsgReportData, MsgReportDataResponse]") -> None:
+    async def __rpc_report_data(
+        self, stream: "grpclib.server.Stream[MsgReportData, MsgReportDataResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.report_data(request)
         await stream.send_message(response)
@@ -1831,7 +1846,9 @@ class MsgBase(ServiceBase):
         response = await self.edit_oracle_script(request)
         await stream.send_message(response)
 
-    async def __rpc_activate(self, stream: "grpclib.server.Stream[MsgActivate, MsgActivateResponse]") -> None:
+    async def __rpc_activate(
+        self, stream: "grpclib.server.Stream[MsgActivate, MsgActivateResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.activate(request)
         await stream.send_message(response)
@@ -1897,13 +1914,18 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-    async def counts(self, query_counts_request: "QueryCountsRequest") -> "QueryCountsResponse":
+
+    async def counts(
+        self, query_counts_request: "QueryCountsRequest"
+    ) -> "QueryCountsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def data(self, query_data_request: "QueryDataRequest") -> "QueryDataResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def data_source(self, query_data_source_request: "QueryDataSourceRequest") -> "QueryDataSourceResponse":
+    async def data_source(
+        self, query_data_source_request: "QueryDataSourceRequest"
+    ) -> "QueryDataSourceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def oracle_script(
@@ -1911,7 +1933,9 @@ class QueryBase(ServiceBase):
     ) -> "QueryOracleScriptResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def request(self, query_request_request: "QueryRequestRequest") -> "QueryRequestResponse":
+    async def request(
+        self, query_request_request: "QueryRequestRequest"
+    ) -> "QueryRequestResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def pending_requests(
@@ -1919,13 +1943,19 @@ class QueryBase(ServiceBase):
     ) -> "QueryPendingRequestsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def validator(self, query_validator_request: "QueryValidatorRequest") -> "QueryValidatorResponse":
+    async def validator(
+        self, query_validator_request: "QueryValidatorRequest"
+    ) -> "QueryValidatorResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def is_reporter(self, query_is_reporter_request: "QueryIsReporterRequest") -> "QueryIsReporterResponse":
+    async def is_reporter(
+        self, query_is_reporter_request: "QueryIsReporterRequest"
+    ) -> "QueryIsReporterResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def reporters(self, query_reporters_request: "QueryReportersRequest") -> "QueryReportersResponse":
+    async def reporters(
+        self, query_reporters_request: "QueryReportersRequest"
+    ) -> "QueryReportersResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def active_validators(
@@ -1933,7 +1963,9 @@ class QueryBase(ServiceBase):
     ) -> "QueryActiveValidatorsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
+    async def params(
+        self, query_params_request: "QueryParamsRequest"
+    ) -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def request_search(
@@ -1951,12 +1983,16 @@ class QueryBase(ServiceBase):
     ) -> "QueryRequestVerificationResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_counts(self, stream: "grpclib.server.Stream[QueryCountsRequest, QueryCountsResponse]") -> None:
+    async def __rpc_counts(
+        self, stream: "grpclib.server.Stream[QueryCountsRequest, QueryCountsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.counts(request)
         await stream.send_message(response)
 
-    async def __rpc_data(self, stream: "grpclib.server.Stream[QueryDataRequest, QueryDataResponse]") -> None:
+    async def __rpc_data(
+        self, stream: "grpclib.server.Stream[QueryDataRequest, QueryDataResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.data(request)
         await stream.send_message(response)
@@ -1977,7 +2013,9 @@ class QueryBase(ServiceBase):
         response = await self.oracle_script(request)
         await stream.send_message(response)
 
-    async def __rpc_request(self, stream: "grpclib.server.Stream[QueryRequestRequest, QueryRequestResponse]") -> None:
+    async def __rpc_request(
+        self, stream: "grpclib.server.Stream[QueryRequestRequest, QueryRequestResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.request(request)
         await stream.send_message(response)
@@ -2022,7 +2060,9 @@ class QueryBase(ServiceBase):
         response = await self.active_validators(request)
         await stream.send_message(response)
 
-    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
+    async def __rpc_params(
+        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)

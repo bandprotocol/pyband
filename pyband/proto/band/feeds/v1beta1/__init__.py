@@ -291,7 +291,7 @@ class Params(betterproto.Message):
 
     admin: str = betterproto.string_field(1)
     """
-    admin is the address of the admin that is allowed to perform operations on modules.
+    admin is the address of the admin that is allowed to update reference source config on modules.
     """
 
     allowable_block_time_discrepancy: int = betterproto.int64_field(2)
@@ -354,7 +354,7 @@ class Params(betterproto.Message):
 
     max_signal_ids_per_signing: int = betterproto.uint64_field(13)
     """
-    MaxSignalIDsPerSigning is the maximum number of signals allowed in a single tss signing request.
+    max_signal_ids_per_signing is the maximum number of signals allowed in a single tss signing request.
     """
 
 
@@ -714,7 +714,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgVoteResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Msg/Vote",
@@ -731,7 +731,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgSubmitSignalPricesResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Msg/SubmitSignalPrices",
@@ -748,7 +748,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateReferenceSourceConfigResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Msg/UpdateReferenceSourceConfig",
@@ -765,7 +765,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Msg/UpdateParams",
@@ -784,7 +784,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryCurrentFeedsResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/CurrentFeeds",
@@ -801,7 +801,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryIsFeederResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/IsFeeder",
@@ -818,7 +818,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/Params",
@@ -835,7 +835,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryPriceResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/Price",
@@ -852,7 +852,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryPricesResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/Prices",
@@ -869,7 +869,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryAllPricesResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/AllPrices",
@@ -886,7 +886,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryReferenceSourceConfigResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/ReferenceSourceConfig",
@@ -903,7 +903,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QuerySignalTotalPowersResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/SignalTotalPowers",
@@ -920,7 +920,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidValidatorResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/ValidValidator",
@@ -937,7 +937,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryValidatorPricesResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/ValidatorPrices",
@@ -954,7 +954,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryVoteResponse":
         return await self._unary_unary(
             "/band.feeds.v1beta1.Query/Vote",

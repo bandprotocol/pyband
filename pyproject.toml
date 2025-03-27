@@ -27,7 +27,7 @@ description = "Python library for BandChain"
 keywords = ["BAND", "BLOCKCHAIN", "ORACLE"]
 name = "pyband"
 readme = "README.md"
-version = "0.4.0-rc2"
+version = "0.4.0-rc3"
 
 [project.urls]
 homepage = "https://bandprotocol.com/"

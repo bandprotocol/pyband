@@ -66,7 +66,9 @@ class Params(betterproto.Message):
     max_signals defines the maximum number of signals allowed per tunnel.
     """
 
-    base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(7)
+    base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
+        7
+    )
     """base_packet_fee is the base fee for each packet."""
 
 
@@ -127,7 +129,9 @@ class LatestPrices(betterproto.Message):
 class TotalFees(betterproto.Message):
     """TotalFees is the type for the total fees collected by the tunnel"""
 
-    total_base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(1)
+    total_base_packet_fee: List["__cosmos_base_v1_beta1__.Coin"] = (
+        betterproto.message_field(1)
+    )
     """
     total_base_packet_fee is the total base packet fee collected by the tunnel
     """
@@ -221,7 +225,9 @@ class MsgCreateTunnel(betterproto.Message):
     route: "betterproto_lib_google_protobuf.Any" = betterproto.message_field(3)
     """route is the route for delivering the signal prices"""
 
-    initial_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(4)
+    initial_deposit: List["__cosmos_base_v1_beta1__.Coin"] = betterproto.message_field(
+        4
+    )
     """
     initial_deposit is the deposit value that must be paid at tunnel creation.
     """
@@ -525,7 +531,9 @@ class QueryTunnelsRequest(betterproto.Message):
     status_filter: "TunnelStatusFilter" = betterproto.enum_field(1)
     """status_filter is a flag to filter tunnels by status."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
+        betterproto.message_field(2)
+    )
     """pagination defines an optional pagination for the request."""
 
 
@@ -538,7 +546,9 @@ class QueryTunnelsResponse(betterproto.Message):
     tunnels: List["Tunnel"] = betterproto.message_field(1)
     """Tunnels is a list of tunnels."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
+        betterproto.message_field(2)
+    )
     """pagination defines an optional pagination for the response."""
 
 
@@ -571,7 +581,9 @@ class QueryDepositsRequest(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to query deposits."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
+        betterproto.message_field(2)
+    )
     """pagination defines an optional pagination for the request."""
 
 
@@ -584,7 +596,9 @@ class QueryDepositsResponse(betterproto.Message):
     deposits: List["Deposit"] = betterproto.message_field(1)
     """deposits is a list of deposits."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
+        betterproto.message_field(2)
+    )
     """pagination defines an optional pagination for the response."""
 
 
@@ -622,7 +636,9 @@ class QueryPacketsRequest(betterproto.Message):
     tunnel_id: int = betterproto.uint64_field(1)
     """tunnel_id is the ID of the tunnel to query packets."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = betterproto.message_field(2)
+    pagination: "__cosmos_base_query_v1_beta1__.PageRequest" = (
+        betterproto.message_field(2)
+    )
     """pagination defines an optional pagination for the request."""
 
 
@@ -635,7 +651,9 @@ class QueryPacketsResponse(betterproto.Message):
     packets: List["Packet"] = betterproto.message_field(1)
     """packets is a list of packets."""
 
-    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = betterproto.message_field(2)
+    pagination: "__cosmos_base_query_v1_beta1__.PageResponse" = (
+        betterproto.message_field(2)
+    )
     """pagination defines an optional pagination for the response."""
 
 
@@ -727,7 +745,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgCreateTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/CreateTunnel",
@@ -744,7 +762,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateRouteResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/UpdateRoute",
@@ -761,7 +779,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateSignalsAndIntervalResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/UpdateSignalsAndInterval",
@@ -778,7 +796,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgWithdrawFeePayerFundsResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/WithdrawFeePayerFunds",
@@ -795,7 +813,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgActivateTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/ActivateTunnel",
@@ -812,7 +830,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgDeactivateTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/DeactivateTunnel",
@@ -829,7 +847,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgTriggerTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/TriggerTunnel",
@@ -846,7 +864,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgDepositToTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/DepositToTunnel",
@@ -863,7 +881,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgWithdrawFromTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/WithdrawFromTunnel",
@@ -880,7 +898,7 @@ class MsgStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MsgUpdateParamsResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Msg/UpdateParams",
@@ -899,7 +917,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryTunnelsResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Tunnels",
@@ -916,7 +934,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryTunnelResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Tunnel",
@@ -933,7 +951,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDepositsResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Deposits",
@@ -950,7 +968,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryDepositResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Deposit",
@@ -967,7 +985,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryPacketsResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Packets",
@@ -984,7 +1002,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryPacketResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Packet",
@@ -1001,7 +1019,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryTotalFeesResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/TotalFees",
@@ -1018,7 +1036,7 @@ class QueryStub(betterproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "QueryParamsResponse":
         return await self._unary_unary(
             "/band.tunnel.v1beta1.Query/Params",
@@ -1031,10 +1049,15 @@ class QueryStub(betterproto.ServiceStub):
 
 
 class MsgBase(ServiceBase):
-    async def create_tunnel(self, msg_create_tunnel: "MsgCreateTunnel") -> "MsgCreateTunnelResponse":
+
+    async def create_tunnel(
+        self, msg_create_tunnel: "MsgCreateTunnel"
+    ) -> "MsgCreateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_route(self, msg_update_route: "MsgUpdateRoute") -> "MsgUpdateRouteResponse":
+    async def update_route(
+        self, msg_update_route: "MsgUpdateRoute"
+    ) -> "MsgUpdateRouteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def update_signals_and_interval(
@@ -1047,16 +1070,24 @@ class MsgBase(ServiceBase):
     ) -> "MsgWithdrawFeePayerFundsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def activate_tunnel(self, msg_activate_tunnel: "MsgActivateTunnel") -> "MsgActivateTunnelResponse":
+    async def activate_tunnel(
+        self, msg_activate_tunnel: "MsgActivateTunnel"
+    ) -> "MsgActivateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deactivate_tunnel(self, msg_deactivate_tunnel: "MsgDeactivateTunnel") -> "MsgDeactivateTunnelResponse":
+    async def deactivate_tunnel(
+        self, msg_deactivate_tunnel: "MsgDeactivateTunnel"
+    ) -> "MsgDeactivateTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def trigger_tunnel(self, msg_trigger_tunnel: "MsgTriggerTunnel") -> "MsgTriggerTunnelResponse":
+    async def trigger_tunnel(
+        self, msg_trigger_tunnel: "MsgTriggerTunnel"
+    ) -> "MsgTriggerTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deposit_to_tunnel(self, msg_deposit_to_tunnel: "MsgDepositToTunnel") -> "MsgDepositToTunnelResponse":
+    async def deposit_to_tunnel(
+        self, msg_deposit_to_tunnel: "MsgDepositToTunnel"
+    ) -> "MsgDepositToTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def withdraw_from_tunnel(
@@ -1064,7 +1095,9 @@ class MsgBase(ServiceBase):
     ) -> "MsgWithdrawFromTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def update_params(self, msg_update_params: "MsgUpdateParams") -> "MsgUpdateParamsResponse":
+    async def update_params(
+        self, msg_update_params: "MsgUpdateParams"
+    ) -> "MsgUpdateParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_create_tunnel(
@@ -1210,36 +1243,57 @@ class MsgBase(ServiceBase):
 
 
 class QueryBase(ServiceBase):
-    async def tunnels(self, query_tunnels_request: "QueryTunnelsRequest") -> "QueryTunnelsResponse":
+
+    async def tunnels(
+        self, query_tunnels_request: "QueryTunnelsRequest"
+    ) -> "QueryTunnelsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def tunnel(self, query_tunnel_request: "QueryTunnelRequest") -> "QueryTunnelResponse":
+    async def tunnel(
+        self, query_tunnel_request: "QueryTunnelRequest"
+    ) -> "QueryTunnelResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deposits(self, query_deposits_request: "QueryDepositsRequest") -> "QueryDepositsResponse":
+    async def deposits(
+        self, query_deposits_request: "QueryDepositsRequest"
+    ) -> "QueryDepositsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def deposit(self, query_deposit_request: "QueryDepositRequest") -> "QueryDepositResponse":
+    async def deposit(
+        self, query_deposit_request: "QueryDepositRequest"
+    ) -> "QueryDepositResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def packets(self, query_packets_request: "QueryPacketsRequest") -> "QueryPacketsResponse":
+    async def packets(
+        self, query_packets_request: "QueryPacketsRequest"
+    ) -> "QueryPacketsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def packet(self, query_packet_request: "QueryPacketRequest") -> "QueryPacketResponse":
+    async def packet(
+        self, query_packet_request: "QueryPacketRequest"
+    ) -> "QueryPacketResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def total_fees(self, query_total_fees_request: "QueryTotalFeesRequest") -> "QueryTotalFeesResponse":
+    async def total_fees(
+        self, query_total_fees_request: "QueryTotalFeesRequest"
+    ) -> "QueryTotalFeesResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def params(self, query_params_request: "QueryParamsRequest") -> "QueryParamsResponse":
+    async def params(
+        self, query_params_request: "QueryParamsRequest"
+    ) -> "QueryParamsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_tunnels(self, stream: "grpclib.server.Stream[QueryTunnelsRequest, QueryTunnelsResponse]") -> None:
+    async def __rpc_tunnels(
+        self, stream: "grpclib.server.Stream[QueryTunnelsRequest, QueryTunnelsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.tunnels(request)
         await stream.send_message(response)
 
-    async def __rpc_tunnel(self, stream: "grpclib.server.Stream[QueryTunnelRequest, QueryTunnelResponse]") -> None:
+    async def __rpc_tunnel(
+        self, stream: "grpclib.server.Stream[QueryTunnelRequest, QueryTunnelResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.tunnel(request)
         await stream.send_message(response)
@@ -1252,17 +1306,23 @@ class QueryBase(ServiceBase):
         response = await self.deposits(request)
         await stream.send_message(response)
 
-    async def __rpc_deposit(self, stream: "grpclib.server.Stream[QueryDepositRequest, QueryDepositResponse]") -> None:
+    async def __rpc_deposit(
+        self, stream: "grpclib.server.Stream[QueryDepositRequest, QueryDepositResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.deposit(request)
         await stream.send_message(response)
 
-    async def __rpc_packets(self, stream: "grpclib.server.Stream[QueryPacketsRequest, QueryPacketsResponse]") -> None:
+    async def __rpc_packets(
+        self, stream: "grpclib.server.Stream[QueryPacketsRequest, QueryPacketsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.packets(request)
         await stream.send_message(response)
 
-    async def __rpc_packet(self, stream: "grpclib.server.Stream[QueryPacketRequest, QueryPacketResponse]") -> None:
+    async def __rpc_packet(
+        self, stream: "grpclib.server.Stream[QueryPacketRequest, QueryPacketResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.packet(request)
         await stream.send_message(response)
@@ -1275,7 +1335,9 @@ class QueryBase(ServiceBase):
         response = await self.total_fees(request)
         await stream.send_message(response)
 
-    async def __rpc_params(self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]") -> None:
+    async def __rpc_params(
+        self, stream: "grpclib.server.Stream[QueryParamsRequest, QueryParamsResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.params(request)
         await stream.send_message(response)

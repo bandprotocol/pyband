@@ -147,9 +147,7 @@ class Result(betterproto.Message):
      or handler execution.
     """
 
-    msg_responses: List["betterproto_lib_google_protobuf.Any"] = (
-        betterproto.message_field(4)
-    )
+    msg_responses: List["betterproto_lib_google_protobuf.Any"] = betterproto.message_field(4)
     """
     msg_responses contains the Msg handler responses type packed in Anys.
     
@@ -198,9 +196,7 @@ class TxMsgData(betterproto.Message):
     data: List["MsgData"] = betterproto.message_field(1)
     """data field is deprecated and not populated."""
 
-    msg_responses: List["betterproto_lib_google_protobuf.Any"] = (
-        betterproto.message_field(2)
-    )
+    msg_responses: List["betterproto_lib_google_protobuf.Any"] = betterproto.message_field(2)
     """
     msg_responses contains the Msg handler responses packed into Anys.
     
@@ -255,5 +251,5 @@ class SearchBlocksResult(betterproto.Message):
     limit: int = betterproto.int64_field(5)
     """Max count blocks per page"""
 
-    blocks: List["____tendermint_types__.Block"] = betterproto.message_field(6)
+    blocks: List["__tendermint_types__.Block"] = betterproto.message_field(6)
     """List of blocks in current page"""

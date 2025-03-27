@@ -6,11 +6,11 @@ from .....proto.cosmos.staking.v1beta1 import (
 )
 from .....proto.cosmos.staking.v1beta1 import MsgDelegate as MsgDelegateProto
 from .....proto.cosmos.staking.v1beta1 import MsgUndelegate as MsgUndelegateProto
-from .....proto.tendermint import types as ___tendermint_types__
+from .....proto.tendermint import types as __tendermint_types__
 
 assert __base_v1_beta1__
 assert __base_query_v1_beta1__
-assert ___tendermint_types__
+assert __tendermint_types__
 
 
 class MsgBeginRedelegate(BaseMessageWrapper, MsgBeginRedelegateProto):
